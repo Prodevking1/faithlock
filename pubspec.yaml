@@ -1,0 +1,114 @@
+name: faithlock
+description: "Created with AppBiz Studio Boilerplate."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  envied: ^0.5.4+1
+  flutter:
+    sdk: flutter
+  flutter_local_notifications: ^17.2.3
+  timezone: ^0.9.0
+  flutter_localization: ^0.2.2
+  flutter_secure_storage: ^9.2.2
+  get: ^4.7.2
+  logger: ^2.4.0
+  onesignal_flutter: ^5.2.6
+  supabase_flutter: ^2.6.0
+  permission_handler: ^11.3.1
+  intl_phone_number_input:
+    git:
+      url: https://github.com/Shahidbangash/intl_phone_number_input.git
+      ref: develop
+  responsive_framework: ^1.5.1
+  font_awesome_flutter: ^10.7.0
+  cupertino_icons: ^1.0.8
+  flutter_form_builder: ^10.0.1
+  form_builder_validators: ^11.0.0
+  amplitude_flutter: ^3.16.4
+  posthog_flutter: ^4.10.0
+  sqflite: ^2.4.0
+  flutter_screentime:
+    git:
+      url: https://github.com/ioridev/flutter_screentime.git
+      ref: main
+  faker: ^2.2.0
+  melos: ^6.2.0
+  # modal_bottom_sheet: ^3.0.0
+  sentry_flutter: ^8.14.2
+  device_info_plus: ^11.3.0
+  shared_preferences: ^2.5.3
+  purchases_flutter: ^9.1.0
+  image_picker: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  envied_generator: ^0.5.4+1
+  flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.8
+  flutter_gen_runner: ^5.8.0
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+
+  integrations:
+    flutter_svg: true
+
+  fonts:
+    enabled: true
+
+  colors:
+    enabled: true
+    inputs:
+      - assets/colors/colors.xml
+
+  assets:
+    enabled: true
+    outputs:
+      class_name: Assets
+      package_parameter_enabled: false
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app-icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/app-icon.png
+  android: true
+  ios: true
+  android_12:
+    icon_background_color: "#ffffff"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+
+  fonts:
+    - family: AlanSans
+      fonts:
+        - asset: assets/fonts/Alan Sans/AlanSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Alan Sans/AlanSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Alan Sans/AlanSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Alan Sans/AlanSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Alan Sans/AlanSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Alan Sans/AlanSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Alan Sans/AlanSans-Black.ttf
+          weight: 900

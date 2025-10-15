@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary">#007AFF</color>
+    <color name="primaryVariant">#0056CC</color>
+    <color name="secondary">#5AC8FA</color>
+    <color name="secondaryVariant">#32ADE6</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="backgroundDark">#000000</color>
+    <color name="surface">#F2F2F7</color>
+    <color name="surfaceDark">#1C1C1E</color>
+    
+    <!-- Text Colors -->
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="onSecondary">#000000</color>
+    <color name="onBackground">#000000</color>
+    <color name="onBackgroundDark">#FFFFFF</color>
+    <color name="onSurface">#000000</color>
+    <color name="onSurfaceDark">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#34C759</color>
+    <color name="warning">#FF9500</color>
+    <color name="error">#FF3B30</color>
+    <color name="info">#007AFF</color>
+    
+    <!-- Grey Scale -->
+    <color name="grey50">#FAFAFA</color>
+    <color name="grey100">#F5F5F5</color>
+    <color name="grey200">#EEEEEE</color>
+    <color name="grey300">#E0E0E0</color>
+    <color name="grey400">#BDBDBD</color>
+    <color name="grey500">#9E9E9E</color>
+    <color name="grey600">#757575</color>
+    <color name="grey700">#616161</color>
+    <color name="grey800">#424242</color>
+    <color name="grey900">#212121</color>
+</resources>
