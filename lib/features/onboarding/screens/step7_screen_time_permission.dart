@@ -1,0 +1,342 @@
+import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
+import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
+import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
+import 'package:faithlock/shared/widgets/buttons/fast_plain_button.dart';
+import 'package:faithlock/shared/widgets/dialogs/fast_confirmation_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+/// Step 7: Screen Time Permission - Connect to iOS Screen Time
+/// Request permission to access Screen Time API for app blocking
+class Step7ScreenTimePermission extends StatefulWidget {
+  final VoidCallback onComplete;
+
+  const Step7ScreenTimePermission({
+    super.key,
+    required this.onComplete,
+  });
+
+  @override
+  State<Step7ScreenTimePermission> createState() =>
+      _Step7ScreenTimePermissionState();
+}
+
+class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
+  final controller = Get.find<ScriptureOnboardingController>();
+
+  // Phase 7.1 - Introduction
+  String _introText = '';
+  bool _showIntroCursor = false;
+
+  // Phase 7.2 - Explanation
+  String _explanationText = '';
+  bool _showExplanationCursor = false;
+
+  // Phase 7.3 - Call to Action
+  bool _showButton = false;
+
+  double _opacity = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAnimation();
+  }
+
+  Future<void> _startAnimation() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Phase 7.1: Introduction
+    await _phase71Introduction();
+
+    // Phase 7.2: Explanation
+    await _phase72Explanation();
+
+    // Phase 7.3: Show button
+    await _phase73CallToAction();
+  }
+
+  Future<void> _phase71Introduction() async {
+    await AnimationUtils.typeText(
+      fullText:
+          '${controller.userName.value}, this is the final step to activate your spiritual shield...',
+      onUpdate: (text) => setState(() => _introText = text),
+      onCursorVisibility: (visible) =>
+          setState(() => _showIntroCursor = visible),
+      speedMs: 40,
+    );
+
+    await AnimationUtils.pause(durationMs: 2000);
+  }
+
+  Future<void> _phase72Explanation() async {
+    setState(() {
+      _introText = '';
+      _showIntroCursor = false;
+    });
+
+    await AnimationUtils.typeText(
+      fullText:
+          'To protect you with Scripture every time you unlock, I need Screen Time permission.\n\nWithout this, your shield cannot activate.',
+      onUpdate: (text) => setState(() => _explanationText = text),
+      onCursorVisibility: (visible) =>
+          setState(() => _showExplanationCursor = visible),
+      speedMs: 40,
+    );
+
+    await AnimationUtils.pause(durationMs: 2500);
+  }
+
+  Future<void> _phase73CallToAction() async {
+    setState(() {
+      _explanationText = '';
+      _showExplanationCursor = false;
+      _showButton = true;
+    });
+
+    await AnimationUtils.mediumHaptic();
+  }
+
+  Future<void> _onConnectScreenTime() async {
+    await AnimationUtils.heavyHaptic();
+
+    // TODO: Request Screen Time permission here
+    // For now, just complete the onboarding
+
+    widget.onComplete();
+  }
+
+  Future<void> _onSkipPermission() async {
+    await AnimationUtils.lightHaptic();
+
+    // Show confirmation dialog with high friction using FastConfirmationDialog
+    final shouldSkip = await FastConfirmationDialog.show(
+      title: 'Continue Without Protection?',
+      message:
+          'Without Screen Time permission, FaithLock cannot protect you from your chosen apps.\n\nYou can enable this later in Settings.',
+      confirmText: 'Skip for Now',
+      cancelText: 'Grant Permission',
+      isDestructiveConfirm: false, 
+    );
+
+    if (shouldSkip) {
+      widget.onComplete();
+    }
+  }
+
+  Widget _buildBenefitItem({required IconData icon, required String text}) {
+    return Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
+          ),
+          child: Icon(
+            icon,
+            size: 20,
+            color: OnboardingTheme.goldColor,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            text,
+            style: OnboardingTheme.body.copyWith(
+              color: OnboardingTheme.labelPrimary,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              left: OnboardingTheme.horizontalPadding,
+              right: OnboardingTheme.horizontalPadding,
+              top: 100, // Space for progress bar
+              bottom: OnboardingTheme.verticalPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Phase 7.1 - Introduction
+                if (_introText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.bodyEmphasized,
+                      children: [
+                        TextSpan(text: _introText),
+                        if (_showIntroCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
+                    ),
+                  ),
+
+                // Phase 7.2 - Explanation
+                if (_explanationText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.bodyEmphasized,
+                      children: [
+                        TextSpan(text: _explanationText),
+                        if (_showExplanationCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
+                    ),
+                  ),
+
+                // Phase 7.3 - Call to Action
+                if (_showButton) ...[
+                  const SizedBox(height: 40),
+
+                  // Main message
+                  Center(
+                    child: Text(
+                      'Activate Your Spiritual Shield',
+                      style: OnboardingTheme.title2.copyWith(
+                        color: OnboardingTheme.labelPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Icon illustratif avec animation
+                  Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            OnboardingTheme.goldColor.withValues(alpha: 0.2),
+                            OnboardingTheme.goldColor.withValues(alpha: 0.05),
+                          ],
+                        ),
+                        border: Border.all(
+                          color:
+                              OnboardingTheme.goldColor.withValues(alpha: 0.4),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.shield,
+                        size: 50,
+                        color: OnboardingTheme.goldColor,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Benefits list
+                  _buildBenefitItem(
+                    icon: Icons.menu_book,
+                    text: 'Scripture appears before you unlock',
+                  ),
+                  const SizedBox(height: 16),
+                  _buildBenefitItem(
+                    icon: Icons.security,
+                    text: 'Your chosen apps are protected',
+                  ),
+                  const SizedBox(height: 16),
+                  _buildBenefitItem(
+                    icon: Icons.trending_up,
+                    text: 'Build discipline through daily verses',
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Social proof
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.people,
+                          size: 18,
+                          color: OnboardingTheme.goldColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '10,000+ believers protected daily',
+                          style: OnboardingTheme.footnote.copyWith(
+                            color: OnboardingTheme.goldColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Primary button
+                  Center(
+                    child: FastButton(
+                      text: 'Grant Permission',
+                      onTap: _onConnectScreenTime,
+                      backgroundColor: OnboardingTheme.goldColor,
+                      textColor: OnboardingTheme.backgroundColor,
+                      style: FastButtonStyle.filled,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Skip button avec friction (using FastPlainButton)
+                  Center(
+                    child: FastPlainButton(
+                      text: 'Continue without protection',
+                      onTap: _onSkipPermission,
+                      textColor: OnboardingTheme.labelTertiary,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

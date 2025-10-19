@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 
 /// Step 1: Divine Revelation - Pattern Interrupt
@@ -81,21 +82,21 @@ class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnboardingTheme.backgroundColor,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 1000),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: OnboardingTheme.horizontalPadding,
-              vertical: OnboardingTheme.verticalPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: OnboardingTheme.horizontalPadding,
+            right: OnboardingTheme.horizontalPadding,
+            top: 100, // Space for progress bar
+            bottom: OnboardingTheme.verticalPadding,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
                 // Verse with inline cursor
                 RichText(
                   text: TextSpan(
@@ -127,8 +128,7 @@ class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
                     ],
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

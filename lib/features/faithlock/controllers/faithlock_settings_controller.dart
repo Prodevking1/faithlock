@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:faithlock/features/faithlock/services/export.dart';
+import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +24,22 @@ class FaithLockSettingsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadPermissions();
-    loadSettings();
-    loadSelectedAppsCount();
+    // Load data asynchronously without blocking initialization
+    _initializeAsync();
+  }
+
+  /// Initialize data asynchronously to avoid blocking UI
+  Future<void> _initializeAsync() async {
+    try {
+      await Future.wait([
+        loadPermissions(),
+        loadSettings(),
+        loadSelectedAppsCount(),
+      ]);
+    } catch (e) {
+      print('⚠️ Error during FaithLock initialization: $e');
+      // Don't throw - allow UI to load even if initialization fails
+    }
   }
 
   /// Load count of selected apps
@@ -190,11 +205,14 @@ class FaithLockSettingsController extends GetxController {
       // Reload apps count after selection
       await loadSelectedAppsCount();
 
+      // Auto-setup schedules after app selection
+      await _setupSchedulesFromStorage();
+
       // Show success message after selection
       FastToast.showSuccess(
         context: context,
-        title: 'Apps Selected',
-        message: 'Your selected apps will be blocked during lock times',
+        title: 'Apps Selected & Locked',
+        message: 'Your apps will be automatically blocked during scheduled times',
       );
     } catch (e) {
       FastToast.showError(
@@ -202,6 +220,32 @@ class FaithLockSettingsController extends GetxController {
         title: 'Error',
         message: 'Failed to show app picker: $e',
       );
+    }
+  }
+
+  /// Setup schedules from storage (called after app selection or schedule edit)
+  Future<void> _setupSchedulesFromStorage() async {
+    try {
+      // Read schedules from storage
+      final StorageService storage = StorageService();
+      final schedulesJson = await storage.readString('onboarding_schedules');
+ 
+      if (schedulesJson == null || schedulesJson.isEmpty) {
+        print('⚠️ No schedules found in storage');
+        return;
+      }
+
+      // Parse schedules
+      final List<dynamic> schedulesData = jsonDecode(schedulesJson);
+      final List<Map<String, dynamic>> schedules =
+          schedulesData.map((s) => Map<String, dynamic>.from(s)).toList();
+
+      // Setup native DeviceActivity schedules
+      await _screenTimeService.setupSchedules(schedules);
+
+      print('✅ Schedules setup successfully after app selection');
+    } catch (e) {
+      print('⚠️ Failed to setup schedules: $e');
     }
   }
 

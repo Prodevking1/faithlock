@@ -1,3 +1,4 @@
+import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/features/auth/screens/forgot_password_screen.dart';
 import 'package:faithlock/features/auth/screens/new_password_screen.dart';
 import 'package:faithlock/features/auth/screens/signin_screen.dart';
@@ -12,15 +13,15 @@ import 'package:faithlock/features/profile/screens/profile_screen.dart';
 import 'package:faithlock/navigation/screens/main_screen.dart';
 import 'package:faithlock/services/api/supabase/supabase_auth_service.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => SupabaseAuthService());
 
-    // Initialize and start schedule monitoring
-    final scheduleMonitor = ScheduleMonitorService();
-    scheduleMonitor.startMonitoring();
+    // Initialize schedule monitoring service (will start when needed)
+    Get.lazyPut(() => ScheduleMonitorService());
   }
 }
 
@@ -30,61 +31,61 @@ class AppRoutes {
   }
 
   static Future<String> determineInitialRoute() async {
-    // For testing: Launch Scripture Onboarding directly
-    return scriptureOnboarding;
+    try {
+      // For testing: Launch Scripture Onboarding directly
+      // return scriptureOnboarding;
 
-    // final bool hasCompletedOnboarding = needsInteractiveOnboarding
-    //     ? await FastInteractiveOnboardingController.hasCompletedOnboarding()
-    //     : await OnboardingController.hasCompletedOnboarding();
+      // Check onboarding completion first (fast check)
+      final bool hasCompletedOnboarding = needsInteractiveOnboarding
+          ? await FastInteractiveOnboardingController.hasCompletedOnboarding()
+          : await OnboardingController.hasCompletedOnboarding();
 
-    // if (!hasCompletedOnboarding) {
-    //   return onboarding;
-    // }
+      if (!hasCompletedOnboarding) {
+        return onboarding;
+      }
 
-    // final screenTimeService = ScreenTimeService();
-    // try {
-    //   final status = await screenTimeService.getAuthorizationStatusText();
+      // Check Screen Time permission with timeout to avoid blocking
+      final screenTimeService = ScreenTimeService();
+      try {
+        final status = await screenTimeService
+            .getAuthorizationStatusText()
+            .timeout(const Duration(seconds: 2));
 
-    //   if (status == 'Not Requested') {
-    //     return permissionsOnboarding;
-    //   }
-    // } catch (e) {
-    //   print('⚠️ Error checking Screen Time status: $e');
-    // }
+        if (status == 'Not Requested') {
+          return permissionsOnboarding;
+        }
+      } catch (e) {
+        print('⚠️ Screen Time check skipped: $e');
+        // Continue to auth check even if Screen Time check fails
+      }
 
-    // if (Supabase.instance.client.auth.currentUser != null) {
-    //   return main;
-    // }
+      // Check auth status
+      if (Supabase.instance.client.auth.currentUser != null) {
+        return main;
+      }
 
-    // if (AppConfig.appFeatures.enableAnonAuth) {
-    //   try {
-    //     final authService = SupabaseAuthService();
-    //     final response = await authService.signInAnonymously();
+      // Try anonymous auth if enabled
+      if (AppConfig.appFeatures.enableAnonAuth) {
+        try {
+          final authService = SupabaseAuthService();
+          final response = await authService
+              .signInAnonymously()
+              .timeout(const Duration(seconds: 3));
 
-    //     if (response.user != null) {
-    //       return main;
-    //     }
-    //   } catch (e) {
-    //     print('❌ Anonymous auth failed: $e');
-    //   }
-    // }
+          if (response.user != null) {
+            return main;
+          }
+        } catch (e) {
+          print('❌ Anonymous auth failed or timed out: $e');
+        }
+      }
 
-    // // Standard auth flow - check local storage
-    // final bool? isLoggedIn =
-    //     await StorageService().readBool(LocalStorageKeys.isLoggedIn);
-    // return isLoggedIn == true ? main : signUp;
-    // final screenTimeService = ScreenTimeService();
-    // try {
-    //   final status = await screenTimeService.getAuthorizationStatusText();
-
-    //   if (status == 'Not Requested') {
-    //     return permissionsOnboarding;
-    //   }
-    // } catch (e) {
-    //   print('⚠️ Error checking Screen Time status: $e');
-    // }
-
-    // return main;
+      return main;
+    } catch (e) {
+      print('❌ Error in determineInitialRoute: $e');
+      // Fallback to main screen on any error
+      return main;
+    }
   }
 
   static bool get needsInteractiveOnboarding => true;

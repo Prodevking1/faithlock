@@ -1,14 +1,14 @@
 import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/core/constants/core/fast_spacing.dart';
 import 'package:faithlock/features/faithlock/controllers/schedule_controller.dart';
-import 'package:faithlock/features/faithlock/models/export.dart';
+import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Schedule Management Screen
-/// Create, edit, and manage lock schedules
+/// Manage lock schedules from onboarding
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
 
@@ -80,7 +80,6 @@ class ScheduleScreen extends StatelessWidget {
             );
           }
 
-          // Always show the layout with Screen Time card
           return Column(
             children: [
               // Screen Time authorization card
@@ -143,20 +142,13 @@ class ScheduleScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: FastButton(
-                                  text: 'Grant Access',
-                                  onTap:
-                                      controller.requestScreenTimeAuthorization,
-                                ),
-                              ),
-                            ],
+                          FastButton(
+                            text: 'Grant Access',
+                            onTap: controller.requestScreenTimeAuthorization,
                           ),
                         ] else ...[
                           Text(
-                            'Test app blocking before creating schedules',
+                            'Select apps to block during scheduled times',
                             style: TextStyle(
                               color: FastColors.secondaryText(context),
                               fontSize: 14,
@@ -167,38 +159,26 @@ class ScheduleScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: FastButton(
-                                  text: 'Test Lock (1 min)',
-                                  style: FastButtonStyle.outlined,
-                                  onTap: controller.testBlockingNow,
+                                  text: 'Select Apps',
+                                  onTap: controller.selectAppsToBlock,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: FastButton(
-                                  text: 'Stop Lock',
-                                  style: FastButtonStyle.destructive,
-                                  onTap: controller.stopBlockingNow,
+                                  text: 'Test (15min)',
+                                  style: FastButtonStyle.outlined,
+                                  onTap: controller.testBlockingNow,
                                 ),
                               ),
                             ],
-                          ),
-                          const SizedBox(height: 12),
-                          Divider(
-                            color: FastColors.separator(context),
-                            height: 1,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            'Configure blocked apps in iOS Settings > Screen Time',
-                            style: TextStyle(
-                              color: FastColors.tertiaryText(context),
-                              fontSize: 12,
-                            ),
                           ),
                         ],
                       ],
                     ),
                   )),
+
+              // Schedules list
               Expanded(
                 child: controller.schedules.isEmpty
                     ? Center(
@@ -214,7 +194,7 @@ class ScheduleScreen extends StatelessWidget {
                               ),
                               FastSpacing.h24,
                               Text(
-                                'No schedules yet',
+                                'No schedules found',
                                 style: TextStyle(
                                   color: FastColors.primaryText(context),
                                   fontSize: 24,
@@ -223,7 +203,7 @@ class ScheduleScreen extends StatelessWidget {
                               ),
                               FastSpacing.h16,
                               Text(
-                                'Create a schedule to automatically lock your device at specific times',
+                                'Complete the onboarding to set up your lock schedules',
                                 style: TextStyle(
                                   color: FastColors.secondaryText(context),
                                   fontSize: 16,
@@ -239,8 +219,14 @@ class ScheduleScreen extends StatelessWidget {
                         itemCount: controller.schedules.length,
                         itemBuilder: (context, index) {
                           final schedule = controller.schedules[index];
-                          final isActive =
-                              controller.isScheduleActive(schedule);
+                          final isActive = controller.isScheduleActive(schedule);
+                          final isEnabled = schedule['enabled'] as bool;
+                          final name = schedule['name'] as String;
+                          final icon = schedule['icon'] as String;
+                          final startHour = schedule['startHour'] as int;
+                          final startMinute = schedule['startMinute'] as int;
+                          final endHour = schedule['endHour'] as int;
+                          final endMinute = schedule['endMinute'] as int;
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
@@ -254,23 +240,31 @@ class ScheduleScreen extends StatelessWidget {
                                 border: Border.all(
                                   color: isActive
                                       ? FastColors.primary
-                                      : FastColors.border(context),
-                                  width: isActive ? 2 : 1,
+                                      : isEnabled
+                                          ? OnboardingTheme.goldColor
+                                              .withValues(alpha: 0.3)
+                                          : FastColors.border(context),
+                                  width: isActive ? 2 : 1.5,
                                 ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Header row (name + type + toggle)
+                                  // Header row
                                   Row(
                                     children: [
+                                      Text(
+                                        icon,
+                                        style: const TextStyle(fontSize: 24),
+                                      ),
+                                      const SizedBox(width: 12),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              schedule.name,
+                                              name,
                                               style: TextStyle(
                                                 color: FastColors.primaryText(
                                                     context),
@@ -279,148 +273,180 @@ class ScheduleScreen extends StatelessWidget {
                                               ),
                                             ),
                                             const SizedBox(height: 4),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 2,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: _getScheduleTypeColor(
-                                                        schedule.type)
-                                                    .withValues(alpha: 0.2),
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                controller.getScheduleTypeLabel(
-                                                    schedule.type),
-                                                style: TextStyle(
-                                                  color: _getScheduleTypeColor(
-                                                      schedule.type),
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                            Text(
+                                              controller
+                                                  .getScheduleDuration(schedule),
+                                              style: TextStyle(
+                                                color: FastColors.secondaryText(
+                                                    context),
+                                                fontSize: 13,
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
                                       CupertinoSwitch(
-                                        value: schedule.isEnabled,
-                                        activeTrackColor: FastColors.primary,
-                                        onChanged: (_) => controller
-                                            .toggleScheduleEnabled(schedule),
+                                        value: isEnabled,
+                                        activeTrackColor: OnboardingTheme.goldColor,
+                                        onChanged: (_) =>
+                                            controller.toggleScheduleEnabled(index),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 12),
-                                  Divider(
-                                    color: FastColors.separator(context),
-                                    height: 1,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  // Time and days
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.access_time,
-                                        size: 16,
-                                        color:
-                                            FastColors.secondaryText(context),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        '${controller.formatTimeOfDay(schedule.startTime)} - ${controller.formatTimeOfDay(schedule.endTime)}',
-                                        style: TextStyle(
-                                          color:
-                                              FastColors.secondaryText(context),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_today,
-                                        size: 16,
-                                        color:
-                                            FastColors.secondaryText(context),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        controller
-                                            .getDayNames(schedule.daysOfWeek),
-                                        style: TextStyle(
-                                          color:
-                                              FastColors.secondaryText(context),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  // Next trigger
-                                  if (schedule.isEnabled) ...[
+
+                                  if (isEnabled) ...[
+                                    const SizedBox(height: 12),
+                                    Divider(
+                                      color: FastColors.separator(context),
+                                      height: 1,
+                                    ),
+                                    const SizedBox(height: 12),
+
+                                    // Time display
                                     Row(
                                       children: [
-                                        Icon(
-                                          isActive
-                                              ? Icons.lock
-                                              : Icons.notifications_active,
-                                          size: 16,
-                                          color: isActive
-                                              ? FastColors.primary
-                                              : FastColors.info,
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () => controller.editScheduleTime(
+                                                index, true),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 12, vertical: 10),
+                                              decoration: BoxDecoration(
+                                                color: OnboardingTheme.backgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: OnboardingTheme.goldColor
+                                                      .withValues(alpha: 0.2),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Start',
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: FastColors
+                                                          .tertiaryText(context),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    controller.formatTime(
+                                                        startHour, startMinute),
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                          OnboardingTheme.goldColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          controller
-                                              .getNextTriggerText(schedule),
-                                          style: TextStyle(
-                                            color: isActive
-                                                ? FastColors.primary
-                                                : FastColors.info,
-                                            fontSize: 14,
-                                            fontWeight: isActive
-                                                ? FontWeight.w600
-                                                : FontWeight.normal,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: Text(
+                                            '→',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: FastColors.tertiaryText(
+                                                  context),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () => controller.editScheduleTime(
+                                                index, false),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 12, vertical: 10),
+                                              decoration: BoxDecoration(
+                                                color: OnboardingTheme.backgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: OnboardingTheme.goldColor
+                                                      .withValues(alpha: 0.2),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'End',
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: FastColors
+                                                          .tertiaryText(context),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    controller.formatTime(
+                                                        endHour, endMinute),
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                          OnboardingTheme.goldColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                  const SizedBox(height: 12),
-                                  // Action buttons
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: FastButton(
-                                          text: 'Edit',
-                                          style: FastButtonStyle.outlined,
-                                          onTap: () => _showScheduleForm(
-                                            context,
-                                            controller,
-                                            schedule: schedule,
+
+                                    // Active status
+                                    if (isActive) ...[
+                                      const SizedBox(height: 12),
+                                      Obx(() => Row(
+                                        children: [
+                                          Icon(
+                                            controller.isScreenTimeAuthorized.value &&
+                                            controller.selectedAppsCount.value > 0
+                                              ? Icons.lock
+                                              : Icons.schedule,
+                                            size: 16,
+                                            color: controller.isScreenTimeAuthorized.value &&
+                                            controller.selectedAppsCount.value > 0
+                                              ? FastColors.primary
+                                              : FastColors.warning,
                                           ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: FastButton(
-                                          text: 'Delete',
-                                          style: FastButtonStyle.destructive,
-                                          onTap: () => _confirmDelete(
-                                            context,
-                                            controller,
-                                            schedule,
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              controller.isScreenTimeAuthorized.value &&
+                                              controller.selectedAppsCount.value > 0
+                                                ? 'Active now - Apps are blocked'
+                                                : 'Active period - Select apps to start blocking',
+                                              style: TextStyle(
+                                                color: controller.isScreenTimeAuthorized.value &&
+                                                controller.selectedAppsCount.value > 0
+                                                  ? FastColors.primary
+                                                  : FastColors.warning,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                        ],
+                                      )),
                                     ],
-                                  ),
+                                  ],
                                 ],
                               ),
                             ),
@@ -428,388 +454,10 @@ class ScheduleScreen extends StatelessWidget {
                         },
                       ),
               ),
-              // Add button
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: FastButton(
-                  text: 'Create Schedule',
-                  onTap: () => _showScheduleForm(context, controller),
-                ),
-              ),
             ],
           );
         }),
       ),
     );
-  }
-
-  /// Show schedule form dialog
-  void _showScheduleForm(
-    BuildContext context,
-    ScheduleController controller, {
-    LockSchedule? schedule,
-  }) {
-    final isEditing = schedule != null;
-
-    // Form state
-    final nameController = TextEditingController(text: schedule?.name ?? '');
-    final selectedType = (schedule?.type ?? ScheduleType.daily).obs;
-    final selectedDays =
-        (schedule?.daysOfWeek ?? List.generate(7, (i) => i + 1)).obs;
-    final startTime =
-        (schedule?.startTime ?? const TimeOfDay(hour: 22, minute: 0)).obs;
-    final endTime =
-        (schedule?.endTime ?? const TimeOfDay(hour: 6, minute: 0)).obs;
-
-    Get.dialog(
-      Dialog(
-        backgroundColor: FastColors.surface(context),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title
-              Text(
-                isEditing ? 'Edit Schedule' : 'Create Schedule',
-                style: TextStyle(
-                  color: FastColors.primaryText(context),
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              FastSpacing.h24,
-
-              // Schedule Name
-              TextField(
-                controller: nameController,
-                style: TextStyle(color: FastColors.primaryText(context)),
-                decoration: InputDecoration(
-                  labelText: 'Schedule Name',
-                  labelStyle:
-                      TextStyle(color: FastColors.secondaryText(context)),
-                  hintText: 'e.g., Morning Prayer Time',
-                  hintStyle: TextStyle(color: FastColors.tertiaryText(context)),
-                  filled: true,
-                  fillColor: FastColors.surfaceVariant(context),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              FastSpacing.h16,
-
-              // Schedule Type
-              Text(
-                'Schedule Type',
-                style: TextStyle(
-                  color: FastColors.secondaryText(context),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              FastSpacing.h8,
-              Obx(() => Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: ScheduleType.values.map((type) {
-                      final isSelected = selectedType.value == type;
-                      return GestureDetector(
-                        onTap: () => selectedType.value = type,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? FastColors.primary
-                                : FastColors.surfaceVariant(context),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            controller.getScheduleTypeLabel(type),
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Colors.white
-                                  : FastColors.secondaryText(context),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  )),
-              FastSpacing.h16,
-
-              // Time Selection
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Start Time',
-                          style: TextStyle(
-                            color: FastColors.secondaryText(context),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        FastSpacing.h8,
-                        Obx(() => GestureDetector(
-                              onTap: () async {
-                                final time = await showTimePicker(
-                                  context: context,
-                                  initialTime: startTime.value,
-                                );
-                                if (time != null) startTime.value = time;
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: FastColors.surfaceVariant(context),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.access_time,
-                                        color: FastColors.primary),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      controller
-                                          .formatTimeOfDay(startTime.value),
-                                      style: TextStyle(
-                                        color: FastColors.primaryText(context),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'End Time',
-                          style: TextStyle(
-                            color: FastColors.secondaryText(context),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        FastSpacing.h8,
-                        Obx(() => GestureDetector(
-                              onTap: () async {
-                                final time = await showTimePicker(
-                                  context: context,
-                                  initialTime: endTime.value,
-                                );
-                                if (time != null) endTime.value = time;
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: FastColors.surfaceVariant(context),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.access_time,
-                                        color: FastColors.primary),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      controller.formatTimeOfDay(endTime.value),
-                                      style: TextStyle(
-                                        color: FastColors.primaryText(context),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              FastSpacing.h16,
-
-              // Days of Week
-              Text(
-                'Active Days',
-                style: TextStyle(
-                  color: FastColors.secondaryText(context),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              FastSpacing.h8,
-              Obx(() => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-                        .asMap()
-                        .entries
-                        .map((entry) {
-                      final dayNumber = entry.key + 1;
-                      final isSelected = selectedDays.contains(dayNumber);
-                      return GestureDetector(
-                        onTap: () {
-                          if (isSelected) {
-                            selectedDays.remove(dayNumber);
-                          } else {
-                            selectedDays.add(dayNumber);
-                          }
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? FastColors.primary
-                                : FastColors.surfaceVariant(context),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              entry.value,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? Colors.white
-                                    : FastColors.secondaryText(context),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  )),
-              FastSpacing.h24,
-
-              // Action Buttons
-              Row(
-                children: [
-                  Expanded(
-                    child: FastButton(
-                      text: 'Cancel',
-                      style: FastButtonStyle.outlined,
-                      onTap: () => Get.back(),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: FastButton(
-                      text: isEditing ? 'Save' : 'Create',
-                      onTap: () {
-                        if (nameController.text.trim().isEmpty) {
-                          Get.snackbar(
-                            'Error',
-                            'Please enter a schedule name',
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: FastColors.error,
-                            colorText: Colors.white,
-                          );
-                          return;
-                        }
-
-                        if (selectedDays.isEmpty) {
-                          Get.snackbar(
-                            'Error',
-                            'Please select at least one day',
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: FastColors.error,
-                            colorText: Colors.white,
-                          );
-                          return;
-                        }
-
-                        if (isEditing) {
-                          controller.updateSchedule(
-                            id: schedule.id,
-                            name: nameController.text.trim(),
-                            type: selectedType.value,
-                            startTime: startTime.value,
-                            endTime: endTime.value,
-                            daysOfWeek: selectedDays.toList()..sort(),
-                            isEnabled: schedule.isEnabled,
-                          );
-                        } else {
-                          controller.createSchedule(
-                            name: nameController.text.trim(),
-                            type: selectedType.value,
-                            startTime: startTime.value,
-                            endTime: endTime.value,
-                            daysOfWeek: selectedDays.toList()..sort(),
-                          );
-                        }
-
-                        Get.back();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Confirm delete dialog
-  void _confirmDelete(
-    BuildContext context,
-    ScheduleController controller,
-    LockSchedule schedule,
-  ) {
-    Get.defaultDialog(
-      title: 'Delete Schedule',
-      titleStyle: TextStyle(color: FastColors.primaryText(context)),
-      backgroundColor: FastColors.surface(context),
-      middleText: 'Are you sure you want to delete "${schedule.name}"?',
-      middleTextStyle: TextStyle(color: FastColors.secondaryText(context)),
-      textCancel: 'Cancel',
-      textConfirm: 'Delete',
-      confirmTextColor: FastColors.error,
-      onConfirm: () {
-        Get.back();
-        controller.deleteSchedule(schedule.id);
-      },
-    );
-  }
-
-  /// Get schedule type color
-  Color _getScheduleTypeColor(ScheduleType type) {
-    switch (type) {
-      case ScheduleType.daily:
-        return const Color(0xFF03A9F4);
-      case ScheduleType.bedtime:
-        return const Color(0xFF9C27B0);
-      case ScheduleType.workHours:
-        return const Color(0xFF2196F3);
-      case ScheduleType.mealTime:
-        return const Color(0xFF4CAF50);
-      case ScheduleType.custom:
-        return const Color(0xFF607D8B);
-    }
   }
 }

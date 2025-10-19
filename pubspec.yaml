@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.5.3
   purchases_flutter: ^9.1.0
   image_picker: ^1.1.2
+  in_app_review: ^2.0.10
 
 dev_dependencies:
   flutter_test:
@@ -112,3 +113,7 @@ flutter:
           weight: 800
         - asset: assets/fonts/Alan Sans/AlanSans-Black.ttf
           weight: 900
+    - family: Garamond
+      fonts:
+        - asset: assets/fonts/garamon.ttf
+          weight: 400

@@ -2,6 +2,7 @@ import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/controls/fast_slider.dart';
 import 'package:faithlock/shared/widgets/inputs/fast_text_input.dart';
@@ -32,7 +33,7 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
   bool _showIntroCursor = false;
   bool _showNameInput = false;
   bool _showAgeInput = false;
-  double _userAge = 25.0; // Default age
+  double _userAge = 21.0;
 
   double _opacity = 1.0;
 
@@ -50,17 +51,18 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
   }
 
   Future<void> _startAnimation() async {
-    await Future.delayed(Duration(milliseconds: AnimationUtils.pauseShort));
+    await Future.delayed(Duration(milliseconds: 300));
 
     // Ask for name first (iOS-optimized timing)
     await AnimationUtils.typeText(
-      fullText: 'Before we continue...\n\nWhat is your name?',
+      fullText: 'Before we continue...\nWhat is your name?',
       onUpdate: (text) => setState(() => _introText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntroCursor = visible),
     );
 
-    await AnimationUtils.pause(durationMs: AnimationUtils.pauseShort);
+    // Show input almost immediately after text finishes
+    await AnimationUtils.pause(durationMs: 100);
 
     setState(() => _showNameInput = true);
     await AnimationUtils.mediumHaptic();
@@ -118,49 +120,26 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnboardingTheme.backgroundColor,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 1000),
-          child: Stack(
-            children: [
-              // Back button
-              if (controller.currentStep.value > 1)
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: OnboardingTheme.goldColor,
-                      size: 24,
-                    ),
-                    onPressed: () => controller.previousStep(),
-                  ),
-                ),
-              // Main content
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: OnboardingTheme.horizontalPadding,
-                  vertical: OnboardingTheme.verticalPadding,
-                ),
-                child: Column(
-                  mainAxisAlignment: _showNameInput || _showAgeInput
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.end,
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: OnboardingTheme.horizontalPadding,
+            right: OnboardingTheme.horizontalPadding,
+            top: 100, // Space for progress bar
+            bottom: OnboardingTheme.verticalPadding,
+          ),
+          child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Intro text (iOS-styled, starts from bottom)
-                    if (_introText.isNotEmpty &&
-                        !_showNameInput &&
-                        !_showAgeInput)
-                      const Spacer(),
+                    // Intro text (iOS-styled, centered)
                     if (_introText.isNotEmpty)
                       RichText(
                         text: TextSpan(
-                          style: OnboardingTheme.title2,
+                          style: OnboardingTheme.title3,
                           children: [
                             TextSpan(text: _introText),
                             if (_showIntroCursor)
@@ -190,12 +169,12 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
                           hintText: 'Your name',
                           textCapitalization: TextCapitalization.words,
                           focusNode: _nameFocusNode,
-                          textStyle: OnboardingTheme.title1.copyWith(
+                          textStyle: OnboardingTheme.title3.copyWith(
                             color: OnboardingTheme.goldColor,
                           ),
                         ),
                       ),
-                      const SizedBox(height: OnboardingTheme.space48),
+                      const SizedBox(height: OnboardingTheme.space32),
                       Center(
                         child: FastButton(
                           text: 'Continue',
@@ -261,9 +240,6 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
                         ),
                       ),
                     ],
-                  ],
-                ),
-              ),
             ],
           ),
         ),

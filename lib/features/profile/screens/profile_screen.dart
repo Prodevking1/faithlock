@@ -1,7 +1,7 @@
 import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/core/helpers/ui_helper.dart';
 import 'package:faithlock/features/auth/controllers/signout_controller.dart';
-import 'package:faithlock/features/faithlock/screens/settings_screen.dart';
+import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/profile/controllers/profile_controller.dart';
 import 'package:faithlock/features/profile/controllers/settings_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +13,10 @@ class ProfileScreen extends StatelessWidget {
 
   final ProfileController profileController = Get.put(ProfileController());
   final SettingsController settingsController = Get.put(SettingsController());
+
+  // Use lazy initialization to avoid blocking UI
+  FaithLockSettingsController get faithLockController =>
+      Get.put(FaithLockSettingsController());
 
   @override
   Widget build(BuildContext context) {
@@ -225,14 +229,54 @@ class ProfileScreen extends StatelessWidget {
 
         // App Settings Section
         _buildIOSSection([
-          _buildIOSListTile(
-            context,
-            leading: CupertinoIcons.lock_shield_fill,
-            title: 'FaithLock Settings',
-            subtitle: 'Manage permissions & app blocking',
-            iconColor: CupertinoColors.systemPurple,
-            onTap: () => Get.to(() => const SettingsScreen()),
-          ),
+          // _buildIOSListTile(
+          //   context,
+          //   leading: CupertinoIcons.lock_shield_fill,
+          //   title: 'FaithLock Settings',
+          //   subtitle: 'Manage permissions & app blocking',
+          //   iconColor: CupertinoColors.systemPurple,
+          //   onTap: () => Get.to(() => const SettingsScreen()),
+          // ),
+          // Blocked Apps - Direct access
+          Obx(() {
+            String subtitle;
+            if (!faithLockController.isScreenTimeAuthorized.value) {
+              subtitle = 'Screen Time permission required';
+            } else if (faithLockController.selectedAppsCount.value > 0) {
+              subtitle = 'Apps configured - tap to modify';
+            } else {
+              subtitle = 'No apps selected yet';
+            }
+
+            return _buildIOSListTile(
+              context,
+              leading: CupertinoIcons.square_grid_2x2,
+              title: 'Blocked Apps',
+              subtitle: subtitle,
+              iconColor: CupertinoColors.systemRed,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (faithLockController.selectedAppsCount.value > 0)
+                    Icon(
+                      CupertinoIcons.checkmark_circle_fill,
+                      color: CupertinoColors.systemGreen,
+                      size: 20,
+                    ),
+                  if (faithLockController.selectedAppsCount.value > 0)
+                    const SizedBox(width: 8),
+                  Icon(
+                    CupertinoIcons.chevron_forward,
+                    color: CupertinoColors.tertiaryLabel.resolveFrom(context),
+                    size: 16,
+                  ),
+                ],
+              ),
+              onTap: faithLockController.isScreenTimeAuthorized.value
+                  ? () => faithLockController.selectAppsToBlock()
+                  : null,
+            );
+          }),
           if (appFeatures.darkMode)
             _buildIOSListTile(
               context,
@@ -255,19 +299,20 @@ class ProfileScreen extends StatelessWidget {
                   '${'current'.tr} ${settingsController.appLanguage.value.toUpperCase()}',
               onTap: () => _showLanguagePicker(context),
             ),
-          _buildIOSListTile(
-            context,
-            leading: CupertinoIcons.chart_bar_fill,
-            title: 'analytics'.tr,
-            subtitle: 'helpImproveApp'.tr,
-            trailing: Obx(() => Transform.scale(
-                  scale: 0.8,
-                  child: CupertinoSwitch(
-                    value: settingsController.analyticsEnabled.value,
-                    onChanged: settingsController.toggleAnalytics,
-                  ),
-                )),
-          ),
+          if (appFeatures.analyticsEnabled)
+            _buildIOSListTile(
+              context,
+              leading: CupertinoIcons.chart_bar_fill,
+              title: 'analytics'.tr,
+              subtitle: 'helpImproveApp'.tr,
+              trailing: Obx(() => Transform.scale(
+                    scale: 0.8,
+                    child: CupertinoSwitch(
+                      value: settingsController.analyticsEnabled.value,
+                      onChanged: settingsController.toggleAnalytics,
+                    ),
+                  )),
+            ),
         ], title: 'settings'.tr),
 
         // Support Section

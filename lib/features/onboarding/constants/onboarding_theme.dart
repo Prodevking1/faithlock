@@ -36,29 +36,29 @@ class OnboardingTheme {
   static const Color blueSpirit = systemBlue;
 
   // ==================== TYPOGRAPHY ====================
-  // iOS San Francisco Font System
+  // Garamond Font System - Optimized for elegance and readability
 
-  /// SF Pro Display for large text
-  static const String fontFamily = 'SF Pro Display';
+  /// Garamond for all text (serif elegance)
+  static const String fontFamily = 'Garamond';
 
-  /// SF Pro Text for body text
-  static const String bodyFontFamily = 'SF Pro Text';
+  /// Garamond for body text
+  static const String bodyFontFamily = 'Garamond';
 
-  // iOS Font Sizes (augmented for onboarding impact)
-  static const double largeTitleSize = 40.0; // Large Title
-  static const double title1Size = 32.0; // Title 1
-  static const double title2Size = 26.0; // Title 2
-  static const double title3Size = 22.0; // Title 3
-  static const double bodySize = 19.0; // Body
-  static const double calloutSize = 18.0; // Callout
-  static const double subheadSize = 16.0; // Subhead
-  static const double footnoteSize = 14.0; // Footnote
-  static const double caption1Size = 13.0; // Caption 1
+  // Garamond Font Sizes (optimized for serif readability)
+  static const double largeTitleSize = 48.0; // Large Title - larger for Garamond impact
+  static const double title1Size = 38.0; // Title 1 - biblical verses
+  static const double title2Size = 32.0; // Title 2 - biblical text size
+  static const double title3Size = 28.0; // Title 3 - questions (increased significantly)
+  static const double bodySize = 24.0; // Body - increased for serif readability
+  static const double calloutSize = 20.0; // Callout
+  static const double subheadSize = 18.0; // Subhead
+  static const double footnoteSize = 16.0; // Footnote - references
+  static const double caption1Size = 14.0; // Caption 1
 
-  // iOS Line Heights (tighter, more refined)
-  static const double lineHeightTight = 1.2;
-  static const double lineHeightNormal = 1.35;
-  static const double lineHeightRelaxed = 1.5;
+  // Garamond Line Heights (more spacious for serif)
+  static const double lineHeightTight = 1.3; // Increased for Garamond
+  static const double lineHeightNormal = 1.5; // More breathing room
+  static const double lineHeightRelaxed = 1.7; // Extra spacious
 
   // ==================== SPACING ====================
   // iOS Standard Spacing (multiples of 4)
@@ -85,47 +85,47 @@ class OnboardingTheme {
 
   // ==================== TEXT STYLES ====================
 
-  /// Large Title - 34pt Bold (for major headings)
+  /// Large Title - 42pt Regular (Garamond looks heavier, use lighter weight)
   static TextStyle get largeTitle => const TextStyle(
         fontFamily: fontFamily,
         fontSize: largeTitleSize,
-        fontWeight: FontWeight.w700, // Bold
+        fontWeight: FontWeight.w400, // Regular for elegance
         color: labelPrimary,
         height: lineHeightTight,
-        letterSpacing: 0.0,
+        letterSpacing: -0.3, // Tighter for large Garamond
       );
 
-  /// Title 1 - 28pt Bold (for section titles)
+  /// Title 1 - 34pt Regular (for biblical verses)
   static TextStyle get title1 => const TextStyle(
         fontFamily: fontFamily,
         fontSize: title1Size,
-        fontWeight: FontWeight.w700, // Bold
+        fontWeight: FontWeight.w400, // Regular
         color: labelPrimary,
-        height: lineHeightTight,
-        letterSpacing: 0.0,
+        height: lineHeightNormal,
+        letterSpacing: -0.2,
       );
 
-  /// Title 2 - 22pt Bold (for subsection titles)
+  /// Title 2 - 26pt Regular (for biblical text)
   static TextStyle get title2 => const TextStyle(
         fontFamily: fontFamily,
         fontSize: title2Size,
-        fontWeight: FontWeight.w700, // Bold
+        fontWeight: FontWeight.w400, // Regular
         color: labelPrimary,
         height: lineHeightNormal,
         letterSpacing: 0.0,
       );
 
-  /// Title 3 - 20pt Semibold (for card titles)
+  /// Title 3 - 22pt Regular (for questions)
   static TextStyle get title3 => const TextStyle(
         fontFamily: fontFamily,
         fontSize: title3Size,
-        fontWeight: FontWeight.w600, // Semibold
+        fontWeight: FontWeight.w400, // Regular for clarity
         color: labelPrimary,
         height: lineHeightNormal,
         letterSpacing: 0.0,
       );
 
-  /// Body - 17pt Regular (main body text)
+  /// Body - 20pt Regular (main body text)
   static TextStyle get body => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: bodySize,
@@ -135,17 +135,17 @@ class OnboardingTheme {
         letterSpacing: 0.0,
       );
 
-  /// Body Emphasized - 17pt Semibold
+  /// Body Emphasized - 20pt Medium (slightly heavier)
   static TextStyle get bodyEmphasized => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: bodySize,
-        fontWeight: FontWeight.w600, // Semibold
+        fontWeight: FontWeight.w500, // Medium instead of Semibold
         color: labelPrimary,
         height: lineHeightNormal,
         letterSpacing: 0.0,
       );
 
-  /// Callout - 16pt Regular
+  /// Callout - 18pt Regular
   static TextStyle get callout => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: calloutSize,
@@ -155,56 +155,56 @@ class OnboardingTheme {
         letterSpacing: 0.0,
       );
 
-  /// Subhead - 15pt Regular
+  /// Subhead - 16pt Regular
   static TextStyle get subhead => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: subheadSize,
         fontWeight: FontWeight.w400, // Regular
         color: labelSecondary,
         height: lineHeightNormal,
-        letterSpacing: 0.0,
+        letterSpacing: 0.2, // Slightly wider for readability
       );
 
-  /// Footnote - 13pt Regular (for small descriptions)
+  /// Footnote - 14pt Regular (for references like "— Ephesians 5:16")
   static TextStyle get footnote => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: footnoteSize,
         fontWeight: FontWeight.w400, // Regular
         color: labelTertiary,
         height: lineHeightNormal,
-        letterSpacing: 0.0,
+        letterSpacing: 0.3, // Wider for small Garamond
       );
 
-  /// Caption - 12pt Regular (for labels)
+  /// Caption - 13pt Regular (for labels)
   static TextStyle get caption => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: caption1Size,
         fontWeight: FontWeight.w400, // Regular
         color: labelTertiary,
         height: lineHeightNormal,
-        letterSpacing: 0.0,
+        letterSpacing: 0.4, // Wider for very small text
       );
 
   // ==================== SPECIAL STYLES ====================
 
-  /// Display Number - 64pt Bold (for big stats)
+  /// Display Number - 80pt Regular (for big stats - Garamond shines at large sizes)
   static TextStyle get displayNumber => const TextStyle(
         fontFamily: fontFamily,
-        fontSize: 64.0,
-        fontWeight: FontWeight.w700, // Bold
+        fontSize: 80.0,
+        fontWeight: FontWeight.w400, // Regular for elegant large numbers
         color: labelPrimary,
-        height: 1.0,
-        letterSpacing: -0.5,
+        height: 1.1,
+        letterSpacing: -1.0, // Tighter for large Garamond
       );
 
-  /// Display Unit - 15pt Regular (unit below number)
+  /// Display Unit - 16pt Regular (unit below number)
   static TextStyle get displayUnit => const TextStyle(
         fontFamily: bodyFontFamily,
         fontSize: subheadSize,
         fontWeight: FontWeight.w400, // Regular
         color: labelSecondary,
         height: lineHeightNormal,
-        letterSpacing: 0.0,
+        letterSpacing: 0.3,
       );
 
   // ==================== LEGACY COMPATIBILITY ====================

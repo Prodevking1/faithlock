@@ -3,9 +3,10 @@ import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_c
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/fingerprint_scanner.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 /// Step 6: Final Encouragement - Launch into Freedom
 /// Final message of hope and launch button
@@ -40,9 +41,9 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
   // Phase 9.4 - Signature
   String _signatureText = '';
   bool _showSignatureCursor = false;
+  String _covenantText = '';
+  bool _showCovenantText = false;
   bool _showScanner = false;
-  bool _scanComplete = false;
-  bool _showButton = false;
 
   double _opacity = 1.0;
 
@@ -125,16 +126,29 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
       _showFinalCursor = false;
     });
 
-    await AnimationUtils.typeText(
-      fullText: '${controller.userName.value}, seal your commitment before God...',
-      onUpdate: (text) => setState(() => _signatureText = text),
-      onCursorVisibility: (visible) =>
-          setState(() => _showSignatureCursor = visible),
-      speedMs: 40,
-    );
+    // // First: Show intro text
+    // await AnimationUtils.typeText(
+    //   fullText:
+    //       '${controller.userName.value}, seal your commitment before God...',
+    //   onUpdate: (text) => setState(() => _signatureText = text),
+    //   onCursorVisibility: (visible) =>
+    //       setState(() => _showSignatureCursor = visible),
+    //   speedMs: 40,
+    // );
 
-    await AnimationUtils.pause(durationMs: 1500);
+    // await AnimationUtils.pause(durationMs: 1000);
 
+    // // Then: Show the covenant text
+    // setState(() {
+    //   _showSignatureCursor = false;
+    //   _covenantText =
+    //       'Before God, ${controller.userName.value}, I commit to guard my heart.\n\nI will use Scripture as my shield.';
+    //   _showCovenantText = true;
+    // });
+
+    // await AnimationUtils.pause(durationMs: 2000, withHaptic: true);
+
+    // // Finally: Show scanner
     setState(() => _showScanner = true);
     await AnimationUtils.mediumHaptic();
   }
@@ -143,155 +157,148 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
     await controller.acceptCovenant(true);
     await AnimationUtils.heavyHaptic();
 
-    setState(() {
-      _scanComplete = true;
-      _signatureText = '';
-      _showSignatureCursor = false;
-    });
+    // Request app review (fire and forget - don't block navigation)
+    // _requestAppReview();
 
-    await AnimationUtils.pause(durationMs: 2000);
-
-    // Show final button
-    setState(() => _showButton = true);
-    await AnimationUtils.mediumHaptic();
+    // Proceed to next step immediately
+    print('✅ Covenant accepted - proceeding to complete onboarding');
+    widget.onComplete();
   }
 
-  Future<void> _onBeginJourney() async {
-    await controller.completeOnboarding();
-    await AnimationUtils.heavyHaptic();
+  Future<void> _requestAppReview() async {
+    try {
+      final InAppReview inAppReview = InAppReview.instance;
 
-    setState(() => _opacity = 0.0);
-    await Future.delayed(const Duration(milliseconds: 1000));
-    await AnimationUtils.heavyHaptic();
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    widget.onComplete();
+      // Check if review is available
+      if (await inAppReview.isAvailable()) {
+        // Request the review dialog
+        await inAppReview.requestReview();
+      }
+    } catch (e) {
+      // Silently fail if review is not available or fails
+      debugPrint('App review error: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnboardingTheme.backgroundColor,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 1000),
-          child: Stack(
-            children: [
-              // Back button
-              if (controller.currentStep.value > 1)
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: OnboardingTheme.goldColor,
-                      size: 24,
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              left: OnboardingTheme.horizontalPadding,
+              right: OnboardingTheme.horizontalPadding,
+              top: 40,
+              bottom: OnboardingTheme.verticalPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Phase 9.1 - Encouragement
+                if (_encouragementText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.emphasisText,
+                      children: [
+                        TextSpan(text: _encouragementText),
+                        if (_showEncouragementCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
                     ),
-                    onPressed: () => controller.previousStep(),
                   ),
-                ),
-              // Main content
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: OnboardingTheme.horizontalPadding,
-                  vertical: OnboardingTheme.verticalPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // Phase 9.1 - Encouragement
-                    if (_encouragementText.isNotEmpty)
-                      RichText(
-                        text: TextSpan(
-                          style: OnboardingTheme.emphasisText,
-                          children: [
-                            TextSpan(text: _encouragementText),
-                            if (_showEncouragementCursor)
-                              const WidgetSpan(
-                                child: FeatherCursor(),
-                                alignment: PlaceholderAlignment.middle,
-                              ),
-                          ],
-                        ),
-                      ),
 
-                    // Phase 9.2 - Scripture Promise
-                    if (_scriptureText.isNotEmpty)
-                      RichText(
-                        text: TextSpan(
-                          style: OnboardingTheme.verseText,
-                          children: [
-                            TextSpan(text: _scriptureText),
-                            if (_showScriptureCursor)
-                              const WidgetSpan(
-                                child: FeatherCursor(),
-                                alignment: PlaceholderAlignment.middle,
-                              ),
-                          ],
-                        ),
-                      ),
+                // Phase 9.2 - Scripture Promise
+                if (_scriptureText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.verseText,
+                      children: [
+                        TextSpan(text: _scriptureText),
+                        if (_showScriptureCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
+                    ),
+                  ),
 
-                    // Phase 9.3 - Final Message
-                    if (_finalText.isNotEmpty)
-                      RichText(
-                        text: TextSpan(
-                          style: OnboardingTheme.emphasisText,
-                          children: [
-                            TextSpan(text: _finalText),
-                            if (_showFinalCursor)
-                              const WidgetSpan(
-                                child: FeatherCursor(),
-                                alignment: PlaceholderAlignment.middle,
-                              ),
-                          ],
-                        ),
-                      ),
+                // Phase 9.3 - Final Message
+                if (_finalText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.emphasisText,
+                      children: [
+                        TextSpan(text: _finalText),
+                        if (_showFinalCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
+                    ),
+                  ),
 
-                    // Phase 9.4 - Signature
-                    if (_signatureText.isNotEmpty)
-                      RichText(
-                        text: TextSpan(
-                          style: OnboardingTheme.emphasisText,
-                          children: [
-                            TextSpan(text: _signatureText),
-                            if (_showSignatureCursor)
-                              const WidgetSpan(
-                                child: FeatherCursor(),
-                                alignment: PlaceholderAlignment.middle,
-                              ),
-                          ],
-                        ),
-                      ),
+                // Phase 9.4 - Signature intro text
+                if (_signatureText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.emphasisText,
+                      children: [
+                        TextSpan(text: _signatureText),
+                        if (_showSignatureCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
+                    ),
+                  ),
 
-                    // Fingerprint scanner for final seal
-                    if (_showScanner) ...[
-                      const SizedBox(height: 40),
-                      FingerprintScanner(
-                        userName: controller.userName.value,
-                        onComplete: _onScanComplete,
+                // Covenant text (displayed after intro)
+                if (_showCovenantText) ...[
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
+                        width: 1.5,
                       ),
-                    ],
+                    ),
+                    child: Text(
+                      _covenantText,
+                      style: OnboardingTheme.body.copyWith(
+                        fontSize: 17,
+                        height: 1.6,
+                        color: OnboardingTheme.goldColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
 
-                    // Launch Button (only after seal)
-                    if (_showButton) ...[
-                      const SizedBox(height: 60),
-                      Center(
-                        child: FastButton(
-                          text: 'Begin My Journey',
-                          onTap: _onBeginJourney,
-                          backgroundColor: OnboardingTheme.goldColor,
-                          textColor: OnboardingTheme.backgroundColor,
-                          style: FastButtonStyle.filled,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
+                // Fingerprint scanner for final seal
+                if (_showScanner) ...[
+                  const SizedBox(height: 40),
+                  FingerprintScanner(
+                    userName: controller.userName.value,
+                    onComplete: _onScanComplete,
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),

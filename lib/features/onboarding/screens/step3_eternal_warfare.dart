@@ -2,6 +2,7 @@ import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -81,8 +82,8 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     // Phase 3.1: Scripture Warning
     await _phase31ScriptureWarning();
 
-    // Phase 3.2: Visual Timeline
-    await _phase32VisualTimeline();
+    // Phase 3.2: Visual Timeline - SUPPRIMÉ
+    // await _phase32VisualTimeline();
 
     // Phase 3.3: The Reckoning
     await _phase33TheReckoning();
@@ -276,37 +277,20 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnboardingTheme.backgroundColor,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 1000),
-          child: Stack(
-            children: [
-              // Back button
-              if (controller.currentStep.value > 1)
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: OnboardingTheme.goldColor,
-                      size: 24,
-                    ),
-                    onPressed: () => controller.previousStep(),
-                  ),
-                ),
-              // Main content
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: OnboardingTheme.horizontalPadding,
-                  vertical: OnboardingTheme.verticalPadding,
-                ),
-                child: Column(
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: OnboardingTheme.horizontalPadding,
+            right: OnboardingTheme.horizontalPadding,
+            top: 100, // Space for progress bar
+            bottom: OnboardingTheme.verticalPadding,
+          ),
+          child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Phase 3.1 - Scripture Warning
                     if (_scriptureText.isNotEmpty)
@@ -430,9 +414,6 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                       const SizedBox(height: 40),
                       _buildSolutionStats(),
                     ],
-                  ],
-                ),
-              ),
             ],
           ),
         ),
@@ -557,14 +538,6 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                 ],
               ),
             ),
-            const SizedBox(height: 40),
-            Text(
-              'Time is running out...',
-              style: OnboardingTheme.bodyText.copyWith(
-                fontStyle: FontStyle.italic,
-                color: OnboardingTheme.grayColor,
-              ),
-            ),
           ],
         );
       },
@@ -606,6 +579,19 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
             ),
           ),
           const SizedBox(height: 20),
+
+          // Growth curve visualization
+          SizedBox(
+            height: 70,
+            child: CustomPaint(
+              size: const Size(double.infinity, 70),
+              painter: GrowthCurvePainter(
+                progress: 1.0, // Full animation when shown
+                color: OnboardingTheme.blueSpirit,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
 
           // Stats
           _buildStatRow(
@@ -655,5 +641,92 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
         ),
       ],
     );
+  }
+}
+
+/// Custom painter for growth curve visualization
+/// Draws a smooth wavy curve that grows upward from left to right
+class GrowthCurvePainter extends CustomPainter {
+  final double progress;
+  final Color color;
+
+  GrowthCurvePainter({
+    required this.progress,
+    required this.color,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color.withValues(alpha: 0.3)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    final path = Path();
+
+    // Start from bottom left
+    final startY = size.height * 0.8;
+    path.moveTo(0, startY);
+
+    // Draw smooth wavy curve that rises to top right
+    final numWaves = 3;
+    final segmentWidth = size.width / (numWaves * 2);
+
+    for (int i = 0; i < numWaves * 2; i++) {
+      final x = (i + 1) * segmentWidth * progress;
+      if (x > size.width) break;
+
+      // Calculate vertical position (rising trend with wave)
+      final baseProgress = x / size.width;
+      final baseY = startY - (baseProgress * size.height * 0.7);
+
+      // Add subtle wave
+      final wave = (i % 2 == 0 ? 1 : -1) * size.height * 0.08;
+      final y = baseY + wave;
+
+      // Use quadratic bezier for smooth curve
+      final controlX = x - segmentWidth / 2;
+      final controlY = (baseY + wave / 2);
+
+      path.quadraticBezierTo(controlX, controlY, x, y);
+    }
+
+    canvas.drawPath(path, paint);
+
+    // Draw filled area under curve
+    final fillPath = Path.from(path);
+    fillPath.lineTo(size.width * progress, size.height);
+    fillPath.lineTo(0, size.height);
+    fillPath.close();
+
+    final fillPaint = Paint()
+      ..color = color.withValues(alpha: 0.08)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(fillPath, fillPaint);
+
+    // Draw dots at peaks for emphasis
+    for (int i = 0; i < numWaves; i++) {
+      final x = (i * 2 + 1) * segmentWidth * progress;
+      if (x > size.width) break;
+
+      final baseProgress = x / size.width;
+      final baseY = startY - (baseProgress * size.height * 0.7);
+      final y = baseY - size.height * 0.08;
+
+      canvas.drawCircle(
+        Offset(x, y),
+        3,
+        Paint()
+          ..color = color
+          ..style = PaintingStyle.fill,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant GrowthCurvePainter oldDelegate) {
+    return oldDelegate.progress != progress || oldDelegate.color != color;
   }
 }

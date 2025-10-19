@@ -25,8 +25,9 @@ class AppFeatures {
   final bool deleteAccount = true;
 
   // User preferences features
-  final bool pushNotifications = true;
-  final bool languageSelection = true;
+  final bool pushNotifications = false;
+  final bool languageSelection = false;
+  final bool analyticsEnabled = false;
   final bool darkMode = true;
   final bool privacySettings = true;
 

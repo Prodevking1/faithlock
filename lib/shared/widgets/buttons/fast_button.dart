@@ -248,10 +248,8 @@ class FastButton extends StatelessWidget {
             child: Text(
               text ?? "Button",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: colors.textColor,
-                fontSize: 17,
-                fontWeight: FontWeight.normal,
               ),
             ),
           ),

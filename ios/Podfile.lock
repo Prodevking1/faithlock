@@ -18,6 +18,8 @@ PODS:
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
+  - in_app_review (2.0.0):
+    - Flutter
   - libphonenumber_plugin (0.0.1):
     - Flutter
     - PhoneNumberKit (~> 3.7.8)
@@ -117,6 +119,7 @@ DEPENDENCIES:
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - OneSignalXCFramework (< 6.0, >= 5.0.0)
@@ -158,6 +161,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  in_app_review:
+    :path: ".symlinks/plugins/in_app_review/ios"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
   onesignal_flutter:
@@ -192,6 +197,7 @@ SPEC CHECKSUMS:
   flutter_localization: 72299fb6cb4e51cae587bd953ed0b958040b71e6
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
+  in_app_review: 7dd1ea365263f834b8464673f9df72c80c17c937
   libphonenumber_plugin: e3f18ea4f29a54af15a8853817c3773c31646cff
   onesignal_flutter: 5a1d26b973b26b77b522ed16fdfb0495cb9e980e
   OneSignalXCFramework: f5b2a3c4f130e4c910ead7bb25bed7455e976fbf

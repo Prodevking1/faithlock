@@ -43,6 +43,8 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handlePresentAppPicker(result: result)
         case "hasSelectedApps":
             handleHasSelectedApps(result: result)
+        case "getSelectedApps":
+            handleGetSelectedApps(result: result)
         case "startBlocking":
             handleStartBlocking(call: call, result: result)
         case "stopBlocking":
@@ -51,6 +53,12 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handleIsMonitoring(result: result)
         case "getAuthorizationStatus":
             handleGetAuthorizationStatus(result: result)
+        case "setupSchedules":
+            handleSetupSchedules(call: call, result: result)
+        case "removeAllSchedules":
+            handleRemoveAllSchedules(result: result)
+        case "temporaryUnlock":
+            handleTemporaryUnlock(call: call, result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -143,8 +151,12 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
                 return
             }
 
-            // Create and present picker
+            // Load existing selection to show previously selected apps
+            let existingSelection = self.loadSelectedApps()
+
+            // Create and present picker with existing selection
             let pickerVC = FamilyActivityPickerViewController()
+            pickerVC.setInitialSelection(existingSelection)
             pickerVC.modalPresentationStyle = .pageSheet
 
             if let sheet = pickerVC.sheetPresentationController {
@@ -157,6 +169,9 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
                 // Save the selection
                 self.saveSelectedApps(selection)
+
+                // Apply blocking immediately for testing
+                self.applyImmediateBlock(selection)
 
                 // Log selection
                 print("📱 FaithLock: Saved \(selection.applicationTokens.count) apps, \(selection.categoryTokens.count) categories, \(selection.webDomainTokens.count) web domains")
@@ -175,16 +190,42 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
         // Save application tokens
         if let appsData = try? JSONEncoder().encode(selection.applicationTokens) {
             defaults.set(appsData, forKey: "selectedApps")
+            print("💾 Saved \(selection.applicationTokens.count) app tokens")
         }
 
         // Save category tokens
         if let categoriesData = try? JSONEncoder().encode(selection.categoryTokens) {
             defaults.set(categoriesData, forKey: "selectedCategories")
+            print("💾 Saved \(selection.categoryTokens.count) category tokens")
         }
 
         // Save web domain tokens
         if let webDomainsData = try? JSONEncoder().encode(selection.webDomainTokens) {
             defaults.set(webDomainsData, forKey: "selectedWebDomains")
+            print("💾 Saved \(selection.webDomainTokens.count) web domain tokens")
+        }
+
+        defaults.synchronize()
+        print("✅ FaithLock: Apps saved to App Groups storage")
+    }
+
+    private func applyImmediateBlock(_ selection: FamilyActivitySelection) {
+        // Block applications
+        if !selection.applicationTokens.isEmpty {
+            store.shield.applications = selection.applicationTokens
+            print("🔒 Blocked \(selection.applicationTokens.count) applications immediately")
+        }
+
+        // Block categories
+        if !selection.categoryTokens.isEmpty {
+            store.shield.applicationCategories = .specific(selection.categoryTokens)
+            print("🔒 Blocked \(selection.categoryTokens.count) categories immediately")
+        }
+
+        // Block web domains
+        if !selection.webDomainTokens.isEmpty {
+            store.shield.webDomains = selection.webDomainTokens
+            print("🔒 Blocked \(selection.webDomainTokens.count) web domains immediately")
         }
     }
 
@@ -219,6 +260,31 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
                      !selection.categoryTokens.isEmpty ||
                      !selection.webDomainTokens.isEmpty
         result(hasApps)
+    }
+
+    private func handleGetSelectedApps(result: @escaping FlutterResult) {
+        let selection = loadSelectedApps()
+
+        // Create response with counts (we can't get app names due to privacy)
+        let response: [[String: Any]] = [
+            [
+                "type": "apps",
+                "count": selection.applicationTokens.count,
+                "description": "\(selection.applicationTokens.count) app(s) selected"
+            ],
+            [
+                "type": "categories",
+                "count": selection.categoryTokens.count,
+                "description": "\(selection.categoryTokens.count) category(ies) selected"
+            ],
+            [
+                "type": "webDomains",
+                "count": selection.webDomainTokens.count,
+                "description": "\(selection.webDomainTokens.count) website(s) selected"
+            ]
+        ]
+
+        result(response)
     }
 
     // MARK: - Blocking
@@ -359,5 +425,151 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
         // Game Center restrictions
         store.gameCenter.denyMultiplayerGaming = true
         store.gameCenter.denyAddingFriends = true
+    }
+
+    // MARK: - DeviceActivity Schedules
+
+    private func handleSetupSchedules(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        guard #available(iOS 16.0, *) else {
+            result(FlutterError(
+                code: "IOS_VERSION_ERROR",
+                message: "DeviceActivity schedules require iOS 16.0 or later",
+                details: nil
+            ))
+            return
+        }
+
+        guard let args = call.arguments as? [[String: Any]] else {
+            result(FlutterError(
+                code: "INVALID_ARGUMENTS",
+                message: "Invalid schedule data",
+                details: nil
+            ))
+            return
+        }
+
+        // Parse schedules from Flutter
+        var schedules: [(name: String, startHour: Int, startMinute: Int, endHour: Int, endMinute: Int, enabled: Bool)] = []
+
+        for scheduleDict in args {
+            guard let name = scheduleDict["name"] as? String,
+                  let startHour = scheduleDict["startHour"] as? Int,
+                  let startMinute = scheduleDict["startMinute"] as? Int,
+                  let endHour = scheduleDict["endHour"] as? Int,
+                  let endMinute = scheduleDict["endMinute"] as? Int,
+                  let enabled = scheduleDict["enabled"] as? Bool else {
+                continue
+            }
+
+            if enabled {
+                schedules.append((name, startHour, startMinute, endHour, endMinute, enabled))
+            }
+        }
+
+        // Store schedules for DeviceActivityMonitor extension
+        let defaults = sharedDefaults ?? UserDefaults.standard
+
+        // Convert to encodable format
+        let encodableSchedules = schedules.map { schedule in
+            return [
+                "name": schedule.name,
+                "startHour": schedule.startHour,
+                "startMinute": schedule.startMinute,
+                "endHour": schedule.endHour,
+                "endMinute": schedule.endMinute,
+                "enabled": schedule.enabled
+            ] as [String: Any]
+        }
+
+        if let jsonData = try? JSONSerialization.data(withJSONObject: encodableSchedules) {
+            defaults.set(jsonData, forKey: "faithlock_schedules")
+        }
+
+        // Setup DeviceActivity monitoring for each schedule
+        let deviceActivityCenter = DeviceActivityCenter()
+
+        for schedule in schedules {
+            let activityName = DeviceActivityName(schedule.name.replacingOccurrences(of: " ", with: "_"))
+
+            // Create schedule with start and end times
+            let startComponents = DateComponents(hour: schedule.startHour, minute: schedule.startMinute)
+            let endComponents = DateComponents(hour: schedule.endHour, minute: schedule.endMinute)
+
+            let deviceSchedule = DeviceActivitySchedule(
+                intervalStart: startComponents,
+                intervalEnd: endComponents,
+                repeats: true
+            )
+
+            do {
+                try deviceActivityCenter.startMonitoring(activityName, during: deviceSchedule)
+                print("✅ FaithLock: Started monitoring schedule '\(schedule.name)'")
+            } catch {
+                print("❌ FaithLock: Failed to start monitoring '\(schedule.name)': \(error)")
+            }
+        }
+
+        result(true)
+    }
+
+    private func handleRemoveAllSchedules(result: @escaping FlutterResult) {
+        guard #available(iOS 16.0, *) else {
+            result(true)
+            return
+        }
+
+        let deviceActivityCenter = DeviceActivityCenter()
+
+        // Stop all monitoring activities
+        deviceActivityCenter.stopMonitoring()
+
+        // Clear stored schedules
+        let defaults = sharedDefaults ?? UserDefaults.standard
+        defaults.removeObject(forKey: "faithlock_schedules")
+
+        print("✅ FaithLock: Removed all schedules")
+        result(true)
+    }
+
+    private func handleTemporaryUnlock(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        guard let args = call.arguments as? [String: Any],
+              let durationMinutes = args["durationMinutes"] as? Int else {
+            result(FlutterError(
+                code: "INVALID_ARGUMENTS",
+                message: "Invalid duration for temporary unlock",
+                details: nil
+            ))
+            return
+        }
+
+        // Remove shields temporarily
+        store.shield.applications = nil
+        store.shield.applicationCategories = nil
+        store.shield.webDomains = nil
+
+        // Store unlock end time
+        let defaults = sharedDefaults ?? UserDefaults.standard
+        let unlockEndTime = Date().addingTimeInterval(TimeInterval(durationMinutes * 60))
+        defaults.set(unlockEndTime, forKey: "temporary_unlock_end")
+        defaults.set(true, forKey: "is_temporarily_unlocked")
+
+        print("🔓 FaithLock: Temporary unlock for \(durationMinutes) minutes")
+
+        // Schedule re-lock after duration
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(durationMinutes * 60)) { [weak self] in
+            guard let self = self else { return }
+
+            // Check if still should be unlocked
+            let defaults = self.sharedDefaults ?? UserDefaults.standard
+            if defaults.bool(forKey: "is_temporarily_unlocked") {
+                // Re-apply blocking
+                self.applyBlockingRestrictions()
+                defaults.set(false, forKey: "is_temporarily_unlocked")
+                defaults.removeObject(forKey: "temporary_unlock_end")
+                print("🔒 FaithLock: Temporary unlock ended, re-locked")
+            }
+        }
+
+        result(true)
     }
 }

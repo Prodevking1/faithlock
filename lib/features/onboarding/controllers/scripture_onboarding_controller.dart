@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Controller for managing Scripture Lock onboarding flow and progress
@@ -10,16 +13,21 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keyUserName = 'user_name';
   static const String _keyUserAge = 'user_age';
   static const String _keyUserHoursPerDay = 'user_hours_per_day';
+  static const String _keyPrayerFrequency = 'prayer_frequency_per_week';
+  static const String _key30DayGoals = 'thirty_day_goals';
   static const String _keySelectedVerseCategories = 'selected_verse_categories';
   static const String _keySelectedApps = 'selected_problem_apps';
   static const String _keyIntensityLevel = 'scripture_intensity_level';
   static const String _keySacredCovenantAccepted = 'sacred_covenant_accepted';
+  static const String _keySchedules = 'onboarding_schedules';
 
   // Observable state
-  final RxInt currentStep = RxInt(1);
-  final RxString userName = RxString('');
-  final RxInt userAge = RxInt(0);
-  final RxDouble hoursPerDay = RxDouble(0.0);
+  final RxInt currentStep = RxInt(5);
+  final RxString userName = RxString('User');
+  final RxInt userAge = RxInt(25);
+  final RxDouble hoursPerDay = RxDouble(5.0);
+  final RxInt prayerTimesPerWeek = RxInt(0);
+  final RxList<String> thirtyDayGoals = <String>[].obs;
   final RxList<String> selectedCategories = <String>[].obs;
   final RxList<String> selectedApps = <String>[].obs;
   final RxString intensityLevel = RxString('Balanced');
@@ -29,6 +37,48 @@ class ScriptureOnboardingController extends GetxController {
   void onInit() {
     super.onInit();
     loadProgress();
+    _initializeDefaultSchedules();
+  }
+
+  /// Initialize default schedules if none exist
+  Future<void> _initializeDefaultSchedules() async {
+    final existingSchedules = await _storage.readString(_keySchedules);
+
+    // Only initialize if no schedules exist
+    if (existingSchedules == null || existingSchedules.isEmpty) {
+      final defaultSchedules = [
+        {
+          'name': 'Morning Focus',
+          'icon': '🌅',
+          'startHour': 8,
+          'startMinute': 0,
+          'endHour': 10,
+          'endMinute': 0,
+          'enabled': true,
+        },
+        {
+          'name': 'Afternoon Lock',
+          'icon': '☀️',
+          'startHour': 12,
+          'startMinute': 0,
+          'endHour': 16,
+          'endMinute': 0,
+          'enabled': true,
+        },
+        {
+          'name': 'Night Protection',
+          'icon': '🌙',
+          'startHour': 20,
+          'startMinute': 0,
+          'endHour': 23,
+          'endMinute': 0,
+          'enabled': true,
+        },
+      ];
+
+      await _storage.writeString(_keySchedules, jsonEncode(defaultSchedules));
+      debugPrint('✅ Default schedules initialized');
+    }
   }
 
   /// Load any saved progress
@@ -47,8 +97,8 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Move to next step (including step 1.5)
   void nextStep() {
-    // Step progression: 1 → 1.5 (encoded as 2) → 2 (3) → 3 (4) → 4 (5) → 5 (6) → 6 (7)
-    if (currentStep.value < 7) {
+    // Step progression: 1 → 1.5 (2) → 2 (3) → 3 (4) → 4 (5) → 5 (6) → 6 (7) → Testimonials (8) → Screen Time (9)
+    if (currentStep.value < 9) {
       currentStep.value++;
     }
   }
@@ -76,6 +126,18 @@ class ScriptureOnboardingController extends GetxController {
   Future<void> saveHoursPerDay(double hours) async {
     hoursPerDay.value = hours;
     await _storage.writeString(_keyUserHoursPerDay, hours.toString());
+  }
+
+  /// Save prayer frequency from Step 2B
+  Future<void> savePrayerFrequency(int times) async {
+    prayerTimesPerWeek.value = times;
+    await _storage.writeString(_keyPrayerFrequency, times.toString());
+  }
+
+  /// Save 30-day goals from Step 4B
+  Future<void> save30DayGoals(List<String> goals) async {
+    thirtyDayGoals.value = goals;
+    await _storage.writeString(_key30DayGoals, goals.join(','));
   }
 
   /// Calculate time statistics
@@ -161,6 +223,36 @@ class ScriptureOnboardingController extends GetxController {
   Future<void> acceptCovenant(bool accepted) async {
     covenantAccepted.value = accepted;
     await _storage.writeBool(_keySacredCovenantAccepted, accepted);
+  }
+
+  /// Save schedules from Step 5 (Armor Configuration)
+  Future<void> saveSchedules(List<Map<String, dynamic>> schedules) async {
+    // Convert TimeOfDay to string format for storage
+    final schedulesData = schedules.map((schedule) {
+      final start = schedule['start'] as TimeOfDay;
+      final end = schedule['end'] as TimeOfDay;
+
+      return {
+        'name': schedule['name'],
+        'icon': schedule['icon'],
+        'startHour': start.hour,
+        'startMinute': start.minute,
+        'endHour': end.hour,
+        'endMinute': end.minute,
+        'enabled': schedule['enabled'],
+      };
+    }).toList();
+
+    await _storage.writeString(_keySchedules, jsonEncode(schedulesData));
+
+    // Setup native DeviceActivity schedules
+    try {
+      final screenTimeService = Get.find<ScreenTimeService>();
+      await screenTimeService.setupSchedules(schedulesData);
+    } catch (e) {
+      print('⚠️ Failed to setup native schedules: $e');
+      // Don't throw - allow onboarding to continue
+    }
   }
 
   /// Complete onboarding

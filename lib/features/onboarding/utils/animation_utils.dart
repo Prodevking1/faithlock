@@ -40,8 +40,8 @@ class AnimationUtils {
     required String fullText,
     required Function(String) onUpdate,
     required Function(bool) onCursorVisibility,
-    int? speedMs, // Optional override, defaults to typingSpeedMs
-    bool withHaptic = true, // Enabled by default for better feel
+    int? speedMs,
+    bool withHaptic = true,
   }) async {
     final speed = speedMs ?? typingSpeedMs;
     onCursorVisibility(true);
@@ -56,8 +56,8 @@ class AnimationUtils {
       }
     }
 
-    // Hide cursor after a brief pause
-    await Future.delayed(Duration(milliseconds: pauseShort));
+    // Hide cursor almost immediately
+    await Future.delayed(Duration(milliseconds: 150));
     onCursorVisibility(false);
   }
 

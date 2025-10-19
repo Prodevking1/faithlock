@@ -1,4 +1,4 @@
-/// **FastFonts** - Typography system with Alan Sans integration and cross-platform font management.
+/// **FastFonts** - Typography system with Garamond integration and cross-platform font management.
 ///
 /// **Use Case:**
 /// Centralized font family management with support for custom fonts, fallbacks,
@@ -6,15 +6,15 @@
 /// styling across the app with support for system fonts and custom branding.
 ///
 /// **Key Features:**
-/// - Alan Sans integration with all weights (Light to Black)
+/// - Garamond integration for elegant, classic typography
 /// - Platform-aware font fallbacks (San Francisco on iOS, Roboto on Android)
 /// - Weight-specific font constants for type safety
 /// - System font support for accessibility and performance
-/// - Generated font constants via flutter_gen integration
+/// - Serif font family with graceful fallbacks
 ///
 /// **Usage Example:**
 /// ```dart
-/// // Primary brand font (Alan Sans)
+/// // Primary brand font (Garamond)
 /// Text('Welcome', style: TextStyle(fontFamily: FastFonts.primary))
 ///
 /// // With specific weight
@@ -32,13 +32,12 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../../gen/fonts.gen.dart';
 
 class FastFonts {
   FastFonts._();
 
-  // Primary brand font (Alan Sans)
-  static const String primary = FontFamily.alanSans;
+  // Primary brand font (Garamond)
+  static const String primary = 'Garamond';
 
   // System fonts for better performance and accessibility
   static const String system = '.AppleSystemUIFont'; // iOS will use SF Pro, Android will use Roboto
@@ -59,14 +58,14 @@ class FastFonts {
     }
   }
 
-  // Font weights for Alan Sans
-  static const FontWeight light = FontWeight.w300;      // AlanSans-Light
-  static const FontWeight regular = FontWeight.w400;    // AlanSans-Regular
-  static const FontWeight medium = FontWeight.w500;     // AlanSans-Medium
-  static const FontWeight semiBold = FontWeight.w600;   // AlanSans-SemiBold
-  static const FontWeight bold = FontWeight.w700;       // AlanSans-Bold
-  static const FontWeight extraBold = FontWeight.w800;  // AlanSans-ExtraBold
-  static const FontWeight black = FontWeight.w900;      // AlanSans-Black
+  // Font weights for Garamond
+  static const FontWeight light = FontWeight.w300;      // Garamond-Light
+  static const FontWeight regular = FontWeight.w400;    // Garamond-Regular
+  static const FontWeight medium = FontWeight.w500;     // Garamond-Medium
+  static const FontWeight semiBold = FontWeight.w600;   // Garamond-SemiBold
+  static const FontWeight bold = FontWeight.w700;       // Garamond-Bold
+  static const FontWeight extraBold = FontWeight.w800;  // Garamond-ExtraBold
+  static const FontWeight black = FontWeight.w900;      // Garamond-Black
 
   // Common font weight aliases
   static const FontWeight thin = FontWeight.w100;       // System fallback
@@ -74,12 +73,12 @@ class FastFonts {
 
   // Font family with fallbacks for maximum compatibility
   static const List<String> primaryWithFallback = [
-    FontFamily.alanSans,
+    'Garamond',
     '.AppleSystemUIFont', // iOS fallback
     'Roboto',             // Android fallback
     'Segoe UI',           // Windows fallback
     'Ubuntu',             // Linux fallback
-    'sans-serif',         // Web fallback
+    'serif',              // Web fallback (serif for Garamond)
   ];
 
   // System font family with platform optimization
@@ -98,7 +97,7 @@ class FastFonts {
     }
   }
 
-  // Text style builders with Alan Sans
+  // Text style builders with Garamond
   static TextStyle primaryStyle({
     FontWeight? weight,
     double? size,
@@ -106,7 +105,7 @@ class FastFonts {
     double? height,
     double? letterSpacing,
   }) => TextStyle(
-    fontFamily: FontFamily.alanSans,
+    fontFamily: 'Garamond',
     fontWeight: weight ?? regular,
     fontSize: size,
     color: color,

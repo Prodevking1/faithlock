@@ -1,27 +1,28 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 
 /// Controller for Schedule Management Screen
-/// Manages creating, editing, and deleting lock schedules
+/// Manages lock schedules from onboarding with DeviceActivity
 class ScheduleController extends GetxController {
-  final LockService _lockService = LockService();
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final StorageService _storage = StorageService();
 
   // Storage key for tracking if user has seen the app selection prompt
   static const String _keyHasSeenAppsPrompt = 'faithlock_has_seen_apps_prompt';
+  static const String _keyOnboardingSchedules = 'onboarding_schedules';
 
   // Observable state
-  final RxList<LockSchedule> schedules = <LockSchedule>[].obs;
+  final RxList<Map<String, dynamic>> schedules = <Map<String, dynamic>>[].obs;
   final RxBool isLoading = RxBool(true);
   final RxString errorMessage = RxString('');
   final RxBool isScreenTimeAuthorized = RxBool(false);
   final RxString screenTimeStatus = RxString('Unknown');
+  final RxInt selectedAppsCount = RxInt(0);
 
   @override
   void onInit() {
@@ -29,6 +30,17 @@ class ScheduleController extends GetxController {
     loadSchedules();
     checkScreenTimeAuthorization();
     _checkForSelectedApps();
+    _loadSelectedAppsCount();
+  }
+
+  /// Load count of selected apps
+  Future<void> _loadSelectedAppsCount() async {
+    try {
+      final hasApps = await _screenTimeService.hasSelectedApps();
+      selectedAppsCount.value = hasApps ? 1 : 0;
+    } catch (e) {
+      selectedAppsCount.value = 0;
+    }
   }
 
   /// Check if apps have been selected, prompt if not
@@ -152,155 +164,85 @@ class ScheduleController extends GetxController {
       // Present the native FamilyActivityPicker
       await _screenTimeService.presentAppPicker();
 
+      // Reload apps count after selection
+      await _loadSelectedAppsCount();
+
+      // Auto-setup DeviceActivity schedules from onboarding data
+      await _setupSchedulesFromOnboarding();
+
       // Show success message after selection
-      FastToast.showSuccess(
-        context: context,
-        title: 'Apps Selected',
-        message: 'Your selected apps will be blocked during lock times',
-      );
+      if (context.mounted) {
+        FastToast.showSuccess(
+          context: context,
+          title: 'Apps Selected & Locked',
+          message: 'Your apps will be automatically blocked during scheduled times',
+        );
+      }
     } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to show app picker: $e',
-      );
+      if (context.mounted) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Failed to show app picker: $e',
+        );
+      }
     }
   }
 
-  /// Load all schedules
+  /// Setup DeviceActivity schedules from onboarding data
+  Future<void> _setupSchedulesFromOnboarding() async {
+    try {
+      final schedulesJson = await _storage.readString('onboarding_schedules');
+
+      if (schedulesJson == null || schedulesJson.isEmpty) {
+        debugPrint('⚠️ No onboarding schedules found');
+        return;
+      }
+
+      final List<dynamic> schedulesData = jsonDecode(schedulesJson);
+      final List<Map<String, dynamic>> schedules =
+          schedulesData.map((s) => Map<String, dynamic>.from(s)).toList();
+
+      await _screenTimeService.setupSchedules(schedules);
+      debugPrint('✅ DeviceActivity schedules setup successfully');
+    } catch (e) {
+      debugPrint('⚠️ Failed to setup DeviceActivity schedules: $e');
+    }
+  }
+
+  /// Load all schedules from onboarding data
   Future<void> loadSchedules() async {
     try {
       isLoading.value = true;
       errorMessage.value = '';
 
-      final allSchedules = await _lockService.getAllSchedules();
-      schedules.value = allSchedules;
+      final schedulesJson = await _storage.readString(_keyOnboardingSchedules);
+
+      if (schedulesJson != null && schedulesJson.isNotEmpty) {
+        final List<dynamic> schedulesData = jsonDecode(schedulesJson);
+        schedules.value = schedulesData
+            .map((s) => Map<String, dynamic>.from(s))
+            .toList();
+      } else {
+        schedules.value = [];
+      }
     } catch (e) {
       errorMessage.value = 'Failed to load schedules: $e';
+      schedules.value = [];
     } finally {
       isLoading.value = false;
     }
   }
 
   /// Toggle schedule enabled status
-  Future<void> toggleScheduleEnabled(LockSchedule schedule) async {
+  Future<void> toggleScheduleEnabled(int index) async {
     final context = Get.context;
     if (context == null) return;
 
     try {
-      final updatedSchedule = LockSchedule(
-        id: schedule.id,
-        name: schedule.name,
-        startTime: schedule.startTime,
-        endTime: schedule.endTime,
-        daysOfWeek: schedule.daysOfWeek,
-        isEnabled: !schedule.isEnabled,
-        type: schedule.type,
-        createdAt: schedule.createdAt,
-      );
+      schedules[index]['enabled'] = !schedules[index]['enabled'];
+      await _saveAndResetupSchedules();
 
-      await _lockService.updateSchedule(updatedSchedule);
-      await loadSchedules();
-    } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to update schedule: $e',
-      );
-    }
-  }
-
-  /// Delete schedule
-  Future<void> deleteSchedule(String scheduleId) async {
-    final context = Get.context;
-    if (context == null) return;
-
-    try {
-      await _lockService.deleteSchedule(scheduleId);
-      schedules.removeWhere((s) => s.id == scheduleId);
-
-      FastToast.showSuccess(
-        context: context,
-        message: 'Schedule deleted successfully',
-      );
-    } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to delete schedule: $e',
-      );
-    }
-  }
-
-  /// Create new schedule
-  Future<void> createSchedule({
-    required String name,
-    required TimeOfDay startTime,
-    required TimeOfDay endTime,
-    required List<int> daysOfWeek,
-    required ScheduleType type,
-  }) async {
-    final context = Get.context;
-    if (context == null) return;
-
-    try {
-      final schedule = LockSchedule(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: name,
-        startTime: startTime,
-        endTime: endTime,
-        daysOfWeek: daysOfWeek,
-        isEnabled: true,
-        type: type,
-        createdAt: DateTime.now(),
-      );
-
-      await _lockService.createSchedule(schedule);
-      await loadSchedules();
-
-      Get.back();
-      FastToast.showSuccess(
-        context: context,
-        message: 'Schedule created successfully',
-      );
-    } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to create schedule: $e',
-      );
-    }
-  }
-
-  /// Update existing schedule
-  Future<void> updateSchedule({
-    required String id,
-    required String name,
-    required TimeOfDay startTime,
-    required TimeOfDay endTime,
-    required List<int> daysOfWeek,
-    required bool isEnabled,
-    required ScheduleType type,
-  }) async {
-    final context = Get.context;
-    if (context == null) return;
-
-    try {
-      final schedule = LockSchedule(
-        id: id,
-        name: name,
-        startTime: startTime,
-        endTime: endTime,
-        daysOfWeek: daysOfWeek,
-        isEnabled: isEnabled,
-        type: type,
-        createdAt: DateTime.now(),
-      );
-
-      await _lockService.updateSchedule(schedule);
-      await loadSchedules();
-
-      Get.back();
       FastToast.showSuccess(
         context: context,
         message: 'Schedule updated successfully',
@@ -311,6 +253,50 @@ class ScheduleController extends GetxController {
         title: 'Error',
         message: 'Failed to update schedule: $e',
       );
+    }
+  }
+
+  /// Edit schedule time
+  Future<void> editScheduleTime(int index, bool isStart) async {
+    final context = Get.context;
+    if (context == null) return;
+
+    final currentHour = schedules[index][isStart ? 'startHour' : 'endHour'] as int;
+    final currentMinute = schedules[index][isStart ? 'startMinute' : 'endMinute'] as int;
+
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: currentHour, minute: currentMinute),
+    );
+
+    if (picked != null) {
+      schedules[index][isStart ? 'startHour' : 'endHour'] = picked.hour;
+      schedules[index][isStart ? 'startMinute' : 'endMinute'] = picked.minute;
+
+      await _saveAndResetupSchedules();
+
+      FastToast.showSuccess(
+        context: context,
+        message: 'Schedule time updated',
+      );
+    }
+  }
+
+  /// Save and re-setup schedules
+  Future<void> _saveAndResetupSchedules() async {
+    try {
+      // Save to storage
+      await _storage.writeString(
+        _keyOnboardingSchedules,
+        jsonEncode(schedules),
+      );
+
+      // Re-setup DeviceActivity
+      await _screenTimeService.setupSchedules(schedules);
+      debugPrint('✅ Schedules saved and re-setup successfully');
+    } catch (e) {
+      debugPrint('⚠️ Failed to save/re-setup schedules: $e');
+      rethrow;
     }
   }
 
@@ -329,57 +315,48 @@ class ScheduleController extends GetxController {
     return days.map((d) => dayNames[d - 1]).join(', ');
   }
 
-  /// Get schedule type label
-  String getScheduleTypeLabel(ScheduleType type) {
-    switch (type) {
-      case ScheduleType.daily:
-        return 'Daily';
-      case ScheduleType.bedtime:
-        return 'Bedtime';
-      case ScheduleType.workHours:
-        return 'Work Hours';
-      case ScheduleType.mealTime:
-        return 'Meal Time';
-      case ScheduleType.custom:
-        return 'Custom';
-    }
+  /// Format time from hours and minutes
+  String formatTime(int hour, int minute) {
+    return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+  }
+
+  /// Calculate schedule duration
+  String getScheduleDuration(Map<String, dynamic> schedule) {
+    final startHour = schedule['startHour'] as int;
+    final startMinute = schedule['startMinute'] as int;
+    final endHour = schedule['endHour'] as int;
+    final endMinute = schedule['endMinute'] as int;
+
+    final startMinutes = startHour * 60 + startMinute;
+    final endMinutes = endHour * 60 + endMinute;
+    var durationMinutes = endMinutes - startMinutes;
+    if (durationMinutes < 0) durationMinutes += 24 * 60;
+
+    final durationHours = (durationMinutes / 60).floor();
+    final durationMins = durationMinutes % 60;
+
+    return '${durationHours}h ${durationMins}m';
   }
 
   /// Check if schedule is currently active
-  bool isScheduleActive(LockSchedule schedule) {
-    return schedule.isActiveNow();
-  }
+  bool isScheduleActive(Map<String, dynamic> schedule) {
+    if (!(schedule['enabled'] as bool)) return false;
 
-  /// Get next trigger time for schedule
-  String getNextTriggerText(LockSchedule schedule) {
-    if (!schedule.isEnabled) return 'Disabled';
-    if (schedule.isActiveNow()) return 'Active now';
-
-    // Simple next trigger logic
     final now = DateTime.now();
-    final currentDay = now.weekday;
+    final startHour = schedule['startHour'] as int;
+    final startMinute = schedule['startMinute'] as int;
+    final endHour = schedule['endHour'] as int;
+    final endMinute = schedule['endMinute'] as int;
 
-    // Find next occurrence
-    for (int i = 0; i <= 7; i++) {
-      final checkDay = ((currentDay - 1 + i) % 7) + 1;
-      if (schedule.daysOfWeek.contains(checkDay)) {
-        if (i == 0) {
-          // Today - check if start time is in future
-          final startMinutes = schedule.startTime.hour * 60 + schedule.startTime.minute;
-          final nowMinutes = now.hour * 60 + now.minute;
-          if (startMinutes > nowMinutes) {
-            return 'Today at ${formatTimeOfDay(schedule.startTime)}';
-          }
-        } else if (i == 1) {
-          return 'Tomorrow at ${formatTimeOfDay(schedule.startTime)}';
-        } else {
-          const dayNames = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-          return '${dayNames[checkDay]} at ${formatTimeOfDay(schedule.startTime)}';
-        }
-      }
+    final nowMinutes = now.hour * 60 + now.minute;
+    final startMinutes = startHour * 60 + startMinute;
+    final endMinutes = endHour * 60 + endMinute;
+
+    if (endMinutes > startMinutes) {
+      return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+    } else {
+      return nowMinutes >= startMinutes || nowMinutes < endMinutes;
     }
-
-    return 'Not scheduled';
   }
 
   /// Refresh schedules
@@ -387,7 +364,7 @@ class ScheduleController extends GetxController {
     await loadSchedules();
   }
 
-  /// Test blocking for 1 minute (for testing purposes)
+  /// Test blocking for 15 minutes (iOS minimum interval)
   Future<void> testBlockingNow() async {
     final context = Get.context;
     if (context == null) return;
@@ -402,40 +379,45 @@ class ScheduleController extends GetxController {
         return;
       }
 
-      // Create a test schedule that starts now and lasts 1 minute
+      // Create temporary test schedule (15 min minimum for iOS)
       final now = TimeOfDay.now();
       final endTime = TimeOfDay(
-        hour: (now.hour + ((now.minute + 1) ~/ 60)) % 24,
-        minute: (now.minute + 1) % 60,
+        hour: (now.hour + ((now.minute + 15) ~/ 60)) % 24,
+        minute: (now.minute + 15) % 60,
       );
 
-      final testSchedule = LockSchedule(
-        id: 'test-${DateTime.now().millisecondsSinceEpoch}',
-        name: 'Test Lock (1 minute)',
-        startTime: now,
-        endTime: endTime,
-        daysOfWeek: [DateTime.now().weekday],
-        isEnabled: true,
-        type: ScheduleType.custom,
-        createdAt: DateTime.now(),
-      );
+      final testSchedules = [
+        {
+          'name': 'Test_Lock',
+          'icon': '🧪',
+          'startHour': now.hour,
+          'startMinute': now.minute,
+          'endHour': endTime.hour,
+          'endMinute': endTime.minute,
+          'enabled': true,
+        }
+      ];
 
-      // Start blocking with the test schedule
-      await _screenTimeService.startBlocking(schedule: testSchedule);
+      // Setup test schedule
+      await _screenTimeService.setupSchedules(testSchedules);
 
-      FastToast.showSuccess(
-        context: context,
-        title: 'Test Lock Active',
-        message: 'Apps will be blocked for 1 minute. Check if restrictions are applied.',
-        duration: const Duration(seconds: 5),
-      );
+      if (context.mounted) {
+        FastToast.showSuccess(
+          context: context,
+          title: 'Test Lock Active',
+          message: 'Apps will be blocked for 15 minutes. Try opening a selected app.',
+          duration: const Duration(seconds: 5),
+        );
+      }
     } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to start test blocking: $e',
-        duration: const Duration(seconds: 5),
-      );
+      if (context.mounted) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Failed to start test: ${e.toString().contains('intervalTooShort') ? 'iOS requires 15 min minimum' : e}',
+          duration: const Duration(seconds: 5),
+        );
+      }
     }
   }
 

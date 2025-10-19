@@ -5,7 +5,7 @@ import 'package:faithlock/core/errors/error_handler.dart';
 import 'package:faithlock/core/localization/app_translations.dart';
 import 'package:faithlock/core/network/network_checker.dart';
 import 'package:faithlock/core/theme/export.dart';
-import 'package:faithlock/features/onboarding/widgets/life_visualization.dart';
+import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/sentry/sentry_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,20 +106,10 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.fadeIn,
       initialBinding: AppBindings(),
-      // initialRoute: _initialRoute,
+      initialRoute: _initialRoute,
       getPages: AppRoutes.getPages(),
       translations: AppTranslations(),
-      home: Scaffold(
-        backgroundColor: Colors.blue,
-        body: SafeArea(
-          child: LifeVisualization(
-            currentAge: 20,
-            lifeExpectancy: 80,
-            daysWasted: 5,
-            showWasted: true,
-          ),
-        ),
-      ),
+      home: ScriptureOnboardingScreen(),
       localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

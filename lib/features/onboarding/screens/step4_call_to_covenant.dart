@@ -2,6 +2,8 @@ import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +38,20 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
   List<String> _visionList = [];
   bool _showVisionList = false;
 
-  // Phase 4.4 - The Covenant
+  // Phase 4.4 - 30-Day Goals Selection
+  bool _showGoalsSelection = false;
+  final List<String> _availableGoals = [
+    'Restore my prayer life',
+    'Break phone addiction',
+    'Heal relationships',
+    'Find my purpose',
+    'Overcome fear/anxiety',
+    'Build discipline',
+    'Grow in holiness',
+  ];
+  final Set<String> _selectedGoals = {};
+
+  // Phase 4.5 - The Covenant
   String _covenantText = '';
   bool _showCovenantCursor = false;
 
@@ -60,8 +75,8 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     // Phase 4.3: Vision of Transformation
     await _phase43VisionOfTransformation();
 
-    // Phase 4.4: The Covenant (wait for user)
-    await _phase44TheCovenant();
+    // Phase 4.4: 30-Day Goals Selection (wait for user interaction)
+    // Phase 4.5: The Covenant (triggered after goals selection)
   }
 
   Future<void> _phase41DivineStandard() async {
@@ -124,14 +139,62 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     }
 
     await AnimationUtils.pause(durationMs: 2000);
+
+    // Transition to Phase 4.4: 30-Day Goals
+    await _phase44GoalsSelection();
   }
 
-  Future<void> _phase44TheCovenant() async {
+  Future<void> _phase44GoalsSelection() async {
     setState(() {
       _visionIntroText = '';
       _showVisionList = false;
       _visionList.clear();
+      _showGoalsSelection = true;
     });
+
+    await AnimationUtils.mediumHaptic();
+  }
+
+  void _onGoalToggle(String goal) async {
+    setState(() {
+      if (_selectedGoals.contains(goal)) {
+        _selectedGoals.remove(goal);
+      } else {
+        if (_selectedGoals.length < 3) {
+          _selectedGoals.add(goal);
+        }
+      }
+    });
+    await AnimationUtils.lightHaptic();
+  }
+
+  Future<void> _proceedToCovenant() async {
+    if (_selectedGoals.isEmpty) return;
+
+    await controller.save30DayGoals(_selectedGoals.toList());
+    await AnimationUtils.heavyHaptic();
+
+    setState(() => _showGoalsSelection = false);
+
+    await AnimationUtils.pause(durationMs: 500);
+
+    // Phase 4.5: The Covenant
+    await _phase45TheCovenant();
+  }
+
+  Future<void> _phase45TheCovenant() async {
+    await AnimationUtils.typeText(
+      fullText:
+          'God wants to do this and MORE in your life.\n\nBut it requires your daily "yes".',
+      onUpdate: (text) => setState(() => _covenantText = text),
+      onCursorVisibility: (visible) =>
+          setState(() => _showCovenantCursor = visible),
+      speedMs: 40,
+    );
+
+    await AnimationUtils.pause(durationMs: 2000);
+
+    setState(() => _covenantText = '');
 
     await AnimationUtils.typeText(
       fullText:
@@ -155,39 +218,22 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: OnboardingTheme.backgroundColor,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 1000),
-          child: Stack(
-            children: [
-              // Back button
-              if (controller.currentStep.value > 1)
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: OnboardingTheme.goldColor,
-                      size: 24,
-                    ),
-                    onPressed: () => controller.previousStep(),
-                  ),
-                ),
-              // Main content
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: OnboardingTheme.horizontalPadding,
-                    vertical: OnboardingTheme.verticalPadding,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              left: OnboardingTheme.horizontalPadding,
+              right: OnboardingTheme.horizontalPadding,
+              top: 100, // Space for progress bar
+              bottom: OnboardingTheme.verticalPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
                       // Phase 4.1 - Divine Standard
                       if (_standardText.isNotEmpty)
                         RichText(
@@ -251,7 +297,38 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
                         ),
                       ],
 
-                      // Phase 4.4 - The Covenant
+                      // Phase 4.4 - 2-Week Goals Selection
+                      if (_showGoalsSelection) ...[
+                        const SizedBox(height: 20),
+                        Text(
+                          'What do you want God to do in your life in the next 2 weeks?',
+                          style: OnboardingTheme.callout.copyWith(
+                            color: OnboardingTheme.labelPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Select 1-3 goals:',
+                          style: OnboardingTheme.subhead.copyWith(
+                            color: OnboardingTheme.goldColor,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ..._availableGoals.map((goal) => _buildGoalOption(goal)),
+                        const SizedBox(height: 32),
+                        Center(
+                          child: FastButton(
+                            text: 'Continue',
+                            onTap: _selectedGoals.isNotEmpty ? _proceedToCovenant : null,
+                            backgroundColor: OnboardingTheme.goldColor,
+                            textColor: OnboardingTheme.backgroundColor,
+                            style: FastButtonStyle.filled,
+                            isDisabled: _selectedGoals.isEmpty,
+                          ),
+                        ),
+                      ],
+
+                      // Phase 4.5 - The Covenant
                       if (_covenantText.isNotEmpty)
                         RichText(
                           text: TextSpan(
@@ -266,7 +343,70 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
                             ],
                           ),
                         ),
-                    ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoalOption(String goal) {
+    final isSelected = _selectedGoals.contains(goal);
+    final canSelect = _selectedGoals.length < 3 || isSelected;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: GestureDetector(
+        onTap: canSelect ? () => _onGoalToggle(goal) : null,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? OnboardingTheme.goldColor.withValues(alpha: 0.15)
+                : Colors.transparent,
+            border: Border.all(
+              color: isSelected
+                  ? OnboardingTheme.goldColor
+                  : OnboardingTheme.labelSecondary.withValues(alpha: 0.3),
+              width: isSelected ? 2 : 1,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected
+                        ? OnboardingTheme.goldColor
+                        : OnboardingTheme.labelSecondary.withValues(alpha: 0.5),
+                    width: 2,
+                  ),
+                  color: isSelected ? OnboardingTheme.goldColor : Colors.transparent,
+                ),
+                child: isSelected
+                    ? const Icon(
+                        Icons.check,
+                        size: 14,
+                        color: OnboardingTheme.backgroundColor,
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  goal,
+                  style: OnboardingTheme.subhead.copyWith(
+                    color: isSelected
+                        ? OnboardingTheme.labelPrimary
+                        : canSelect
+                            ? OnboardingTheme.labelPrimary.withValues(alpha: 0.8)
+                            : OnboardingTheme.labelSecondary,
+                    fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
                   ),
                 ),
               ),

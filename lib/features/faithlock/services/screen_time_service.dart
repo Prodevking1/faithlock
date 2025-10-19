@@ -58,6 +58,31 @@ class ScreenTimeService {
     }
   }
 
+  /// Get list of selected apps with details
+  /// Returns a list of maps containing app bundle ID, name, and count
+  Future<List<Map<String, dynamic>>> getSelectedApps() async {
+    try {
+      final result = await _channel.invokeMethod<List>('getSelectedApps');
+      if (result == null) return [];
+
+      return result.map((app) => Map<String, dynamic>.from(app as Map)).toList();
+    } catch (e) {
+      debugPrint('Error getting selected apps: $e');
+      return [];
+    }
+  }
+
+  /// Get count of selected apps
+  Future<int> getSelectedAppsCount() async {
+    try {
+      final apps = await getSelectedApps();
+      return apps.length;
+    } catch (e) {
+      debugPrint('Error getting selected apps count: $e');
+      return 0;
+    }
+  }
+
   /// Start blocking apps for a schedule
   Future<void> startBlocking({
     required LockSchedule schedule,
@@ -140,6 +165,48 @@ class ScreenTimeService {
   bool shouldStartBlocking(LockSchedule schedule) {
     if (!schedule.isEnabled) return false;
     return schedule.isActiveNow();
+  }
+
+  /// Setup DeviceActivity schedules from onboarding data
+  /// Schedules should be in format: [{name, startHour, startMinute, endHour, endMinute, enabled}]
+  Future<void> setupSchedules(List<Map<String, dynamic>> schedules) async {
+    try {
+      final isAuth = await isAuthorized();
+      if (!isAuth) {
+        throw Exception('Screen Time authorization not granted');
+      }
+
+      await _channel.invokeMethod('setupSchedules', schedules);
+      debugPrint('✅ Successfully setup ${schedules.length} schedules');
+    } catch (e) {
+      debugPrint('Error setting up schedules: $e');
+      throw Exception('Failed to setup schedules: $e');
+    }
+  }
+
+  /// Remove all DeviceActivity schedules
+  Future<void> removeAllSchedules() async {
+    try {
+      await _channel.invokeMethod('removeAllSchedules');
+      debugPrint('✅ Removed all schedules');
+    } catch (e) {
+      debugPrint('Error removing schedules: $e');
+      throw Exception('Failed to remove schedules: $e');
+    }
+  }
+
+  /// Temporarily unlock apps after successful challenge
+  /// Duration in minutes (default: 5 minutes)
+  Future<void> temporaryUnlock({int durationMinutes = 5}) async {
+    try {
+      await _channel.invokeMethod('temporaryUnlock', {
+        'durationMinutes': durationMinutes,
+      });
+      debugPrint('🔓 Temporary unlock for $durationMinutes minutes');
+    } catch (e) {
+      debugPrint('Error during temporary unlock: $e');
+      throw Exception('Failed to temporarily unlock: $e');
+    }
   }
 
   /// Dispose resources

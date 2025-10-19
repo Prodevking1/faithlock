@@ -13,12 +13,14 @@ import FamilyControls
 class FamilyActivityPickerViewController: UIViewController {
 
     private var onSelection: ((FamilyActivitySelection) -> Void)?
+    private var initialSelection: FamilyActivitySelection = FamilyActivitySelection()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Create SwiftUI view
-        let pickerView = FamilyActivityPickerView { [weak self] selection in
+        // Create SwiftUI view with initial selection
+        let pickerView = FamilyActivityPickerView(initialSelection: initialSelection) { [weak self] selection in
+            // Save selection and dismiss
             self?.onSelection?(selection)
             self?.dismiss(animated: true)
         }
@@ -39,6 +41,10 @@ class FamilyActivityPickerViewController: UIViewController {
         hostingController.didMove(toParent: self)
     }
 
+    func setInitialSelection(_ selection: FamilyActivitySelection) {
+        self.initialSelection = selection
+    }
+
     func setOnSelection(_ callback: @escaping (FamilyActivitySelection) -> Void) {
         self.onSelection = callback
     }
@@ -46,50 +52,32 @@ class FamilyActivityPickerViewController: UIViewController {
 
 @available(iOS 16.0, *)
 struct FamilyActivityPickerView: View {
-    @State private var selection = FamilyActivitySelection()
+    @State private var selection: FamilyActivitySelection
     var onSelection: (FamilyActivitySelection) -> Void
+    @Environment(\.presentationMode) var presentationMode
+
+    init(initialSelection: FamilyActivitySelection = FamilyActivitySelection(), onSelection: @escaping (FamilyActivitySelection) -> Void) {
+        _selection = State(initialValue: initialSelection)
+        self.onSelection = onSelection
+    }
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Text("Select Apps to Block")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.top)
-
-                Text("Choose which apps and categories you want to block during lock schedules")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-
-                FamilyActivityPicker(selection: $selection)
-                    .padding()
-
-                Spacer()
-
-                HStack(spacing: 16) {
-                    Button("Cancel") {
-                        onSelection(FamilyActivitySelection())
+            FamilyActivityPicker(selection: $selection)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            // Save selection and notify parent
+                            onSelection(selection)
+                        } label: {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.blue)
+                        }
                     }
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-
-                    Button("Done") {
-                        onSelection(selection)
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(12)
                 }
-                .padding()
-            }
-            .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }

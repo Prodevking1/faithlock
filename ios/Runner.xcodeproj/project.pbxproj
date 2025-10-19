@@ -14,6 +14,8 @@
 		5E73F4E92CC5444F004651CC /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E73F4E52CC5444F004651CC /* NotificationService.swift */; };
 		6D08375DA3B6318820322D99 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8339616B2D539078EB13C502 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		7CC020D62EA5731E00C3F8C2 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */; };
+		7CC020DE2EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7CCD67F32E9E959F0040785B /* ScreenTimePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD67F22E9E959F0040785B /* ScreenTimePlugin.swift */; };
 		7CCD67F72E9EA7650040785B /* FamilyActivityPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD67F62E9EA7650040785B /* FamilyActivityPickerViewController.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -38,6 +40,13 @@
 			remoteGlobalIDString = 5E73F4D42CC5436E004651CC;
 			remoteInfo = OneSignalNotificationServiceExtension;
 		};
+		7CC020DC2EA5731E00C3F8C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC020D32EA5731E00C3F8C2;
+			remoteInfo = DeviceActivityMonitorExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				7CC020DE2EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */,
 				5E73F4DC2CC5436E004651CC /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -83,6 +93,8 @@
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
+		7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
 		7CCD67F22E9E959F0040785B /* ScreenTimePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTimePlugin.swift; sourceTree = "<group>"; };
 		7CCD67F42E9EA73E0040785B /* FamilyActivityPickerViewController 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FamilyActivityPickerViewController 2.swift"; sourceTree = "<group>"; };
 		7CCD67F62E9EA7650040785B /* FamilyActivityPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +114,27 @@
 		E6E63A283867F27C3FCECD63 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7CC020E22EA5731E00C3F8C2 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7CC020E22EA5731E00C3F8C2 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */,
+			);
+			path = DeviceActivityMonitorExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		0EA7D5977FCD2083E1E2DD37 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -116,6 +149,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C436EBC952A51C363BE0BA58 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CC020D12EA5731E00C3F8C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CC020D62EA5731E00C3F8C2 /* DeviceActivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +222,7 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				5E73F4E72CC5444F004651CC /* OneSignalNotificationServiceExtension */,
+				7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				28C8D4EC4918C527C8AC9E77 /* Pods */,
@@ -194,6 +236,7 @@
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 				5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */,
+				7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,6 +266,7 @@
 				654F564EDA718970801CFC4B /* Pods_OneSignalNotificationServiceExtension.framework */,
 				8339616B2D539078EB13C502 /* Pods_Runner.framework */,
 				D9E2990C7D5479D9045CEAC1 /* Pods_RunnerTests.framework */,
+				7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -267,6 +311,26 @@
 			productReference = 5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7CC020E32EA5731E00C3F8C2 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */;
+			buildPhases = (
+				7CC020D02EA5731E00C3F8C2 /* Sources */,
+				7CC020D12EA5731E00C3F8C2 /* Frameworks */,
+				7CC020D22EA5731E00C3F8C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
+			);
+			name = DeviceActivityMonitorExtension;
+			productName = DeviceActivityMonitorExtension;
+			productReference = 7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
@@ -286,6 +350,7 @@
 			);
 			dependencies = (
 				5E73F4DB2CC5436E004651CC /* PBXTargetDependency */,
+				7CC020DD2EA5731E00C3F8C2 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -299,7 +364,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1600;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
@@ -309,6 +374,9 @@
 					};
 					5E73F4D42CC5436E004651CC = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					7CC020D32EA5731E00C3F8C2 = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -332,6 +400,7 @@
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
 				5E73F4D42CC5436E004651CC /* OneSignalNotificationServiceExtension */,
+				7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -345,6 +414,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5E73F4D32CC5436E004651CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CC020D22EA5731E00C3F8C2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -515,6 +591,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7CC020D02EA5731E00C3F8C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97C146EA1CF9000F007C117D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -538,6 +621,11 @@
 			isa = PBXTargetDependency;
 			target = 5E73F4D42CC5436E004651CC /* OneSignalNotificationServiceExtension */;
 			targetProxy = 5E73F4DA2CC5436E004651CC /* PBXContainerItemProxy */;
+		};
+		7CC020DD2EA5731E00C3F8C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */;
+			targetProxy = 7CC020DC2EA5731E00C3F8C2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -803,6 +891,129 @@
 			};
 			name = Profile;
 		};
+		7CC020DF2EA5731E00C3F8C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7CC020E02EA5731E00C3F8C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7CC020E12EA5731E00C3F8C2 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
+		};
 		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -980,6 +1191,16 @@
 				5E73F4DF2CC5436E004651CC /* Debug */,
 				5E73F4E02CC5436E004651CC /* Release */,
 				5E73F4E12CC5436E004651CC /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7CC020E32EA5731E00C3F8C2 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CC020DF2EA5731E00C3F8C2 /* Debug */,
+				7CC020E02EA5731E00C3F8C2 /* Release */,
+				7CC020E12EA5731E00C3F8C2 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

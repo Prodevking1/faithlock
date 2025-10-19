@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
+import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:flutter/material.dart';
 
 /// Fingerprint scanner widget with animated scanning effect
@@ -25,12 +29,13 @@ class _FingerprintScannerState extends State<FingerprintScanner>
 
   bool _isScanning = false;
   bool _scanComplete = false;
+  bool _showButton = false;
 
   @override
   void initState() {
     super.initState();
     _scanController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 3500), // Augmenté de 2000 à 3500
       vsync: this,
     );
     _sealController = AnimationController(
@@ -54,175 +59,493 @@ class _FingerprintScannerState extends State<FingerprintScanner>
     super.dispose();
   }
 
+  String _getCurrentDate() {
+    final now = DateTime.now();
+    final months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return '${months[now.month - 1]} ${now.day}, ${now.year}';
+  }
+
   Future<void> _startScan() async {
     if (_isScanning) return;
 
     setState(() => _isScanning = true);
-    await _scanController.forward();
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    // Initial haptic feedback
+    await AnimationUtils.mediumHaptic();
+
+    // Animate scan with periodic haptics
+    _scanController.forward().then((_) async {
+      // Haptic feedback during scan
+      await AnimationUtils.lightHaptic();
+    });
+
+    // Haptic at 25% progress
+    Future.delayed(const Duration(milliseconds: 875), () {
+      AnimationUtils.lightHaptic();
+    });
+
+    // Haptic at 50% progress
+    Future.delayed(const Duration(milliseconds: 1750), () {
+      AnimationUtils.lightHaptic();
+    });
+
+    // Haptic at 75% progress
+    Future.delayed(const Duration(milliseconds: 2625), () {
+      AnimationUtils.lightHaptic();
+    });
+
+    await Future.delayed(const Duration(milliseconds: 3500));
 
     setState(() {
       _scanComplete = true;
       _isScanning = false;
     });
 
-    await _sealController.forward();
-    await Future.delayed(const Duration(milliseconds: 1500));
+    // Heavy haptic for completion
+    await AnimationUtils.heavyHaptic();
 
-    widget.onComplete();
+    await _sealController.forward();
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Final success haptic
+    await AnimationUtils.heavyHaptic();
+
+    // Wait 2 seconds for user to read the covenant, then show button
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    setState(() => _showButton = true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPressStart: (_) => _startScan(),
-      child: Container(
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: _scanComplete
-                ? OnboardingTheme.goldColor
-                : OnboardingTheme.goldColor.withValues(alpha: 0.5),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          gradient: _scanComplete
-              ? LinearGradient(
-                  colors: [
-                    OnboardingTheme.goldColor.withValues(alpha: 0.1),
-                    OnboardingTheme.goldColor.withValues(alpha: 0.3),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-              : null,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Fingerprint icon or seal
-            if (!_scanComplete)
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Icon(
-                    Icons.fingerprint,
-                    size: 120,
-                    color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
-                  ),
-                  if (_isScanning)
-                    AnimatedBuilder(
-                      animation: _scanAnimation,
-                      builder: (context, child) {
-                        return Positioned(
-                          top: 120 * _scanAnimation.value,
-                          child: Container(
-                            width: 140,
-                            height: 3,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.transparent,
-                                  OnboardingTheme.goldColor,
-                                  Colors.transparent,
-                                ],
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: OnboardingTheme.goldColor
-                                      .withValues(alpha: 0.5),
-                                  blurRadius: 20,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                ],
-              )
-            else
-              AnimatedBuilder(
+    return Center(
+      child: GestureDetector(
+        onLongPressStart: (_) => _startScan(),
+        behavior: HitTestBehavior.opaque,
+        child: _scanComplete
+            ? // Show paper document standalone after scan complete
+            AnimatedBuilder(
                 animation: _sealAnimation,
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _sealAnimation.value,
-                    child: Column(
-                      children: [
-                        // Golden seal with checkmark
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [
-                                OnboardingTheme.goldColor,
-                                OnboardingTheme.goldColor.withValues(alpha: 0.7),
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 450),
+                      margin: const EdgeInsets.symmetric(horizontal: 0),
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF8E7),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(0xFFD4C4A8),
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 20,
+                            spreadRadius: 2,
+                            offset: const Offset(0, 8),
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 40,
+                            spreadRadius: 0,
+                            offset: const Offset(0, 16),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  '✦',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: const Color(0xFF8B7355),
+                                  ),
+                                ),
+                                Text(
+                                  'SACRED COVENANT',
+                                  style: TextStyle(
+                                    fontFamily: 'Georgia',
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF2C1810),
+                                    letterSpacing: 3,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '✦',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: const Color(0xFF8B7355),
+                                  ),
+                                ),
                               ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: OnboardingTheme.goldColor
-                                    .withValues(alpha: 0.5),
-                                blurRadius: 30,
-                                spreadRadius: 5,
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Texte du contrat - Style manuscrit
+                          Text(
+                            'I, ${widget.userName}, hereby solemnly commit before God to guard my heart and use His Word as my shield against digital bondage.\n\nI pledge to live with intentionality, seeking His presence above all earthly distractions.',
+                            style: TextStyle(
+                              fontFamily: 'Georgia',
+                              fontSize: 14,
+                              height: 1.8,
+                              color: const Color(0xFF3D2817),
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+
+                          const SizedBox(height: 32),
+
+                          // Divider décoratif
+                          Center(
+                            child: Container(
+                              width: 200,
+                              height: 1,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.transparent,
+                                    const Color(0xFFB8997F),
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 32),
+
+                          // Bas du document: Signature, Date, Sceau
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // Colonne gauche: Signature et Date
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Signature
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 6),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: const Color(0xFF8B7355),
+                                                width: 1.5,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            widget.userName,
+                                            style: TextStyle(
+                                              fontFamily: 'Snell Roundhand',
+                                              fontSize: 26,
+                                              color: const Color(0xFF1A0D08),
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Signature',
+                                          style: TextStyle(
+                                            fontFamily: 'Georgia',
+                                            fontSize: 10,
+                                            color: const Color(0xFF6B5540),
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    // Date
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _getCurrentDate(),
+                                          style: TextStyle(
+                                            fontFamily: 'Georgia',
+                                            fontSize: 13,
+                                            color: const Color(0xFF2C1810),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Date',
+                                          style: TextStyle(
+                                            fontFamily: 'Georgia',
+                                            fontSize: 10,
+                                            color: const Color(0xFF6B5540),
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(width: 16),
+
+                              // Sceau officiel - Style cire
+                              Container(
+                                width: 85,
+                                height: 85,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // Effet de cire rouge/or
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      const Color(0xFFD4AF37), // Or
+                                      const Color(0xFFC9A962),
+                                      const Color(0xFFB8997F),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFB8997F)
+                                          .withValues(alpha: 0.5),
+                                      blurRadius: 15,
+                                      spreadRadius: 2,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                    // Ombre interne pour effet 3D
+                                    BoxShadow(
+                                      color:
+                                          Colors.black.withValues(alpha: 0.2),
+                                      blurRadius: 8,
+                                      spreadRadius: -2,
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    // Cercle intérieur
+                                    Container(
+                                      width: 70,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: const Color(0xFF8B7355),
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    // Texte du sceau
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle,
+                                          size: 32,
+                                          color: const Color(0xFF2C1810),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          'SEALED',
+                                          style: TextStyle(
+                                            fontFamily: 'Georgia',
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF2C1810),
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          child: const Icon(
-                            Icons.check,
-                            size: 60,
-                            color: OnboardingTheme.backgroundColor,
+
+                          const SizedBox(height: 32),
+
+                          // Instructions
+                          Center(
+                            child: Text(
+                              'Covenant sealed before God',
+                              style: OnboardingTheme.body.copyWith(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: OnboardingTheme.goldColor,
+                                letterSpacing: 0.2,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        // User name
-                        Text(
-                          widget.userName,
-                          style: OnboardingTheme.emphasisText.copyWith(
-                            color: OnboardingTheme.goldColor,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'COVENANT SEALED',
-                          style: OnboardingTheme.referenceText.copyWith(
-                            color: OnboardingTheme.goldColor,
-                            fontSize: 14,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                      ],
+
+                          // Button appears after 2 seconds
+                          if (_showButton) ...[
+                            const SizedBox(height: 24),
+                            Center(
+                              child: FastButton(
+                                text: 'I\'m ready. Lock me in.',
+                                onTap: widget.onComplete,
+                                backgroundColor: OnboardingTheme.goldColor,
+                                textColor: OnboardingTheme.backgroundColor,
+                                style: FastButtonStyle.filled,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   );
                 },
-              ),
+              )
+            : // Show fingerprint scanner with gold container before scan
+            Container(
+                width: double.infinity, // Width fixe pour éviter le changement
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                  minHeight: 320,
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.all(40),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(OnboardingTheme.radiusXLarge),
+                  border: Border.all(
+                    color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(OnboardingTheme.radiusXLarge),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            OnboardingTheme.cardBackground,
+                            OnboardingTheme.cardBackground
+                                .withValues(alpha: 0.5),
+                          ],
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Fingerprint icon with scanning animation
+                          SizedBox(
+                            height: 140,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Fingerprint icon with glow
+                                AnimatedOpacity(
+                                  opacity: _isScanning ? 0.7 : 0.4,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: Icon(
+                                    Icons.fingerprint,
+                                    size: 100,
+                                    color: OnboardingTheme.goldColor,
+                                  ),
+                                ),
+                                // Scanning line
+                                if (_isScanning)
+                                  AnimatedBuilder(
+                                    animation: _scanAnimation,
+                                    builder: (context, child) {
+                                      return Positioned(
+                                        top: 120 * _scanAnimation.value,
+                                        child: Container(
+                                          width: 120,
+                                          height: 2,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.transparent,
+                                                OnboardingTheme.goldColor
+                                                    .withValues(alpha: 0.9),
+                                                Colors.transparent,
+                                              ],
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: OnboardingTheme.goldColor
+                                                    .withValues(alpha: 0.6),
+                                                blurRadius: 15,
+                                                spreadRadius: 1,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ),
 
-            const SizedBox(height: 30),
+                          const SizedBox(height: 32),
 
-            // Instructions
-            Text(
-              _isScanning
-                  ? 'Scanning...'
-                  : _scanComplete
-                      ? 'Covenant sealed before God'
-                      : 'Hold your thumb to seal covenant',
-              style: OnboardingTheme.bodyText.copyWith(
-                fontSize: 16,
-                color: _scanComplete
-                    ? OnboardingTheme.goldColor
-                    : OnboardingTheme.grayColor,
-                fontStyle: FontStyle.italic,
+                          // Instructions
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: Text(
+                              _isScanning
+                                  ? 'Scanning...'
+                                  : 'Hold your thumb to seal covenant',
+                              key: ValueKey<String>(
+                                  _isScanning ? 'scanning' : 'waiting'),
+                              style: OnboardingTheme.body.copyWith(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: OnboardingTheme.labelSecondary,
+                                letterSpacing: 0.2,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
       ),
     );
   }
