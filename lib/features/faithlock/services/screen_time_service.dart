@@ -195,6 +195,18 @@ class ScreenTimeService {
     }
   }
 
+  /// Apply blocking immediately (used when apps selected during active schedule)
+  /// This is a workaround while waiting for DeviceActivityMonitor to activate
+  Future<void> applyBlockingNow() async {
+    try {
+      await _channel.invokeMethod('applyBlockingNow');
+      debugPrint('✅ Applied blocking immediately');
+    } catch (e) {
+      debugPrint('❌ Error applying blocking: $e');
+      rethrow;
+    }
+  }
+
   /// Temporarily unlock apps after successful challenge
   /// Duration in minutes (default: 5 minutes)
   Future<void> temporaryUnlock({int durationMinutes = 5}) async {

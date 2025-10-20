@@ -15,4 +15,7 @@ abstract class Env {
 
   @EnviedField(varName: 'POSTHOG_HOST', defaultValue: 'https://us.i.posthog.com')
   static String postHogHost = _Env.postHogHost;
+
+  @EnviedField(varName: 'REVENUECAT_API_KEY')
+  static String revenueCatApiKey = _Env.revenueCatApiKey;
 }

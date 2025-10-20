@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: AlanSans
   static const String alanSans = 'AlanSans';
+
+  /// Font family: Garamond
+  static const String garamond = 'Garamond';
 }

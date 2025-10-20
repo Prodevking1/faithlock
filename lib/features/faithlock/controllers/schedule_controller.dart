@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
@@ -27,10 +28,13 @@ class ScheduleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadSchedules();
-    checkScreenTimeAuthorization();
-    _checkForSelectedApps();
-    _loadSelectedAppsCount();
+    // Load asynchronously without blocking
+    Future.microtask(() async {
+      await loadSchedules();
+      await checkScreenTimeAuthorization();
+      await _loadSelectedAppsCount();
+      await _checkForSelectedApps();
+    });
   }
 
   /// Load count of selected apps
@@ -170,6 +174,9 @@ class ScheduleController extends GetxController {
       // Auto-setup DeviceActivity schedules from onboarding data
       await _setupSchedulesFromOnboarding();
 
+      // Check if we're currently in an active schedule and apply blocking immediately
+      await _checkAndApplyCurrentSchedule();
+
       // Show success message after selection
       if (context.mounted) {
         FastToast.showSuccess(
@@ -240,19 +247,32 @@ class ScheduleController extends GetxController {
     if (context == null) return;
 
     try {
-      schedules[index]['enabled'] = !schedules[index]['enabled'];
+      // Create a new Map to force GetX to detect the change
+      final updatedSchedule = Map<String, dynamic>.from(schedules[index]);
+      updatedSchedule['enabled'] = !updatedSchedule['enabled'];
+
+      // Replace the schedule in the list
+      schedules[index] = updatedSchedule;
+
+      // Force refresh
+      schedules.refresh();
+
       await _saveAndResetupSchedules();
 
-      FastToast.showSuccess(
-        context: context,
-        message: 'Schedule updated successfully',
-      );
+      if (context.mounted) {
+        FastToast.showSuccess(
+          context: context,
+          message: 'Schedule updated successfully',
+        );
+      }
     } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to update schedule: $e',
-      );
+      if (context.mounted) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Failed to update schedule: $e',
+        );
+      }
     }
   }
 
@@ -264,22 +284,75 @@ class ScheduleController extends GetxController {
     final currentHour = schedules[index][isStart ? 'startHour' : 'endHour'] as int;
     final currentMinute = schedules[index][isStart ? 'startMinute' : 'endMinute'] as int;
 
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: currentHour, minute: currentMinute),
+    DateTime selectedTime = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      currentHour,
+      currentMinute,
     );
 
-    if (picked != null) {
-      schedules[index][isStart ? 'startHour' : 'endHour'] = picked.hour;
-      schedules[index][isStart ? 'startMinute' : 'endMinute'] = picked.minute;
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            children: [
+              // Done button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CupertinoButton(
+                    child: const Text('Done'),
+                    onPressed: () async {
+                      // Create a new Map to force GetX to detect the change
+                      final updatedSchedule = Map<String, dynamic>.from(schedules[index]);
+                      updatedSchedule[isStart ? 'startHour' : 'endHour'] = selectedTime.hour;
+                      updatedSchedule[isStart ? 'startMinute' : 'endMinute'] = selectedTime.minute;
 
-      await _saveAndResetupSchedules();
+                      // Replace the schedule in the list
+                      schedules[index] = updatedSchedule;
 
-      FastToast.showSuccess(
-        context: context,
-        message: 'Schedule time updated',
-      );
-    }
+                      // Force refresh
+                      schedules.refresh();
+
+                      Navigator.of(context).pop();
+
+                      await _saveAndResetupSchedules();
+
+                      if (context.mounted) {
+                        FastToast.showSuccess(
+                          context: context,
+                          message: 'Schedule time updated',
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+              // Time picker
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: selectedTime,
+                  use24hFormat: true,
+                  onDateTimeChanged: (DateTime newTime) {
+                    selectedTime = newTime;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   /// Save and re-setup schedules
@@ -291,8 +364,33 @@ class ScheduleController extends GetxController {
         jsonEncode(schedules),
       );
 
-      // Re-setup DeviceActivity
+      // Re-setup DeviceActivity with enabled schedules
       await _screenTimeService.setupSchedules(schedules);
+
+      // Debug: Print all schedules and their status
+      debugPrint('📋 Checking schedules:');
+      for (var s in schedules) {
+        final enabled = s['enabled'] as bool;
+        final isActive = isScheduleActive(s);
+        debugPrint('   ${s['name']}: enabled=$enabled, active=$isActive');
+      }
+
+      // Check if there's an active schedule right now
+      final activeSchedule = schedules.firstWhereOrNull(
+        (s) => s['enabled'] == true && isScheduleActive(s)
+      );
+
+      if (activeSchedule != null) {
+        // We're in an active schedule - apply blocking immediately
+        debugPrint('🔒 Active schedule detected: ${activeSchedule['name']}');
+        debugPrint('⚡ Applying blocking immediately...');
+        await _screenTimeService.applyBlockingNow();
+      } else {
+        // No active schedule - remove blocking
+        debugPrint('🔓 No active schedules - removing blocking');
+        await _screenTimeService.stopBlocking();
+      }
+
       debugPrint('✅ Schedules saved and re-setup successfully');
     } catch (e) {
       debugPrint('⚠️ Failed to save/re-setup schedules: $e');
@@ -421,6 +519,27 @@ class ScheduleController extends GetxController {
     }
   }
 
+  /// Check if we're in an active schedule and apply blocking
+  Future<void> _checkAndApplyCurrentSchedule() async {
+    try {
+      // Find any currently active schedule
+      final activeSchedule = schedules.firstWhereOrNull(
+        (schedule) => isScheduleActive(schedule),
+      );
+
+      if (activeSchedule != null) {
+        debugPrint('🔒 Currently in active schedule: ${activeSchedule['name']}');
+        debugPrint('⚡ Applying blocking immediately via native...');
+
+        // Apply blocking through native DeviceActivity
+        // The DeviceActivityMonitor will eventually take over, but we apply it now too
+        await _screenTimeService.applyBlockingNow();
+      }
+    } catch (e) {
+      debugPrint('⚠️ Failed to check/apply current schedule: $e');
+    }
+  }
+
   /// Stop blocking immediately
   Future<void> stopBlockingNow() async {
     final context = Get.context;
@@ -429,17 +548,21 @@ class ScheduleController extends GetxController {
     try {
       await _screenTimeService.stopBlocking();
 
-      FastToast.showInfo(
-        context: context,
-        title: 'Blocking Stopped',
-        message: 'All restrictions have been removed',
-      );
+      if (context.mounted) {
+        FastToast.showInfo(
+          context: context,
+          title: 'Blocking Stopped',
+          message: 'All restrictions have been removed',
+        );
+      }
     } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to stop blocking: $e',
-      );
+      if (context.mounted) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Failed to stop blocking: $e',
+        );
+      }
     }
   }
 }

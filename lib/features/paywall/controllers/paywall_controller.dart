@@ -2,10 +2,11 @@ import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Paywall controller managing subscription flow and business logic
-class PaywallController extends GetxController {
+class PaywallController extends GetxController with GetTickerProviderStateMixin {
   static const String _keyTrialReminderEnabled = 'trial_reminder_enabled';
   static const String _keyPromoCodeApplied = 'promo_code_applied';
 
@@ -13,130 +14,268 @@ class PaywallController extends GetxController {
   RevenueCatService get _revenueCat => RevenueCatService.instance;
 
   // Observable state
-  final RxBool isLoading = false.obs;
+  final RxBool isLoading = true.obs;
   final RxBool trialReminderEnabled = true.obs;
   final RxBool freeTrialEnabled = true.obs;
   final RxBool showPromoCodeField = false.obs;
   final RxString promoCode = ''.obs;
-  final RxString selectedPlan = 'monthly'.obs;
+  final RxInt selectedPlanIndex = 0.obs;
   final RxString lastError = ''.obs;
+  final RxBool isPurchasing = false.obs;
+
+  // RevenueCat data
+  final RxList<Package> packages = <Package>[].obs;
+  Offering? currentOffering;
 
   // Form controllers
   final TextEditingController promoCodeController = TextEditingController();
 
-  // Plan options
-  final List<PlanOption> availablePlans = [
-    PlanOption(
-      id: 'weekly',
-      title: 'Weekly',
-      price: '\$4.99',
-      period: 'per week',
-      savings: null,
-      trialDays: 7,
-    ),
-    PlanOption(
-      id: 'monthly',
-      title: 'Monthly',
-      price: '\$19.99',
-      period: 'per month',
-      savings: 'Save 60%',
-      trialDays: 7,
-      isPopular: true,
-    ),
-    PlanOption(
-      id: 'yearly',
-      title: 'Yearly',
-      price: '\$99.99',
-      period: 'per year',
-      savings: 'Save 75%',
-      trialDays: 7,
-    ),
-  ];
+  // Animation controllers
+  late AnimationController switchAnimationController;
+  late AnimationController cardAnimationController;
+  late Animation<double> switchAnimation;
+  late Animation<double> cardScaleAnimation;
+
+  // Configuration
+  final bool redirectToHomeOnClose;
+  final String? placementId;
+
+  PaywallController({
+    this.redirectToHomeOnClose = false,
+    this.placementId,
+  });
 
   @override
   void onInit() {
     super.onInit();
+    _initializeAnimations();
     _loadSettings();
     _bindPromoCodeController();
+    _loadOfferings();
+  }
+
+  void _initializeAnimations() {
+    switchAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+
+    cardAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    switchAnimation = CurvedAnimation(
+      parent: switchAnimationController,
+      curve: Curves.easeInOut,
+    );
+
+    cardScaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.995,
+    ).animate(CurvedAnimation(
+      parent: cardAnimationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  Future<void> _loadOfferings() async {
+    try {
+      isLoading.value = true;
+      lastError.value = '';
+
+      final offering = await _revenueCat.getCurrentOffering();
+
+      if (offering == null) {
+        lastError.value = 'No subscription options available';
+        return;
+      }
+
+      currentOffering = offering;
+
+      // Filter and sort packages
+      final availablePackages = offering.availablePackages
+          .where((pkg) => pkg.storeProduct.subscriptionPeriod != null)
+          .toList();
+
+      // Sort: yearly first, then by price descending
+      availablePackages.sort((a, b) {
+        final aIsYearly = isYearlyPackage(a);
+        final bIsYearly = isYearlyPackage(b);
+
+        if (aIsYearly && !bIsYearly) return -1;
+        if (!aIsYearly && bIsYearly) return 1;
+
+        return b.storeProduct.price.compareTo(a.storeProduct.price);
+      });
+
+      packages.value = availablePackages;
+
+      // Select yearly plan by default if available
+      selectedPlanIndex.value = availablePackages.indexWhere(isYearlyPackage);
+      if (selectedPlanIndex.value == -1) {
+        selectedPlanIndex.value = 0;
+      }
+
+      // Check if selected plan is yearly
+      if (selectedPlanIndex.value < availablePackages.length) {
+        freeTrialEnabled.value =
+            !isYearlyPackage(availablePackages[selectedPlanIndex.value]);
+      }
+    } catch (e) {
+      lastError.value = 'Failed to load subscription options: $e';
+      debugPrint('❌ Error loading offerings: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  bool isYearlyPackage(Package package) {
+    final period = package.storeProduct.subscriptionPeriod;
+    if (period == null) return false;
+    final periodLower = period.toLowerCase();
+    return periodLower.contains('year') || periodLower.contains('y');
+  }
+
+  void selectPlan(int index) {
+    if (index < 0 || index >= packages.length) return;
+
+    cardAnimationController.forward().then((_) {
+      cardAnimationController.reverse();
+    });
+
+    selectedPlanIndex.value = index;
+
+    final isYearly = isYearlyPackage(packages[index]);
+    freeTrialEnabled.value = !isYearly;
+
+    if (isYearly) {
+      switchAnimationController.reverse();
+    } else {
+      switchAnimationController.forward();
+    }
+  }
+
+  void toggleFreeTrial(bool value) {
+    freeTrialEnabled.value = value;
+
+    // If enabling trial and current plan is yearly, switch to non-yearly
+    if (value && selectedPlanIndex.value < packages.length) {
+      if (isYearlyPackage(packages[selectedPlanIndex.value])) {
+        final nonYearlyIndex =
+            packages.indexWhere((pkg) => !isYearlyPackage(pkg));
+        if (nonYearlyIndex != -1) {
+          selectedPlanIndex.value = nonYearlyIndex;
+        }
+      }
+    }
+
+    // If disabling trial, switch to yearly plan
+    if (!value) {
+      final yearlyIndex = packages.indexWhere(isYearlyPackage);
+      if (yearlyIndex != -1) {
+        selectedPlanIndex.value = yearlyIndex;
+      }
+    }
+
+    if (value) {
+      switchAnimationController.forward();
+    } else {
+      switchAnimationController.reverse();
+    }
+  }
+
+  String getPlanTitle(Package package) {
+    if (isYearlyPackage(package)) {
+      return 'Yearly';
+    }
+
+    final period = package.storeProduct.subscriptionPeriod;
+    if (period != null) {
+      final unitStr = period.toLowerCase();
+      if (unitStr.contains('month') || unitStr.contains('m')) {
+        return 'Monthly';
+      }
+      if (unitStr.contains('week') || unitStr.contains('w')) {
+        return 'Weekly';
+      }
+    }
+
+    return package.identifier;
+  }
+
+  String getPriceText(Package package) {
+    final product = package.storeProduct;
+    final price = product.priceString;
+
+    if (isYearlyPackage(package)) {
+      return price;
+    }
+
+    final period = product.subscriptionPeriod;
+    if (period != null) {
+      final unitStr = period.toLowerCase();
+      if (unitStr.contains('month') || unitStr.contains('m')) {
+        return '$price/month';
+      }
+      if (unitStr.contains('week') || unitStr.contains('w')) {
+        return '$price/week';
+      }
+    }
+
+    return price;
+  }
+
+  String getSavingsText(Package package) {
+    if (!isYearlyPackage(package)) return '';
+
+    final monthlyPackage = packages.firstWhereOrNull((pkg) {
+      final period = pkg.storeProduct.subscriptionPeriod;
+      return period != null && period.toLowerCase().contains('month');
+    });
+
+    if (monthlyPackage == null) return 'BEST VALUE';
+
+    final yearlyPrice = package.storeProduct.price;
+    final monthlyPrice = monthlyPackage.storeProduct.price;
+    final yearlyEquivalent = monthlyPrice * 12;
+    final savings = ((yearlyEquivalent - yearlyPrice) / yearlyEquivalent * 100);
+
+    if (savings > 0) {
+      return 'SAVE ${savings.round()}%';
+    }
+
+    return 'BEST VALUE';
+  }
+
+  void closePaywall() {
+    if (redirectToHomeOnClose) {
+      Get.until((route) => route.isFirst);
+    } else {
+      Get.back(result: false);
+    }
   }
 
   @override
   void onClose() {
     promoCodeController.dispose();
+    switchAnimationController.dispose();
+    cardAnimationController.dispose();
     super.onClose();
-  }
-
-  /// Get selected plan details
-  PlanOption get selectedPlanDetails {
-    return availablePlans.firstWhere(
-      (plan) => plan.id == selectedPlan.value,
-      orElse: () => availablePlans[1], // Default to monthly
-    );
-  }
-
-  /// Get subscription timeline steps
-  List<TimelineStep> getTimelineSteps() {
-    final selectedPlanData = selectedPlanDetails;
-
-    return [
-      TimelineStep(
-        day: 'Today',
-        title: 'Start Free Trial',
-        description: 'Unlock premium access for free. No charges today.',
-        icon: Icons.lock_open,
-        iconColor: const Color(0xFF4CAF50),
-        isCompleted: false,
-      ),
-      TimelineStep(
-        day: 'Day ${selectedPlanData.trialDays - 2}',
-        title: 'Trial Reminder',
-        description: trialReminderEnabled.value
-            ? 'Get notified before your trial ends.'
-            : 'No reminder (disabled by you).',
-        icon: Icons.notifications_active,
-        iconColor: trialReminderEnabled.value
-            ? const Color(0xFF4CAF50)
-            : Colors.grey,
-        isCompleted: false,
-      ),
-      TimelineStep(
-        day: 'Day ${selectedPlanData.trialDays}',
-        title: 'Billing Starts',
-        description: 'Subscription begins at ${selectedPlanData.price} ${selectedPlanData.period}. Cancel anytime before.',
-        icon: Icons.credit_card,
-        iconColor: const Color(0xFF4CAF50),
-        isCompleted: false,
-      ),
-    ];
   }
 
   /// Start subscription with selected plan
   Future<void> startSubscription() async {
+    if (selectedPlanIndex.value >= packages.length) {
+      lastError.value = 'Please select a subscription plan';
+      return;
+    }
+
     try {
-      isLoading.value = true;
+      isPurchasing.value = true;
       lastError.value = '';
 
-      // Get available offerings
-      final offerings = await _revenueCat.getOfferings();
-      if (offerings.isEmpty) {
-        throw Exception('No subscription plans available');
-      }
-
-      // Find the selected plan package
-      final offering = offerings.first;
-      final packages = offering.availablePackages;
-
-      // Map our plan IDs to RevenueCat packages
-      final packageMap = {
-        'weekly': packages.where((p) => p.storeProduct.identifier.contains('weekly')).firstOrNull,
-        'monthly': packages.where((p) => p.storeProduct.identifier.contains('monthly')).firstOrNull,
-        'yearly': packages.where((p) => p.storeProduct.identifier.contains('yearly')).firstOrNull,
-      };
-
-      final selectedPackage = packageMap[selectedPlan.value];
-      if (selectedPackage == null) {
-        throw Exception('Selected plan not available');
-      }
+      final selectedPackage = packages[selectedPlanIndex.value];
 
       // Attempt purchase
       final result = await _revenueCat.purchaseSubscription(selectedPackage);
@@ -152,7 +291,7 @@ class PaywallController extends GetxController {
         Get.snackbar(
           'Success! 🎉',
           'Your free trial has started. Enjoy premium features!',
-          backgroundColor: Colors.green.withOpacity(0.1),
+          backgroundColor: Colors.green.withValues(alpha: 0.1),
           colorText: Colors.green[800],
           icon: const Icon(Icons.check_circle, color: Colors.green),
           duration: const Duration(seconds: 3),
@@ -161,7 +300,12 @@ class PaywallController extends GetxController {
         // Navigate to main app or close paywall
         _handleSuccessfulSubscription();
       } else {
-        throw Exception(result.error ?? 'Purchase failed');
+        // Purchase cancelled or failed
+        if (result.error?.contains('cancelled') ?? false) {
+          debugPrint('Purchase cancelled by user');
+        } else {
+          throw Exception(result.error ?? 'Purchase failed');
+        }
       }
     } catch (e) {
       lastError.value = e.toString();
@@ -171,13 +315,13 @@ class PaywallController extends GetxController {
       Get.snackbar(
         'Purchase Failed',
         e.toString(),
-        backgroundColor: Colors.red.withOpacity(0.1),
+        backgroundColor: Colors.red.withValues(alpha: 0.1),
         colorText: Colors.red[800],
         icon: const Icon(Icons.error, color: Colors.red),
         duration: const Duration(seconds: 4),
       );
     } finally {
-      isLoading.value = false;
+      isPurchasing.value = false;
     }
   }
 
@@ -194,7 +338,7 @@ class PaywallController extends GetxController {
         Get.snackbar(
           'Purchases Restored! ✅',
           'Your subscription has been restored successfully.',
-          backgroundColor: Colors.green.withOpacity(0.1),
+          backgroundColor: Colors.green.withValues(alpha: 0.1),
           colorText: Colors.green[800],
           icon: const Icon(Icons.check_circle, color: Colors.green),
           duration: const Duration(seconds: 3),
@@ -205,7 +349,7 @@ class PaywallController extends GetxController {
         Get.snackbar(
           'No Purchases Found',
           'No active subscriptions found to restore.',
-          backgroundColor: Colors.orange.withOpacity(0.1),
+          backgroundColor: Colors.orange.withValues(alpha: 0.1),
           colorText: Colors.orange[800],
           icon: const Icon(Icons.info, color: Colors.orange),
           duration: const Duration(seconds: 3),
@@ -219,13 +363,13 @@ class PaywallController extends GetxController {
       Get.snackbar(
         'Restore Failed',
         'Could not restore purchases. Please try again.',
-        backgroundColor: Colors.red.withOpacity(0.1),
+        backgroundColor: Colors.red.withValues(alpha: 0.1),
         colorText: Colors.red[800],
         icon: const Icon(Icons.error, color: Colors.red),
         duration: const Duration(seconds: 4),
       );
     } finally {
-      isLoading.value = false;
+      isPurchasing.value = false;
     }
   }
 
@@ -235,7 +379,7 @@ class PaywallController extends GetxController {
       Get.snackbar(
         'Invalid Code',
         'Please enter a valid promo code.',
-        backgroundColor: Colors.orange.withOpacity(0.1),
+        backgroundColor: Colors.orange.withValues(alpha: 0.1),
         colorText: Colors.orange[800],
         duration: const Duration(seconds: 2),
       );
@@ -243,7 +387,7 @@ class PaywallController extends GetxController {
     }
 
     try {
-      isLoading.value = true;
+      isPurchasing.value = true;
 
       final result = await _revenueCat.applyPromoCode(promoCode.value.trim());
 
@@ -252,7 +396,7 @@ class PaywallController extends GetxController {
         Get.snackbar(
           'Promo Code Applied! 🎉',
           'Your discount has been applied successfully.',
-          backgroundColor: Colors.green.withOpacity(0.1),
+          backgroundColor: Colors.green.withValues(alpha: 0.1),
           colorText: Colors.green[800],
           icon: const Icon(Icons.check_circle, color: Colors.green),
           duration: const Duration(seconds: 3),
@@ -271,29 +415,18 @@ class PaywallController extends GetxController {
       Get.snackbar(
         'Invalid Promo Code',
         'The promo code you entered is not valid.',
-        backgroundColor: Colors.red.withOpacity(0.1),
+        backgroundColor: Colors.red.withValues(alpha: 0.1),
         colorText: Colors.red[800],
         icon: const Icon(Icons.error, color: Colors.red),
         duration: const Duration(seconds: 3),
       );
     } finally {
-      isLoading.value = false;
+      isPurchasing.value = false;
     }
   }
 
   Future<void> toggleTrialReminder(bool enabled) async {
     trialReminderEnabled.value = enabled;
-
-  }
-
-  void toogleFreeTrial() {
-    freeTrialEnabled.value = !freeTrialEnabled.value;
-  }
-
-  /// Select subscription plan
-  void selectPlan(String planId) {
-    selectedPlan.value = planId;
-    HapticFeedback.selectionClick();
   }
 
   /// Toggle promo code field visibility

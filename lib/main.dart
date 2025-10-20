@@ -5,9 +5,9 @@ import 'package:faithlock/core/errors/error_handler.dart';
 import 'package:faithlock/core/localization/app_translations.dart';
 import 'package:faithlock/core/network/network_checker.dart';
 import 'package:faithlock/core/theme/export.dart';
-import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/sentry/sentry_config.dart';
+import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +53,14 @@ void main() async {
     environment: kDebugMode ? 'development' : 'production',
     enableDebug: kDebugMode,
   );
+
+  // Initialize RevenueCat
+  final RevenueCatService revenueCat = Get.put(RevenueCatService());
+  await revenueCat.initialize(
+    apiKey: Env.revenueCatApiKey,
+    enableDebugLogs: kDebugMode,
+  );
+  debugPrint('✅ RevenueCat initialized successfully');
 
   // Initialize PushNotificationService
   // final PushNotificationService pushNotificationService =
@@ -109,7 +117,12 @@ class _AppState extends State<App> {
       initialRoute: _initialRoute,
       getPages: AppRoutes.getPages(),
       translations: AppTranslations(),
-      home: ScriptureOnboardingScreen(),
+      // home: Container(
+      //   child: Center(
+      //     child: Text('Initial Route: $_initialRoute'),
+      //   ),
+      // ),
+      // home: ScriptureOnboardingScreen(),
       localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

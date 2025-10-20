@@ -155,28 +155,15 @@ class ScheduleScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: FastButton(
-                                  text: 'Select Apps',
-                                  onTap: controller.selectAppsToBlock,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: FastButton(
-                                  text: 'Test (15min)',
-                                  style: FastButtonStyle.outlined,
-                                  onTap: controller.testBlockingNow,
-                                ),
-                              ),
-                            ],
+                          FastButton(
+                            text: 'Select Apps',
+                            onTap: controller.selectAppsToBlock,
                           ),
                         ],
                       ],
                     ),
                   )),
+              FastSpacing.h24,
 
               // Schedules list
               Expanded(
@@ -219,7 +206,8 @@ class ScheduleScreen extends StatelessWidget {
                         itemCount: controller.schedules.length,
                         itemBuilder: (context, index) {
                           final schedule = controller.schedules[index];
-                          final isActive = controller.isScheduleActive(schedule);
+                          final isActive =
+                              controller.isScheduleActive(schedule);
                           final isEnabled = schedule['enabled'] as bool;
                           final name = schedule['name'] as String;
                           final icon = schedule['icon'] as String;
@@ -274,8 +262,8 @@ class ScheduleScreen extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 4),
                                             Text(
-                                              controller
-                                                  .getScheduleDuration(schedule),
+                                              controller.getScheduleDuration(
+                                                  schedule),
                                               style: TextStyle(
                                                 color: FastColors.secondaryText(
                                                     context),
@@ -287,9 +275,10 @@ class ScheduleScreen extends StatelessWidget {
                                       ),
                                       CupertinoSwitch(
                                         value: isEnabled,
-                                        activeTrackColor: OnboardingTheme.goldColor,
-                                        onChanged: (_) =>
-                                            controller.toggleScheduleEnabled(index),
+                                        activeTrackColor:
+                                            OnboardingTheme.goldColor,
+                                        onChanged: (_) => controller
+                                            .toggleScheduleEnabled(index),
                                       ),
                                     ],
                                   ),
@@ -307,17 +296,21 @@ class ScheduleScreen extends StatelessWidget {
                                       children: [
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () => controller.editScheduleTime(
-                                                index, true),
+                                            onTap: () => controller
+                                                .editScheduleTime(index, true),
                                             child: Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 12, vertical: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
                                               decoration: BoxDecoration(
-                                                color: OnboardingTheme.backgroundColor,
+                                                color: OnboardingTheme
+                                                    .backgroundColor,
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 border: Border.all(
-                                                  color: OnboardingTheme.goldColor
+                                                  color: OnboardingTheme
+                                                      .goldColor
                                                       .withValues(alpha: 0.2),
                                                   width: 1,
                                                 ),
@@ -331,7 +324,8 @@ class ScheduleScreen extends StatelessWidget {
                                                     style: TextStyle(
                                                       fontSize: 11,
                                                       color: FastColors
-                                                          .tertiaryText(context),
+                                                          .tertiaryText(
+                                                              context),
                                                     ),
                                                   ),
                                                   const SizedBox(height: 4),
@@ -340,9 +334,10 @@ class ScheduleScreen extends StatelessWidget {
                                                         startHour, startMinute),
                                                     style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.w600,
-                                                      color:
-                                                          OnboardingTheme.goldColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: OnboardingTheme
+                                                          .goldColor,
                                                     ),
                                                   ),
                                                 ],
@@ -364,17 +359,21 @@ class ScheduleScreen extends StatelessWidget {
                                         ),
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () => controller.editScheduleTime(
-                                                index, false),
+                                            onTap: () => controller
+                                                .editScheduleTime(index, false),
                                             child: Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 12, vertical: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 10),
                                               decoration: BoxDecoration(
-                                                color: OnboardingTheme.backgroundColor,
+                                                color: OnboardingTheme
+                                                    .backgroundColor,
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 border: Border.all(
-                                                  color: OnboardingTheme.goldColor
+                                                  color: OnboardingTheme
+                                                      .goldColor
                                                       .withValues(alpha: 0.2),
                                                   width: 1,
                                                 ),
@@ -388,7 +387,8 @@ class ScheduleScreen extends StatelessWidget {
                                                     style: TextStyle(
                                                       fontSize: 11,
                                                       color: FastColors
-                                                          .tertiaryText(context),
+                                                          .tertiaryText(
+                                                              context),
                                                     ),
                                                   ),
                                                   const SizedBox(height: 4),
@@ -397,9 +397,10 @@ class ScheduleScreen extends StatelessWidget {
                                                         endHour, endMinute),
                                                     style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.w600,
-                                                      color:
-                                                          OnboardingTheme.goldColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: OnboardingTheme
+                                                          .goldColor,
                                                     ),
                                                   ),
                                                 ],
@@ -414,37 +415,55 @@ class ScheduleScreen extends StatelessWidget {
                                     if (isActive) ...[
                                       const SizedBox(height: 12),
                                       Obx(() => Row(
-                                        children: [
-                                          Icon(
-                                            controller.isScreenTimeAuthorized.value &&
-                                            controller.selectedAppsCount.value > 0
-                                              ? Icons.lock
-                                              : Icons.schedule,
-                                            size: 16,
-                                            color: controller.isScreenTimeAuthorized.value &&
-                                            controller.selectedAppsCount.value > 0
-                                              ? FastColors.primary
-                                              : FastColors.warning,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              controller.isScreenTimeAuthorized.value &&
-                                              controller.selectedAppsCount.value > 0
-                                                ? 'Active now - Apps are blocked'
-                                                : 'Active period - Select apps to start blocking',
-                                              style: TextStyle(
-                                                color: controller.isScreenTimeAuthorized.value &&
-                                                controller.selectedAppsCount.value > 0
-                                                  ? FastColors.primary
-                                                  : FastColors.warning,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
+                                            children: [
+                                              Icon(
+                                                controller.isScreenTimeAuthorized
+                                                            .value &&
+                                                        controller
+                                                                .selectedAppsCount
+                                                                .value >
+                                                            0
+                                                    ? Icons.lock
+                                                    : Icons.schedule,
+                                                size: 16,
+                                                color: controller
+                                                            .isScreenTimeAuthorized
+                                                            .value &&
+                                                        controller
+                                                                .selectedAppsCount
+                                                                .value >
+                                                            0
+                                                    ? FastColors.primary
+                                                    : FastColors.warning,
                                               ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(
+                                                  controller.isScreenTimeAuthorized
+                                                              .value &&
+                                                          controller
+                                                                  .selectedAppsCount
+                                                                  .value >
+                                                              0
+                                                      ? 'Active now - Apps are blocked'
+                                                      : 'Active period - Select apps to start blocking',
+                                                  style: TextStyle(
+                                                    color: controller
+                                                                .isScreenTimeAuthorized
+                                                                .value &&
+                                                            controller
+                                                                    .selectedAppsCount
+                                                                    .value >
+                                                                0
+                                                        ? FastColors.primary
+                                                        : FastColors.warning,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
                                     ],
                                   ],
                                 ],

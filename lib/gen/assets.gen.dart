@@ -9,6 +9,16 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsFontsGen {
+  const $AssetsFontsGen();
+
+  /// File path: assets/fonts/garamon.ttf
+  String get garamon => 'assets/fonts/garamon.ttf';
+
+  /// List of all assets
+  List<String> get values => [garamon];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -23,6 +33,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

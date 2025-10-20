@@ -8,7 +8,7 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     // Register ScreenTimePlugin manually BEFORE GeneratedPluginRegistrant
-    if #available(iOS 15.0, *) {
+    if #available(iOS 16.0, *) {
       let registrar = self.registrar(forPlugin: "ScreenTimePlugin")
       ScreenTimePlugin.register(with: registrar!)
     }

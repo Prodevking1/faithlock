@@ -11,9 +11,10 @@ import ManagedSettings
 import Foundation
 
 /// Extension that monitors device activity and enforces app blocking schedules
-class FaithLockDeviceActivityMonitor: DeviceActivityMonitor {
+class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
-    let store = ManagedSettingsStore()
+    // Use named store to share with main app
+    let store = ManagedSettingsStore(named: ManagedSettingsStore.Name("faithlock"))
 
     /// Called when a monitoring interval starts (e.g., 8:00 AM for morning lock)
     override func intervalDidStart(for activity: DeviceActivityName) {

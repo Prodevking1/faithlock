@@ -36,8 +36,11 @@ class ScriptureOnboardingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadProgress();
-    _initializeDefaultSchedules();
+    // Load asynchronously without blocking
+    Future.microtask(() async {
+      await loadProgress();
+      await _initializeDefaultSchedules();
+    });
   }
 
   /// Initialize default schedules if none exist

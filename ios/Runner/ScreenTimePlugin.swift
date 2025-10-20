@@ -12,11 +12,12 @@ import FamilyControls
 import ManagedSettings
 import DeviceActivity
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 class ScreenTimePlugin: NSObject, FlutterPlugin {
 
     private let center = AuthorizationCenter.shared
-    private let store = ManagedSettingsStore()
+    // Use named store to share with DeviceActivityMonitor extension
+    private let store = ManagedSettingsStore(named: ManagedSettingsStore.Name("faithlock"))
 
     // App Group for sharing data (optional but recommended)
     private let appGroupIdentifier = "group.com.appbiz.faithlock"
@@ -46,7 +47,12 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
         case "getSelectedApps":
             handleGetSelectedApps(result: result)
         case "startBlocking":
-            handleStartBlocking(call: call, result: result)
+            // DEPRECATED: Now using DeviceActivity automatic scheduling
+            result(FlutterError(
+                code: "DEPRECATED",
+                message: "startBlocking is deprecated. Use setupSchedules instead.",
+                details: nil
+            ))
         case "stopBlocking":
             handleStopBlocking(result: result)
         case "isMonitoring":
@@ -59,6 +65,8 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handleRemoveAllSchedules(result: result)
         case "temporaryUnlock":
             handleTemporaryUnlock(call: call, result: result)
+        case "applyBlockingNow":
+            handleApplyBlockingNow(result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -170,11 +178,12 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
                 // Save the selection
                 self.saveSelectedApps(selection)
 
-                // Apply blocking immediately for testing
-                self.applyImmediateBlock(selection)
+                // Don't block immediately - let schedules control it
+                // The DeviceActivityMonitor will handle blocking during scheduled times
 
                 // Log selection
                 print("📱 FaithLock: Saved \(selection.applicationTokens.count) apps, \(selection.categoryTokens.count) categories, \(selection.webDomainTokens.count) web domains")
+                print("⏰ Apps will be blocked during scheduled times only")
 
                 // Return success
                 result(true)
@@ -207,26 +216,6 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
         defaults.synchronize()
         print("✅ FaithLock: Apps saved to App Groups storage")
-    }
-
-    private func applyImmediateBlock(_ selection: FamilyActivitySelection) {
-        // Block applications
-        if !selection.applicationTokens.isEmpty {
-            store.shield.applications = selection.applicationTokens
-            print("🔒 Blocked \(selection.applicationTokens.count) applications immediately")
-        }
-
-        // Block categories
-        if !selection.categoryTokens.isEmpty {
-            store.shield.applicationCategories = .specific(selection.categoryTokens)
-            print("🔒 Blocked \(selection.categoryTokens.count) categories immediately")
-        }
-
-        // Block web domains
-        if !selection.webDomainTokens.isEmpty {
-            store.shield.webDomains = selection.webDomainTokens
-            print("🔒 Blocked \(selection.webDomainTokens.count) web domains immediately")
-        }
     }
 
     private func loadSelectedApps() -> FamilyActivitySelection {
@@ -350,6 +339,29 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
         defaults.removeObject(forKey: "currentScheduleId")
         defaults.removeObject(forKey: "currentScheduleName")
         defaults.removeObject(forKey: "unlockTime")
+
+        result(true)
+    }
+
+    private func handleApplyBlockingNow(result: @escaping FlutterResult) {
+        // Load selected apps
+        let selection = loadSelectedApps()
+
+        // Apply shields immediately
+        if !selection.applicationTokens.isEmpty {
+            store.shield.applications = selection.applicationTokens
+            print("🔒 Applied immediate blocking to \(selection.applicationTokens.count) apps")
+        }
+
+        if !selection.categoryTokens.isEmpty {
+            store.shield.applicationCategories = .specific(selection.categoryTokens)
+            print("🔒 Applied immediate blocking to \(selection.categoryTokens.count) categories")
+        }
+
+        if !selection.webDomainTokens.isEmpty {
+            store.shield.webDomains = selection.webDomainTokens
+            print("🔒 Applied immediate blocking to \(selection.webDomainTokens.count) web domains")
+        }
 
         result(true)
     }
@@ -498,17 +510,24 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             let deviceSchedule = DeviceActivitySchedule(
                 intervalStart: startComponents,
                 intervalEnd: endComponents,
-                repeats: true
+                repeats: true,
+                warningTime: nil
             )
 
             do {
+                // IMPORTANT: This triggers the DeviceActivityMonitor extension
+                // The extension's intervalDidStart/intervalDidEnd methods will be called automatically
                 try deviceActivityCenter.startMonitoring(activityName, during: deviceSchedule)
-                print("✅ FaithLock: Started monitoring schedule '\(schedule.name)'")
+                print("✅ FaithLock: Started monitoring schedule '\(schedule.name)' - Extension will be activated automatically")
+                print("   📅 Start: \(schedule.startHour):\(String(format: "%02d", schedule.startMinute))")
+                print("   📅 End: \(schedule.endHour):\(String(format: "%02d", schedule.endMinute))")
             } catch {
                 print("❌ FaithLock: Failed to start monitoring '\(schedule.name)': \(error)")
             }
         }
 
+        print("ℹ️ FaithLock: \(schedules.count) schedule(s) configured")
+        print("⚠️ Note: iOS may take a few minutes to activate the DeviceActivityMonitor extension the first time")
         result(true)
     }
 

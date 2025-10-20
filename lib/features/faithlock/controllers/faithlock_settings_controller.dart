@@ -25,7 +25,7 @@ class FaithLockSettingsController extends GetxController {
   void onInit() {
     super.onInit();
     // Load data asynchronously without blocking initialization
-    _initializeAsync();
+    Future.microtask(() => _initializeAsync());
   }
 
   /// Initialize data asynchronously to avoid blocking UI
