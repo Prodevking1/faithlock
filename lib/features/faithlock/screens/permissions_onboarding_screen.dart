@@ -29,53 +29,40 @@ class _PermissionsOnboardingScreenState
     });
 
     try {
-      final granted = await _screenTimeService.requestAuthorization();
-
-      // if (granted) {
-      //   Get.snackbar(
-      //     'Permission Granted',
-      //     'Screen Time access enabled successfully!',
-      //     snackPosition: SnackPosition.BOTTOM,
-      //     backgroundColor: FastColors.successGreen,
-      //     colorText: Colors.white,
-      //   );
-
-      //   // Navigate to main screen
-      //   await Future.delayed(const Duration(milliseconds: 500));
-      //   Get.offAll(() => MainScreen());
-      // } else {
-      //   // Permission denied
-      //   Get.snackbar(
-      //     'Permission Denied',
-      //     'You can enable Screen Time access later in Settings',
-      //     snackPosition: SnackPosition.BOTTOM,
-      //     backgroundColor: FastColors.warning,
-      //     colorText: Colors.white,
-      //     duration: const Duration(seconds: 4),
-      //   );
-
-      //   // Still allow them to continue
-      //   await Future.delayed(const Duration(seconds: 1));
-      //   Get.offAll(() => MainScreen());
-      // }
-
-      FastToast.showSuccess(
-          context: context,
-          message: "Screen Time access enabled successfully!");
+      await _screenTimeService.requestAuthorization();
       await Future.delayed(const Duration(milliseconds: 500));
-      Get.offAll(() => MainScreen());
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to request permission: $e',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: FastColors.error,
-        colorText: Colors.white,
-      );
 
-      setState(() {
-        _isRequesting = false;
-      });
+      final isAuthorized = await _screenTimeService.isAuthorized();
+
+      if (mounted) {
+        setState(() {
+          _isRequesting = false;
+        });
+
+        if (isAuthorized) {
+          FastToast.showSuccess(
+            context: context,
+            message: "Screen Time access enabled successfully!",
+          );
+          await Future.delayed(const Duration(milliseconds: 500));
+          Get.offAll(() => MainScreen());
+        } else {
+          FastToast.showError(
+            context: context,
+            message: "Permission denied. Enable it in Settings.",
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isRequesting = false;
+        });
+        FastToast.showError(
+          context: context,
+          message: "Failed to request permission",
+        );
+      }
     }
   }
 

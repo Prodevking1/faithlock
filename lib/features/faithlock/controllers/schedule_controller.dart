@@ -1,15 +1,17 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+
+import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
-import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
+import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Controller for Schedule Management Screen
 /// Manages lock schedules from onboarding with DeviceActivity
-class ScheduleController extends GetxController {
+class ScheduleController extends GetxController with WidgetsBindingObserver {
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final StorageService _storage = StorageService();
 
@@ -28,6 +30,9 @@ class ScheduleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Register lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
+
     // Load asynchronously without blocking
     Future.microtask(() async {
       await loadSchedules();
@@ -35,6 +40,23 @@ class ScheduleController extends GetxController {
       await _loadSelectedAppsCount();
       await _checkForSelectedApps();
     });
+  }
+
+  @override
+  void onClose() {
+    // Unregister lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Refresh permissions when app comes back to foreground
+    if (state == AppLifecycleState.resumed) {
+      debugPrint('📱 App resumed - refreshing Screen Time permissions');
+      checkScreenTimeAuthorization();
+      _loadSelectedAppsCount();
+    }
   }
 
   /// Load count of selected apps
@@ -57,7 +79,8 @@ class ScheduleController extends GetxController {
       if (!isAuth) return; // Don't prompt if not authorized
 
       // Check if user has already seen this prompt
-      final hasSeenPrompt = await _storage.readBool(_keyHasSeenAppsPrompt) ?? false;
+      final hasSeenPrompt =
+          await _storage.readBool(_keyHasSeenAppsPrompt) ?? false;
       if (hasSeenPrompt) return; // Don't show again if already dismissed
 
       final hasApps = await _screenTimeService.hasSelectedApps();
@@ -129,24 +152,40 @@ class ScheduleController extends GetxController {
       final granted = await _screenTimeService.requestAuthorization();
 
       if (granted) {
-        FastToast.showSuccess(
-          context: context,
-          message: 'Screen Time access granted',
-        );
+        FastToast.success('Screen Time access granted');
+        // Refresh this controller
         await checkScreenTimeAuthorization();
+        await _loadSelectedAppsCount();
+
+        // Sync with other controllers if they exist
+        _syncPermissionsWithOtherControllers();
       } else {
-        FastToast.showWarning(
-          context: context,
+        FastToast.warning(
+          'Please grant Screen Time access in Settings to use app blocking',
           title: 'Authorization Denied',
-          message: 'Please grant Screen Time access in Settings to use app blocking',
         );
       }
     } catch (e) {
-      FastToast.showError(
-        context: context,
+      FastToast.error(
+        'Failed to request authorization: $e',
         title: 'Error',
-        message: 'Failed to request authorization: $e',
       );
+    }
+  }
+
+  /// Sync permissions with other controllers to keep UI in sync
+  void _syncPermissionsWithOtherControllers() {
+    try {
+      // Try to find and refresh FaithLockSettingsController if it exists
+      if (Get.isRegistered<FaithLockSettingsController>()) {
+        final faithLockController = Get.find<FaithLockSettingsController>();
+        faithLockController.checkScreenTimePermission();
+        faithLockController.loadSelectedAppsCount();
+        debugPrint('✅ Synced permissions with FaithLockSettingsController');
+      }
+    } catch (e) {
+      // Controller not registered yet, that's fine
+      debugPrint('ℹ️ FaithLockSettingsController not registered: $e');
     }
   }
 
@@ -157,61 +196,107 @@ class ScheduleController extends GetxController {
 
     try {
       if (!isScreenTimeAuthorized.value) {
-        FastToast.showWarning(
-          context: context,
+        FastToast.warning(
+          'Please authorize Screen Time access first',
           title: 'Authorization Required',
-          message: 'Please authorize Screen Time access first',
         );
         return;
       }
 
-      // Present the native FamilyActivityPicker
       await _screenTimeService.presentAppPicker();
-
-      // Reload apps count after selection
       await _loadSelectedAppsCount();
 
-      // Auto-setup DeviceActivity schedules from onboarding data
-      await _setupSchedulesFromOnboarding();
+      try {
+        final settingsController = Get.find<FaithLockSettingsController>();
+        await settingsController.loadSelectedAppsCount();
+      } catch (e) {}
 
-      // Check if we're currently in an active schedule and apply blocking immediately
-      await _checkAndApplyCurrentSchedule();
+      if (selectedAppsCount.value > 0) {
+        await loadSchedules();
+        await _setupSchedulesFromOnboarding();
 
-      // Show success message after selection
-      if (context.mounted) {
-        FastToast.showSuccess(
-          context: context,
-          title: 'Apps Selected & Locked',
-          message: 'Your apps will be automatically blocked during scheduled times',
+        final hasActiveSchedule = schedules.any((s) {
+          if (s['enabled'] != true) return false;
+
+          final currentTime = TimeOfDay.now();
+          final currentMinutes = currentTime.hour * 60 + currentTime.minute;
+
+          final startHour = s['startHour'] as int;
+          final startMinute = s['startMinute'] as int;
+          final endHour = s['endHour'] as int;
+          final endMinute = s['endMinute'] as int;
+
+          final startMinutes = startHour * 60 + startMinute;
+          final endMinutes = endHour * 60 + endMinute;
+
+          if (endMinutes < startMinutes) {
+            return currentMinutes >= startMinutes ||
+                currentMinutes < endMinutes;
+          }
+
+          return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+        });
+
+        if (hasActiveSchedule) {
+          try {
+            await _screenTimeService.applyBlockingNow();
+            debugPrint(
+                '✅ Applied blocking immediately - currently in active schedule');
+          } catch (e) {
+            debugPrint('⚠️ Failed to apply immediate blocking: $e');
+          }
+        }
+
+        final enabledCount =
+            schedules.where((s) => s['enabled'] == true).length;
+
+        if (enabledCount > 0) {
+          FastToast.success(
+            'Your apps will be automatically blocked during scheduled times',
+            title: 'Apps Selected & Locked',
+          );
+        } else {
+          FastToast.info(
+            'Apps selected. Enable at least one schedule to activate blocking.',
+            title: 'Apps Selected',
+          );
+        }
+      } else {
+        FastToast.info(
+          'Select apps to enable blocking',
+          title: 'No Apps Selected',
         );
       }
     } catch (e) {
-      if (context.mounted) {
-        FastToast.showError(
-          context: context,
+      debugPrint('❌ Error in selectAppsToBlock: $e');
+      // Only show toast if we have a valid context with overlay
+      try {
+        FastToast.error(
+          'Failed to show app picker: $e',
           title: 'Error',
-          message: 'Failed to show app picker: $e',
         );
+      } catch (toastError) {
+        debugPrint('⚠️ Could not show error toast: $toastError');
       }
     }
   }
 
-  /// Setup DeviceActivity schedules from onboarding data
+  /// Setup DeviceActivity schedules from loaded schedule data
   Future<void> _setupSchedulesFromOnboarding() async {
     try {
-      final schedulesJson = await _storage.readString('onboarding_schedules');
-
-      if (schedulesJson == null || schedulesJson.isEmpty) {
-        debugPrint('⚠️ No onboarding schedules found');
+      // ✅ Use local schedules list (should be loaded before calling this)
+      if (schedules.isEmpty) {
+        debugPrint('⚠️ No schedules available to setup');
         return;
       }
 
-      final List<dynamic> schedulesData = jsonDecode(schedulesJson);
-      final List<Map<String, dynamic>> schedules =
-          schedulesData.map((s) => Map<String, dynamic>.from(s)).toList();
+      // ✅ Only send ENABLED schedules to native side
+      final enabledSchedules =
+          schedules.where((s) => s['enabled'] == true).toList();
 
-      await _screenTimeService.setupSchedules(schedules);
-      debugPrint('✅ DeviceActivity schedules setup successfully');
+      await _screenTimeService.setupSchedules(enabledSchedules);
+      debugPrint(
+          '✅ DeviceActivity schedules setup successfully (${enabledSchedules.length} enabled out of ${schedules.length} total)');
     } catch (e) {
       debugPrint('⚠️ Failed to setup DeviceActivity schedules: $e');
     }
@@ -227,9 +312,8 @@ class ScheduleController extends GetxController {
 
       if (schedulesJson != null && schedulesJson.isNotEmpty) {
         final List<dynamic> schedulesData = jsonDecode(schedulesJson);
-        schedules.value = schedulesData
-            .map((s) => Map<String, dynamic>.from(s))
-            .toList();
+        schedules.value =
+            schedulesData.map((s) => Map<String, dynamic>.from(s)).toList();
       } else {
         schedules.value = [];
       }
@@ -259,20 +343,12 @@ class ScheduleController extends GetxController {
 
       await _saveAndResetupSchedules();
 
-      if (context.mounted) {
-        FastToast.showSuccess(
-          context: context,
-          message: 'Schedule updated successfully',
-        );
-      }
+      FastToast.success('Schedule updated successfully');
     } catch (e) {
-      if (context.mounted) {
-        FastToast.showError(
-          context: context,
-          title: 'Error',
-          message: 'Failed to update schedule: $e',
-        );
-      }
+      FastToast.error(
+        'Failed to update schedule: $e',
+        title: 'Error',
+      );
     }
   }
 
@@ -281,8 +357,10 @@ class ScheduleController extends GetxController {
     final context = Get.context;
     if (context == null) return;
 
-    final currentHour = schedules[index][isStart ? 'startHour' : 'endHour'] as int;
-    final currentMinute = schedules[index][isStart ? 'startMinute' : 'endMinute'] as int;
+    final currentHour =
+        schedules[index][isStart ? 'startHour' : 'endHour'] as int;
+    final currentMinute =
+        schedules[index][isStart ? 'startMinute' : 'endMinute'] as int;
 
     DateTime selectedTime = DateTime(
       DateTime.now().year,
@@ -313,9 +391,12 @@ class ScheduleController extends GetxController {
                     child: const Text('Done'),
                     onPressed: () async {
                       // Create a new Map to force GetX to detect the change
-                      final updatedSchedule = Map<String, dynamic>.from(schedules[index]);
-                      updatedSchedule[isStart ? 'startHour' : 'endHour'] = selectedTime.hour;
-                      updatedSchedule[isStart ? 'startMinute' : 'endMinute'] = selectedTime.minute;
+                      final updatedSchedule =
+                          Map<String, dynamic>.from(schedules[index]);
+                      updatedSchedule[isStart ? 'startHour' : 'endHour'] =
+                          selectedTime.hour;
+                      updatedSchedule[isStart ? 'startMinute' : 'endMinute'] =
+                          selectedTime.minute;
 
                       // Replace the schedule in the list
                       schedules[index] = updatedSchedule;
@@ -327,12 +408,7 @@ class ScheduleController extends GetxController {
 
                       await _saveAndResetupSchedules();
 
-                      if (context.mounted) {
-                        FastToast.showSuccess(
-                          context: context,
-                          message: 'Schedule time updated',
-                        );
-                      }
+                      FastToast.success('Schedule time updated');
                     },
                   ),
                 ],
@@ -364,34 +440,24 @@ class ScheduleController extends GetxController {
         jsonEncode(schedules),
       );
 
-      // Re-setup DeviceActivity with enabled schedules
-      await _screenTimeService.setupSchedules(schedules);
+      // ✅ Re-setup DeviceActivity with ONLY enabled schedules
+      final enabledSchedules =
+          schedules.where((s) => s['enabled'] == true).toList();
+      await _screenTimeService.setupSchedules(enabledSchedules);
 
       // Debug: Print all schedules and their status
-      debugPrint('📋 Checking schedules:');
+      debugPrint('📋 Schedules re-setup:');
       for (var s in schedules) {
         final enabled = s['enabled'] as bool;
         final isActive = isScheduleActive(s);
         debugPrint('   ${s['name']}: enabled=$enabled, active=$isActive');
       }
 
-      // Check if there's an active schedule right now
-      final activeSchedule = schedules.firstWhereOrNull(
-        (s) => s['enabled'] == true && isScheduleActive(s)
-      );
+      // ❌ REMOVED: No immediate blocking/unblocking
+      // DeviceActivityMonitor will automatically handle blocking based on schedules
 
-      if (activeSchedule != null) {
-        // We're in an active schedule - apply blocking immediately
-        debugPrint('🔒 Active schedule detected: ${activeSchedule['name']}');
-        debugPrint('⚡ Applying blocking immediately...');
-        await _screenTimeService.applyBlockingNow();
-      } else {
-        // No active schedule - remove blocking
-        debugPrint('🔓 No active schedules - removing blocking');
-        await _screenTimeService.stopBlocking();
-      }
-
-      debugPrint('✅ Schedules saved and re-setup successfully');
+      debugPrint(
+          '✅ Schedules saved and re-setup successfully (${enabledSchedules.length} enabled)');
     } catch (e) {
       debugPrint('⚠️ Failed to save/re-setup schedules: $e');
       rethrow;
@@ -457,9 +523,9 @@ class ScheduleController extends GetxController {
     }
   }
 
-  /// Refresh schedules
   Future<void> refreshSchedules() async {
     await loadSchedules();
+    await _loadSelectedAppsCount();
   }
 
   /// Test blocking for 15 minutes (iOS minimum interval)
@@ -469,10 +535,9 @@ class ScheduleController extends GetxController {
 
     try {
       if (!isScreenTimeAuthorized.value) {
-        FastToast.showWarning(
-          context: context,
+        FastToast.warning(
+          'Please grant Screen Time access first',
           title: 'Authorization Required',
-          message: 'Please grant Screen Time access first',
         );
         return;
       }
@@ -499,68 +564,26 @@ class ScheduleController extends GetxController {
       // Setup test schedule
       await _screenTimeService.setupSchedules(testSchedules);
 
-      if (context.mounted) {
+      // ✅ Using Get.context for custom duration toast
+      final ctx = Get.context;
+      if (ctx != null) {
         FastToast.showSuccess(
-          context: context,
+          context: ctx,
           title: 'Test Lock Active',
-          message: 'Apps will be blocked for 15 minutes. Try opening a selected app.',
+          message:
+              'Apps will be blocked for 15 minutes. Try opening a selected app.',
           duration: const Duration(seconds: 5),
         );
       }
     } catch (e) {
-      if (context.mounted) {
+      final ctx = Get.context;
+      if (ctx != null) {
         FastToast.showError(
-          context: context,
+          context: ctx,
           title: 'Error',
-          message: 'Failed to start test: ${e.toString().contains('intervalTooShort') ? 'iOS requires 15 min minimum' : e}',
+          message:
+              'Failed to start test: ${e.toString().contains('intervalTooShort') ? 'iOS requires 15 min minimum' : e}',
           duration: const Duration(seconds: 5),
-        );
-      }
-    }
-  }
-
-  /// Check if we're in an active schedule and apply blocking
-  Future<void> _checkAndApplyCurrentSchedule() async {
-    try {
-      // Find any currently active schedule
-      final activeSchedule = schedules.firstWhereOrNull(
-        (schedule) => isScheduleActive(schedule),
-      );
-
-      if (activeSchedule != null) {
-        debugPrint('🔒 Currently in active schedule: ${activeSchedule['name']}');
-        debugPrint('⚡ Applying blocking immediately via native...');
-
-        // Apply blocking through native DeviceActivity
-        // The DeviceActivityMonitor will eventually take over, but we apply it now too
-        await _screenTimeService.applyBlockingNow();
-      }
-    } catch (e) {
-      debugPrint('⚠️ Failed to check/apply current schedule: $e');
-    }
-  }
-
-  /// Stop blocking immediately
-  Future<void> stopBlockingNow() async {
-    final context = Get.context;
-    if (context == null) return;
-
-    try {
-      await _screenTimeService.stopBlocking();
-
-      if (context.mounted) {
-        FastToast.showInfo(
-          context: context,
-          title: 'Blocking Stopped',
-          message: 'All restrictions have been removed',
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        FastToast.showError(
-          context: context,
-          title: 'Error',
-          message: 'Failed to stop blocking: $e',
         );
       }
     }

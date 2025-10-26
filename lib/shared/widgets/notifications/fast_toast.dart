@@ -56,6 +56,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 enum FastToastType {
   success,
@@ -78,7 +79,10 @@ class FastToast {
   }) {
     _removeCurrentToast();
 
-    final overlay = Overlay.of(context);
+    // ✅ Use Get.overlayContext for GetX compatibility
+    // This ensures we get a context that has Overlay ancestor
+    final overlayContext = Get.overlayContext ?? context;
+    final overlay = Overlay.of(overlayContext);
 
     _currentToast = OverlayEntry(
       builder: (context) => _FastToastWidget(
@@ -161,6 +165,33 @@ class FastToast {
       duration: duration,
       onTap: onTap,
     );
+  }
+
+  // ✅ GetX-friendly methods that don't require context
+  // Use these when calling from GetX controllers
+
+  static void success(String message, {String? title}) {
+    final context = Get.overlayContext;
+    if (context == null) return;
+    showSuccess(context: context, message: message, title: title);
+  }
+
+  static void error(String message, {String? title}) {
+    final context = Get.overlayContext;
+    if (context == null) return;
+    showError(context: context, message: message, title: title);
+  }
+
+  static void warning(String message, {String? title}) {
+    final context = Get.overlayContext;
+    if (context == null) return;
+    showWarning(context: context, message: message, title: title);
+  }
+
+  static void info(String message, {String? title}) {
+    final context = Get.overlayContext;
+    if (context == null) return;
+    showInfo(context: context, message: message, title: title);
   }
 
   static void dismiss() {

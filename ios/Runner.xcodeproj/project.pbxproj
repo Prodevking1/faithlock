@@ -3,30 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F63D05B97C95A4096773062 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12BA2856E18FD0BEE562A2C /* Pods_Runner.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		2E773B389661EBA0F28BB736 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6A0E2E29772C2922BAEB69C /* Pods_RunnerTests.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		5E73F4DC2CC5436E004651CC /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		5E73F4E92CC5444F004651CC /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E73F4E52CC5444F004651CC /* NotificationService.swift */; };
-		699184C253CA4DC70E0DFDCF /* Pods_DeviceActivityMonitorExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD9C34B2B12390BB3518DFC /* Pods_DeviceActivityMonitorExtension.framework */; };
-		6D08375DA3B6318820322D99 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8339616B2D539078EB13C502 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		7CC020D62EA5731E00C3F8C2 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */; };
-		7CC020DE2EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7CC021302EA5D4E700C3F8C2 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC0212F2EA5D4E700C3F8C2 /* ManagedSettings.framework */; };
-		7CC021382EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7CC0212E2EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7CCD67F32E9E959F0040785B /* ScreenTimePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD67F22E9E959F0040785B /* ScreenTimePlugin.swift */; };
-		7CCD67F72E9EA7650040785B /* FamilyActivityPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD67F62E9EA7650040785B /* FamilyActivityPickerViewController.swift */; };
+		7C7113F12EABB25400410605 /* FamilyActivityPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7113EF2EABB25400410605 /* FamilyActivityPickerViewController.swift */; };
+		7C7113F22EABB25400410605 /* ScreenTimePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7113F02EABB25400410605 /* ScreenTimePlugin.swift */; };
+		7C7113FB2EABB3B600410605 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7113FA2EABB3B600410605 /* ManagedSettings.framework */; };
+		7C7113FD2EABB3B600410605 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7113FC2EABB3B600410605 /* ManagedSettingsUI.framework */; };
+		7C7114052EABB3B600410605 /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7C7113F82EABB3B600410605 /* ShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7C7114882EABCC3700410605 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7113FA2EABB3B600410605 /* ManagedSettings.framework */; };
+		7C7114902EABCC3700410605 /* ShieldActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7C7114872EABCC3700410605 /* ShieldActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7C7114B02EABD3D000410605 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7114AF2EABD3D000410605 /* DeviceActivity.framework */; };
+		7C7114B82EABD3D000410605 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7C7114AE2EABD3D000410605 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		AC29526C028F9A0419126509 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E2990C7D5479D9045CEAC1 /* Pods_RunnerTests.framework */; };
-		C436EBC952A51C363BE0BA58 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 654F564EDA718970801CFC4B /* Pods_OneSignalNotificationServiceExtension.framework */; };
-		F39FF7B886123E6888A3A803 /* Pods_ShieldConfigurationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA07A069D084A6F675019AF /* Pods_ShieldConfigurationExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,42 +35,42 @@
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
-		5E73F4DA2CC5436E004651CC /* PBXContainerItemProxy */ = {
+		7C7114032EABB3B600410605 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5E73F4D42CC5436E004651CC;
-			remoteInfo = OneSignalNotificationServiceExtension;
-		};
-		7CC020DC2EA5731E00C3F8C2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CC020D32EA5731E00C3F8C2;
-			remoteInfo = DeviceActivityMonitorExtension;
-		};
-		7CC021362EA5D4E700C3F8C2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CC0212D2EA5D4E700C3F8C2;
+			remoteGlobalIDString = 7C7113F72EABB3B600410605;
 			remoteInfo = ShieldConfigurationExtension;
+		};
+		7C71148E2EABCC3700410605 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7C7114862EABCC3700410605;
+			remoteInfo = ShieldActionExtension;
+		};
+		7C7114B62EABD3D000410605 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7C7114AD2EABD3D000410605;
+			remoteInfo = DeviceActivityMonitorExtension;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5E73F4E22CC5436E004651CC /* Embed Foundation Extensions */ = {
+		7C71140B2EABB3B600410605 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				7CC020DE2EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */,
-				7CC021382EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */,
-				5E73F4DC2CC5436E004651CC /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */,
+				7C7114B82EABD3D000410605 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */,
+				7C7114052EABB3B600410605 /* ShieldConfigurationExtension.appex in Embed Foundation Extensions */,
+				7C7114902EABCC3700410605 /* ShieldActionExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -87,38 +85,29 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0AD9C34B2B12390BB3518DFC /* Pods_DeviceActivityMonitorExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeviceActivityMonitorExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BF8E8CD04F3BAADA8AFDA5E /* Pods-ShieldConfigurationExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShieldConfigurationExtension.profile.xcconfig"; path = "Target Support Files/Pods-ShieldConfigurationExtension/Pods-ShieldConfigurationExtension.profile.xcconfig"; sourceTree = "<group>"; };
-		0EA07A069D084A6F675019AF /* Pods_ShieldConfigurationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShieldConfigurationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		264887C34F4AE9A75F12CF71 /* Pods-DeviceActivityMonitorExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceActivityMonitorExtension.profile.xcconfig"; path = "Target Support Files/Pods-DeviceActivityMonitorExtension/Pods-DeviceActivityMonitorExtension.profile.xcconfig"; sourceTree = "<group>"; };
-		2DA83414D29FADA06B413803 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		50608E4F142DE83A86CE8202 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		56AD92685388B15C767C2B18 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; sourceTree = "<group>"; };
-		5E73F4D02CC54329004651CC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
-		5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E73F4E42CC5444F004651CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E73F4E52CC5444F004651CC /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		5E73F4E62CC5444F004651CC /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
-		654F564EDA718970801CFC4B /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F8C44C7DDF72B47CA19C253 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		3E0425948612866CCB7CA44A /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
+		587E82FF510C4DC92DBAB512 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		5E87F61A65AFFACE47EB7724 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
-		7CC0212E2EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CC0212F2EA5D4E700C3F8C2 /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
-		7CCD67F22E9E959F0040785B /* ScreenTimePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTimePlugin.swift; sourceTree = "<group>"; };
-		7CCD67F42E9EA73E0040785B /* FamilyActivityPickerViewController 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FamilyActivityPickerViewController 2.swift"; sourceTree = "<group>"; };
-		7CCD67F62E9EA7650040785B /* FamilyActivityPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerViewController.swift; sourceTree = "<group>"; };
-		8339616B2D539078EB13C502 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		92A446937F43CA05F77FD3A0 /* Pods-ShieldConfigurationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShieldConfigurationExtension.debug.xcconfig"; path = "Target Support Files/Pods-ShieldConfigurationExtension/Pods-ShieldConfigurationExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		93FC4E1EAD36C83C713614DE /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		7C7113EF2EABB25400410605 /* FamilyActivityPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerViewController.swift; sourceTree = "<group>"; };
+		7C7113F02EABB25400410605 /* ScreenTimePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTimePlugin.swift; sourceTree = "<group>"; };
+		7C7113F32EABB31B00410605 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		7C7113F82EABB3B600410605 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C7113FA2EABB3B600410605 /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
+		7C7113FC2EABB3B600410605 /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
+		7C7114112EABB3E700410605 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		7C7114132EABB3E700410605 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		7C71146E2EABBC7500410605 /* TestWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestWidgetExtension.entitlements; sourceTree = "<group>"; };
+		7C7114872EABCC3700410605 /* ShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C7114AE2EABD3D000410605 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C7114AF2EABD3D000410605 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,84 +115,95 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AD1D2C48980F6F0402916852 /* Pods-DeviceActivityMonitorExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceActivityMonitorExtension.debug.xcconfig"; path = "Target Support Files/Pods-DeviceActivityMonitorExtension/Pods-DeviceActivityMonitorExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		BA9BDD8927FCFD7070CD45B9 /* Pods-ShieldConfigurationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShieldConfigurationExtension.release.xcconfig"; path = "Target Support Files/Pods-ShieldConfigurationExtension/Pods-ShieldConfigurationExtension.release.xcconfig"; sourceTree = "<group>"; };
-		BCABFC53D56CDFF7D8A632A3 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
-		C03EBBEAD237FE574166ECF3 /* Pods-DeviceActivityMonitorExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceActivityMonitorExtension.release.xcconfig"; path = "Target Support Files/Pods-DeviceActivityMonitorExtension/Pods-DeviceActivityMonitorExtension.release.xcconfig"; sourceTree = "<group>"; };
-		C8AD0F224F871487BEF66BA3 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		D09D0B95E2552BE1B1A969D0 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
-		D9E2990C7D5479D9045CEAC1 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6E63A283867F27C3FCECD63 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		A7EBC0FD7DA28B5238857DFC /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		BD8880562A9FBC545894A10D /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
+		C12BA2856E18FD0BEE562A2C /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4012516BFE4B345A366B973 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		F6A0E2E29772C2922BAEB69C /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		7CC020E22EA5731E00C3F8C2 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */ = {
+		7C7114062EABB3B600410605 /* Exceptions for "ShieldConfigurationExtension" folder in "ShieldConfigurationExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */;
+			target = 7C7113F72EABB3B600410605 /* ShieldConfigurationExtension */;
 		};
-		7CC0213C2EA5D4E700C3F8C2 /* Exceptions for "ShieldConfigurationExtension.old" folder in "ShieldConfigurationExtension" target */ = {
+		7C7114942EABCC3700410605 /* Exceptions for "ShieldActionExtension" folder in "ShieldActionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 7CC0212D2EA5D4E700C3F8C2 /* ShieldConfigurationExtension */;
+			target = 7C7114862EABCC3700410605 /* ShieldActionExtension */;
+		};
+		7C7114BC2EABD3D000410605 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7C7114AD2EABD3D000410605 /* DeviceActivityMonitorExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */ = {
+		7C7113FE2EABB3B600410605 /* ShieldConfigurationExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				7CC020E22EA5731E00C3F8C2 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */,
+				7C7114062EABB3B600410605 /* Exceptions for "ShieldConfigurationExtension" folder in "ShieldConfigurationExtension" target */,
 			);
-			path = DeviceActivityMonitorExtension;
+			path = ShieldConfigurationExtension;
 			sourceTree = "<group>";
 		};
-		7CC021312EA5D4E700C3F8C2 /* ShieldConfigurationExtension.old */ = {
+		7C7114892EABCC3700410605 /* ShieldActionExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				7CC0213C2EA5D4E700C3F8C2 /* Exceptions for "ShieldConfigurationExtension.old" folder in "ShieldConfigurationExtension" target */,
+				7C7114942EABCC3700410605 /* Exceptions for "ShieldActionExtension" folder in "ShieldActionExtension" target */,
 			);
-			path = ShieldConfigurationExtension.old;
+			path = ShieldActionExtension;
+			sourceTree = "<group>";
+		};
+		7C7114B12EABD3D000410605 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7C7114BC2EABD3D000410605 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */,
+			);
+			path = DeviceActivityMonitorExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0EA7D5977FCD2083E1E2DD37 /* Frameworks */ = {
+		05AE0353514450C8AE1911E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC29526C028F9A0419126509 /* Pods_RunnerTests.framework in Frameworks */,
+				2E773B389661EBA0F28BB736 /* Pods_RunnerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5E73F4D22CC5436E004651CC /* Frameworks */ = {
+		7C7113F52EABB3B600410605 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C436EBC952A51C363BE0BA58 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+				7C7113FB2EABB3B600410605 /* ManagedSettings.framework in Frameworks */,
+				7C7113FD2EABB3B600410605 /* ManagedSettingsUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CC020D12EA5731E00C3F8C2 /* Frameworks */ = {
+		7C7114842EABCC3700410605 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CC020D62EA5731E00C3F8C2 /* DeviceActivity.framework in Frameworks */,
-				699184C253CA4DC70E0DFDCF /* Pods_DeviceActivityMonitorExtension.framework in Frameworks */,
+				7C7114882EABCC3700410605 /* ManagedSettings.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CC0212B2EA5D4E700C3F8C2 /* Frameworks */ = {
+		7C7114AB2EABD3D000410605 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CC021302EA5D4E700C3F8C2 /* ManagedSettings.framework in Frameworks */,
-				F39FF7B886123E6888A3A803 /* Pods_ShieldConfigurationExtension.framework in Frameworks */,
+				7C7114B02EABD3D000410605 /* DeviceActivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,31 +211,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D08375DA3B6318820322D99 /* Pods_Runner.framework in Frameworks */,
+				0F63D05B97C95A4096773062 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		28C8D4EC4918C527C8AC9E77 /* Pods */ = {
+		2C6CF35CD6CDF26B7E5750AF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6F8C44C7DDF72B47CA19C253 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				93FC4E1EAD36C83C713614DE /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
-				56AD92685388B15C767C2B18 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */,
-				E6E63A283867F27C3FCECD63 /* Pods-Runner.debug.xcconfig */,
-				C8AD0F224F871487BEF66BA3 /* Pods-Runner.release.xcconfig */,
-				2DA83414D29FADA06B413803 /* Pods-Runner.profile.xcconfig */,
-				50608E4F142DE83A86CE8202 /* Pods-RunnerTests.debug.xcconfig */,
-				BCABFC53D56CDFF7D8A632A3 /* Pods-RunnerTests.release.xcconfig */,
-				D09D0B95E2552BE1B1A969D0 /* Pods-RunnerTests.profile.xcconfig */,
-				AD1D2C48980F6F0402916852 /* Pods-DeviceActivityMonitorExtension.debug.xcconfig */,
-				C03EBBEAD237FE574166ECF3 /* Pods-DeviceActivityMonitorExtension.release.xcconfig */,
-				264887C34F4AE9A75F12CF71 /* Pods-DeviceActivityMonitorExtension.profile.xcconfig */,
-				92A446937F43CA05F77FD3A0 /* Pods-ShieldConfigurationExtension.debug.xcconfig */,
-				BA9BDD8927FCFD7070CD45B9 /* Pods-ShieldConfigurationExtension.release.xcconfig */,
-				0BF8E8CD04F3BAADA8AFDA5E /* Pods-ShieldConfigurationExtension.profile.xcconfig */,
+				D4012516BFE4B345A366B973 /* Pods-Runner.debug.xcconfig */,
+				587E82FF510C4DC92DBAB512 /* Pods-Runner.release.xcconfig */,
+				A7EBC0FD7DA28B5238857DFC /* Pods-Runner.profile.xcconfig */,
+				5E87F61A65AFFACE47EB7724 /* Pods-RunnerTests.debug.xcconfig */,
+				3E0425948612866CCB7CA44A /* Pods-RunnerTests.release.xcconfig */,
+				BD8880562A9FBC545894A10D /* Pods-RunnerTests.profile.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -248,14 +239,18 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
-		5E73F4E72CC5444F004651CC /* OneSignalNotificationServiceExtension */ = {
+		7C7113F92EABB3B600410605 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5E73F4E42CC5444F004651CC /* Info.plist */,
-				5E73F4E52CC5444F004651CC /* NotificationService.swift */,
-				5E73F4E62CC5444F004651CC /* OneSignalNotificationServiceExtension.entitlements */,
+				7C7113FA2EABB3B600410605 /* ManagedSettings.framework */,
+				7C7113FC2EABB3B600410605 /* ManagedSettingsUI.framework */,
+				7C7114112EABB3E700410605 /* WidgetKit.framework */,
+				7C7114132EABB3E700410605 /* SwiftUI.framework */,
+				C12BA2856E18FD0BEE562A2C /* Pods_Runner.framework */,
+				F6A0E2E29772C2922BAEB69C /* Pods_RunnerTests.framework */,
+				7C7114AF2EABD3D000410605 /* DeviceActivity.framework */,
 			);
-			path = OneSignalNotificationServiceExtension;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -272,15 +267,16 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				7C71146E2EABBC7500410605 /* TestWidgetExtension.entitlements */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
-				5E73F4E72CC5444F004651CC /* OneSignalNotificationServiceExtension */,
-				7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
-				7CC021312EA5D4E700C3F8C2 /* ShieldConfigurationExtension.old */,
+				7C7113FE2EABB3B600410605 /* ShieldConfigurationExtension */,
+				7C7114892EABCC3700410605 /* ShieldActionExtension */,
+				7C7114B12EABD3D000410605 /* DeviceActivityMonitorExtension */,
+				7C7113F92EABB3B600410605 /* Frameworks */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
-				28C8D4EC4918C527C8AC9E77 /* Pods */,
-				BEA520E3E1470EEAECA5BAA8 /* Frameworks */,
+				2C6CF35CD6CDF26B7E5750AF /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -289,9 +285,9 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
-				5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */,
-				7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */,
-				7CC0212E2EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex */,
+				7C7113F82EABB3B600410605 /* ShieldConfigurationExtension.appex */,
+				7C7114872EABCC3700410605 /* ShieldActionExtension.appex */,
+				7C7114AE2EABD3D000410605 /* DeviceActivityMonitorExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -299,10 +295,9 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				7CCD67F42E9EA73E0040785B /* FamilyActivityPickerViewController 2.swift */,
-				7CCD67F62E9EA7650040785B /* FamilyActivityPickerViewController.swift */,
-				7CCD67F22E9E959F0040785B /* ScreenTimePlugin.swift */,
-				5E73F4D02CC54329004651CC /* Runner.entitlements */,
+				7C7113F32EABB31B00410605 /* Runner.entitlements */,
+				7C7113EF2EABB25400410605 /* FamilyActivityPickerViewController.swift */,
+				7C7113F02EABB25400410605 /* ScreenTimePlugin.swift */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -315,20 +310,6 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
-		BEA520E3E1470EEAECA5BAA8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				654F564EDA718970801CFC4B /* Pods_OneSignalNotificationServiceExtension.framework */,
-				8339616B2D539078EB13C502 /* Pods_Runner.framework */,
-				D9E2990C7D5479D9045CEAC1 /* Pods_RunnerTests.framework */,
-				7CC020D52EA5731E00C3F8C2 /* DeviceActivity.framework */,
-				0AD9C34B2B12390BB3518DFC /* Pods_DeviceActivityMonitorExtension.framework */,
-				7CC0212F2EA5D4E700C3F8C2 /* ManagedSettings.framework */,
-				0EA07A069D084A6F675019AF /* Pods_ShieldConfigurationExtension.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -336,10 +317,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */;
 			buildPhases = (
-				8AF7A81E582FE4C7EE9EDDBB /* [CP] Check Pods Manifest.lock */,
+				204F69BCC1F9ECA3A133C6B8 /* [CP] Check Pods Manifest.lock */,
 				331C807D294A63A400263BE5 /* Sources */,
 				331C807F294A63A400263BE5 /* Resources */,
-				0EA7D5977FCD2083E1E2DD37 /* Frameworks */,
+				05AE0353514450C8AE1911E4 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -351,87 +332,87 @@
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5E73F4D42CC5436E004651CC /* OneSignalNotificationServiceExtension */ = {
+		7C7113F72EABB3B600410605 /* ShieldConfigurationExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E73F4DE2CC5436E004651CC /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildConfigurationList = 7C7114072EABB3B600410605 /* Build configuration list for PBXNativeTarget "ShieldConfigurationExtension" */;
 			buildPhases = (
-				3C5BED74503F6DE45F97F602 /* [CP] Check Pods Manifest.lock */,
-				5E73F4D12CC5436E004651CC /* Sources */,
-				5E73F4D22CC5436E004651CC /* Frameworks */,
-				5E73F4D32CC5436E004651CC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OneSignalNotificationServiceExtension;
-			productName = OneSignalNotificationServiceExtension;
-			productReference = 5E73F4D52CC5436E004651CC /* OneSignalNotificationServiceExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7CC020E32EA5731E00C3F8C2 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */;
-			buildPhases = (
-				3D6F7EB67EFD89D5B4DC0F7A /* [CP] Check Pods Manifest.lock */,
-				7CC020D02EA5731E00C3F8C2 /* Sources */,
-				7CC020D12EA5731E00C3F8C2 /* Frameworks */,
-				7CC020D22EA5731E00C3F8C2 /* Resources */,
+				7C7113F42EABB3B600410605 /* Sources */,
+				7C7113F52EABB3B600410605 /* Frameworks */,
+				7C7113F62EABB3B600410605 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				7CC020D72EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
-			);
-			name = DeviceActivityMonitorExtension;
-			productName = DeviceActivityMonitorExtension;
-			productReference = 7CC020D42EA5731E00C3F8C2 /* DeviceActivityMonitorExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		7CC0212D2EA5D4E700C3F8C2 /* ShieldConfigurationExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7CC0213D2EA5D4E700C3F8C2 /* Build configuration list for PBXNativeTarget "ShieldConfigurationExtension" */;
-			buildPhases = (
-				4CBCCC1E91392AC24CDEDBEE /* [CP] Check Pods Manifest.lock */,
-				7CC0212A2EA5D4E700C3F8C2 /* Sources */,
-				7CC0212B2EA5D4E700C3F8C2 /* Frameworks */,
-				7CC0212C2EA5D4E700C3F8C2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				7CC021312EA5D4E700C3F8C2 /* ShieldConfigurationExtension.old */,
+				7C7113FE2EABB3B600410605 /* ShieldConfigurationExtension */,
 			);
 			name = ShieldConfigurationExtension;
 			productName = ShieldConfigurationExtension;
-			productReference = 7CC0212E2EA5D4E700C3F8C2 /* ShieldConfigurationExtension.appex */;
+			productReference = 7C7113F82EABB3B600410605 /* ShieldConfigurationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		7C7114862EABCC3700410605 /* ShieldActionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C7114952EABCC3700410605 /* Build configuration list for PBXNativeTarget "ShieldActionExtension" */;
+			buildPhases = (
+				7C7114832EABCC3700410605 /* Sources */,
+				7C7114842EABCC3700410605 /* Frameworks */,
+				7C7114852EABCC3700410605 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7C7114892EABCC3700410605 /* ShieldActionExtension */,
+			);
+			name = ShieldActionExtension;
+			productName = ShieldActionExtension;
+			productReference = 7C7114872EABCC3700410605 /* ShieldActionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		7C7114AD2EABD3D000410605 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C7114BD2EABD3D000410605 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */;
+			buildPhases = (
+				7C7114AA2EABD3D000410605 /* Sources */,
+				7C7114AB2EABD3D000410605 /* Frameworks */,
+				7C7114AC2EABD3D000410605 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7C7114B12EABD3D000410605 /* DeviceActivityMonitorExtension */,
+			);
+			name = DeviceActivityMonitorExtension;
+			productName = DeviceActivityMonitorExtension;
+			productReference = 7C7114AE2EABD3D000410605 /* DeviceActivityMonitorExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				D1AB0E7FF8FEB066676368F6 /* [CP] Check Pods Manifest.lock */,
+				9FEBED7A1C8713CD2F263888 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
+				7C71140B2EABB3B600410605 /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				5E73F4E22CC5436E004651CC /* Embed Foundation Extensions */,
-				AE86BEA7E330323C1CC9FFFD /* [CP] Embed Pods Frameworks */,
-				59EA9CADE83E34E22E895232 /* [CP] Copy Pods Resources */,
+				AFC8C18DEC46209C1E3EED2A /* [CP] Embed Pods Frameworks */,
+				1B5AA6EB77C2AEAF01BC9F34 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5E73F4DB2CC5436E004651CC /* PBXTargetDependency */,
-				7CC020DD2EA5731E00C3F8C2 /* PBXTargetDependency */,
-				7CC021372EA5D4E700C3F8C2 /* PBXTargetDependency */,
+				7C7114042EABB3B600410605 /* PBXTargetDependency */,
+				7C71148F2EABCC3700410605 /* PBXTargetDependency */,
+				7C7114B72EABD3D000410605 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -453,13 +434,13 @@
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 97C146ED1CF9000F007C117D;
 					};
-					5E73F4D42CC5436E004651CC = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					7CC020D32EA5731E00C3F8C2 = {
+					7C7113F72EABB3B600410605 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
-					7CC0212D2EA5D4E700C3F8C2 = {
+					7C7114862EABCC3700410605 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					7C7114AD2EABD3D000410605 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 					97C146ED1CF9000F007C117D = {
@@ -483,9 +464,9 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
-				5E73F4D42CC5436E004651CC /* OneSignalNotificationServiceExtension */,
-				7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */,
-				7CC0212D2EA5D4E700C3F8C2 /* ShieldConfigurationExtension */,
+				7C7113F72EABB3B600410605 /* ShieldConfigurationExtension */,
+				7C7114862EABCC3700410605 /* ShieldActionExtension */,
+				7C7114AD2EABD3D000410605 /* DeviceActivityMonitorExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -498,21 +479,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5E73F4D32CC5436E004651CC /* Resources */ = {
+		7C7113F62EABB3B600410605 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CC020D22EA5731E00C3F8C2 /* Resources */ = {
+		7C7114852EABCC3700410605 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CC0212C2EA5D4E700C3F8C2 /* Resources */ = {
+		7C7114AC2EABD3D000410605 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -533,89 +514,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
-			);
-			name = "Thin Binary";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
-		};
-		3C5BED74503F6DE45F97F602 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3D6F7EB67EFD89D5B4DC0F7A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DeviceActivityMonitorExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4CBCCC1E91392AC24CDEDBEE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ShieldConfigurationExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		59EA9CADE83E34E22E895232 /* [CP] Copy Pods Resources */ = {
+		1B5AA6EB77C2AEAF01BC9F34 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -623,20 +522,16 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8AF7A81E582FE4C7EE9EDDBB /* [CP] Check Pods Manifest.lock */ = {
+		204F69BCC1F9ECA3A133C6B8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -658,6 +553,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
+			);
+			name = "Thin Binary";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -673,28 +584,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
-		AE86BEA7E330323C1CC9FFFD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D1AB0E7FF8FEB066676368F6 /* [CP] Check Pods Manifest.lock */ = {
+		9FEBED7A1C8713CD2F263888 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -716,6 +606,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AFC8C18DEC46209C1E3EED2A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -727,22 +634,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5E73F4D12CC5436E004651CC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5E73F4E92CC5444F004651CC /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7CC020D02EA5731E00C3F8C2 /* Sources */ = {
+		7C7113F42EABB3B600410605 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CC0212A2EA5D4E700C3F8C2 /* Sources */ = {
+		7C7114832EABCC3700410605 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C7114AA2EABD3D000410605 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -753,9 +659,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CCD67F32E9E959F0040785B /* ScreenTimePlugin.swift in Sources */,
-				7CCD67F72E9EA7650040785B /* FamilyActivityPickerViewController.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				7C7113F12EABB25400410605 /* FamilyActivityPickerViewController.swift in Sources */,
+				7C7113F22EABB25400410605 /* ScreenTimePlugin.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -768,20 +674,20 @@
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
 		};
-		5E73F4DB2CC5436E004651CC /* PBXTargetDependency */ = {
+		7C7114042EABB3B600410605 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5E73F4D42CC5436E004651CC /* OneSignalNotificationServiceExtension */;
-			targetProxy = 5E73F4DA2CC5436E004651CC /* PBXContainerItemProxy */;
+			target = 7C7113F72EABB3B600410605 /* ShieldConfigurationExtension */;
+			targetProxy = 7C7114032EABB3B600410605 /* PBXContainerItemProxy */;
 		};
-		7CC020DD2EA5731E00C3F8C2 /* PBXTargetDependency */ = {
+		7C71148F2EABCC3700410605 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7CC020D32EA5731E00C3F8C2 /* DeviceActivityMonitorExtension */;
-			targetProxy = 7CC020DC2EA5731E00C3F8C2 /* PBXContainerItemProxy */;
+			target = 7C7114862EABCC3700410605 /* ShieldActionExtension */;
+			targetProxy = 7C71148E2EABCC3700410605 /* PBXContainerItemProxy */;
 		};
-		7CC021372EA5D4E700C3F8C2 /* PBXTargetDependency */ = {
+		7C7114B72EABD3D000410605 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7CC0212D2EA5D4E700C3F8C2 /* ShieldConfigurationExtension */;
-			targetProxy = 7CC021362EA5D4E700C3F8C2 /* PBXContainerItemProxy */;
+			target = 7C7114AD2EABD3D000410605 /* DeviceActivityMonitorExtension */;
+			targetProxy = 7C7114B62EABD3D000410605 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -882,14 +788,14 @@
 		};
 		331C8088294A63A400263BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50608E4F142DE83A86CE8202 /* Pods-RunnerTests.debug.xcconfig */;
+			baseConfigurationReference = 5E87F61A65AFFACE47EB7724 /* Pods-RunnerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.fastApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -900,14 +806,14 @@
 		};
 		331C8089294A63A400263BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCABFC53D56CDFF7D8A632A3 /* Pods-RunnerTests.release.xcconfig */;
+			baseConfigurationReference = 3E0425948612866CCB7CA44A /* Pods-RunnerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.fastApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -916,23 +822,22 @@
 		};
 		331C808A294A63A400263BE5 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D09D0B95E2552BE1B1A969D0 /* Pods-RunnerTests.profile.xcconfig */;
+			baseConfigurationReference = BD8880562A9FBC545894A10D /* Pods-RunnerTests.profile.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.fastApp.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
 			};
 			name = Profile;
 		};
-		5E73F4DF2CC5436E004651CC /* Debug */ = {
+		7C7114082EABB3B600410605 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F8C44C7DDF72B47CA19C253 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -940,132 +845,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.fastApp.OneSignalNotificationServiceExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		5E73F4E02CC5436E004651CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93FC4E1EAD36C83C713614DE /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HZ3366WY57;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.fastApp.OneSignalNotificationServiceExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		5E73F4E12CC5436E004651CC /* Profile */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56AD92685388B15C767C2B18 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HZ3366WY57;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.fastApp.OneSignalNotificationServiceExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Profile;
-		};
-		7CC020DF2EA5731E00C3F8C2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD1D2C48980F6F0402916852 /* Pods-DeviceActivityMonitorExtension.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HZ3366WY57;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1077,7 +865,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1091,9 +879,8 @@
 			};
 			name = Debug;
 		};
-		7CC020E02EA5731E00C3F8C2 /* Release */ = {
+		7C7114092EABB3B600410605 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C03EBBEAD237FE574166ECF3 /* Pods-DeviceActivityMonitorExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1101,15 +888,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1120,7 +907,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1132,9 +919,8 @@
 			};
 			name = Release;
 		};
-		7CC020E12EA5731E00C3F8C2 /* Profile */ = {
+		7C71140A2EABB3B600410605 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 264887C34F4AE9A75F12CF71 /* Pods-DeviceActivityMonitorExtension.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1142,15 +928,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1161,7 +947,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1173,9 +959,8 @@
 			};
 			name = Profile;
 		};
-		7CC021392EA5D4E700C3F8C2 /* Debug */ = {
+		7C7114912EABCC3700410605 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92A446937F43CA05F77FD3A0 /* Pods-ShieldConfigurationExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1183,15 +968,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
+				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1203,7 +988,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1217,9 +1002,8 @@
 			};
 			name = Debug;
 		};
-		7CC0213A2EA5D4E700C3F8C2 /* Release */ = {
+		7C7114922EABCC3700410605 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA9BDD8927FCFD7070CD45B9 /* Pods-ShieldConfigurationExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1227,15 +1011,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
+				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1246,7 +1030,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1258,9 +1042,8 @@
 			};
 			name = Release;
 		};
-		7CC0213B2EA5D4E700C3F8C2 /* Profile */ = {
+		7C7114932EABCC3700410605 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BF8E8CD04F3BAADA8AFDA5E /* Pods-ShieldConfigurationExtension.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1268,15 +1051,15 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HZ3366WY57;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfigurationExtension;
+				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1287,7 +1070,130 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldConfigurationExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.ShieldActionExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
+		};
+		7C7114B92EABD3D000410605 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7C7114BA2EABD3D000410605 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7C7114BB2EABD3D000410605 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HZ3366WY57;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbiz.faithlock.DeviceActivityMonitorExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1470,32 +1376,32 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5E73F4DE2CC5436E004651CC /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+		7C7114072EABB3B600410605 /* Build configuration list for PBXNativeTarget "ShieldConfigurationExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5E73F4DF2CC5436E004651CC /* Debug */,
-				5E73F4E02CC5436E004651CC /* Release */,
-				5E73F4E12CC5436E004651CC /* Profile */,
+				7C7114082EABB3B600410605 /* Debug */,
+				7C7114092EABB3B600410605 /* Release */,
+				7C71140A2EABB3B600410605 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7CC020E32EA5731E00C3F8C2 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */ = {
+		7C7114952EABCC3700410605 /* Build configuration list for PBXNativeTarget "ShieldActionExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7CC020DF2EA5731E00C3F8C2 /* Debug */,
-				7CC020E02EA5731E00C3F8C2 /* Release */,
-				7CC020E12EA5731E00C3F8C2 /* Profile */,
+				7C7114912EABCC3700410605 /* Debug */,
+				7C7114922EABCC3700410605 /* Release */,
+				7C7114932EABCC3700410605 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7CC0213D2EA5D4E700C3F8C2 /* Build configuration list for PBXNativeTarget "ShieldConfigurationExtension" */ = {
+		7C7114BD2EABD3D000410605 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7CC021392EA5D4E700C3F8C2 /* Debug */,
-				7CC0213A2EA5D4E700C3F8C2 /* Release */,
-				7CC0213B2EA5D4E700C3F8C2 /* Profile */,
+				7C7114B92EABD3D000410605 /* Debug */,
+				7C7114BA2EABD3D000410605 /* Release */,
+				7C7114BB2EABD3D000410605 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

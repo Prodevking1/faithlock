@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:faithlock/features/faithlock/services/export.dart';
+import 'package:faithlock/features/faithlock/controllers/schedule_controller.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
@@ -9,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Controller for FaithLock Settings Screen
 /// Manages permissions and app configuration
-class FaithLockSettingsController extends GetxController {
+class FaithLockSettingsController extends GetxController with WidgetsBindingObserver {
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final LockService _lockService = LockService();
 
@@ -24,8 +25,28 @@ class FaithLockSettingsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Register lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
+
     // Load data asynchronously without blocking initialization
     Future.microtask(() => _initializeAsync());
+  }
+
+  @override
+  void onClose() {
+    // Unregister lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Refresh permissions when app comes back to foreground
+    if (state == AppLifecycleState.resumed) {
+      debugPrint('📱 App resumed - refreshing Screen Time permissions');
+      checkScreenTimePermission();
+      loadSelectedAppsCount();
+    }
   }
 
   /// Initialize data asynchronously to avoid blocking UI
@@ -42,12 +63,11 @@ class FaithLockSettingsController extends GetxController {
     }
   }
 
-  /// Load count of selected apps
   Future<void> loadSelectedAppsCount() async {
     try {
       final hasApps = await _screenTimeService.hasSelectedApps();
-      // We can't get exact count, but we know if apps are selected
-      selectedAppsCount.value = hasApps ? 1 : 0; // 1 means "some apps selected"
+      selectedAppsCount.value = hasApps ? 1 : 0;
+      debugPrint('📱 Apps selected: $hasApps (count: ${selectedAppsCount.value})');
     } catch (e) {
       selectedAppsCount.value = 0;
     }
@@ -96,7 +116,12 @@ class FaithLockSettingsController extends GetxController {
           title: 'Permission Granted',
           message: 'Screen Time access has been enabled',
         );
+        // Refresh this controller
         await checkScreenTimePermission();
+        await loadSelectedAppsCount();
+
+        // Sync with other controllers if they exist
+        _syncPermissionsWithOtherControllers();
       } else {
         FastToast.showWarning(
           context: context,
@@ -111,6 +136,21 @@ class FaithLockSettingsController extends GetxController {
         title: 'Error',
         message: 'Failed to request Screen Time permission: $e',
       );
+    }
+  }
+
+  /// Sync permissions with other controllers to keep UI in sync
+  void _syncPermissionsWithOtherControllers() {
+    try {
+      // Try to find and refresh ScheduleController if it exists
+      if (Get.isRegistered<ScheduleController>()) {
+        final scheduleController = Get.find<ScheduleController>();
+        scheduleController.checkScreenTimeAuthorization();
+        debugPrint('✅ Synced permissions with ScheduleController');
+      }
+    } catch (e) {
+      // Controller not registered yet, that's fine
+      debugPrint('ℹ️ ScheduleController not registered: $e');
     }
   }
 
@@ -184,7 +224,6 @@ class FaithLockSettingsController extends GetxController {
     );
   }
 
-  /// Select apps to block
   Future<void> selectAppsToBlock() async {
     final context = Get.context;
     if (context == null) return;
@@ -199,27 +238,40 @@ class FaithLockSettingsController extends GetxController {
         return;
       }
 
-      // Present the native FamilyActivityPicker
       await _screenTimeService.presentAppPicker();
-
-      // Reload apps count after selection
       await loadSelectedAppsCount();
 
-      // Auto-setup schedules after app selection
-      await _setupSchedulesFromStorage();
+      try {
+        final scheduleController = Get.find<ScheduleController>();
+        await scheduleController.refreshSchedules();
+      } catch (e) {}
 
-      // Show success message after selection
-      FastToast.showSuccess(
-        context: context,
-        title: 'Apps Selected & Locked',
-        message: 'Your apps will be automatically blocked during scheduled times',
-      );
+      if (selectedAppsCount.value > 0) {
+        await _setupSchedulesFromStorage();
+        if (context.mounted) {
+          FastToast.showSuccess(
+            context: context,
+            title: 'Apps Selected & Locked',
+            message: 'Your apps will be automatically blocked during scheduled times',
+          );
+        }
+      } else {
+        if (context.mounted) {
+          FastToast.showInfo(
+            context: context,
+            title: 'No Apps Selected',
+            message: 'Select apps to enable blocking',
+          );
+        }
+      }
     } catch (e) {
-      FastToast.showError(
-        context: context,
-        title: 'Error',
-        message: 'Failed to show app picker: $e',
-      );
+      if (context.mounted) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Failed to show app picker: $e',
+        );
+      }
     }
   }
 

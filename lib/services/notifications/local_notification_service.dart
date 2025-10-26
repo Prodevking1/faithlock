@@ -1,6 +1,9 @@
+import 'package:faithlock/app_routes.dart';
+import 'package:faithlock/services/app_group_storage.dart';
 import 'package:faithlock/services/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -49,11 +52,34 @@ class LocalNotificationService {
   }
 
   // Handle user tapping on a notification
-  void _onDidReceiveNotificationResponse(NotificationResponse response) {
-    final String? payload = response.payload;
-    if (payload != null) {
-      debugPrint('Notification payload: $payload');
-      // TODO: Handle notification tap
+  Future<void> _onDidReceiveNotificationResponse(
+      NotificationResponse response) async {
+    debugPrint('📲 Notification tapped - checking for prayer navigation request');
+
+    // Check if the prayer flag is set in App Group
+    // This flag is set by ShieldActionExtension when user taps "Start Prayer"
+    final shouldNavigate = await AppGroupStorage.shouldNavigateToPrayer();
+
+    if (shouldNavigate) {
+      debugPrint('✅ Prayer navigation requested - navigating to prayer learning');
+
+      // Clear the flag so we don't navigate again
+      await AppGroupStorage.clearPrayerFlag();
+
+      // Navigate to prayer learning screen
+      // Use Get.offAllNamed to clear navigation stack and start fresh
+      Get.offAllNamed(AppRoutes.prayerLearning);
+
+      debugPrint('🙏 Navigated to prayer learning screen');
+    } else {
+      debugPrint('ℹ️ No prayer navigation requested');
+
+      // Handle other notification types based on payload
+      final String? payload = response.payload;
+      if (payload != null) {
+        debugPrint('Notification payload: $payload');
+        // Handle other notification types here
+      }
     }
   }
 

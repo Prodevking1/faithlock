@@ -1,0 +1,982 @@
+-- ============================================
+-- FaithLock Curriculum - 100 Power Verses
+-- 4-Week Progressive Learning per Category
+-- ============================================
+
+-- ============================================
+-- CATEGORY 1: TEMPTATION (20 verses)
+-- Overcoming temptation and resisting sin
+-- ============================================
+
+-- === WEEK 1: Foundation (Easy - Encouraging) ===
+
+-- 1. 1 Corinthians 10:13
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'faithful'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 10 AND verse = 13;
+
+-- 2. James 4:7
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'flee'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'James')
+  AND chapter = 4 AND verse = 7;
+
+-- 3. Matthew 26:41
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'pray'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Matthew')
+  AND chapter = 26 AND verse = 41;
+
+-- 4. Psalm 119:11
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'hidden'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 119 AND verse = 11;
+
+-- 5. 1 John 2:16
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'world'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 John')
+  AND chapter = 2 AND verse = 16;
+
+-- === WEEK 2: Application (Medium - Practical) ===
+
+-- 6. Galatians 5:16
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'Spirit'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Galatians')
+  AND chapter = 5 AND verse = 16;
+
+-- 7. Romans 6:14
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'grace'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 6 AND verse = 14;
+
+-- 8. 2 Timothy 2:22
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'flee'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '2 Timothy')
+  AND chapter = 2 AND verse = 22;
+
+-- 9. 1 Peter 2:11
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'abstain'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 2 AND verse = 11;
+
+-- 10. Proverbs 4:23
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'heart'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 4 AND verse = 23;
+
+-- === WEEK 3: Deepening (Medium-Hard - Theological) ===
+
+-- 11. Hebrews 4:15
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'tempted'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Hebrews')
+  AND chapter = 4 AND verse = 15;
+
+-- 12. James 1:14-15 (using verse 14)
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'desire'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'James')
+  AND chapter = 1 AND verse = 14;
+
+-- 13. 1 Corinthians 6:18
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'flee'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 6 AND verse = 18;
+
+-- 14. Romans 12:21
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'overcome'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 12 AND verse = 21;
+
+-- 15. Ephesians 6:11
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 3,
+  difficulty = 3,
+  keyword = 'armor'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Ephesians')
+  AND chapter = 6 AND verse = 11;
+
+-- === WEEK 4: Mastery (Hard - Complex) ===
+
+-- 16. 2 Corinthians 10:5
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'captive'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '2 Corinthians')
+  AND chapter = 10 AND verse = 5;
+
+-- 17. Colossians 3:5
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'death'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Colossians')
+  AND chapter = 3 AND verse = 5;
+
+-- 18. 1 Peter 5:8
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'sober'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 5 AND verse = 8;
+
+-- 19. Hebrews 12:1
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'sin'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Hebrews')
+  AND chapter = 12 AND verse = 1;
+
+-- 20. Romans 8:13
+UPDATE BSB_verses SET
+  category = 'temptation',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'Spirit'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 8 AND verse = 13;
+
+
+-- ============================================
+-- CATEGORY 2: FEAR & ANXIETY (20 verses)
+-- Conquering fear and anxiety
+-- ============================================
+
+-- === WEEK 1: Foundation (Easy - Encouraging) ===
+
+-- 1. Isaiah 41:10
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'fear'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Isaiah')
+  AND chapter = 41 AND verse = 10;
+
+-- 2. Philippians 4:6-7 (using verse 6)
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'anxious'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Philippians')
+  AND chapter = 4 AND verse = 6;
+
+-- 3. Psalm 23:4
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'fear'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 23 AND verse = 4;
+
+-- 4. Psalm 56:3
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'trust'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 56 AND verse = 3;
+
+-- 5. John 14:27
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'peace'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'John')
+  AND chapter = 14 AND verse = 27;
+
+-- === WEEK 2: Application (Medium - Practical) ===
+
+-- 6. Matthew 6:34
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'tomorrow'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Matthew')
+  AND chapter = 6 AND verse = 34;
+
+-- 7. 1 Peter 5:7
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'cares'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 5 AND verse = 7;
+
+-- 8. Proverbs 3:5-6 (using verse 5)
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'trust'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 3 AND verse = 5;
+
+-- 9. Isaiah 26:3
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'mind'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Isaiah')
+  AND chapter = 26 AND verse = 3;
+
+-- 10. Psalm 94:19
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'comfort'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 94 AND verse = 19;
+
+-- === WEEK 3: Deepening (Medium-Hard - Theological) ===
+
+-- 11. 2 Timothy 1:7
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'spirit'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '2 Timothy')
+  AND chapter = 1 AND verse = 7;
+
+-- 12. Deuteronomy 31:6
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'forsake'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Deuteronomy')
+  AND chapter = 31 AND verse = 6;
+
+-- 13. Psalm 46:1
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'refuge'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 46 AND verse = 1;
+
+-- 14. Joshua 1:9
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'command'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Joshua')
+  AND chapter = 1 AND verse = 9;
+
+-- 15. Romans 8:31
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 3,
+  difficulty = 3,
+  keyword = 'for'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 8 AND verse = 31;
+
+-- === WEEK 4: Mastery (Hard - Complex) ===
+
+-- 16. Psalm 27:1
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'light'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 27 AND verse = 1;
+
+-- 17. Isaiah 43:1
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'redeemed'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Isaiah')
+  AND chapter = 43 AND verse = 1;
+
+-- 18. Romans 8:15
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'slavery'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 8 AND verse = 15;
+
+-- 19. Psalm 34:4
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'delivered'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 34 AND verse = 4;
+
+-- 20. Hebrews 13:6
+UPDATE BSB_verses SET
+  category = 'fear_anxiety',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'helper'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Hebrews')
+  AND chapter = 13 AND verse = 6;
+
+
+-- ============================================
+-- CATEGORY 3: PRIDE (20 verses)
+-- Cultivating humility and defeating pride
+-- ============================================
+
+-- === WEEK 1: Foundation (Easy - Encouraging) ===
+
+-- 1. Proverbs 16:18
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'pride'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 16 AND verse = 18;
+
+-- 2. James 4:6
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'humble'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'James')
+  AND chapter = 4 AND verse = 6;
+
+-- 3. Proverbs 11:2
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'humility'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 11 AND verse = 2;
+
+-- 4. 1 Peter 5:5
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'humble'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 5 AND verse = 5;
+
+-- 5. Psalm 138:6
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'lowly'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 138 AND verse = 6;
+
+-- === WEEK 2: Application (Medium - Practical) ===
+
+-- 6. Philippians 2:3
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'selfish'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Philippians')
+  AND chapter = 2 AND verse = 3;
+
+-- 7. Romans 12:3
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'think'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 12 AND verse = 3;
+
+-- 8. Proverbs 27:2
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'praise'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 27 AND verse = 2;
+
+-- 9. Galatians 6:3
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'deceives'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Galatians')
+  AND chapter = 6 AND verse = 3;
+
+-- 10. Proverbs 22:4
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'humility'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 22 AND verse = 4;
+
+-- === WEEK 3: Deepening (Medium-Hard - Theological) ===
+
+-- 11. Philippians 2:5-8 (using verse 5)
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'mindset'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Philippians')
+  AND chapter = 2 AND verse = 5;
+
+-- 12. Luke 14:11
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'exalts'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Luke')
+  AND chapter = 14 AND verse = 11;
+
+-- 13. Proverbs 29:23
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'pride'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 29 AND verse = 23;
+
+-- 14. 1 Corinthians 10:12
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'stands'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 10 AND verse = 12;
+
+-- 15. James 4:10
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 3,
+  difficulty = 3,
+  keyword = 'humble'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'James')
+  AND chapter = 4 AND verse = 10;
+
+-- === WEEK 4: Mastery (Hard - Complex) ===
+
+-- 16. Romans 12:16
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'conceited'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 12 AND verse = 16;
+
+-- 17. Proverbs 13:10
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'pride'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 13 AND verse = 10;
+
+-- 18. Jeremiah 9:23-24 (using verse 23)
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'boast'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Jeremiah')
+  AND chapter = 9 AND verse = 23;
+
+-- 19. 1 Corinthians 1:31
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'boast'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 1 AND verse = 31;
+
+-- 20. Micah 6:8
+UPDATE BSB_verses SET
+  category = 'pride',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'humbly'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Micah')
+  AND chapter = 6 AND verse = 8;
+
+
+-- ============================================
+-- CATEGORY 4: LUST (20 verses)
+-- Maintaining purity and self-control
+-- ============================================
+
+-- === WEEK 1: Foundation (Easy - Encouraging) ===
+
+-- 1. 1 Thessalonians 4:3-4 (using verse 3)
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'sanctification'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Thessalonians')
+  AND chapter = 4 AND verse = 3;
+
+-- 2. Psalm 119:9
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'pure'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 119 AND verse = 9;
+
+-- 3. Matthew 5:28
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'lust'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Matthew')
+  AND chapter = 5 AND verse = 28;
+
+-- 4. Job 31:1
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'covenant'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Job')
+  AND chapter = 31 AND verse = 1;
+
+-- 5. Proverbs 6:25
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'heart'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 6 AND verse = 25;
+
+-- === WEEK 2: Application (Medium - Practical) ===
+
+-- 6. 1 Corinthians 6:18-20 (using verse 18)
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'flee'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 6 AND verse = 18;
+
+-- 7. Galatians 5:24
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'crucified'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Galatians')
+  AND chapter = 5 AND verse = 24;
+
+-- 8. 1 Peter 2:11
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'abstain'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 2 AND verse = 11;
+
+-- 9. Romans 13:14
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'Christ'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 13 AND verse = 14;
+
+-- 10. Proverbs 5:18-19 (using verse 18)
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'blessed'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 5 AND verse = 18;
+
+-- === WEEK 3: Deepening (Medium-Hard - Theological) ===
+
+-- 11. 1 John 2:16
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'flesh'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 John')
+  AND chapter = 2 AND verse = 16;
+
+-- 12. 2 Timothy 2:22
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'youthful'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '2 Timothy')
+  AND chapter = 2 AND verse = 22;
+
+-- 13. Ephesians 5:3
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'hint'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Ephesians')
+  AND chapter = 5 AND verse = 3;
+
+-- 14. Colossians 3:5
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'death'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Colossians')
+  AND chapter = 3 AND verse = 5;
+
+-- 15. Philippians 4:8
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 3,
+  difficulty = 3,
+  keyword = 'think'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Philippians')
+  AND chapter = 4 AND verse = 8;
+
+-- === WEEK 4: Mastery (Hard - Complex) ===
+
+-- 16. Romans 8:5-6 (using verse 5)
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'flesh'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 8 AND verse = 5;
+
+-- 17. 1 Corinthians 9:27
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'discipline'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Corinthians')
+  AND chapter = 9 AND verse = 27;
+
+-- 18. Titus 2:11-12 (using verse 12)
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'self-control'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Titus')
+  AND chapter = 2 AND verse = 12;
+
+-- 19. Hebrews 12:14
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'holiness'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Hebrews')
+  AND chapter = 12 AND verse = 14;
+
+-- 20. 1 Thessalonians 4:7
+UPDATE BSB_verses SET
+  category = 'lust',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'purity'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Thessalonians')
+  AND chapter = 4 AND verse = 7;
+
+
+-- ============================================
+-- CATEGORY 5: ANGER (20 verses)
+-- Managing anger and practicing patience
+-- ============================================
+
+-- === WEEK 1: Foundation (Easy - Encouraging) ===
+
+-- 1. Ephesians 4:26-27 (using verse 26)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'sin'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Ephesians')
+  AND chapter = 4 AND verse = 26;
+
+-- 2. James 1:19-20 (using verse 19)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'slow'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'James')
+  AND chapter = 1 AND verse = 19;
+
+-- 3. Proverbs 15:1
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'gentle'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 15 AND verse = 1;
+
+-- 4. Psalm 37:8
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'anger'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Psalms')
+  AND chapter = 37 AND verse = 8;
+
+-- 5. Proverbs 16:32
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 1,
+  difficulty = 1,
+  keyword = 'temper'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 16 AND verse = 32;
+
+-- === WEEK 2: Application (Medium - Practical) ===
+
+-- 6. Colossians 3:8
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'rid'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Colossians')
+  AND chapter = 3 AND verse = 8;
+
+-- 7. Proverbs 29:11
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'restrains'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 29 AND verse = 11;
+
+-- 8. Ecclesiastes 7:9
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'hasty'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Ecclesiastes')
+  AND chapter = 7 AND verse = 9;
+
+-- 9. Proverbs 19:11
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'patience'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 19 AND verse = 11;
+
+-- 10. Romans 12:19
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 2,
+  difficulty = 2,
+  keyword = 'vengeance'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 12 AND verse = 19;
+
+-- === WEEK 3: Deepening (Medium-Hard - Theological) ===
+
+-- 11. Ephesians 4:31-32 (using verse 31)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'bitterness'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Ephesians')
+  AND chapter = 4 AND verse = 31;
+
+-- 12. Proverbs 14:29
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'understanding'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 14 AND verse = 29;
+
+-- 13. Proverbs 22:24-25 (using verse 24)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'befriend'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 22 AND verse = 24;
+
+-- 14. Matthew 5:22
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 3,
+  difficulty = 2,
+  keyword = 'brother'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Matthew')
+  AND chapter = 5 AND verse = 22;
+
+-- 15. Galatians 5:22-23 (using verse 22)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 3,
+  difficulty = 3,
+  keyword = 'patience'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Galatians')
+  AND chapter = 5 AND verse = 22;
+
+-- === WEEK 4: Mastery (Hard - Complex) ===
+
+-- 16. Romans 12:17-21 (using verse 17)
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'evil'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Romans')
+  AND chapter = 12 AND verse = 17;
+
+-- 17. Proverbs 25:28
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'self-control'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 25 AND verse = 28;
+
+-- 18. 1 Peter 3:9
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'blessing'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = '1 Peter')
+  AND chapter = 3 AND verse = 9;
+
+-- 19. Leviticus 19:18
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'grudge'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Leviticus')
+  AND chapter = 19 AND verse = 18;
+
+-- 20. Proverbs 15:18
+UPDATE BSB_verses SET
+  category = 'anger',
+  curriculum_week = 4,
+  difficulty = 3,
+  keyword = 'temper'
+WHERE book_id = (SELECT id FROM BSB_books WHERE name = 'Proverbs')
+  AND chapter = 15 AND verse = 18;
+
+
+-- ============================================
+-- CURRICULUM COMPLETE: 100 POWER VERSES
+-- ============================================
+-- 5 Categories × 20 Verses × 4 Weeks
+-- Difficulty progression: Easy → Medium → Hard
+-- Ready for intelligent verse selection system
+-- ============================================

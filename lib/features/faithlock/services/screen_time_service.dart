@@ -221,6 +221,76 @@ class ScreenTimeService {
     }
   }
 
+  /// Debug shield status - prints comprehensive debugging information
+  /// Useful for troubleshooting shield configuration issues
+  /// Check Xcode console for detailed output
+  Future<void> debugShieldStatus() async {
+    try {
+      await _channel.invokeMethod('debugShieldStatus');
+      debugPrint('✅ Shield status debug info printed to Xcode console');
+    } catch (e) {
+      debugPrint('❌ Error debugging shield status: $e');
+      rethrow;
+    }
+  }
+
+  /// Check if DeviceActivityMonitor is working
+  /// Returns diagnostic info about monitor events
+  Future<Map<String, dynamic>> checkMonitorStatus() async {
+    try {
+      final result = await _channel.invokeMethod<Map>('checkMonitorStatus');
+      if (result == null) {
+        return {
+          'isWorking': false,
+          'message': 'No monitor data available',
+        };
+      }
+
+      // Add extension init check
+      final extensionInit = result['extensionLastInit'] as String?;
+      final extensionInitDate = result['extensionInitDate'] as String?;
+
+      if (extensionInit != null) {
+        debugPrint('✅ Extension initialized: $extensionInit at $extensionInitDate');
+      } else {
+        debugPrint('⚠️ Extension never initialized - may not be loaded by iOS');
+      }
+
+      return Map<String, dynamic>.from(result);
+    } catch (e) {
+      debugPrint('❌ Error checking monitor status: $e');
+      return {
+        'isWorking': false,
+        'error': e.toString(),
+      };
+    }
+  }
+
+  /// Get monitor event history
+  /// Returns list of recent monitor events for debugging
+  Future<List<Map<String, dynamic>>> getMonitorEventHistory() async {
+    try {
+      final result = await _channel.invokeMethod<List>('getMonitorEventHistory');
+      if (result == null) return [];
+      return result.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+    } catch (e) {
+      debugPrint('❌ Error getting monitor history: $e');
+      return [];
+    }
+  }
+
+  /// Create a test schedule that starts in 3 minutes, lasts 15 minutes (iOS minimum)
+  /// Useful for quickly testing if DeviceActivityMonitor is working
+  Future<void> createTestSchedule() async {
+    try {
+      await _channel.invokeMethod('createTestSchedule');
+      debugPrint('✅ Test schedule created - will start in 3 minutes, last 15 minutes');
+    } catch (e) {
+      debugPrint('❌ Error creating test schedule: $e');
+      throw Exception('Failed to create test schedule: $e');
+    }
+  }
+
   /// Dispose resources
   void dispose() {
     // Cleanup if needed

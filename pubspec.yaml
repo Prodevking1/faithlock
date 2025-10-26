@@ -28,7 +28,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_form_builder: ^10.0.1
   form_builder_validators: ^11.0.0
-  amplitude_flutter: ^3.16.4
   posthog_flutter: ^4.10.0
   sqflite: ^2.4.0
   flutter_screentime:
@@ -44,6 +43,8 @@ dependencies:
   purchases_flutter: ^9.1.0
   image_picker: ^1.1.2
   in_app_review: ^2.0.10
+  uni_links: ^0.5.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

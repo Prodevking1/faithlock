@@ -17,7 +17,7 @@ class AppConfig {
 
 class AppFeatures {
   // Authentication features
-  final bool enableAnonAuth = true;
+  final bool enableAnonAuth = false;
 
   // Profile management features
   final bool showProfile = false;

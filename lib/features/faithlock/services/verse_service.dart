@@ -36,21 +36,21 @@ class VerseService {
     final timeOfDay = TimeOfDay.now();
     VerseCategory category;
 
-    // Morning (5am - 11am): Hope, Gratitude, Guidance
+    // Morning (5am - 11am): Focus on starting the day right
     if (timeOfDay.hour >= 5 && timeOfDay.hour < 12) {
-      final categories = [VerseCategory.hope, VerseCategory.gratitude, VerseCategory.guidance];
+      final categories = [VerseCategory.temptation, VerseCategory.pride];
       categories.shuffle();
       category = categories.first;
     }
-    // Afternoon (12pm - 5pm): Wisdom, Strength, Perseverance
+    // Afternoon (12pm - 5pm): Focus on daily struggles
     else if (timeOfDay.hour >= 12 && timeOfDay.hour < 17) {
-      final categories = [VerseCategory.wisdom, VerseCategory.strength, VerseCategory.perseverance];
+      final categories = [VerseCategory.anger, VerseCategory.lust];
       categories.shuffle();
       category = categories.first;
     }
-    // Evening/Night (5pm - 11pm): Peace, Love, Faith
+    // Evening/Night (5pm - 11pm): Focus on reflection and peace
     else {
-      final categories = [VerseCategory.peace, VerseCategory.love, VerseCategory.faith];
+      final categories = [VerseCategory.fearAnxiety, VerseCategory.temptation];
       categories.shuffle();
       category = categories.first;
     }
@@ -62,21 +62,21 @@ class VerseService {
   Future<BibleVerse?> getVerseForStreak(int currentStreak) async {
     VerseCategory category;
 
-    // Easy (Days 1-7): Hope, Love, Peace
+    // Easy (Days 1-7): Start with common struggles
     if (currentStreak <= 7) {
-      final categories = [VerseCategory.hope, VerseCategory.love, VerseCategory.peace];
+      final categories = [VerseCategory.temptation, VerseCategory.fearAnxiety];
       categories.shuffle();
       category = categories.first;
     }
-    // Medium (Days 8-30): Wisdom, Faith, Courage
+    // Medium (Days 8-30): Address deeper issues
     else if (currentStreak <= 30) {
-      final categories = [VerseCategory.wisdom, VerseCategory.faith, VerseCategory.courage];
+      final categories = [VerseCategory.pride, VerseCategory.anger];
       categories.shuffle();
       category = categories.first;
     }
-    // Hard (Days 31+): Perseverance, Strength, Guidance
+    // Hard (Days 31+): All categories with focus on purity
     else {
-      final categories = [VerseCategory.perseverance, VerseCategory.strength, VerseCategory.guidance];
+      final categories = [VerseCategory.lust, VerseCategory.pride, VerseCategory.anger];
       categories.shuffle();
       category = categories.first;
     }

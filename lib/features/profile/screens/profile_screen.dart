@@ -339,6 +339,14 @@ class ProfileScreen extends StatelessWidget {
               iconColor: CupertinoColors.systemIndigo,
               onTap: settingsController.openPrivacyPolicy,
             ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.square_list,
+            title: 'Monitor Debug',
+            subtitle: 'Check DeviceActivityMonitor status',
+            iconColor: CupertinoColors.systemPurple,
+            onTap: () => Get.toNamed('/monitor-debug'),
+          ),
         ], title: 'support'.tr),
 
         // Sign Out Section
@@ -680,6 +688,13 @@ class ProfileScreen extends StatelessWidget {
               leading: Icons.privacy_tip,
               title: 'privacyPolicy'.tr,
               onTap: settingsController.openPrivacyPolicy,
+            ),
+            _buildAndroidListTile(
+              context,
+              leading: Icons.bug_report,
+              title: 'Monitor Debug',
+              subtitle: 'Check DeviceActivityMonitor status',
+              onTap: () => Get.toNamed('/monitor-debug'),
             ),
           ],
         ),

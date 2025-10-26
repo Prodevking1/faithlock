@@ -65,8 +65,12 @@ class ScriptureOnboardingScreen extends StatelessWidget {
 
         case 9: // Step 8 - Screen Time Permission
           return Step7ScreenTimePermission(
-            onComplete: () {
+            onComplete: () async {
               FaithLockSettingsController().requestScreenTimePermission();
+
+              // ✅ Mark onboarding as completed before navigating
+              await controller.completeOnboarding();
+
               Get.offAllNamed(AppRoutes.home);
             },
           );

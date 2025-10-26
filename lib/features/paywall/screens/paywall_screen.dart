@@ -1,5 +1,6 @@
 import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/features/paywall/controllers/paywall_controller.dart';
+import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,8 +33,7 @@ class PaywallScreen extends StatelessWidget {
         leading: const SizedBox(width: 48),
         title: _buildHeader(isDark),
         actions: [
-          Obx(() {
-            return TweenAnimationBuilder<double>(
+          TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
               duration: const Duration(seconds: 5),
               builder: (context, value, child) {
@@ -68,9 +68,7 @@ class PaywallScreen extends StatelessWidget {
                     ),
                   ),
                 );
-              },
-            );
-          }),
+              }),
         ],
       ),
       body: SafeArea(
@@ -100,18 +98,12 @@ class PaywallScreen extends StatelessWidget {
 
   Widget _buildHeader(bool isDark) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Flexible(
-          child: Text(
-            'faithlock',
-            style: TextStyle(
-              letterSpacing: -0.5,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: FastColors.primary,
-            ),
-          ),
+        FastText.title2(
+          'faithlock',
+          color: FastColors.primary,
         ),
         const SizedBox(width: 6),
         Container(
@@ -120,10 +112,9 @@ class PaywallScreen extends StatelessWidget {
             color: FastColors.primary,
             borderRadius: BorderRadius.circular(6),
           ),
-          child: const Text(
+          child: FastText.callout(
             'PRO',
-            style: TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            color: Colors.white,
           ),
         ),
       ],
@@ -153,13 +144,10 @@ class PaywallScreen extends StatelessWidget {
               color: isDark ? Colors.white54 : Colors.black26,
             ),
             const SizedBox(height: 16),
-            Text(
+            FastText.body(
               controller.lastError.value,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: isDark ? Colors.white70 : Colors.black54,
-                fontSize: 16,
-              ),
+              color: isDark ? Colors.white70 : Colors.black54,
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -168,7 +156,7 @@ class PaywallScreen extends StatelessWidget {
                 backgroundColor: FastColors.primary,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Retry'),
+              child: FastText.callout('Retry', color: Colors.white),
             ),
           ],
         ),
@@ -178,20 +166,21 @@ class PaywallScreen extends StatelessWidget {
 
   Widget _buildContent(
       BuildContext context, PaywallController controller, bool isDark) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Visual representation
-          _buildVisualRepresentation(),
+          const SizedBox(height: 20),
 
-          Obx(() => SizedBox(
-              height: controller.selectedPlanIndex.value == 1 ? 12 : 48)),
+          // Visual representation
+          // _buildVisualRepresentation(),
+
+          // Obx(() => SizedBox(
+          //     height: controller.selectedPlanIndex.value == 1 ? 12 : 48)),
 
           // Features list
-          Flexible(child: _buildFeaturesList(isDark)),
+          _buildFeaturesList(isDark),
 
           Obx(() => SizedBox(
               height: controller.selectedPlanIndex.value == 1 ? 8 : 20)),
@@ -202,22 +191,20 @@ class PaywallScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Free trial toggle
-          Obx(() => _buildFreeTrialToggle(isDark, controller)),
+          _buildFreeTrialToggle(isDark, controller),
 
           Obx(() => SizedBox(
               height: controller.selectedPlanIndex.value == 1 ? 16 : 8)),
 
           // Unlock button
           Obx(() {
+            final selectedIndex = controller.selectedPlanIndex.value;
             return Column(
               children: [
-                if (controller.selectedPlanIndex.value == 1) ...[
-                  Text(
-                    'Cancel anytime on the App Store',
-                    style: TextStyle(
-                        color: isDark ? Colors.white70 : Colors.black54,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
+                if (selectedIndex == 1) ...[
+                  FastText.caption1(
+                    'Cancel anytime. No commitment required.',
+                    color: isDark ? Colors.white70 : Colors.black54,
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -263,14 +250,14 @@ class PaywallScreen extends StatelessWidget {
 
   Widget _buildFeaturesList(bool isDark) {
     final features = [
-      {'icon': Icons.record_voice_over, 'text': 'Unlimited live talks'},
-      {'icon': Icons.description_outlined, 'text': 'Auto summaries & insights'},
-      {'icon': Icons.favorite, 'text': 'Support the developer'},
-      {'icon': Icons.verified_user, 'text': 'Remove annoying paywall'},
+      {'icon': Icons.auto_awesome, 'text': 'Deepen your spiritual journey'},
+      {'icon': Icons.psychology, 'text': 'Build stronger faith habits'},
+      {'icon': Icons.shield, 'text': 'Stay protected from distractions'},
+      {'icon': Icons.trending_up, 'text': 'Grow closer to your purpose'},
     ];
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: features.map((feature) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -282,13 +269,9 @@ class PaywallScreen extends StatelessWidget {
                 color: FastColors.primary,
               ),
               const SizedBox(width: 12),
-              Text(
+              FastText.callout(
                 feature['text'] as String,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
+                color: isDark ? Colors.white : Colors.black87,
               ),
             ],
           ),
@@ -347,21 +330,14 @@ class PaywallScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            FastText.headline(
                               controller.getPlanTitle(package),
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                color: isDark ? Colors.white : Colors.black87,
-                              ),
+                              color: isDark ? Colors.white : Colors.black87,
                             ),
                             const SizedBox(height: 2),
-                            Text(
+                            FastText.subheadline(
                               controller.getPriceText(package),
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: isDark ? Colors.white70 : Colors.black54,
-                              ),
+                              color: isDark ? Colors.white70 : Colors.black54,
                             ),
                           ],
                         ),
@@ -374,13 +350,9 @@ class PaywallScreen extends StatelessWidget {
                             color: FastColors.primary,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Text(
+                          child: FastText.caption1(
                             controller.getSavingsText(package),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            color: Colors.white,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -415,28 +387,19 @@ class PaywallScreen extends StatelessWidget {
   }
 
   Widget _buildFreeTrialToggle(bool isDark, PaywallController controller) {
-    return AnimatedBuilder(
-      animation: controller.switchAnimation,
-      builder: (context, child) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Start with free trial',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            CupertinoSwitch(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FastText.callout(
+          'Begin with free trial',
+          color: isDark ? Colors.white : Colors.black87,
+        ),
+        Obx(() => CupertinoSwitch(
               value: controller.freeTrialEnabled.value,
               onChanged: controller.toggleFreeTrial,
               activeTrackColor: FastColors.primary,
-            ),
-          ],
-        );
-      },
+            )),
+      ],
     );
   }
 
@@ -464,12 +427,9 @@ class PaywallScreen extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Text(
-                'Unlock Premium',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+            : FastText.headline(
+                'Start Your Journey',
+                color: Colors.white,
               ),
       ),
     );
@@ -481,32 +441,23 @@ class PaywallScreen extends StatelessWidget {
       children: [
         TextButton(
           onPressed: controller.restorePurchases,
-          child: Text(
+          child: FastText.footnote(
             'Restore',
-            style: TextStyle(
-              color: isDark ? Colors.white70 : Colors.black54,
-              fontSize: 13,
-            ),
+            color: isDark ? Colors.white70 : Colors.black54,
           ),
         ),
         TextButton(
           onPressed: controller.openPrivacyPolicy,
-          child: Text(
+          child: FastText.footnote(
             'Privacy',
-            style: TextStyle(
-              color: isDark ? Colors.white70 : Colors.black54,
-              fontSize: 13,
-            ),
+            color: isDark ? Colors.white70 : Colors.black54,
           ),
         ),
         TextButton(
           onPressed: controller.openTermsOfService,
-          child: Text(
+          child: FastText.footnote(
             'Terms',
-            style: TextStyle(
-              color: isDark ? Colors.white70 : Colors.black54,
-              fontSize: 13,
-            ),
+            color: isDark ? Colors.white70 : Colors.black54,
           ),
         ),
       ],

@@ -1,5 +1,4 @@
 import 'package:faithlock/core/helpers/export.dart';
-import 'package:faithlock/services/analytics/analytics_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,12 +13,7 @@ class SettingsController extends GetxController {
   static const String _keyAnalytics = 'analytics_enabled';
   static const String _keyCrashReporting = 'crash_reporting_enabled';
 
-  final AnalyticsService _analyticsService;
   late final SharedPreferences _prefs;
-
-  SettingsController({
-    AnalyticsService? analyticsService,
-  }) : _analyticsService = analyticsService ?? AnalyticsService();
 
   // Observable settings
   final RxBool isDarkMode = false.obs;
@@ -65,10 +59,7 @@ class SettingsController extends GetxController {
     await _prefs.setBool(_keyDarkMode, value);
     Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
 
-    _analyticsService.logEvent(
-      'settings_changed',
-      eventProperties: {'setting': 'dark_mode', 'value': value.toString()},
-    );
+
   }
 
   // Notification settings
@@ -76,10 +67,7 @@ class SettingsController extends GetxController {
     notificationsEnabled.value = value;
     await _prefs.setBool(_keyNotifications, value);
 
-    _analyticsService.logEvent(
-      'settings_changed',
-      eventProperties: {'setting': 'notifications', 'value': value.toString()},
-    );
+
   }
 
   // Language settings
@@ -91,10 +79,7 @@ class SettingsController extends GetxController {
     final locale = Locale(languageCode);
     Get.updateLocale(locale);
 
-    _analyticsService.logEvent(
-      'settings_changed',
-      eventProperties: {'setting': 'language', 'value': languageCode},
-    );
+
   }
 
   // Security settings
@@ -102,10 +87,7 @@ class SettingsController extends GetxController {
     biometricEnabled.value = value;
     await _prefs.setBool(_keyBiometric, value);
 
-    _analyticsService.logEvent(
-      'settings_changed',
-      eventProperties: {'setting': 'biometric', 'value': value.toString()},
-    );
+
   }
 
   // Privacy settings
@@ -114,20 +96,13 @@ class SettingsController extends GetxController {
     await _prefs.setBool(_keyAnalytics, value);
 
     // Update analytics opt-out status
-    _analyticsService.setOptOut(!value);
   }
 
   Future<void> toggleCrashReporting(bool value) async {
     crashReportingEnabled.value = value;
     await _prefs.setBool(_keyCrashReporting, value);
 
-    _analyticsService.logEvent(
-      'settings_changed',
-      eventProperties: {
-        'setting': 'crash_reporting',
-        'value': value.toString()
-      },
-    );
+
   }
 
   // Support actions
@@ -137,10 +112,7 @@ class SettingsController extends GetxController {
       'App rating will be available soon',
     );
 
-    _analyticsService.logEvent(
-      'app_rated',
-      eventProperties: {'source': 'settings'},
-    );
+
   }
 
   Future<void> contactSupport() async {
@@ -158,10 +130,7 @@ class SettingsController extends GetxController {
     if (await canLaunchUrl(emailUri)) {
       await launchUrl(emailUri);
 
-      _analyticsService.logEvent(
-        'support_contacted',
-        eventProperties: {'method': 'email'},
-      );
+
     } else {
       UIHelper.showErrorSnackBar(
         'Could not open email client',
@@ -176,10 +145,7 @@ class SettingsController extends GetxController {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
 
-      _analyticsService.logEvent(
-        'link_clicked',
-        eventProperties: {'link': 'privacy_policy'},
-      );
+
     }
   }
 
@@ -190,18 +156,12 @@ class SettingsController extends GetxController {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
 
-      _analyticsService.logEvent(
-        'link_clicked',
-        eventProperties: {'link': 'terms_of_service'},
-      );
+
     }
   }
 
   Future<void> shareApp() async {
-    _analyticsService.logEvent(
-      'app_shared',
-      eventProperties: {},
-    );
+
 
     UIHelper.showSuccessSnackBar('Share feature coming soon!');
   }
@@ -211,10 +171,7 @@ class SettingsController extends GetxController {
     await _prefs.clear();
     // TODO: Clear secure storage when available
 
-    _analyticsService.logEvent(
-      'app_data_cleared',
-      eventProperties: {},
-    );
+
 
     // Reset to defaults
     await _loadSettings();

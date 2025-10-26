@@ -1,6 +1,8 @@
 import 'package:faithlock/features/faithlock/models/export.dart';
+import 'package:faithlock/features/faithlock/services/bible_database_loader.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:flutter/material.dart';
 
 class FaithLockDatabaseService {
   static final FaithLockDatabaseService _instance = FaithLockDatabaseService._internal();
@@ -21,14 +23,14 @@ class FaithLockDatabaseService {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Updated to include curriculum fields
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // Verses table
+    // Verses table with curriculum support
     await db.execute('''
       CREATE TABLE verses (
         id TEXT PRIMARY KEY,
@@ -38,7 +40,10 @@ class FaithLockDatabaseService {
         chapter INTEGER NOT NULL,
         verse INTEGER NOT NULL,
         category TEXT NOT NULL,
-        translation TEXT DEFAULT 'KJV'
+        translation TEXT DEFAULT 'BSB',
+        curriculum_week INTEGER,
+        difficulty INTEGER,
+        keyword TEXT
       )
     ''');
 
@@ -131,6 +136,31 @@ class FaithLockDatabaseService {
       'verses',
       where: 'category = ?',
       whereArgs: [category.value],
+    );
+    return List.generate(maps.length, (i) => BibleVerse.fromJson(maps[i]));
+  }
+
+  /// Get verses by category and curriculum week (for structured learning)
+  Future<List<BibleVerse>> getVersesByCurriculumWeek({
+    required VerseCategory category,
+    required int week,
+  }) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'verses',
+      where: 'category = ? AND curriculum_week = ?',
+      whereArgs: [category.value, week],
+    );
+    return List.generate(maps.length, (i) => BibleVerse.fromJson(maps[i]));
+  }
+
+  /// Get verses by difficulty level
+  Future<List<BibleVerse>> getVersesByDifficulty(int difficulty) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'verses',
+      where: 'difficulty = ?',
+      whereArgs: [difficulty],
     );
     return List.generate(maps.length, (i) => BibleVerse.fromJson(maps[i]));
   }
@@ -315,132 +345,17 @@ class FaithLockDatabaseService {
   // ==================== SEED DATA ====================
 
   Future<void> _seedInitialVerses(Database db) async {
-    final verses = _getInitialVerses();
-    for (final verse in verses) {
-      await db.insert('verses', verse.toJson());
+    // Load 100 curriculum verses from asset Bible database
+    try {
+      final verses = await BibleDatabaseLoader.loadCurriculumVerses();
+      for (final verse in verses) {
+        await db.insert('verses', verse.toJson());
+      }
+      debugPrint('✅ Loaded ${verses.length} curriculum verses from Bible database');
+    } catch (e) {
+      debugPrint('⚠️ Failed to load curriculum verses: $e');
+      // Fallback to empty - app will need verses to function
     }
-  }
-
-  List<BibleVerse> _getInitialVerses() {
-    return [
-      // Strength verses
-      const BibleVerse(
-        id: 'verse_001',
-        text: 'I can do all things through Christ who strengthens me.',
-        reference: 'Philippians 4:13',
-        book: 'Philippians',
-        chapter: 4,
-        verse: 13,
-        category: VerseCategory.strength,
-      ),
-      const BibleVerse(
-        id: 'verse_002',
-        text: 'The Lord is my strength and my shield; my heart trusts in him, and he helps me.',
-        reference: 'Psalm 28:7',
-        book: 'Psalm',
-        chapter: 28,
-        verse: 7,
-        category: VerseCategory.strength,
-      ),
-      const BibleVerse(
-        id: 'verse_003',
-        text: 'But those who hope in the Lord will renew their strength.',
-        reference: 'Isaiah 40:31',
-        book: 'Isaiah',
-        chapter: 40,
-        verse: 31,
-        category: VerseCategory.strength,
-      ),
-
-      // Peace verses
-      const BibleVerse(
-        id: 'verse_004',
-        text: 'Peace I leave with you; my peace I give you.',
-        reference: 'John 14:27',
-        book: 'John',
-        chapter: 14,
-        verse: 27,
-        category: VerseCategory.peace,
-      ),
-      const BibleVerse(
-        id: 'verse_005',
-        text: 'Do not be anxious about anything, but in every situation, by prayer present your requests to God.',
-        reference: 'Philippians 4:6',
-        book: 'Philippians',
-        chapter: 4,
-        verse: 6,
-        category: VerseCategory.peace,
-      ),
-      const BibleVerse(
-        id: 'verse_006',
-        text: 'The Lord gives strength to his people; the Lord blesses his people with peace.',
-        reference: 'Psalm 29:11',
-        book: 'Psalm',
-        chapter: 29,
-        verse: 11,
-        category: VerseCategory.peace,
-      ),
-
-      // Wisdom verses
-      const BibleVerse(
-        id: 'verse_007',
-        text: 'If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault.',
-        reference: 'James 1:5',
-        book: 'James',
-        chapter: 1,
-        verse: 5,
-        category: VerseCategory.wisdom,
-      ),
-      const BibleVerse(
-        id: 'verse_008',
-        text: 'The fear of the Lord is the beginning of wisdom.',
-        reference: 'Proverbs 9:10',
-        book: 'Proverbs',
-        chapter: 9,
-        verse: 10,
-        category: VerseCategory.wisdom,
-      ),
-
-      // Love verses
-      const BibleVerse(
-        id: 'verse_009',
-        text: 'Love is patient, love is kind. It does not envy, it does not boast, it is not proud.',
-        reference: '1 Corinthians 13:4',
-        book: '1 Corinthians',
-        chapter: 13,
-        verse: 4,
-        category: VerseCategory.love,
-      ),
-      const BibleVerse(
-        id: 'verse_010',
-        text: 'Above all, love each other deeply, because love covers over a multitude of sins.',
-        reference: '1 Peter 4:8',
-        book: '1 Peter',
-        chapter: 4,
-        verse: 8,
-        category: VerseCategory.love,
-      ),
-
-      // Faith verses
-      const BibleVerse(
-        id: 'verse_011',
-        text: 'Now faith is confidence in what we hope for and assurance about what we do not see.',
-        reference: 'Hebrews 11:1',
-        book: 'Hebrews',
-        chapter: 11,
-        verse: 1,
-        category: VerseCategory.faith,
-      ),
-      const BibleVerse(
-        id: 'verse_012',
-        text: 'For we live by faith, not by sight.',
-        reference: '2 Corinthians 5:7',
-        book: '2 Corinthians',
-        chapter: 5,
-        verse: 7,
-        category: VerseCategory.faith,
-      ),
-    ];
   }
 
   // Close database

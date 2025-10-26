@@ -328,53 +328,22 @@ class VerseLibraryScreen extends StatelessWidget {
 
   /// Get category display label
   String _getCategoryLabel(VerseCategory category) {
-    switch (category) {
-      case VerseCategory.strength:
-        return 'Strength';
-      case VerseCategory.peace:
-        return 'Peace';
-      case VerseCategory.wisdom:
-        return 'Wisdom';
-      case VerseCategory.love:
-        return 'Love';
-      case VerseCategory.faith:
-        return 'Faith';
-      case VerseCategory.hope:
-        return 'Hope';
-      case VerseCategory.courage:
-        return 'Courage';
-      case VerseCategory.guidance:
-        return 'Guidance';
-      case VerseCategory.gratitude:
-        return 'Gratitude';
-      case VerseCategory.perseverance:
-        return 'Perseverance';
-    }
+    return category.displayName;
   }
 
   /// Get category color
   Color _getCategoryColor(VerseCategory category) {
     switch (category) {
-      case VerseCategory.strength:
-        return const Color(0xFFFF5722);
-      case VerseCategory.peace:
-        return const Color(0xFF4CAF50);
-      case VerseCategory.wisdom:
-        return const Color(0xFF9C27B0);
-      case VerseCategory.love:
-        return const Color(0xFFE91E63);
-      case VerseCategory.faith:
-        return const Color(0xFF2196F3);
-      case VerseCategory.hope:
-        return const Color(0xFFFF9800);
-      case VerseCategory.courage:
-        return const Color(0xFFF44336);
-      case VerseCategory.guidance:
-        return const Color(0xFF009688);
-      case VerseCategory.gratitude:
-        return const Color(0xFF8BC34A);
-      case VerseCategory.perseverance:
-        return const Color(0xFF673AB7);
+      case VerseCategory.temptation:
+        return const Color(0xFFFF5722); // Red-Orange - Danger
+      case VerseCategory.fearAnxiety:
+        return const Color(0xFF2196F3); // Blue - Calm
+      case VerseCategory.pride:
+        return const Color(0xFF9C27B0); // Purple - Royal
+      case VerseCategory.lust:
+        return const Color(0xFFF44336); // Red - Warning
+      case VerseCategory.anger:
+        return const Color(0xFFFF9800); // Orange - Alert
     }
   }
 }
