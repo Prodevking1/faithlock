@@ -1,3 +1,4 @@
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
 
   // Services
   RevenueCatService get _revenueCat => RevenueCatService.instance;
+  final PostHogService _analytics = PostHogService.instance;
 
   // Observable state
   final RxBool isLoading = true.obs;
@@ -122,6 +124,14 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
         freeTrialEnabled.value =
             !isYearlyPackage(availablePackages[selectedPlanIndex.value]);
       }
+
+      // Track paywall viewed
+      if (_analytics.isReady) {
+        await _analytics.paywall.trackPaywallViewed(
+          source: placementId ?? 'unknown',
+          placementId: placementId,
+        );
+      }
     } catch (e) {
       lastError.value = 'Failed to load subscription options: $e';
       debugPrint('❌ Error loading offerings: $e');
@@ -137,7 +147,7 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
     return periodLower.contains('year') || periodLower.contains('y');
   }
 
-  void selectPlan(int index) {
+  void selectPlan(int index) async {
     if (index < 0 || index >= packages.length) return;
 
     cardAnimationController.forward().then((_) {
@@ -153,6 +163,19 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       switchAnimationController.reverse();
     } else {
       switchAnimationController.forward();
+    }
+
+    // Track plan selection
+    if (_analytics.isReady) {
+      final selectedPackage = packages[index];
+      final product = selectedPackage.storeProduct;
+      await _analytics.paywall.trackPlanSelected(
+        planType: getPlanTitle(selectedPackage).toLowerCase(),
+        planId: selectedPackage.identifier,
+        price: product.price,
+        currency: product.currencyCode,
+        trialPeriod: product.introductoryPrice?.period,
+      );
     }
   }
 
@@ -249,6 +272,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
   }
 
   void closePaywall() {
+    // ❌ trackPaywallDismissed désactivé - événement redondant
+    // Métrique équivalente: bounce_rate = 1 - (completed / viewed)
+
     if (redirectToHomeOnClose) {
       Get.until((route) => route.isFirst);
     } else {
@@ -276,11 +302,27 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       lastError.value = '';
 
       final selectedPackage = packages[selectedPlanIndex.value];
+      final product = selectedPackage.storeProduct;
+
+      // ❌ trackPurchaseStarted désactivé - événement redondant
+      // Métrique équivalente: total_attempts = completed + failed
 
       // Attempt purchase
       final result = await _revenueCat.purchaseSubscription(selectedPackage);
 
       if (result.success) {
+        // Track purchase completed
+        if (_analytics.isReady) {
+          await _analytics.paywall.trackPurchaseCompleted(
+            planType: getPlanTitle(selectedPackage).toLowerCase(),
+            planId: selectedPackage.identifier,
+            revenue: product.price,
+            currency: product.currencyCode,
+            isTrialStart: product.introductoryPrice != null,
+            isRestore: false,
+          );
+        }
+
         // Schedule trial reminder if enabled
         if (trialReminderEnabled.value) {
           await _scheduleTrialReminder();
@@ -310,6 +352,16 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
     } catch (e) {
       lastError.value = e.toString();
 
+      // Track purchase failed
+      if (_analytics.isReady) {
+        await _analytics.paywall.trackPurchaseFailed(
+          planType: getPlanTitle(packages[selectedPlanIndex.value]).toLowerCase(),
+          planId: packages[selectedPlanIndex.value].identifier,
+          reason: e.toString(),
+          errorCode: e is PlatformException ? e.code : null,
+        );
+      }
+
       // Show error feedback
       HapticFeedback.lightImpact();
       Get.snackbar(
@@ -334,6 +386,20 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       final result = await _revenueCat.restorePurchases();
 
       if (result.success && result.hasActiveSubscriptions) {
+        // Track restore as completed purchase
+        if (_analytics.isReady && packages.isNotEmpty) {
+          final currentPackage = packages[selectedPlanIndex.value];
+          final product = currentPackage.storeProduct;
+          await _analytics.paywall.trackPurchaseCompleted(
+            planType: getPlanTitle(currentPackage).toLowerCase(),
+            planId: currentPackage.identifier,
+            revenue: product.price,
+            currency: product.currencyCode,
+            isTrialStart: false,
+            isRestore: true,
+          );
+        }
+
         HapticFeedback.mediumImpact();
         Get.snackbar(
           'Purchases Restored! ✅',
@@ -392,6 +458,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       final result = await _revenueCat.applyPromoCode(promoCode.value.trim());
 
       if (result.success) {
+        // ❌ trackPromoCodeApplied désactivé - rarement utilisé
+        // Réactiver si campagne promo active
+
         HapticFeedback.mediumImpact();
         Get.snackbar(
           'Promo Code Applied! 🎉',
@@ -412,6 +481,8 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
         throw Exception(result.error ?? 'Invalid promo code');
       }
     } catch (e) {
+      // ❌ trackPromoCodeApplied désactivé - rarement utilisé
+
       Get.snackbar(
         'Invalid Promo Code',
         'The promo code you entered is not valid.',

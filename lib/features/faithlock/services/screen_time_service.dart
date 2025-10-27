@@ -76,7 +76,14 @@ class ScreenTimeService {
   Future<int> getSelectedAppsCount() async {
     try {
       final apps = await getSelectedApps();
-      return apps.length;
+      int totalCount = 0;
+
+      for (var item in apps) {
+        final count = item['count'] as int? ?? 0;
+        totalCount += count;
+      }
+
+      return totalCount;
     } catch (e) {
       debugPrint('Error getting selected apps count: $e');
       return 0;
@@ -207,17 +214,16 @@ class ScreenTimeService {
     }
   }
 
-  /// Temporarily unlock apps after successful challenge
-  /// Duration in minutes (default: 5 minutes)
-  Future<void> temporaryUnlock({int durationMinutes = 5}) async {
+  /// Unlock apps after successful prayer completion
+  /// Stops current schedules and restarts them for tomorrow
+  Future<void> temporaryUnlock({int durationMinutes = 0}) async {
     try {
       await _channel.invokeMethod('temporaryUnlock', {
         'durationMinutes': durationMinutes,
       });
-      debugPrint('🔓 Temporary unlock for $durationMinutes minutes');
     } catch (e) {
-      debugPrint('Error during temporary unlock: $e');
-      throw Exception('Failed to temporarily unlock: $e');
+      debugPrint('❌ Failed to unlock apps: $e');
+      throw Exception('Failed to unlock apps: $e');
     }
   }
 
@@ -291,7 +297,26 @@ class ScreenTimeService {
     }
   }
 
-  /// Dispose resources
+  /// Check if a schedule ended flag is set (from DeviceActivityMonitor)
+  Future<String?> checkScheduleEnded() async {
+    try {
+      final result = await _channel.invokeMethod<String>('checkScheduleEnded');
+      return result;
+    } catch (e) {
+      debugPrint('❌ Error checking schedule ended: $e');
+      return null;
+    }
+  }
+
+  /// Clear schedule ended flag
+  Future<void> clearScheduleEndedFlag() async {
+    try {
+      await _channel.invokeMethod('clearScheduleEndedFlag');
+    } catch (e) {
+      debugPrint('❌ Error clearing schedule ended flag: $e');
+    }
+  }
+
   void dispose() {
     // Cleanup if needed
   }

@@ -92,6 +92,10 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handleShouldNavigateToPrayer(result: result)
         case "clearPrayerFlag":
             handleClearPrayerFlag(result: result)
+        case "checkScheduleEnded":
+            handleCheckScheduleEnded(result: result)
+        case "clearScheduleEndedFlag":
+            handleClearScheduleEndedFlag(result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -539,7 +543,6 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
         for schedule in schedules {
             let activityName = DeviceActivityName(schedule.name.replacingOccurrences(of: " ", with: "_"))
 
-            // Create schedule with start and end times
             let startComponents = DateComponents(hour: schedule.startHour, minute: schedule.startMinute)
             let endComponents = DateComponents(hour: schedule.endHour, minute: schedule.endMinute)
 
@@ -564,7 +567,7 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
         if schedules.count > 0 {
             print("✅ FaithLock: \(schedules.count) enabled schedule(s) configured and monitoring started")
-            print("⚠️ Note: iOS may take a few minutes to activate the DeviceActivityMonitor extension the first time")
+            print("ℹ️ Shields are already in store from app selection - DeviceActivityMonitor will manage them")
         } else {
             print("ℹ️ FaithLock: No enabled schedules - apps will not be blocked")
             print("💡 Enable at least one schedule to activate blocking")
@@ -576,9 +579,6 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             store.shield.webDomains = nil
             print("✅ All shields removed - apps are now accessible")
         }
-
-        // ❌ REMOVED: No immediate blocking - let DeviceActivityMonitor handle it automatically
-        // The monitor will activate when schedule starts and show shield when user opens blocked app
 
         result(true)
     }
@@ -620,30 +620,22 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             return
         }
 
-        print("========================================")
-        print("🔓 FaithLock: PRAYER UNLOCK - EXACT COPY OF clearSelectedApps")
-        print("========================================")
+        let deviceActivityCenter = DeviceActivityCenter()
 
-        // ✅ EXACT SAME AS clearSelectedApps() - ligne 240-258
+        // Step 1: Stop ALL schedules
+        deviceActivityCenter.stopMonitoring()
+
+        // Step 2: Remove shields immediately
         store.shield.applications = nil
         store.shield.applicationCategories = nil
         store.shield.webDomains = nil
 
-        let deviceActivityCenter = DeviceActivityCenter()
-        deviceActivityCenter.stopMonitoring()
-
-        print("🗑️ Prayer unlock: Cleared shields and stopped all schedules (exact copy of clearSelectedApps)")
-        print("========================================")
-
-        result(true)
-    }
-
-    /// Restart only schedules that haven't started yet (future schedules)
-    private func restartFutureSchedules() {
+        // Step 3: Restart ALL schedules
         let defaults = sharedDefaults ?? UserDefaults.standard
         guard let schedulesData = defaults.data(forKey: "faithlock_schedules"),
               let schedulesArray = try? JSONSerialization.jsonObject(with: schedulesData) as? [[String: Any]] else {
-            print("⚠️ No schedules found to restart")
+            print("⚠️ Prayer unlock: No schedules found to restart")
+            result(true)
             return
         }
 
@@ -655,65 +647,43 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
                   let startMinute = scheduleDict["startMinute"] as? Int,
                   let endHour = scheduleDict["endHour"] as? Int,
                   let endMinute = scheduleDict["endMinute"] as? Int,
-                  let enabled = scheduleDict["enabled"] as? Bool else {
+                  let enabled = scheduleDict["enabled"] as? Bool,
+                  enabled else {
                 continue
             }
             schedules.append((name, startHour, startMinute, endHour, endMinute, enabled))
         }
 
-        // Get current time
-        let calendar = Calendar.current
-        let now = Date()
-        let currentComponents = calendar.dateComponents([.hour, .minute], from: now)
-        let currentHour = currentComponents.hour ?? 0
-        let currentMinute = currentComponents.minute ?? 0
-        let currentTimeInMinutes = currentHour * 60 + currentMinute
-
-        let deviceActivityCenter = DeviceActivityCenter()
+        // Restart ALL enabled schedules
         var restartedCount = 0
+        for schedule in schedules {
+            let activityName = DeviceActivityName(schedule.name.replacingOccurrences(of: " ", with: "_"))
+            let startComponents = DateComponents(hour: schedule.startHour, minute: schedule.startMinute)
+            let endComponents = DateComponents(hour: schedule.endHour, minute: schedule.endMinute)
 
-        for schedule in schedules where schedule.enabled {
-            let startTimeInMinutes = schedule.startHour * 60 + schedule.startMinute
-            let endTimeInMinutes = schedule.endHour * 60 + schedule.endMinute
+            let deviceSchedule = DeviceActivitySchedule(
+                intervalStart: startComponents,
+                intervalEnd: endComponents,
+                repeats: true,
+                warningTime: nil
+            )
 
-            var shouldRestart = false
-
-            // Check if schedule is in the future
-            // Handle schedules that cross midnight
-            if endTimeInMinutes < startTimeInMinutes {
-                // Crosses midnight
-                let isActive = currentTimeInMinutes >= startTimeInMinutes || currentTimeInMinutes < endTimeInMinutes
-                shouldRestart = !isActive  // Restart only if NOT currently active
-            } else {
-                // Normal schedule
-                shouldRestart = currentTimeInMinutes < startTimeInMinutes  // Hasn't started yet
-            }
-
-            if shouldRestart {
-                let activityName = DeviceActivityName(schedule.name.replacingOccurrences(of: " ", with: "_"))
-                let startComponents = DateComponents(hour: schedule.startHour, minute: schedule.startMinute)
-                let endComponents = DateComponents(hour: schedule.endHour, minute: schedule.endMinute)
-
-                let deviceSchedule = DeviceActivitySchedule(
-                    intervalStart: startComponents,
-                    intervalEnd: endComponents,
-                    repeats: true,
-                    warningTime: nil
-                )
-
-                do {
-                    try deviceActivityCenter.startMonitoring(activityName, during: deviceSchedule)
-                    print("✅ Restarted future schedule: '\(schedule.name)' (\(schedule.startHour):\(String(format: "%02d", schedule.startMinute)))")
-                    restartedCount += 1
-                } catch {
-                    print("❌ Failed to restart schedule '\(schedule.name)': \(error)")
-                }
-            } else {
-                print("⏭️ Skipped active/ended schedule: '\(schedule.name)'")
+            do {
+                try deviceActivityCenter.startMonitoring(activityName, during: deviceSchedule)
+                restartedCount += 1
+            } catch {
+                print("❌ Failed to restart schedule '\(schedule.name)': \(error)")
             }
         }
 
-        print("✅ Restarted \(restartedCount) future schedule(s)")
+        // DEBUG: Print restart summary
+        if restartedCount > 0 {
+            print("✅ Prayer unlock: Restarted \(restartedCount)/\(schedules.count) schedule(s)")
+        } else {
+            print("⚠️ Prayer unlock: No schedules were restarted")
+        }
+
+        result(true)
     }
 
     // MARK: - Debug Methods
@@ -930,13 +900,36 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
     }
 
     private func handleClearPrayerFlag(result: @escaping FlutterResult) {
-        // Clear flag from App Group shared storage
-        let defaults = UserDefaults(suiteName: "group.com.appbiz.faithlock")
+        let defaults = UserDefaults(suiteName: appGroupIdentifier)
         defaults?.set(false, forKey: "should_navigate_to_prayer")
         defaults?.removeObject(forKey: "prayer_request_time")
         defaults?.synchronize()
 
         NSLog("🗑️ Prayer flag cleared from App Group")
+        result(true)
+    }
+
+    private func handleCheckScheduleEnded(result: @escaping FlutterResult) {
+        guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else {
+            result(nil)
+            return
+        }
+
+        let scheduleEnded = defaults.string(forKey: "schedule_ended")
+        result(scheduleEnded)
+    }
+
+    private func handleClearScheduleEndedFlag(result: @escaping FlutterResult) {
+        guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else {
+            result(false)
+            return
+        }
+
+        defaults.removeObject(forKey: "schedule_ended")
+        defaults.removeObject(forKey: "schedule_ended_time")
+        defaults.synchronize()
+
+        NSLog("✅ Schedule ended flag cleared")
         result(true)
     }
 }

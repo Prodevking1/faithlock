@@ -3,6 +3,7 @@ import 'package:faithlock/features/auth/screens/new_password_screen.dart';
 import 'package:faithlock/features/auth/screens/signin_screen.dart';
 import 'package:faithlock/features/auth/screens/signup_screen.dart';
 import 'package:faithlock/features/auth/screens/verify_otp_screen.dart';
+import 'package:faithlock/features/debug/screens/analytics_test_screen.dart';
 import 'package:faithlock/features/faithlock/screens/permissions_onboarding_screen.dart';
 import 'package:faithlock/features/faithlock/services/schedule_monitor_service.dart';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
@@ -83,6 +84,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String eLearning = '/e-learning';
   static const String monitorDebug = '/monitor-debug';
+  static const String analyticsTest = '/debug/analytics-test';
 
   static List<GetPage<dynamic>> getPages() {
     return <GetPage<dynamic>>[
@@ -107,6 +109,7 @@ class AppRoutes {
       GetPage<dynamic>(name: profile, page: () => ProfileScreen()),
       GetPage<dynamic>(name: main, page: () => MainScreen()),
       GetPage<dynamic>(name: home, page: () => MainScreen()),
+      GetPage<dynamic>(name: analyticsTest, page: () => const AnalyticsTestScreen()),
 
     ];
   }

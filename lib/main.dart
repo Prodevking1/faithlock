@@ -21,8 +21,6 @@ void main() async {
 
   debugPrint('🚀 FaithLock: Starting app initialization...');
 
-  // ✅ CRITICAL SERVICES ONLY - Parallel initialization for speed
-  // These MUST complete before app starts
   await Future.wait([
     _initializeSupabase(),
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
@@ -33,18 +31,15 @@ void main() async {
 
   debugPrint('✅ Critical services initialized');
 
-  // ✅ NON-CRITICAL SERVICES - Load in background after app starts
-  // These don't block the UI from appearing
   _initializeNonCriticalServices();
 
   runApp(const App());
 }
 
-/// Initialize Supabase (critical for auth)
 Future<void> _initializeSupabase() async {
   try {
     await Supabase.initialize(
-      url: "https://7c96a3856e05.ngrok-free.app",
+      url: Env.supabaseUrl,
       anonKey: Env.supabaseAnonKey,
     );
     debugPrint('✅ Supabase initialized');
@@ -53,14 +48,11 @@ Future<void> _initializeSupabase() async {
   }
 }
 
-/// Initialize non-critical services in background
-/// These services load while the app UI is already displayed
 void _initializeNonCriticalServices() {
   Future.microtask(() async {
     debugPrint('⏳ Loading non-critical services in background...');
 
     try {
-      // Analytics
       final PostHogService postHog = PostHogService.instance;
       await postHog.init(
         customApiKey: Env.postHogApiKey,
@@ -109,17 +101,12 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
 
-    // Schedule auto-navigation check after first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkAutoNavigation();
     });
   }
 
-  /// Perform all navigation checks after app UI is visible
-  /// 1. Check if onboarding needed
-  /// 2. Check if should navigate to prayer learning
   Future<void> _checkAutoNavigation() async {
-    // First check: Is onboarding completed?
     final shouldShowOnboarding = await _shouldShowOnboarding();
 
     if (shouldShowOnboarding) {
@@ -132,18 +119,14 @@ class _AppState extends State<App> {
     await autoNavService.checkAndNavigate();
   }
 
-  /// Check if user needs to see onboarding
-  /// Returns true if this is first launch or onboarding not completed
   Future<bool> _shouldShowOnboarding() async {
     try {
       final storage = Get.find<StorageService>();
-      // Use the same key as ScriptureOnboardingController
       final hasCompletedOnboarding =
           await storage.readBool('scripture_onboarding_complete') ?? false;
       return !hasCompletedOnboarding;
     } catch (e) {
       debugPrint('⚠️ Error checking onboarding status: $e');
-      // If error reading storage, assume onboarding needed (safer)
       return true;
     }
   }
@@ -160,7 +143,6 @@ class _AppState extends State<App> {
       initialBinding: AppBindings(),
       initialRoute: AppRoutes.main,
       getPages: AppRoutes.getPages(),
-      // ❌ REMOVED: home: PaywallScreen() - was conflicting with initialRoute
       translations: AppTranslations(),
       localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,

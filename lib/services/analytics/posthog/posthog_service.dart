@@ -3,6 +3,8 @@ import 'package:faithlock/services/analytics/posthog/modules/campaign_module.dar
 import 'package:faithlock/services/analytics/posthog/modules/conversion_module.dart';
 import 'package:faithlock/services/analytics/posthog/modules/event_tracking_module.dart';
 import 'package:faithlock/services/analytics/posthog/modules/feature_flags_module.dart';
+import 'package:faithlock/services/analytics/posthog/modules/onboarding_analytics_module.dart';
+import 'package:faithlock/services/analytics/posthog/modules/paywall_analytics_module.dart';
 import 'package:faithlock/services/analytics/posthog/modules/screen_tracking_module.dart';
 import 'package:faithlock/services/analytics/posthog/modules/session_recording_module.dart';
 import 'package:faithlock/services/analytics/posthog/modules/surveys_module.dart';
@@ -64,6 +66,8 @@ class PostHogService {
   late final ConversionModule _conversionModule;
   late final CampaignModule _campaignModule;
   late final SurveysModule _surveysModule;
+  late final OnboardingAnalyticsModule _onboardingModule;
+  late final PaywallAnalyticsModule _paywallModule;
 
   // Getters with safety checks
   EventTrackingModule get events {
@@ -130,6 +134,22 @@ class PostHogService {
     return _surveysModule;
   }
 
+  OnboardingAnalyticsModule get onboarding {
+    if (!_isInitialized) {
+      throw StateError(
+          'PostHogService must be initialized before accessing onboarding module');
+    }
+    return _onboardingModule;
+  }
+
+  PaywallAnalyticsModule get paywall {
+    if (!_isInitialized) {
+      throw StateError(
+          'PostHogService must be initialized before accessing paywall module');
+    }
+    return _paywallModule;
+  }
+
   bool get isInitialized => _isInitialized;
   bool get isEnabled => _isEnabled;
   String? get currentUserId => _currentUserId;
@@ -183,6 +203,8 @@ class PostHogService {
       _conversionModule = ConversionModule(this);
       _campaignModule = CampaignModule(this);
       _surveysModule = SurveysModule(this);
+      _onboardingModule = OnboardingAnalyticsModule(this);
+      _paywallModule = PaywallAnalyticsModule(this);
 
       await _eventModule.init();
       await _userModule.init();
@@ -192,6 +214,8 @@ class PostHogService {
       await _conversionModule.init();
       await _campaignModule.init();
       await _surveysModule.init();
+      await _onboardingModule.init();
+      await _paywallModule.init();
 
       _isInitialized = true;
 
@@ -257,6 +281,8 @@ class PostHogService {
       await _sessionModule.reset();
       await _conversionModule.reset();
       await _campaignModule.reset();
+      await _onboardingModule.reset();
+      await _paywallModule.reset();
 
       if (kDebugMode) {
         debugPrint('PostHog service reset');
@@ -283,6 +309,8 @@ class PostHogService {
       await _conversionModule.shutdown();
       await _campaignModule.shutdown();
       await _surveysModule.shutdown();
+      await _onboardingModule.shutdown();
+      await _paywallModule.shutdown();
 
       // Arrêt du SDK PostHog
       await Posthog().close();
@@ -349,7 +377,7 @@ class PostHogService {
       'enabled': _isEnabled,
       'current_user_id': _currentUserId,
       'session_id': _sessionId,
-      'modules_loaded': _isInitialized ? 8 : 0,
+      'modules_loaded': _isInitialized ? 10 : 0,
       'privacy_opt_out': PostHogPrivacyManager.instance.isOptedOut,
       'consent_status': PostHogPrivacyManager.instance.consentStatus.name,
     };

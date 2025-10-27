@@ -104,9 +104,13 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.dark(
               primary: OnboardingTheme.goldColor,
-              onPrimary: OnboardingTheme.backgroundColor,
+              onPrimary: Colors.black,
               surface: OnboardingTheme.cardBackground,
               onSurface: OnboardingTheme.labelPrimary,
+              shadow: Colors.transparent,
+            ),
+            dialogTheme: DialogThemeData(
+              backgroundColor: OnboardingTheme.cardBackground,
             ),
           ),
           child: child!,
@@ -303,100 +307,110 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
               ),
             ],
           ),
-          if (isEnabled) ...[
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => _editScheduleTime(index, true),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: OnboardingTheme.backgroundColor,
-                        borderRadius:
-                            BorderRadius.circular(OnboardingTheme.radiusSmall),
-                        border: Border.all(
-                          color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                          width: 1,
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => _editScheduleTime(index, true),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: OnboardingTheme.backgroundColor.withValues(
+                        alpha: isEnabled ? 1.0 : 0.5,
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(OnboardingTheme.radiusSmall),
+                      border: Border.all(
+                        color: (isEnabled
+                            ? OnboardingTheme.goldColor
+                            : OnboardingTheme.labelTertiary).withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Start',
+                          style: OnboardingTheme.footnote.copyWith(
+                            fontSize: 11,
+                            color: OnboardingTheme.labelTertiary,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Start',
-                            style: OnboardingTheme.footnote.copyWith(
-                              fontSize: 11,
-                              color: OnboardingTheme.labelTertiary,
-                            ),
+                        const SizedBox(height: 4),
+                        Text(
+                          formatTime(startHour, startMinute),
+                          style: OnboardingTheme.body.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: isEnabled
+                                ? OnboardingTheme.goldColor
+                                : OnboardingTheme.labelTertiary,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            formatTime(startHour, startMinute),
-                            style: OnboardingTheme.body.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: OnboardingTheme.goldColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  '→',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: OnboardingTheme.labelTertiary,
-                  ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '→',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: OnboardingTheme.labelTertiary,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => _editScheduleTime(index, false),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: OnboardingTheme.backgroundColor,
-                        borderRadius:
-                            BorderRadius.circular(OnboardingTheme.radiusSmall),
-                        border: Border.all(
-                          color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                          width: 1,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => _editScheduleTime(index, false),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: OnboardingTheme.backgroundColor.withValues(
+                        alpha: isEnabled ? 1.0 : 0.5,
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(OnboardingTheme.radiusSmall),
+                      border: Border.all(
+                        color: (isEnabled
+                            ? OnboardingTheme.goldColor
+                            : OnboardingTheme.labelTertiary).withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'End',
+                          style: OnboardingTheme.footnote.copyWith(
+                            fontSize: 11,
+                            color: OnboardingTheme.labelTertiary,
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'End',
-                            style: OnboardingTheme.footnote.copyWith(
-                              fontSize: 11,
-                              color: OnboardingTheme.labelTertiary,
-                            ),
+                        const SizedBox(height: 4),
+                        Text(
+                          formatTime(endHour, endMinute),
+                          style: OnboardingTheme.body.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: isEnabled
+                                ? OnboardingTheme.goldColor
+                                : OnboardingTheme.labelTertiary,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            formatTime(endHour, endMinute),
-                            style: OnboardingTheme.body.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: OnboardingTheme.goldColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ],
       ),
     );

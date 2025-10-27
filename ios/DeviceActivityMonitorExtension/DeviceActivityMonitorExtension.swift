@@ -42,20 +42,16 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         NSLog("🔒 MONITOR: Schedule '\(activity.rawValue)' started")
 
-        // Log to UserDefaults (App Group)
         logToAppGroup(event: "intervalDidStart", activity: activity.rawValue)
 
-        // Check if this is a temporary unlock schedule (ends with "_TEMP_UNLOCK")
         if activity.rawValue.hasSuffix("_TEMP_UNLOCK") {
-            // This is the START of a temporary unlock period
-            // Shields should already be removed by the main app
             NSLog("🔓 MONITOR: Temporary unlock period started")
             sendDebugNotification(title: "🔓 Temporary Unlock", body: "Apps unlocked for 5 minutes")
             return
         }
 
-        // Regular schedule - apply shields
-        sendDebugNotification(title: "🔒 Schedule Active", body: "Apps are now blocked")
+        let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
+        sendDebugNotification(title: "🔒 \(scheduleName)", body: "Your apps are now blocked")
         applyShield(for: activity)
         verifyShieldsApplied()
     }
@@ -66,23 +62,24 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         NSLog("🔓 MONITOR: Schedule '\(activity.rawValue)' ended")
 
-        // Log to UserDefaults (App Group)
         logToAppGroup(event: "intervalDidEnd", activity: activity.rawValue)
 
-        // Check if this is a temporary unlock schedule
         if activity.rawValue.hasSuffix("_TEMP_UNLOCK") {
-            // This is the END of a temporary unlock period
-            // Re-apply shields automatically
             NSLog("🔒 MONITOR: Temporary unlock ended - re-applying shields")
-            sendDebugNotification(title: "🔒 Apps Re-locked", body: "Temporary unlock period expired")
-
-            // Re-apply shields (they should still be in the store from initial selection)
+            sendDebugNotification(title: "🔒 Apps Re-locked", body: "Temporary unlock expired")
             reapplyShieldsFromStore()
             return
         }
 
-        // Regular schedule ended - remove shields
-        sendDebugNotification(title: "🔓 Schedule Ended", body: "Apps are now unlocked")
+        if let defaults = UserDefaults(suiteName: appGroup) {
+            defaults.set(activity.rawValue, forKey: "schedule_ended")
+            defaults.set(Date(), forKey: "schedule_ended_time")
+            defaults.synchronize()
+            NSLog("✅ MONITOR: Notified app that schedule '\(activity.rawValue)' ended")
+        }
+
+        let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
+        sendDebugNotification(title: "🔓 \(scheduleName)", body: "Open FaithLock to unlock your apps")
         removeShield(for: activity)
     }
 
@@ -97,38 +94,29 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     // MARK: - Private Methods
 
     private func applyShield(for activity: DeviceActivityName) {
-        // ✅ Retrieve the saved FamilyActivitySelection from App Group
-        guard let defaults = UserDefaults(suiteName: appGroup),
-              let selectionData = defaults.data(forKey: "familyActivitySelection"),
-              let selection = try? JSONDecoder().decode(FamilyActivitySelection.self, from: selectionData) else {
-            NSLog("⚠️ MONITOR: No FamilyActivitySelection found in App Group!")
+        if store.shield.applications != nil {
+            NSLog("✅ MONITOR: Shields already active in store (applied by main app)")
             return
         }
 
-        // Apply shields from the selection
-        if !selection.applicationTokens.isEmpty {
-            store.shield.applications = selection.applicationTokens
-            NSLog("✅ MONITOR: Applied shields to \(selection.applicationTokens.count) apps")
-        }
+        NSLog("⚠️ MONITOR: WARNING - No shields found in ManagedSettingsStore!")
+        NSLog("⚠️ MONITOR: The main app should apply shields after user selects apps")
+        NSLog("⚠️ MONITOR: Blocking will not work without shields in store")
 
-        if !selection.categoryTokens.isEmpty {
-            store.shield.applicationCategories = .specific(selection.categoryTokens)
-            NSLog("✅ MONITOR: Applied shields to \(selection.categoryTokens.count) categories")
-        }
-
-        if !selection.webDomainTokens.isEmpty {
-            store.shield.webDomains = selection.webDomainTokens
-            NSLog("✅ MONITOR: Applied shields to \(selection.webDomainTokens.count) web domains")
-        }
+        let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
+        sendDebugNotification(
+            title: "⚠️ \(scheduleName)",
+            body: "No apps selected. Open FaithLock to select apps to block."
+        )
     }
 
     private func removeShield(for activity: DeviceActivityName) {
-        // Remove all shields when schedule ends
         store.shield.applications = nil
         store.shield.applicationCategories = nil
         store.shield.webDomains = nil
 
-        NSLog("✅ MONITOR: Shields removed")
+        NSLog("✅ MONITOR: Shields removed - apps now accessible")
+        NSLog("💡 MONITOR: Shields will be reapplied by main app when next schedule starts")
     }
 
     private func reapplyShieldsFromStore() {
@@ -185,20 +173,18 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         NSLog("✅ FAITHLOCK MONITOR: Event logged to App Group - \(event)")
     }
 
-    /// Send local notification for debugging (visible to user)
     private func sendDebugNotification(title: String, body: String) {
         let content = UNMutableNotificationContent()
         content.title = title
-        content.body = "\(body) at \(DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .medium))"
+        content.body = body
         content.sound = .default
         content.badge = 1
 
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,
             content: content,
-            trigger: nil // Immediate delivery
+            trigger: nil
         )
-
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {

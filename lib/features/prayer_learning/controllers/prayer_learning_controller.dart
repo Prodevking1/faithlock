@@ -157,14 +157,7 @@ class PrayerLearningController extends GetxController {
 
   /// Move to next step
   Future<void> nextStep() async {
-    print('🟡 nextStep called - currentStep: ${currentStep.value}, stepTitles.length: ${stepTitles.length}, last step: ${stepTitles.length - 1}');
-    print('🟡 canProceed: $canProceed');
-
-    // final screenTimeService = Get.find<ScreenTimeService>();
-    // await screenTimeService.temporaryUnlock(durationMinutes: 10);
-
     if (canProceed && currentStep.value < stepTitles.length - 1) {
-      print('🟢 Entering IF - incrementing step');
       // Calculate partial score for this step
       _updateCompletionScore();
 
@@ -175,17 +168,9 @@ class PrayerLearningController extends GetxController {
         _startMeditationTimer();
       }
     } else if (currentStep.value == stepTitles.length - 1) {
-      print('🟢 Entering ELSE IF - calling _completeSession');
       // Complete the learning session
       // ✅ CRITICAL: Wait for unlock to complete before allowing navigation
-
-      // final screenTimeService = Get.find<ScreenTimeService>();
-      // await screenTimeService.temporaryUnlock(
-      //     durationMinutes: unlockDurationMinutes.value);
-
       await _completeSession();
-    } else {
-      print('🔴 Neither IF nor ELSE IF matched!');
     }
   }
 
@@ -260,66 +245,39 @@ class PrayerLearningController extends GetxController {
 
   /// Complete the learning session
   Future<void> _completeSession() async {
-    print('🔵 DEBUG: _completeSession called');
-
     // Calculate session duration
     final sessionDuration = _sessionStartTime != null
         ? DateTime.now().difference(_sessionStartTime!).inSeconds
-        : 60; // Default fallback
-    print('🔵 DEBUG: Session duration calculated: $sessionDuration seconds');
+        : 60;
 
-    // 🆕 Record unlock attempt with streak update
-    // This will automatically update the streak if successful
+    // Record unlock attempt with streak update
     if (selectedVerse.value != null) {
       try {
         await _statsService.recordUnlockAttempt(
-          verseId: selectedVerse.value!.reference, // Use verse reference as ID
-          wasSuccessful:
-              true, // Prayer learning is always successful completion
-          attemptCount: 1, // Prayer learning doesn't have multiple attempts
+          verseId: selectedVerse.value!.reference,
+          wasSuccessful: true,
+          attemptCount: 1,
           timeToUnlockSeconds: sessionDuration,
         );
-        debugPrint('✅ Prayer stats recorded - streak updated');
       } catch (e) {
         debugPrint('⚠️ Failed to record prayer stats: $e');
       }
     }
-    print('🔵 DEBUG: Stats recording done');
 
-    // Save basic stats (legacy support)
+    // Save basic stats
     try {
       await _saveStats();
-      print('🔵 DEBUG: _saveStats done');
     } catch (e) {
-      print('🔴 ERROR in _saveStats: $e');
+      debugPrint('⚠️ Failed to save stats: $e');
     }
 
-    // Calculate remaining time in active schedule
-    print('🔵 DEBUG: Calculating remaining minutes...');
-    try {
-      // final autoNavService = AutoNavigationService();
-      // final remainingMinutes =
-      //     await autoNavService.getRemainingMinutesInActiveSchedule();
-      // unlockDurationMinutes.value = remainingMinutes;
-      // print('🔵 DEBUG: Remaining minutes: $remainingMinutes');
-    } catch (e) {
-      print('🔴 ERROR in getRemainingMinutes: $e');
-      unlockDurationMinutes.value = 5;
-    }
-
-    // Trigger temporary unlock until end of schedule
-    // This will use DeviceActivity to auto-relock after time expires
-    print('🔵 DEBUG: About to call temporaryUnlock...');
+    // Trigger app unlock
     try {
       final screenTimeService = Get.find<ScreenTimeService>();
-      await screenTimeService.temporaryUnlock(
-          durationMinutes: unlockDurationMinutes.value);
-      print(
-          '✅ Temporary unlock granted for ${unlockDurationMinutes.value} minutes (until end of schedule)');
+      await screenTimeService.temporaryUnlock();
     } catch (e) {
-      print('⚠️ Failed to trigger unlock: $e');
+      debugPrint('❌ CRITICAL: Failed to unlock apps: $e');
     }
-    print('🔵 DEBUG: temporaryUnlock call completed');
 
     // Move to completion step
     currentStep.value = stepTitles.length - 1;

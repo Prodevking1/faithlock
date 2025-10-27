@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
+import 'package:faithlock/navigation/controllers/navigation_controller.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
@@ -51,19 +52,38 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Refresh permissions when app comes back to foreground
     if (state == AppLifecycleState.resumed) {
       debugPrint('📱 App resumed - refreshing Screen Time permissions');
       checkScreenTimeAuthorization();
       _loadSelectedAppsCount();
+      _checkScheduleEndedFlag();
+    }
+  }
+
+  Future<void> _checkScheduleEndedFlag() async {
+    try {
+      final scheduleEnded = await _screenTimeService.checkScheduleEnded();
+      if (scheduleEnded != null && scheduleEnded.isNotEmpty) {
+        debugPrint('📋 Schedule ended: $scheduleEnded');
+        await _screenTimeService.clearScheduleEndedFlag();
+
+        final scheduleName = scheduleEnded.replaceAll('_', ' ');
+
+        FastToast.info(
+          'Schedule "$scheduleName" has ended. Apps are now unlocked.',
+          title: 'Schedule Completed',
+        );
+      }
+    } catch (e) {
+      debugPrint('⚠️ Error checking schedule ended flag: $e');
     }
   }
 
   /// Load count of selected apps
   Future<void> _loadSelectedAppsCount() async {
     try {
-      final hasApps = await _screenTimeService.hasSelectedApps();
-      selectedAppsCount.value = hasApps ? 1 : 0;
+      final count = await _screenTimeService.getSelectedAppsCount();
+      selectedAppsCount.value = count;
     } catch (e) {
       selectedAppsCount.value = 0;
     }
@@ -331,14 +351,75 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
     if (context == null) return;
 
     try {
-      // Create a new Map to force GetX to detect the change
+      final schedule = schedules[index];
+      final willBeEnabled = !(schedule['enabled'] as bool);
+
+      if (willBeEnabled) {
+        // Check if apps are selected
+        if (selectedAppsCount.value == 0) {
+          final result = await FastAlertDialog.show(
+            context: context,
+            title: 'No Apps Selected',
+            message:
+                'You need to select apps to block first. Go to Profile tab to select apps.',
+            actions: [
+              FastDialogAction(
+                text: 'Cancel',
+                isCancel: true,
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              FastDialogAction(
+                text: 'Go to Profile',
+                isDefault: true,
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
+
+          if (result == true) {
+            // Navigate to profile tab (index 3)
+            Get.back(); // Go back to main screen
+            try {
+              final navController = Get.find<NavigationController>();
+              navController.changePage(3); // Profile tab
+            } catch (e) {
+              debugPrint('⚠️ Navigation controller not found: $e');
+            }
+          }
+          return;
+        }
+
+        final isActive = isScheduleActive(schedule);
+        if (isActive) {
+          final scheduleName = schedule['name'] as String;
+
+          final confirmed = await FastAlertDialog.show(
+            context: context,
+            title: 'Block Apps Now?',
+            message:
+                '"$scheduleName" is currently active. Your apps will be blocked immediately.',
+            actions: [
+              FastDialogAction(
+                text: 'Cancel',
+                isCancel: true,
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              FastDialogAction(
+                text: 'Block Now',
+                isDefault: true,
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
+
+          if (confirmed != true) return;
+        }
+      }
+
       final updatedSchedule = Map<String, dynamic>.from(schedules[index]);
       updatedSchedule['enabled'] = !updatedSchedule['enabled'];
 
-      // Replace the schedule in the list
       schedules[index] = updatedSchedule;
-
-      // Force refresh
       schedules.refresh();
 
       await _saveAndResetupSchedules();
@@ -372,13 +453,17 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
     await showCupertinoModalPopup<void>(
       context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.4),
       builder: (BuildContext context) => Container(
         height: 216,
         padding: const EdgeInsets.only(top: 6.0),
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
+        decoration: BoxDecoration(
+          color: CupertinoColors.systemBackground.resolveFrom(context),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         child: SafeArea(
           top: false,
           child: Column(

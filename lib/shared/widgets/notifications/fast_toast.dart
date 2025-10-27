@@ -282,21 +282,40 @@ class _FastToastWidgetState extends State<_FastToastWidget>
   Widget build(BuildContext context) {
     final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
-    return Positioned(
-      top: MediaQuery.of(context).padding.top + 10,
-      left: 16,
-      right: 16,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: FadeTransition(
-          opacity: _fadeAnimation,
+    return Stack(
+      children: [
+        // Tap outside to dismiss
+        Positioned.fill(
           child: GestureDetector(
-            onTap: widget.onTap ?? _dismiss,
-            child:
-                isIOS ? _buildIOSToast(context) : _buildMaterialToast(context),
+            onTap: _dismiss,
+            behavior: HitTestBehavior.translucent,
           ),
         ),
-      ),
+        // Toast content
+        Positioned(
+          top: MediaQuery.of(context).padding.top + 10,
+          left: 16,
+          right: 16,
+          child: SlideTransition(
+            position: _slideAnimation,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: GestureDetector(
+                onTap: widget.onTap ?? _dismiss,
+                onVerticalDragUpdate: (details) {
+                  // Swipe up to dismiss
+                  if (details.delta.dy < -5) {
+                    _dismiss();
+                  }
+                },
+                child: isIOS
+                    ? _buildIOSToast(context)
+                    : _buildMaterialToast(context),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
