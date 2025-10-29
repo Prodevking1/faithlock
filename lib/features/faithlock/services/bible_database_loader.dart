@@ -10,7 +10,8 @@ class BibleDatabaseLoader {
   static const String _assetDbPath = 'assets/databases/bible_bsb.db';
   static const String _bibleDbName = 'bible_bsb.db';
 
-  /// Load the 100 categorized curriculum verses from asset database
+  /// Load the ~280 categorized curriculum verses from asset database
+  /// Covers 12 weeks of progressive learning across 5 categories
   static Future<List<BibleVerse>> loadCurriculumVerses() async {
     // Copy asset database to temporary location
     final databasesPath = await getDatabasesPath();
@@ -52,7 +53,7 @@ class BibleDatabaseLoader {
     final db = await openDatabase(path, readOnly: true);
 
     try {
-      // Query only categorized verses (the 100 curriculum verses)
+      // Query only categorized verses (~280 curriculum verses across 12 weeks)
       final List<Map<String, dynamic>> results = await db.rawQuery('''
         SELECT
           b.name as book_name,
@@ -76,14 +77,14 @@ class BibleDatabaseLoader {
         final reference = '${row['book_name']} ${row['chapter']}:${row['verse']}';
 
         verses.add(BibleVerse(
-          id: 'verse_${i + 1}', // Generate unique ID
+          id: 'verse_${i + 1}',
           text: row['text'] as String,
           reference: reference,
           book: row['book_name'] as String,
           chapter: row['chapter'] as int,
           verse: row['verse'] as int,
           category: VerseCategoryExtension.fromString(row['category'] as String),
-          translation: 'BSB', // Berean Standard Bible
+          translation: 'BSB',
           curriculumWeek: row['curriculum_week'] as int?,
           difficulty: row['difficulty'] as int?,
           keyword: row['keyword'] as String?,
@@ -91,6 +92,144 @@ class BibleDatabaseLoader {
       }
 
       return verses;
+    } finally {
+      await db.close();
+    }
+  }
+
+  /// Load ALL verses from the complete BSB Bible with pagination
+  /// Returns a page of verses from the full 31,102 verse Bible
+  /// Use limit and offset for pagination (e.g., page 1: offset=0, page 2: offset=100)
+  static Future<List<BibleVerse>> loadAllBibleVerses({
+    int limit = 100,
+    int offset = 0,
+    VerseCategory? categoryFilter,
+    String? searchQuery,
+  }) async {
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, _bibleDbName);
+
+    // Ensure database exists
+    if (!await File(path).exists()) {
+      final ByteData data = await rootBundle.load(_assetDbPath);
+      final List<int> bytes = data.buffer.asUint8List();
+      await File(path).writeAsBytes(bytes, flush: true);
+    }
+
+    final db = await openDatabase(path, readOnly: true);
+
+    try {
+      // Build WHERE clause for filters
+      String whereClause = '';
+      List<dynamic> whereArgs = [];
+
+      if (categoryFilter != null) {
+        whereClause = 'WHERE v.category = ?';
+        whereArgs.add(categoryFilter.value);
+      }
+
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        if (whereClause.isEmpty) {
+          whereClause = 'WHERE ';
+        } else {
+          whereClause += ' AND ';
+        }
+        whereClause += '(v.text LIKE ? OR b.name LIKE ?)';
+        whereArgs.add('%$searchQuery%');
+        whereArgs.add('%$searchQuery%');
+      }
+
+      // Query with pagination
+      final List<Map<String, dynamic>> results = await db.rawQuery('''
+        SELECT
+          b.name as book_name,
+          v.chapter,
+          v.verse,
+          v.text,
+          v.category,
+          v.curriculum_week,
+          v.difficulty,
+          v.keyword
+        FROM BSB_verses v
+        JOIN BSB_books b ON v.book_id = b.id
+        $whereClause
+        ORDER BY v.book_id, v.chapter, v.verse
+        LIMIT ? OFFSET ?
+      ''', [...whereArgs, limit, offset]);
+
+      // Convert to BibleVerse objects
+      final List<BibleVerse> verses = [];
+      for (var i = 0; i < results.length; i++) {
+        final row = results[i];
+        final reference = '${row['book_name']} ${row['chapter']}:${row['verse']}';
+
+        verses.add(BibleVerse(
+          id: 'verse_${row['book_name']}_${row['chapter']}_${row['verse']}',
+          text: row['text'] as String,
+          reference: reference,
+          book: row['book_name'] as String,
+          chapter: row['chapter'] as int,
+          verse: row['verse'] as int,
+          category: row['category'] != null
+              ? VerseCategoryExtension.fromString(row['category'] as String)
+              : VerseCategory.temptation, // Default for uncategorized verses
+          translation: 'BSB',
+          curriculumWeek: row['curriculum_week'] as int?,
+          difficulty: row['difficulty'] as int?,
+          keyword: row['keyword'] as String?,
+        ));
+      }
+
+      return verses;
+    } finally {
+      await db.close();
+    }
+  }
+
+  /// Get total count of verses in the complete Bible
+  /// Useful for pagination calculations
+  static Future<int> getTotalVersesCount({
+    VerseCategory? categoryFilter,
+    String? searchQuery,
+  }) async {
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, _bibleDbName);
+
+    if (!await File(path).exists()) {
+      return 0;
+    }
+
+    final db = await openDatabase(path, readOnly: true);
+
+    try {
+      // Build WHERE clause for filters
+      String whereClause = '';
+      List<dynamic> whereArgs = [];
+
+      if (categoryFilter != null) {
+        whereClause = 'WHERE v.category = ?';
+        whereArgs.add(categoryFilter.value);
+      }
+
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        if (whereClause.isEmpty) {
+          whereClause = 'WHERE ';
+        } else {
+          whereClause += ' AND ';
+        }
+        whereClause += '(v.text LIKE ? OR b.name LIKE ?)';
+        whereArgs.add('%$searchQuery%');
+        whereArgs.add('%$searchQuery%');
+      }
+
+      final result = await db.rawQuery('''
+        SELECT COUNT(*) as count
+        FROM BSB_verses v
+        JOIN BSB_books b ON v.book_id = b.id
+        $whereClause
+      ''', whereArgs);
+
+      return Sqflite.firstIntValue(result) ?? 0;
     } finally {
       await db.close();
     }

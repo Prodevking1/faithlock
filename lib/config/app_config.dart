@@ -30,8 +30,9 @@ class AppFeatures {
   final bool analyticsEnabled = false;
   final bool darkMode = true;
   final bool privacySettings = true;
+  final bool termsSettings = true;
 
   // Support features
   final bool showHelpCenter = false;
-  final bool showAppVersion = true;
+  final bool showAppVersion = false;
 }

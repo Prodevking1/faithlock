@@ -43,6 +43,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../core/constants/export.dart';
 
 class FastIconButton extends StatelessWidget {
@@ -52,6 +53,7 @@ class FastIconButton extends StatelessWidget {
   final double? size;
   final EdgeInsetsGeometry? padding;
   final bool isDisabled;
+  final bool enableBackground;
 
   const FastIconButton({
     super.key,
@@ -61,18 +63,18 @@ class FastIconButton extends StatelessWidget {
     this.size,
     this.padding,
     this.isDisabled = false,
+    this.enableBackground = false,
   });
 
   @override
   Widget build(BuildContext context) {
-
     final effectiveColor = isDisabled
         ? FastColors.disabled(context)
         : (color ?? Theme.of(context).iconTheme.color);
 
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       // iOS-style button
-      return CupertinoButton(
+      return _backgroundWrapper(CupertinoButton(
           onPressed: isDisabled
               ? null
               : () {
@@ -80,10 +82,9 @@ class FastIconButton extends StatelessWidget {
                   onTap?.call();
                 },
           padding: padding ?? EdgeInsets.zero,
-          child: icon);
+          child: icon));
     } else {
-      // Android-style button
-      return IconButton(
+      return _backgroundWrapper(IconButton(
         icon: icon,
         onPressed: isDisabled
             ? null
@@ -92,10 +93,23 @@ class FastIconButton extends StatelessWidget {
                 onTap?.call();
               },
         color: effectiveColor,
-        iconSize: size ?? 24.0,
+        iconSize: size ?? 22.0,
         padding: padding ?? const EdgeInsets.all(8.0),
-        splashRadius: 24.0,
-      );
+        splashRadius: 22.0,
+      ));
     }
+  }
+
+  Widget _backgroundWrapper(
+    Widget child,
+  ) {
+    return Container(
+      width: 34,
+      height: 34,
+      decoration: enableBackground
+          ? BoxDecoration(shape: BoxShape.circle, color: Colors.grey)
+          : null,
+      child: child,
+    );
   }
 }

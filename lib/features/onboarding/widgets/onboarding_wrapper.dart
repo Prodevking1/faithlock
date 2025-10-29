@@ -28,15 +28,18 @@ class OnboardingWrapper extends StatelessWidget {
             // Main content
             child,
 
-            // Progress bar at top (always visible)
-            Positioned(
-              top: 20,
-              left: 0,
-              right: 0,
-              child: Obx(() => OnboardingProgressBar(
-                    currentStep: controller.currentStep.value,
-                  )),
+            OnboardingProgressBar(
+              currentStep: controller.currentStep.value,
             ),
+
+            // Positioned(
+            //   top: 20,
+            //   left: 0,
+            //   right: 0,
+            //   child: Obx(() => OnboardingProgressBar(
+            //         currentStep: controller.currentStep.value,
+            //       )),
+            // ),
 
             // Back button (optional, commented out for now)
             // if (showBackButton && controller.currentStep.value > 1)

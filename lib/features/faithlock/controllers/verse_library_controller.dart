@@ -17,6 +17,13 @@ class VerseLibraryController extends GetxController {
   final RxBool showFavoritesOnly = RxBool(false);
   final RxString errorMessage = RxString('');
 
+  // Pagination state
+  final RxInt currentOffset = RxInt(0);
+  final RxBool hasMoreVerses = RxBool(true);
+  final RxBool isLoadingMore = RxBool(false);
+  final RxInt totalVerses = RxInt(0);
+  final int pageSize = 100;
+
   @override
   void onInit() {
     super.onInit();
@@ -25,18 +32,58 @@ class VerseLibraryController extends GetxController {
   }
 
   /// Load all verses from service
+  /// Uses pagination for complete Bible (31K verses), direct load for curriculum (~280 verses)
   Future<void> loadVerses() async {
     try {
       isLoading.value = true;
       errorMessage.value = '';
+      currentOffset.value = 0;
+      allVerses.clear();
 
-      final verses = await _verseService.getAllVerses();
-      allVerses.value = verses;
+      // Load first page
+      await _loadPage();
       _applyFilters();
     } catch (e) {
       errorMessage.value = 'Failed to load verses: $e';
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  /// Load a page of verses based on current filters
+  Future<void> _loadPage() async {
+    final verses = await _verseService.getAllBibleVerses(
+      limit: pageSize,
+      offset: currentOffset.value,
+      categoryFilter: selectedCategory.value,
+      searchQuery: searchQuery.value.isEmpty ? null : searchQuery.value,
+    );
+
+    allVerses.addAll(verses);
+    currentOffset.value = currentOffset.value + verses.length;
+    hasMoreVerses.value = verses.length == pageSize;
+
+    // Get total count on first load
+    if (currentOffset.value == verses.length) {
+      totalVerses.value = await _verseService.getTotalVersesCount(
+        categoryFilter: selectedCategory.value,
+        searchQuery: searchQuery.value.isEmpty ? null : searchQuery.value,
+      );
+    }
+  }
+
+  /// Load more verses (called when scrolling to bottom)
+  Future<void> loadMoreVerses() async {
+    if (!hasMoreVerses.value || isLoadingMore.value) return;
+
+    try {
+      isLoadingMore.value = true;
+      await _loadPage();
+      _applyFilters();
+    } catch (e) {
+      // Silent fail for pagination - user can retry by scrolling
+    } finally {
+      isLoadingMore.value = false;
     }
   }
 
@@ -57,9 +104,10 @@ class VerseLibraryController extends GetxController {
   }
 
   /// Filter by category
-  void filterByCategory(VerseCategory? category) {
+  Future<void> filterByCategory(VerseCategory? category) async {
     selectedCategory.value = category;
-    _applyFilters();
+    // Reload verses with new filter
+    await loadVerses();
   }
 
   /// Toggle favorites view

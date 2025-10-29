@@ -17,6 +17,7 @@ class StatsService {
     required bool wasSuccessful,
     required int attemptCount,
     int? timeToUnlockSeconds,
+    int? unlockDurationMinutes,
   }) async {
     final attempt = UnlockAttempt(
       verseId: verseId,
@@ -24,6 +25,7 @@ class StatsService {
       wasSuccessful: wasSuccessful,
       attemptCount: attemptCount,
       timeToUnlockSeconds: timeToUnlockSeconds,
+      unlockDurationMinutes: unlockDurationMinutes,
     );
 
     await _db.insertUnlockAttempt(attempt);
@@ -100,6 +102,13 @@ class StatsService {
     await _storage.writeString(_keyLastUnlockDate, now.toIso8601String());
   }
 
+  /// Reset current streak to 0 (used when user abandons prayer session)
+  /// Keeps longest streak intact as historical record
+  Future<void> resetStreak() async {
+    await _storage.writeString(_keyCurrentStreak, '0');
+    // Note: We keep longest streak and last unlock date for historical purposes
+  }
+
   // Get user stats
   Future<UserStats> getUserStats() async {
     final currentStreakStr = await _storage.readString(_keyCurrentStreak);
@@ -109,7 +118,13 @@ class StatsService {
     final lastUnlockStr = await _storage.readString(_keyLastUnlockDate);
 
     // Get all unlock history
-    final unlockHistory = await _db.getUnlockHistory(limit: 1000);
+    List<UnlockAttempt> unlockHistory = [];
+    try {
+      unlockHistory = await _db.getUnlockHistory(limit: 1000);
+    } catch (e) {
+      // Database might not be initialized yet
+      unlockHistory = [];
+    }
 
     // Calculate totals
     final totalVersesRead = unlockHistory.where((a) => a.wasSuccessful).length;
@@ -122,8 +137,8 @@ class StatsService {
     // Calculate average quiz score
     final averageScore = _calculateAverageQuizScore(unlockHistory);
 
-    // Calculate screen time reduced (estimate: 5 min per successful unlock)
-    final screenTimeReduced = successfulUnlocks * 5;
+    // Calculate screen time reduced (use actual unlock durations)
+    final screenTimeReduced = _calculateScreenTimeReduced(unlockHistory);
 
     return UserStats(
       totalVersesRead: totalVersesRead,
@@ -152,14 +167,31 @@ class StatsService {
     return categoryCount;
   }
 
-  // Calculate average quiz score
+  // Calculate average quiz score (returns value between 0.0 and 1.0)
   double _calculateAverageQuizScore(List<UnlockAttempt> history) {
     if (history.isEmpty) return 0.0;
 
     final totalAttempts = history.length;
     final successfulAttempts = history.where((a) => a.wasSuccessful).length;
 
-    return (successfulAttempts / totalAttempts) * 100;
+    return successfulAttempts / totalAttempts;
+  }
+
+  // Calculate screen time reduced using actual unlock durations
+  int _calculateScreenTimeReduced(List<UnlockAttempt> history) {
+    int totalMinutes = 0;
+
+    for (final attempt in history.where((a) => a.wasSuccessful)) {
+      if (attempt.unlockDurationMinutes != null) {
+        // Use actual duration selected by user
+        totalMinutes += attempt.unlockDurationMinutes!;
+      } else {
+        // Fallback to 5 minutes for old records without duration
+        totalMinutes += 5;
+      }
+    }
+
+    return totalMinutes;
   }
 
   // Get weekly progress
@@ -182,7 +214,13 @@ class StatsService {
 
   // Calculate current streak manually (check for consecutive days)
   Future<int> calculateStreak() async {
-    final unlockHistory = await _db.getUnlockHistory(limit: 365);
+    List<UnlockAttempt> unlockHistory = [];
+    try {
+      unlockHistory = await _db.getUnlockHistory(limit: 365);
+    } catch (e) {
+      // Database might not be initialized yet
+      return 0;
+    }
 
     if (unlockHistory.isEmpty) return 0;
 
@@ -232,7 +270,12 @@ class StatsService {
 
   // Get today's unlock attempts
   Future<List<UnlockAttempt>> getTodayUnlocks() async {
-    return await _db.getTodayUnlocks();
+    try {
+      return await _db.getTodayUnlocks();
+    } catch (e) {
+      // Database might not be initialized yet, return empty list
+      return [];
+    }
   }
 
   // Reset all stats (for testing or user request)

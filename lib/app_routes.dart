@@ -5,6 +5,7 @@ import 'package:faithlock/features/auth/screens/signup_screen.dart';
 import 'package:faithlock/features/auth/screens/verify_otp_screen.dart';
 import 'package:faithlock/features/debug/screens/analytics_test_screen.dart';
 import 'package:faithlock/features/faithlock/screens/permissions_onboarding_screen.dart';
+import 'package:faithlock/features/faithlock/screens/relock_in_progress_screen.dart';
 import 'package:faithlock/features/faithlock/services/schedule_monitor_service.dart';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
@@ -85,6 +86,7 @@ class AppRoutes {
   static const String eLearning = '/e-learning';
   static const String monitorDebug = '/monitor-debug';
   static const String analyticsTest = '/debug/analytics-test';
+  static const String relockInProgress = '/relock-in-progress';
 
   static List<GetPage<dynamic>> getPages() {
     return <GetPage<dynamic>>[
@@ -107,9 +109,10 @@ class AppRoutes {
       GetPage<dynamic>(name: verifyOtp, page: () => VerifyOtpScreen()),
       GetPage<dynamic>(name: newPassword, page: () => NewPasswordScreen()),
       GetPage<dynamic>(name: profile, page: () => ProfileScreen()),
-      GetPage<dynamic>(name: main, page: () => MainScreen()),
-      GetPage<dynamic>(name: home, page: () => MainScreen()),
+      GetPage<dynamic>(name: main, page: () => const MainScreen()),
+      GetPage<dynamic>(name: home, page: () => const MainScreen()),
       GetPage<dynamic>(name: analyticsTest, page: () => const AnalyticsTestScreen()),
+      GetPage<dynamic>(name: relockInProgress, page: () => const RelockInProgressScreen()),
 
     ];
   }

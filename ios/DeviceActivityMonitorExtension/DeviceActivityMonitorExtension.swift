@@ -11,11 +11,9 @@ import ManagedSettings
 import Foundation
 import UserNotifications
 
-/// Extension that monitors device activity and enforces app blocking schedules
+/// Extension that monitors device activity and sends notifications
+/// Shields are managed by the main app via ScheduleController
 class DeviceActivityMonitorExtension: DeviceActivityMonitor {
-
-    // Use named store to share with main app
-    let store = ManagedSettingsStore(named: ManagedSettingsStore.Name("faithlock"))
 
     // App Group for communication (must match entitlements)
     let appGroup = "group.com.appbiz.faithlock"
@@ -44,16 +42,8 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         logToAppGroup(event: "intervalDidStart", activity: activity.rawValue)
 
-        if activity.rawValue.hasSuffix("_TEMP_UNLOCK") {
-            NSLog("🔓 MONITOR: Temporary unlock period started")
-            sendDebugNotification(title: "🔓 Temporary Unlock", body: "Apps unlocked for 5 minutes")
-            return
-        }
-
         let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
-        sendDebugNotification(title: "🔒 \(scheduleName)", body: "Your apps are now blocked")
-        applyShield(for: activity)
-        verifyShieldsApplied()
+        sendDebugNotification(title: "🔒 \(scheduleName)", body: "Lock period started")
     }
 
     /// Called when a monitoring interval ends (e.g., 10:00 AM for morning lock)
@@ -64,13 +54,6 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         logToAppGroup(event: "intervalDidEnd", activity: activity.rawValue)
 
-        if activity.rawValue.hasSuffix("_TEMP_UNLOCK") {
-            NSLog("🔒 MONITOR: Temporary unlock ended - re-applying shields")
-            sendDebugNotification(title: "🔒 Apps Re-locked", body: "Temporary unlock expired")
-            reapplyShieldsFromStore()
-            return
-        }
-
         if let defaults = UserDefaults(suiteName: appGroup) {
             defaults.set(activity.rawValue, forKey: "schedule_ended")
             defaults.set(Date(), forKey: "schedule_ended_time")
@@ -79,8 +62,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         }
 
         let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
-        sendDebugNotification(title: "🔓 \(scheduleName)", body: "Open FaithLock to unlock your apps")
-        removeShield(for: activity)
+        sendDebugNotification(title: "🔓 \(scheduleName)", body: "Lock period ended")
     }
 
     /// Called when an event threshold is reached during monitoring
@@ -89,55 +71,6 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         NSLog("⚠️ MONITOR: Event threshold - \(event.rawValue)")
         logToAppGroup(event: "eventDidReachThreshold: \(event.rawValue)", activity: activity.rawValue)
-    }
-
-    // MARK: - Private Methods
-
-    private func applyShield(for activity: DeviceActivityName) {
-        if store.shield.applications != nil {
-            NSLog("✅ MONITOR: Shields already active in store (applied by main app)")
-            return
-        }
-
-        NSLog("⚠️ MONITOR: WARNING - No shields found in ManagedSettingsStore!")
-        NSLog("⚠️ MONITOR: The main app should apply shields after user selects apps")
-        NSLog("⚠️ MONITOR: Blocking will not work without shields in store")
-
-        let scheduleName = activity.rawValue.replacingOccurrences(of: "_", with: " ")
-        sendDebugNotification(
-            title: "⚠️ \(scheduleName)",
-            body: "No apps selected. Open FaithLock to select apps to block."
-        )
-    }
-
-    private func removeShield(for activity: DeviceActivityName) {
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomains = nil
-
-        NSLog("✅ MONITOR: Shields removed - apps now accessible")
-        NSLog("💡 MONITOR: Shields will be reapplied by main app when next schedule starts")
-    }
-
-    private func reapplyShieldsFromStore() {
-        // The shields should still be in the store from the initial app selection
-        // We just need to ensure they're active
-        if let existingShields = store.shield.applications {
-            NSLog("✅ MONITOR: Re-applied \(existingShields.count) app shields")
-        } else {
-            NSLog("⚠️ MONITOR: No shields to re-apply!")
-        }
-
-        // Verify shields are active
-        verifyShieldsApplied()
-    }
-
-    private func verifyShieldsApplied() {
-        if let shields = store.shield.applications {
-            NSLog("✅ MONITOR: \(shields.count) apps verified blocked")
-        } else {
-            NSLog("⚠️ MONITOR: No shields found")
-        }
     }
 
     // MARK: - Logging & Debugging

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/bible_database_loader.dart';
 import 'package:sqflite/sqflite.dart';
@@ -21,9 +22,26 @@ class FaithLockDatabaseService {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, 'faithlock.db');
 
+    // Check if database exists and has verses
+    final dbFile = File(path);
+    if (await dbFile.exists()) {
+      try {
+        final testDb = await openDatabase(path, readOnly: true);
+        final result = await testDb.rawQuery('SELECT COUNT(*) as count FROM verses');
+        final count = result.first['count'] as int;
+        await testDb.close();
+
+        if (count == 0) {
+          await deleteDatabase(path);
+        }
+      } catch (e) {
+        await deleteDatabase(path);
+      }
+    }
+
     return await openDatabase(
       path,
-      version: 2, // Updated to include curriculum fields
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -82,6 +100,7 @@ class FaithLockDatabaseService {
         was_successful INTEGER NOT NULL,
         attempt_count INTEGER DEFAULT 1,
         time_to_unlock INTEGER,
+        unlock_duration_minutes INTEGER,
         FOREIGN KEY (verse_id) REFERENCES verses(id)
       )
     ''');
@@ -103,6 +122,14 @@ class FaithLockDatabaseService {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // Handle database upgrades here
+    if (oldVersion < 3) {
+      // Add unlock_duration_minutes column to unlock_history table
+      await db.execute('''
+        ALTER TABLE unlock_history
+        ADD COLUMN unlock_duration_minutes INTEGER
+      ''');
+      debugPrint('✅ Database upgraded to version 3: Added unlock_duration_minutes column');
+    }
   }
 
   // ==================== VERSE OPERATIONS ====================
@@ -345,16 +372,15 @@ class FaithLockDatabaseService {
   // ==================== SEED DATA ====================
 
   Future<void> _seedInitialVerses(Database db) async {
-    // Load 100 curriculum verses from asset Bible database
     try {
       final verses = await BibleDatabaseLoader.loadCurriculumVerses();
       for (final verse in verses) {
         await db.insert('verses', verse.toJson());
       }
-      debugPrint('✅ Loaded ${verses.length} curriculum verses from Bible database');
+      debugPrint('✅ Loaded ${verses.length} curriculum verses');
     } catch (e) {
-      debugPrint('⚠️ Failed to load curriculum verses: $e');
-      // Fallback to empty - app will need verses to function
+      debugPrint('❌ Failed to load curriculum verses: $e');
+      rethrow;
     }
   }
 

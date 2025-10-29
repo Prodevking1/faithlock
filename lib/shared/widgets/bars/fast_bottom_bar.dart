@@ -1,14 +1,15 @@
 import 'dart:io';
 
+import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// **FastBottomBar** - Platform-adaptive bottom navigation bar for app-wide navigation.
 ///
-/// **Use Case:** 
-/// Primary navigation component for apps with 2-5 main sections. Automatically adapts to 
-/// platform conventions (CupertinoTabBar on iOS, BottomNavigationBar on Android) and 
+/// **Use Case:**
+/// Primary navigation component for apps with 2-5 main sections. Automatically adapts to
+/// platform conventions (CupertinoTabBar on iOS, BottomNavigationBar on Android) and
 /// provides consistent navigation experience.
 ///
 /// **Key Features:**
@@ -62,9 +63,9 @@ class FastBottomBar extends StatelessWidget {
         },
         items: items,
         backgroundColor: CupertinoColors.systemBackground,
-        activeColor: CupertinoColors.activeBlue,
+        activeColor: OnboardingTheme.goldColor,
         inactiveColor: CupertinoColors.systemGrey,
-        iconSize: 22,
+        iconSize: 24,
         border: null,
       );
     } else {
@@ -86,7 +87,7 @@ class FastBottomBar extends StatelessWidget {
           showUnselectedLabels: true,
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Colors.grey,
-          iconSize: 22, 
+          iconSize: 24,
         ),
       );
     }

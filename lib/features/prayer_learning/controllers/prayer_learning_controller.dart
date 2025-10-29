@@ -2,19 +2,30 @@ import 'dart:async';
 
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/question_generator.dart';
-import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/faithlock/services/stats_service.dart';
+import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/features/faithlock/services/verse_selection_strategy.dart';
 import 'package:faithlock/features/lock_challenge/models/verse_question.dart';
+import 'package:faithlock/services/ai/meditation_validator_service.dart';
+import 'package:faithlock/services/rate_app_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+/// Validation states for meditation response
+enum ValidationState {
+  idle,       // Not yet validated
+  validating, // AI validation in progress
+  valid,      // Validation passed
+  invalid,    // Validation failed
+}
 
 /// Controller for guided prayer learning (Balanced mode)
 class PrayerLearningController extends GetxController {
   final StorageService _storage = StorageService();
   final StatsService _statsService = StatsService();
   final VerseSelectionStrategy _verseStrategy = VerseSelectionStrategy();
+  final MeditationValidatorService _validator = MeditationValidatorService();
 
   // Text controllers - persist across rebuilds
   late final TextEditingController meditationTextController;
@@ -30,6 +41,11 @@ class PrayerLearningController extends GetxController {
   final RxDouble completionScore = RxDouble(0.0);
   final Rxn<VerseQuestion> selectedVerse = Rxn<VerseQuestion>();
   final RxInt unlockDurationMinutes = RxInt(0);
+
+  // Meditation validation state
+  final Rx<ValidationState> meditationValidationState = ValidationState.idle.obs;
+  final RxString validationFeedback = RxString('');
+  final RxDouble meditationQualityScore = RxDouble(0.0); // AI validation score (0.0-1.0)
 
   // Steps in Balanced mode
   final List<String> stepTitles = [
@@ -144,8 +160,8 @@ class PrayerLearningController extends GetxController {
     switch (currentStep.value) {
       case 0: // Reading step - can always proceed
         return true;
-      case 1: // Meditation - must have input
-        return meditationInput.value.trim().isNotEmpty;
+      case 1: // Meditation - must be validated by AI
+        return meditationValidationState.value == ValidationState.valid;
       case 2: // Fill-in-the-blank - must be correct
         return _isRecitationCorrect();
       case 3: // Complete
@@ -155,9 +171,18 @@ class PrayerLearningController extends GetxController {
     }
   }
 
+  /// Check if user can skip meditation anyway (has some input)
+  bool get canSkipMeditation {
+    return currentStep.value == 1 &&
+        meditationValidationState.value == ValidationState.invalid;
+  }
+
   /// Move to next step
   Future<void> nextStep() async {
-    if (canProceed && currentStep.value < stepTitles.length - 1) {
+    // Allow skip if meditation is invalid but user wants to proceed
+    final allowSkip = canSkipMeditation;
+
+    if ((canProceed || allowSkip) && currentStep.value < stepTitles.length - 1) {
       // Calculate partial score for this step
       _updateCompletionScore();
 
@@ -167,10 +192,29 @@ class PrayerLearningController extends GetxController {
       if (currentStep.value == 1) {
         _startMeditationTimer();
       }
-    } else if (currentStep.value == stepTitles.length - 1) {
-      // Complete the learning session
-      // ✅ CRITICAL: Wait for unlock to complete before allowing navigation
-      await _completeSession();
+
+      // If we just moved to the completion step, save stats
+      if (currentStep.value == stepTitles.length - 1) {
+        await _completeSession();
+      }
+    }
+  }
+
+  /// Move to previous step
+  void previousStep() {
+    if (currentStep.value > 0) {
+      // Cancel timer if going back from meditation step
+      if (currentStep.value == 1) {
+        _timer?.cancel();
+        isTimerRunning.value = false;
+      }
+
+      currentStep.value--;
+
+      // Reset validation state when going back to meditation
+      if (currentStep.value == 1) {
+        resetMeditationValidation();
+      }
     }
   }
 
@@ -226,31 +270,154 @@ class PrayerLearningController extends GetxController {
     showHint.value = !showHint.value;
   }
 
+  /// Validate meditation response with AI
+  Future<void> validateMeditationResponse() async {
+    final response = meditationInput.value.trim();
+
+    // Basic validation first - allow very short inputs
+    if (response.length < 3) {
+      meditationValidationState.value = ValidationState.invalid;
+      validationFeedback.value = 'Please share a brief thought (at least 3 characters).';
+      return;
+    }
+
+    // Start AI validation
+    meditationValidationState.value = ValidationState.validating;
+    validationFeedback.value = 'Analyzing your reflection...';
+
+    try {
+      final verse = selectedVerse.value;
+      if (verse == null) {
+        meditationValidationState.value = ValidationState.invalid;
+        validationFeedback.value = 'Error: No verse selected';
+        return;
+      }
+
+      // Get user goals and struggles (optional context)
+      final userGoals = await _storage.readString('user_goals');
+      final userStruggles = await _storage.readString('user_struggles');
+
+      // Validate with AI
+      final result = await _validator.validateMeditationResponse(
+        verseText: verse.verse,
+        verseReference: verse.reference,
+        userResponse: response,
+        userGoals: userGoals,
+        userStruggles: userStruggles,
+      );
+
+      // Update state based on result
+      meditationValidationState.value =
+          result.isValid ? ValidationState.valid : ValidationState.invalid;
+      validationFeedback.value = result.feedback;
+      meditationQualityScore.value = result.score; // Store AI score (0.0-1.0)
+
+      debugPrint('✅ Meditation validated: ${result.isValid} (score: ${result.score})');
+    } catch (e) {
+      debugPrint('❌ Validation error: $e');
+      // Fallback to basic validation on error
+      meditationValidationState.value = response.length >= 3
+          ? ValidationState.valid
+          : ValidationState.invalid;
+      validationFeedback.value = response.length >= 3
+          ? 'Thank you for your reflection! 🙏'
+          : 'Please share a brief thought.';
+      meditationQualityScore.value = response.length >= 3 ? 0.75 : 0.3; // Fallback score
+    }
+  }
+
+  /// Reset meditation validation state
+  void resetMeditationValidation() {
+    meditationValidationState.value = ValidationState.idle;
+    validationFeedback.value = '';
+  }
+
   /// Update completion score based on performance
+  /// Scoring: Reading (20%) + Meditation (30% from AI) + Recitation (50%)
   void _updateCompletionScore() {
     switch (currentStep.value) {
-      case 0: // Reading
-        completionScore.value += 0.25;
+      case 0: // Reading - Fixed 20%
+        completionScore.value += 0.20;
         break;
-      case 1: // Meditation
-        final quality = meditationInput.value.length > 20 ? 0.25 : 0.15;
-        completionScore.value += quality;
+
+      case 1: // Meditation - 30% (generous scoring)
+        double meditationScore = 0.30; // Base meditation weight
+
+        if (meditationValidationState.value == ValidationState.valid) {
+          // AI validated - always give 25-30% (generous!)
+          // AI score maps to 85-100% of meditation points
+          final qualityMultiplier = 0.85 + (meditationQualityScore.value * 0.15);
+          completionScore.value += meditationScore * qualityMultiplier;
+          debugPrint('📊 Meditation score: ${(meditationScore * qualityMultiplier * 100).toInt()}% (validated ✓)');
+        } else if (meditationValidationState.value == ValidationState.invalid) {
+          // Invalid but user skipped - still give decent credit for effort
+          completionScore.value += meditationScore * 0.7; // 70% of meditation points
+          debugPrint('📊 Meditation score: 21% (skipped)');
+        } else {
+          // Not validated - give credit for having any text (even short)
+          final hasMinimalInput = meditationInput.value.trim().length >= 3;
+          completionScore.value += hasMinimalInput ? (meditationScore * 0.6) : 0;
+          debugPrint('📊 Meditation score: ${hasMinimalInput ? "18%" : "0%"} (not validated)');
+        }
         break;
-      case 2: // Recitation
-        final accuracy = _isRecitationCorrect() ? 0.50 : 0.30;
-        completionScore.value += accuracy;
+
+      case 2: // Recitation - 50% (generous scoring)
+        final isCorrect = _isRecitationCorrect();
+        final accuracy = _calculateRecitationAccuracy();
+
+        if (isCorrect) {
+          // Perfect recitation = full 50%
+          completionScore.value += 0.50;
+          debugPrint('📊 Recitation score: 50% (perfect!)');
+        } else if (accuracy >= 0.7) {
+          // 70%+ accuracy = 45% (generous!)
+          completionScore.value += 0.45;
+          debugPrint('📊 Recitation score: 45% (excellent!)');
+        } else if (accuracy >= 0.5) {
+          // 50-69% accuracy = 40%
+          completionScore.value += 0.40;
+          debugPrint('📊 Recitation score: 40% (great!)');
+        } else {
+          // <50% accuracy = 35% (still generous for effort)
+          completionScore.value += 0.35;
+          debugPrint('📊 Recitation score: 35% (good try!)');
+        }
         break;
     }
+
+    debugPrint('📊 Total completion score: ${(completionScore.value * 100).toInt()}%');
+  }
+
+  /// Calculate recitation accuracy (0.0-1.0)
+  double _calculateRecitationAccuracy() {
+    if (selectedVerse.value == null) return 0.0;
+
+    final expected = selectedVerse.value!.verse.toLowerCase().trim();
+    final actual = recitationInput.value.toLowerCase().trim();
+
+    if (actual.isEmpty) return 0.0;
+    if (expected == actual) return 1.0;
+
+    // Calculate similarity using simple word matching
+    final expectedWords = expected.split(RegExp(r'\s+'));
+    final actualWords = actual.split(RegExp(r'\s+'));
+
+    int matches = 0;
+    for (final word in actualWords) {
+      if (expectedWords.contains(word)) {
+        matches++;
+      }
+    }
+
+    return actualWords.isEmpty ? 0.0 : matches / actualWords.length;
   }
 
   /// Complete the learning session
   Future<void> _completeSession() async {
-    // Calculate session duration
     final sessionDuration = _sessionStartTime != null
         ? DateTime.now().difference(_sessionStartTime!).inSeconds
         : 60;
 
-    // Record unlock attempt with streak update
     if (selectedVerse.value != null) {
       try {
         await _statsService.recordUnlockAttempt(
@@ -258,29 +425,38 @@ class PrayerLearningController extends GetxController {
           wasSuccessful: true,
           attemptCount: 1,
           timeToUnlockSeconds: sessionDuration,
+          unlockDurationMinutes: unlockDurationMinutes.value > 0
+              ? unlockDurationMinutes.value
+              : null, // Pass actual unlock duration
         );
       } catch (e) {
         debugPrint('⚠️ Failed to record prayer stats: $e');
       }
     }
 
-    // Save basic stats
     try {
       await _saveStats();
     } catch (e) {
       debugPrint('⚠️ Failed to save stats: $e');
     }
 
-    // Trigger app unlock
-    try {
-      final screenTimeService = Get.find<ScreenTimeService>();
-      await screenTimeService.temporaryUnlock();
-    } catch (e) {
-      debugPrint('❌ CRITICAL: Failed to unlock apps: $e');
-    }
+    await RateAppService().showFirstPrayerPrompt();
+  }
 
-    // Move to completion step
-    currentStep.value = stepTitles.length - 1;
+  /// Start unlock timer with user-selected duration
+  Future<void> startUnlockTimer(Duration duration) async {
+    try {
+      final unlockTimerService = UnlockTimerService();
+      await unlockTimerService.startUnlock(duration: duration);
+
+      final durationMinutes = duration.inMinutes;
+      unlockDurationMinutes.value = durationMinutes;
+
+      debugPrint('✅ Started unlock timer for $durationMinutes minutes');
+    } catch (e) {
+      debugPrint('❌ Failed to start unlock timer: $e');
+      rethrow;
+    }
   }
 
   /// Save learning statistics
@@ -320,6 +496,9 @@ class PrayerLearningController extends GetxController {
     showHint.value = false;
     completionScore.value = 0.0;
     unlockDurationMinutes.value = 0;
+    meditationValidationState.value = ValidationState.idle;
+    validationFeedback.value = '';
+    meditationQualityScore.value = 0.0;
     _timer?.cancel();
     _sessionStartTime = DateTime.now(); // Reset session start time
     _loadVerse();

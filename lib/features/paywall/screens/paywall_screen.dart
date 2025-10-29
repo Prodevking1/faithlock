@@ -1,6 +1,5 @@
-import 'package:faithlock/core/constants/core/fast_colors.dart';
+import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/paywall/controllers/paywall_controller.dart';
-import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,50 +25,50 @@ class PaywallScreen extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+      backgroundColor: OnboardingTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        backgroundColor: OnboardingTheme.backgroundColor,
         elevation: 0,
         leading: const SizedBox(width: 48),
         title: _buildHeader(isDark),
-        actions: [
-          TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0.0, end: 1.0),
-              duration: const Duration(seconds: 5),
-              builder: (context, value, child) {
-                if (value < 1.0) {
-                  return Container(
-                    height: 24,
-                    width: 24,
-                    margin: const EdgeInsets.only(right: 8),
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      value: value,
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.grey),
-                      backgroundColor: Colors.grey.withValues(alpha: 0.2),
-                    ),
-                  );
-                }
-                return GestureDetector(
-                  onTap: controller.closePaywall,
-                  child: Container(
-                    width: 32,
-                    height: 32,
-                    margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      size: 18,
-                      color: Colors.black54,
-                    ),
-                  ),
-                );
-              }),
-        ],
+        // actions: [
+        //   TweenAnimationBuilder<double>(
+        //       tween: Tween(begin: 0.0, end: 1.0),
+        //       duration: const Duration(seconds: 5),
+        //       builder: (context, value, child) {
+        //         if (value < 1.0) {
+        //           return Container(
+        //             height: 24,
+        //             width: 24,
+        //             margin: const EdgeInsets.only(right: 8),
+        //             child: CircularProgressIndicator(
+        //               strokeWidth: 2,
+        //               value: value,
+        //               valueColor:
+        //                   const AlwaysStoppedAnimation<Color>(Colors.grey),
+        //               backgroundColor: Colors.grey.withValues(alpha: 0.2),
+        //             ),
+        //           );
+        //         }
+        //         return GestureDetector(
+        //           onTap: controller.closePaywall,
+        //           child: Container(
+        //             width: 32,
+        //             height: 32,
+        //             margin: const EdgeInsets.only(right: 8),
+        //             decoration: BoxDecoration(
+        //               color: Colors.white.withValues(alpha: 0.08),
+        //               shape: BoxShape.circle,
+        //             ),
+        //             child: const Icon(
+        //               Icons.close,
+        //               size: 18,
+        //               color: Colors.white,
+        //             ),
+        //           ),
+        //         );
+        //       }),
+        // ],
       ),
       body: SafeArea(
         top: false,
@@ -101,20 +100,28 @@ class PaywallScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FastText.title2(
+        Text(
           'faithlock',
-          color: FastColors.primary,
-        ),
-        const SizedBox(width: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-          decoration: BoxDecoration(
-            color: FastColors.primary,
-            borderRadius: BorderRadius.circular(6),
+          style: OnboardingTheme.title2.copyWith(
+            color: OnboardingTheme.goldColor,
           ),
-          child: FastText.callout(
+        ),
+        const SizedBox(width: OnboardingTheme.space8),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: OnboardingTheme.space8,
+            vertical: 3,
+          ),
+          decoration: BoxDecoration(
+            color: OnboardingTheme.goldColor,
+            borderRadius: BorderRadius.circular(OnboardingTheme.radiusSmall),
+          ),
+          child: Text(
             'PRO',
-            color: Colors.white,
+            style: OnboardingTheme.callout.copyWith(
+              color: OnboardingTheme.backgroundColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -125,7 +132,7 @@ class PaywallScreen extends StatelessWidget {
     return Center(
       child: CircularProgressIndicator.adaptive(
         valueColor: AlwaysStoppedAnimation<Color>(
-          isDark ? Colors.white : FastColors.primary,
+          OnboardingTheme.goldColor,
         ),
       ),
     );
@@ -134,29 +141,37 @@ class PaywallScreen extends StatelessWidget {
   Widget _buildErrorState(bool isDark, PaywallController controller) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(OnboardingTheme.space20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.error_outline,
               size: 64,
-              color: isDark ? Colors.white54 : Colors.black26,
+              color: OnboardingTheme.labelTertiary,
             ),
-            const SizedBox(height: 16),
-            FastText.body(
+            const SizedBox(height: OnboardingTheme.space16),
+            Text(
               controller.lastError.value,
+              style: OnboardingTheme.body.copyWith(
+                color: OnboardingTheme.labelSecondary,
+              ),
               textAlign: TextAlign.center,
-              color: isDark ? Colors.white70 : Colors.black54,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: OnboardingTheme.space24),
             ElevatedButton(
               onPressed: () => controller.onInit(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: FastColors.primary,
-                foregroundColor: Colors.white,
+                backgroundColor: OnboardingTheme.goldColor,
+                foregroundColor: OnboardingTheme.backgroundColor,
               ),
-              child: FastText.callout('Retry', color: Colors.white),
+              child: Text(
+                'Retry',
+                style: OnboardingTheme.callout.copyWith(
+                  color: OnboardingTheme.backgroundColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ],
         ),
@@ -167,84 +182,109 @@ class PaywallScreen extends StatelessWidget {
   Widget _buildContent(
       BuildContext context, PaywallController controller, bool isDark) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: OnboardingTheme.horizontalPadding,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: OnboardingTheme.space20),
 
-          // Visual representation
-          // _buildVisualRepresentation(),
+          // Social proof stat
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: OnboardingTheme.space16,
+              vertical: OnboardingTheme.space12,
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  OnboardingTheme.goldColor.withValues(alpha: 0.1),
+                  OnboardingTheme.goldColor.withValues(alpha: 0.05),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
+              border: Border.all(
+                color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(OnboardingTheme.space8),
+                  decoration: BoxDecoration(
+                    color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.shield,
+                    size: 24,
+                    color: OnboardingTheme.goldColor,
+                  ),
+                ),
+                const SizedBox(width: OnboardingTheme.space12),
+                Expanded(
+                  child: Text(
+                    'Users report 70% less screen time and 92% stronger faith',
+                    style: OnboardingTheme.callout.copyWith(
+                      fontSize: 19,
+                      color: OnboardingTheme.labelPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-          // Obx(() => SizedBox(
-          //     height: controller.selectedPlanIndex.value == 1 ? 12 : 48)),
+          const SizedBox(height: OnboardingTheme.space32),
 
           // Features list
           _buildFeaturesList(isDark),
 
-          Obx(() => SizedBox(
-              height: controller.selectedPlanIndex.value == 1 ? 8 : 20)),
+          const SizedBox(height: OnboardingTheme.space32),
 
           // Pricing plans
           Obx(() => _buildPricingPlans(isDark, controller)),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: OnboardingTheme.space20),
 
           // Free trial toggle
           _buildFreeTrialToggle(isDark, controller),
 
-          Obx(() => SizedBox(
-              height: controller.selectedPlanIndex.value == 1 ? 16 : 8)),
+          const SizedBox(height: OnboardingTheme.space24),
 
           // Unlock button
           Obx(() {
             final selectedIndex = controller.selectedPlanIndex.value;
             return Column(
               children: [
-                if (selectedIndex == 1) ...[
-                  FastText.caption1(
-                    'Cancel anytime. No commitment required.',
-                    color: isDark ? Colors.white70 : Colors.black54,
-                  ),
-                  const SizedBox(height: 8),
-                ],
+                // if (selectedIndex == 1) ...[
+                //   Text(
+                //     'Cancel anytime. No commitment required.',
+                //     style: OnboardingTheme.caption.copyWith(
+                //       color: OnboardingTheme.labelSecondary,
+                //     ),
+                //   ),
+                //   const SizedBox(height: OnboardingTheme.space12),
+                // ],
                 _buildUnlockButton(controller),
               ],
             );
           }),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: OnboardingTheme.space20),
 
           // Footer links
           _buildFooterLinks(isDark, controller),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: OnboardingTheme.space24),
         ],
       ),
-    );
-  }
-
-  Widget _buildVisualRepresentation() {
-    return Image.asset(
-      height: 130,
-      'assets/images/paywall-before-after.png',
-      fit: BoxFit.contain,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          height: 130,
-          decoration: BoxDecoration(
-            color: FastColors.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.star,
-              size: 48,
-              color: FastColors.primary,
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -260,18 +300,20 @@ class PaywallScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: features.map((feature) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          padding: const EdgeInsets.symmetric(vertical: OnboardingTheme.space8),
           child: Row(
             children: [
               Icon(
                 feature['icon'] as IconData,
                 size: 24,
-                color: FastColors.primary,
+                color: OnboardingTheme.goldColor,
               ),
-              const SizedBox(width: 12),
-              FastText.callout(
+              const SizedBox(width: OnboardingTheme.space12),
+              Text(
                 feature['text'] as String,
-                color: isDark ? Colors.white : Colors.black87,
+                style: OnboardingTheme.callout.copyWith(
+                  color: OnboardingTheme.labelPrimary,
+                ),
               ),
             ],
           ),
@@ -294,7 +336,7 @@ class PaywallScreen extends StatelessWidget {
 
         return Column(
           children: [
-            if (index > 0) const SizedBox(height: 12),
+            if (index > 0) const SizedBox(height: OnboardingTheme.space12),
             GestureDetector(
               onTap: () => controller.selectPlan(index),
               child: AnimatedBuilder(
@@ -311,16 +353,18 @@ class PaywallScreen extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut,
                   constraints: const BoxConstraints(minHeight: 50),
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(OnboardingTheme.space12),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? FastColors.primaryLight.withValues(alpha: 0.04)
-                        : (isDark ? Colors.grey[800] : Colors.grey[50]),
-                    borderRadius: BorderRadius.circular(14),
+                        ? OnboardingTheme.goldColor.withValues(alpha: 0.1)
+                        : OnboardingTheme.cardBackground,
+                    borderRadius:
+                        BorderRadius.circular(OnboardingTheme.radiusMedium),
                     border: Border.all(
                       color: isSelected
-                          ? FastColors.primary
-                          : (isDark ? Colors.grey[600]! : Colors.grey[200]!),
+                          ? OnboardingTheme.goldColor
+                          : OnboardingTheme.labelTertiary
+                              .withValues(alpha: 0.3),
                       width: isSelected ? 2 : 1,
                     ),
                   ),
@@ -330,51 +374,44 @@ class PaywallScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            FastText.headline(
+                            Text(
                               controller.getPlanTitle(package),
-                              color: isDark ? Colors.white : Colors.black87,
+                              style: OnboardingTheme.callout.copyWith(
+                                color: OnboardingTheme.labelPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             const SizedBox(height: 2),
-                            FastText.subheadline(
+                            Text(
                               controller.getPriceText(package),
-                              color: isDark ? Colors.white70 : Colors.black54,
+                              style: OnboardingTheme.subhead.copyWith(
+                                color: OnboardingTheme.labelSecondary,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      if (isYearly) ...[
+                      if (controller.getSavingsText(package).isNotEmpty) ...[
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: FastColors.primary,
-                            borderRadius: BorderRadius.circular(6),
+                            horizontal: OnboardingTheme.space8,
+                            vertical: OnboardingTheme.space8,
                           ),
-                          child: FastText.caption1(
+                          decoration: BoxDecoration(
+                            color: OnboardingTheme.goldColor,
+                            borderRadius: BorderRadius.circular(
+                                OnboardingTheme.radiusSmall),
+                          ),
+                          child: Text(
                             controller.getSavingsText(package),
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle,
-                          color: FastColors.primary,
-                          size: 24,
-                        )
-                      else
-                        Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: isDark ? Colors.white54 : Colors.black26,
-                              width: 2,
+                            style: OnboardingTheme.caption.copyWith(
+                              color: OnboardingTheme.backgroundColor,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
+                        const SizedBox(width: OnboardingTheme.space8),
+                      ],
                     ],
                   ),
                 ),
@@ -390,14 +427,16 @@ class PaywallScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        FastText.callout(
-          'Begin with free trial',
-          color: isDark ? Colors.white : Colors.black87,
+        Text(
+          'Enable free trial',
+          style: OnboardingTheme.callout.copyWith(
+            color: OnboardingTheme.labelPrimary,
+          ),
         ),
         Obx(() => CupertinoSwitch(
               value: controller.freeTrialEnabled.value,
               onChanged: controller.toggleFreeTrial,
-              activeTrackColor: FastColors.primary,
+              activeTrackColor: OnboardingTheme.goldColor,
             )),
       ],
     );
@@ -411,25 +450,31 @@ class PaywallScreen extends StatelessWidget {
         onPressed:
             controller.isPurchasing.value ? null : controller.startSubscription,
         style: ElevatedButton.styleFrom(
-          backgroundColor: FastColors.primary,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: FastColors.primary.withValues(alpha: 0.6),
+          backgroundColor: OnboardingTheme.goldColor,
+          foregroundColor: OnboardingTheme.backgroundColor,
+          disabledBackgroundColor:
+              OnboardingTheme.goldColor.withValues(alpha: 0.6),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
           ),
         ),
         child: controller.isPurchasing.value
-            ? const SizedBox(
+            ? SizedBox(
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    OnboardingTheme.backgroundColor,
+                  ),
                 ),
               )
-            : FastText.headline(
+            : Text(
                 'Start Your Journey',
-                color: Colors.white,
+                style: OnboardingTheme.callout.copyWith(
+                  color: OnboardingTheme.backgroundColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
       ),
     );
@@ -441,23 +486,29 @@ class PaywallScreen extends StatelessWidget {
       children: [
         TextButton(
           onPressed: controller.restorePurchases,
-          child: FastText.footnote(
+          child: Text(
             'Restore',
-            color: isDark ? Colors.white70 : Colors.black54,
+            style: OnboardingTheme.footnote.copyWith(
+              color: OnboardingTheme.labelSecondary,
+            ),
           ),
         ),
         TextButton(
           onPressed: controller.openPrivacyPolicy,
-          child: FastText.footnote(
+          child: Text(
             'Privacy',
-            color: isDark ? Colors.white70 : Colors.black54,
+            style: OnboardingTheme.footnote.copyWith(
+              color: OnboardingTheme.labelSecondary,
+            ),
           ),
         ),
         TextButton(
           onPressed: controller.openTermsOfService,
-          child: FastText.footnote(
+          child: Text(
             'Terms',
-            color: isDark ? Colors.white70 : Colors.black54,
+            style: OnboardingTheme.footnote.copyWith(
+              color: OnboardingTheme.labelSecondary,
+            ),
           ),
         ),
       ],

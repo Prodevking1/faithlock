@@ -6,7 +6,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 /// Comprehensive RevenueCat service for subscription management
 /// Follows latest RevenueCat Flutter SDK patterns and best practices
 class RevenueCatService extends GetxService {
-  static RevenueCatService get instance => Get.find<RevenueCatService>();
+  static RevenueCatService get instance => Get.put(RevenueCatService());
 
   // Observable subscription state
   final RxBool isSubscriptionActive = false.obs;

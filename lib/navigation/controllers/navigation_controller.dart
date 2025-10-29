@@ -1,7 +1,6 @@
 import 'package:faithlock/config/logger.dart';
 import 'package:faithlock/features/faithlock/screens/stats_dashboard_screen.dart';
 import 'package:faithlock/features/faithlock/screens/verse_library_screen.dart';
-import 'package:faithlock/features/faithlock/screens/schedule_screen.dart';
 import 'package:faithlock/features/profile/screens/profile_screen.dart';
 import 'package:faithlock/navigation/models/bottom_nav_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +28,7 @@ class NavigationController extends GetxController {
         icon: CupertinoIcons.chart_bar,
         activeIcon: CupertinoIcons.chart_bar_fill,
         route: '/stats',
-        page: const StatsDashboardScreen(),
+        page: StatsDashboardScreen(),
       ),
       BottomNavItem(
         label: 'Library',
@@ -37,13 +36,6 @@ class NavigationController extends GetxController {
         activeIcon: CupertinoIcons.book_fill,
         route: '/library',
         page: const VerseLibraryScreen(),
-      ),
-      BottomNavItem(
-        label: 'Schedule',
-        icon: CupertinoIcons.clock,
-        activeIcon: CupertinoIcons.clock_fill,
-        route: '/schedule',
-        page: const ScheduleScreen(),
       ),
       BottomNavItem(
         label: 'Profile',

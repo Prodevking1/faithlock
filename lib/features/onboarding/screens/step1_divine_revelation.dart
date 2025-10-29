@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
+import 'package:get/get.dart';
 
 /// Step 1: Divine Revelation - Pattern Interrupt
 /// Establishes God's perspective on time and creates immediate spiritual awareness
@@ -19,6 +21,8 @@ class Step1DivineRevelation extends StatefulWidget {
 }
 
 class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
+  final controller = Get.find<ScriptureOnboardingController>();
+
   String _verseText = '';
   String _questionText = '';
   bool _showVerseCursor = false;
@@ -48,13 +52,15 @@ class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
     // Add reference
     setState(() => _verseText += '\n— Ephesians 5:16');
 
-    // Pause (1s)
     await AnimationUtils.pause(durationMs: 1000);
 
-    // Phase 2: Type question (3-8s)
+    final userName = controller.userName.value.isNotEmpty
+        ? controller.userName.value
+        : 'friend';
+
     await AnimationUtils.typeText(
       fullText:
-          'God sees every moment. How are you using the time He gave you?',
+          '$userName, God sees every moment. How are you using the time He gave you?',
       onUpdate: (text) => setState(() => _questionText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showQuestionCursor = visible),

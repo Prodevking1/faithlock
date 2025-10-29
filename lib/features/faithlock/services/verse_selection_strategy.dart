@@ -50,8 +50,6 @@ class VerseSelectionStrategy {
     // Determine which day within the week (1-7)
     final dayInWeek = ((currentStreak - 1) % 7) + 1;
 
-    debugPrint('🎓 Curriculum Mode: Streak=$currentStreak, Week=$week, Day=$dayInWeek');
-
     // Get verses for this week from user's selected categories
     List<BibleVerse> weekVerses = [];
     for (final category in selectedCategories) {
@@ -63,7 +61,7 @@ class VerseSelectionStrategy {
     }
 
     if (weekVerses.isEmpty) {
-      debugPrint('⚠️ No curriculum verses found, falling back to random');
+      debugPrint('⚠️ No curriculum verses found for week $week');
       return await _selectRandomVerse(
         categories: selectedCategories,
         excludeIds: excludeIds,

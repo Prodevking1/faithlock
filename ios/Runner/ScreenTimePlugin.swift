@@ -96,6 +96,10 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handleCheckScheduleEnded(result: result)
         case "clearScheduleEndedFlag":
             handleClearScheduleEndedFlag(result: result)
+        case "applyShields":
+            handleApplyShields(result: result)
+        case "removeShields":
+            handleRemoveShields(result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -211,14 +215,15 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
                 if hasSelection {
                     self.saveSelectedApps(selection)
                     self.applyShieldsImmediately(selection)
-                    result(true)
+                    print("✅ App selection completed and shields applied")
                 } else {
                     self.clearSelectedApps()
-                    result(false)
+                    print("ℹ️ No apps selected, cleared existing selection")
                 }
             }
 
             rootViewController.present(pickerVC, animated: true)
+            result(true)
         }
     }
 
@@ -262,25 +267,64 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
     }
 
     private func applyShieldsImmediately(_ selection: FamilyActivitySelection) {
-        // ✅ Apply shields immediately for instant user feedback
-        // This blocks apps RIGHT NOW, not waiting for schedule time
-
         if !selection.applicationTokens.isEmpty {
             store.shield.applications = selection.applicationTokens
-            print("✅ Applied immediate shields to \(selection.applicationTokens.count) apps")
+            print("🔒 Applied immediate shields to \(selection.applicationTokens.count) apps")
         }
 
         if !selection.categoryTokens.isEmpty {
             store.shield.applicationCategories = .specific(selection.categoryTokens)
-            print("✅ Applied immediate shields to \(selection.categoryTokens.count) categories")
+            print("🔒 Applied immediate shields to \(selection.categoryTokens.count) categories")
         }
 
         if !selection.webDomainTokens.isEmpty {
             store.shield.webDomains = selection.webDomainTokens
-            print("✅ Applied immediate shields to \(selection.webDomainTokens.count) web domains")
+            print("🔒 Applied immediate shields to \(selection.webDomainTokens.count) web domains")
         }
 
-        print("🔒 Apps are now blocked immediately - DeviceActivityMonitor will manage schedule-based blocking")
+        print("✅ Apps blocked immediately after selection")
+    }
+
+    private func handleApplyShields(result: @escaping FlutterResult) {
+        let selection = loadSelectedApps()
+
+        guard !selection.applicationTokens.isEmpty ||
+              !selection.categoryTokens.isEmpty ||
+              !selection.webDomainTokens.isEmpty else {
+            result(FlutterError(
+                code: "NO_APPS_SELECTED",
+                message: "No apps selected to block",
+                details: nil
+            ))
+            return
+        }
+
+        if !selection.applicationTokens.isEmpty {
+            store.shield.applications = selection.applicationTokens
+            print("🔒 Applied shields to \(selection.applicationTokens.count) apps")
+        }
+
+        if !selection.categoryTokens.isEmpty {
+            store.shield.applicationCategories = .specific(selection.categoryTokens)
+            print("🔒 Applied shields to \(selection.categoryTokens.count) categories")
+        }
+
+        if !selection.webDomainTokens.isEmpty {
+            store.shield.webDomains = selection.webDomainTokens
+            print("🔒 Applied shields to \(selection.webDomainTokens.count) web domains")
+        }
+
+        print("✅ Shields applied - apps are now blocked")
+        result(true)
+    }
+
+    private func handleRemoveShields(result: @escaping FlutterResult) {
+        store.shield.applications = nil
+        store.shield.applicationCategories = nil
+        store.shield.webDomains = nil
+
+        print("🔓 Shields removed - apps are now accessible")
+        result(true)
     }
 
     private func loadSelectedApps() -> FamilyActivitySelection {
@@ -901,7 +945,7 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
     private func handleClearPrayerFlag(result: @escaping FlutterResult) {
         let defaults = UserDefaults(suiteName: appGroupIdentifier)
-        defaults?.set(false, forKey: "should_navigate_to_prayer")
+        defaults?.removeObject(forKey: "should_navigate_to_prayer")
         defaults?.removeObject(forKey: "prayer_request_time")
         defaults?.synchronize()
 

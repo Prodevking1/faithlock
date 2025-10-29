@@ -1,5 +1,6 @@
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
+import 'package:faithlock/features/faithlock/services/bible_database_loader.dart';
 import 'package:flutter/material.dart';
 
 class VerseService {
@@ -163,5 +164,31 @@ class VerseService {
         .map((attempt) => attempt.verseId)
         .toSet()
         .toList();
+  }
+
+  // Get paginated verses from complete Bible (31,102 verses)
+  Future<List<BibleVerse>> getAllBibleVerses({
+    int limit = 100,
+    int offset = 0,
+    VerseCategory? categoryFilter,
+    String? searchQuery,
+  }) async {
+    return await BibleDatabaseLoader.loadAllBibleVerses(
+      limit: limit,
+      offset: offset,
+      categoryFilter: categoryFilter,
+      searchQuery: searchQuery,
+    );
+  }
+
+  // Get total count of verses in complete Bible
+  Future<int> getTotalVersesCount({
+    VerseCategory? categoryFilter,
+    String? searchQuery,
+  }) async {
+    return await BibleDatabaseLoader.getTotalVersesCount(
+      categoryFilter: categoryFilter,
+      searchQuery: searchQuery,
+    );
   }
 }

@@ -1,13 +1,17 @@
+import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
+import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Paywall controller managing subscription flow and business logic
-class PaywallController extends GetxController with GetTickerProviderStateMixin {
+class PaywallController extends GetxController
+    with GetTickerProviderStateMixin {
   static const String _keyTrialReminderEnabled = 'trial_reminder_enabled';
   static const String _keyPromoCodeApplied = 'promo_code_applied';
 
@@ -122,7 +126,7 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       // Check if selected plan is yearly
       if (selectedPlanIndex.value < availablePackages.length) {
         freeTrialEnabled.value =
-            !isYearlyPackage(availablePackages[selectedPlanIndex.value]);
+            isYearlyPackage(availablePackages[selectedPlanIndex.value]);
       }
 
       // Track paywall viewed
@@ -157,12 +161,12 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
     selectedPlanIndex.value = index;
 
     final isYearly = isYearlyPackage(packages[index]);
-    freeTrialEnabled.value = !isYearly;
+    freeTrialEnabled.value = isYearly;
 
     if (isYearly) {
-      switchAnimationController.reverse();
-    } else {
       switchAnimationController.forward();
+    } else {
+      switchAnimationController.reverse();
     }
 
     // Track plan selection
@@ -182,22 +186,22 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
   void toggleFreeTrial(bool value) {
     freeTrialEnabled.value = value;
 
-    // If enabling trial and current plan is yearly, switch to non-yearly
-    if (value && selectedPlanIndex.value < packages.length) {
+    // If enabling trial, switch to yearly plan
+    if (value) {
+      final yearlyIndex = packages.indexWhere(isYearlyPackage);
+      if (yearlyIndex != -1) {
+        selectedPlanIndex.value = yearlyIndex;
+      }
+    }
+
+    // If disabling trial and current plan is yearly, switch to non-yearly
+    if (!value && selectedPlanIndex.value < packages.length) {
       if (isYearlyPackage(packages[selectedPlanIndex.value])) {
         final nonYearlyIndex =
             packages.indexWhere((pkg) => !isYearlyPackage(pkg));
         if (nonYearlyIndex != -1) {
           selectedPlanIndex.value = nonYearlyIndex;
         }
-      }
-    }
-
-    // If disabling trial, switch to yearly plan
-    if (!value) {
-      final yearlyIndex = packages.indexWhere(isYearlyPackage);
-      if (yearlyIndex != -1) {
-        selectedPlanIndex.value = yearlyIndex;
       }
     }
 
@@ -250,25 +254,36 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
   }
 
   String getSavingsText(Package package) {
-    if (!isYearlyPackage(package)) return '';
+    if (isYearlyPackage(package)) {
+      final monthlyPackage = packages.firstWhereOrNull((pkg) {
+        final period = pkg.storeProduct.subscriptionPeriod;
+        return period != null && period.toLowerCase().contains('month');
+      });
 
-    final monthlyPackage = packages.firstWhereOrNull((pkg) {
-      final period = pkg.storeProduct.subscriptionPeriod;
-      return period != null && period.toLowerCase().contains('month');
-    });
+      if (monthlyPackage == null) return 'BEST VALUE';
 
-    if (monthlyPackage == null) return 'BEST VALUE';
+      final yearlyPrice = package.storeProduct.price;
+      final monthlyPrice = monthlyPackage.storeProduct.price;
+      final yearlyEquivalent = monthlyPrice * 12;
+      final savings =
+          ((yearlyEquivalent - yearlyPrice) / yearlyEquivalent * 100);
 
-    final yearlyPrice = package.storeProduct.price;
-    final monthlyPrice = monthlyPackage.storeProduct.price;
-    final yearlyEquivalent = monthlyPrice * 12;
-    final savings = ((yearlyEquivalent - yearlyPrice) / yearlyEquivalent * 100);
+      if (savings > 0) {
+        return 'SAVE ${savings.round()}%';
+      }
 
-    if (savings > 0) {
-      return 'SAVE ${savings.round()}%';
+      return 'BEST VALUE';
     }
 
-    return 'BEST VALUE';
+    final period = package.storeProduct.subscriptionPeriod;
+    if (period != null) {
+      final unitStr = period.toLowerCase();
+      if (unitStr.contains('week') || unitStr.contains('w')) {
+        return 'TRY FIRST';
+      }
+    }
+
+    return '';
   }
 
   void closePaywall() {
@@ -330,13 +345,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
 
         // Show success feedback
         HapticFeedback.mediumImpact();
-        Get.snackbar(
-          'Success! 🎉',
+        FastToast.success(
           'Your free trial has started. Enjoy premium features!',
-          backgroundColor: Colors.green.withValues(alpha: 0.1),
-          colorText: Colors.green[800],
-          icon: const Icon(Icons.check_circle, color: Colors.green),
-          duration: const Duration(seconds: 3),
+          title: 'Success!',
         );
 
         // Navigate to main app or close paywall
@@ -355,7 +366,8 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       // Track purchase failed
       if (_analytics.isReady) {
         await _analytics.paywall.trackPurchaseFailed(
-          planType: getPlanTitle(packages[selectedPlanIndex.value]).toLowerCase(),
+          planType:
+              getPlanTitle(packages[selectedPlanIndex.value]).toLowerCase(),
           planId: packages[selectedPlanIndex.value].identifier,
           reason: e.toString(),
           errorCode: e is PlatformException ? e.code : null,
@@ -364,13 +376,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
 
       // Show error feedback
       HapticFeedback.lightImpact();
-      Get.snackbar(
-        'Purchase Failed',
+      FastToast.error(
         e.toString(),
-        backgroundColor: Colors.red.withValues(alpha: 0.1),
-        colorText: Colors.red[800],
-        icon: const Icon(Icons.error, color: Colors.red),
-        duration: const Duration(seconds: 4),
+        title: 'Purchase Failed',
       );
     } finally {
       isPurchasing.value = false;
@@ -401,24 +409,16 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
         }
 
         HapticFeedback.mediumImpact();
-        Get.snackbar(
-          'Purchases Restored! ✅',
+        FastToast.success(
           'Your subscription has been restored successfully.',
-          backgroundColor: Colors.green.withValues(alpha: 0.1),
-          colorText: Colors.green[800],
-          icon: const Icon(Icons.check_circle, color: Colors.green),
-          duration: const Duration(seconds: 3),
+          title: 'Purchases Restored!',
         );
 
         _handleSuccessfulSubscription();
       } else if (result.success && !result.hasActiveSubscriptions) {
-        Get.snackbar(
-          'No Purchases Found',
+        FastToast.warning(
           'No active subscriptions found to restore.',
-          backgroundColor: Colors.orange.withValues(alpha: 0.1),
-          colorText: Colors.orange[800],
-          icon: const Icon(Icons.info, color: Colors.orange),
-          duration: const Duration(seconds: 3),
+          title: 'No Purchases Found',
         );
       } else {
         throw Exception(result.error ?? 'Restore failed');
@@ -426,13 +426,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
     } catch (e) {
       lastError.value = e.toString();
 
-      Get.snackbar(
-        'Restore Failed',
+      FastToast.error(
         'Could not restore purchases. Please try again.',
-        backgroundColor: Colors.red.withValues(alpha: 0.1),
-        colorText: Colors.red[800],
-        icon: const Icon(Icons.error, color: Colors.red),
-        duration: const Duration(seconds: 4),
+        title: 'Restore Failed',
       );
     } finally {
       isPurchasing.value = false;
@@ -442,12 +438,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
   /// Apply promo code
   Future<void> applyPromoCode() async {
     if (promoCode.value.trim().isEmpty) {
-      Get.snackbar(
-        'Invalid Code',
+      FastToast.warning(
         'Please enter a valid promo code.',
-        backgroundColor: Colors.orange.withValues(alpha: 0.1),
-        colorText: Colors.orange[800],
-        duration: const Duration(seconds: 2),
+        title: 'Invalid Code',
       );
       return;
     }
@@ -458,17 +451,10 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
       final result = await _revenueCat.applyPromoCode(promoCode.value.trim());
 
       if (result.success) {
-        // ❌ trackPromoCodeApplied désactivé - rarement utilisé
-        // Réactiver si campagne promo active
-
         HapticFeedback.mediumImpact();
-        Get.snackbar(
-          'Promo Code Applied! 🎉',
+        FastToast.success(
           'Your discount has been applied successfully.',
-          backgroundColor: Colors.green.withValues(alpha: 0.1),
-          colorText: Colors.green[800],
-          icon: const Icon(Icons.check_circle, color: Colors.green),
-          duration: const Duration(seconds: 3),
+          title: 'Promo Code Applied!',
         );
 
         // Save promo code applied state
@@ -481,15 +467,9 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
         throw Exception(result.error ?? 'Invalid promo code');
       }
     } catch (e) {
-      // ❌ trackPromoCodeApplied désactivé - rarement utilisé
-
-      Get.snackbar(
-        'Invalid Promo Code',
+      FastToast.error(
         'The promo code you entered is not valid.',
-        backgroundColor: Colors.red.withValues(alpha: 0.1),
-        colorText: Colors.red[800],
-        icon: const Icon(Icons.error, color: Colors.red),
-        duration: const Duration(seconds: 3),
+        title: 'Invalid Promo Code',
       );
     } finally {
       isPurchasing.value = false;
@@ -511,13 +491,11 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
 
   /// Open terms/privacy links
   void openPrivacyPolicy() {
-    // Implement URL launcher or webview
-    print('Opening Privacy Policy');
+    launchUrl(Uri.parse('https://appbiz-studio.com/apps/faithlock/privacy/'));
   }
 
   void openTermsOfService() {
-    // Implement URL launcher or webview
-    print('Opening Terms of Service');
+    launchUrl(Uri.parse('https://appbiz-studio.com/apps/faithlock/terms/'));
   }
 
   void openSubscriptionTerms() {
@@ -529,7 +507,8 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    trialReminderEnabled.value = prefs.getBool(_keyTrialReminderEnabled) ?? true;
+    trialReminderEnabled.value =
+        prefs.getBool(_keyTrialReminderEnabled) ?? true;
   }
 
   void _bindPromoCodeController() {
@@ -547,10 +526,7 @@ class PaywallController extends GetxController with GetTickerProviderStateMixin 
   }
 
   void _handleSuccessfulSubscription() {
-    // Navigate away from paywall
-    // You can customize this based on your app flow
-    Get.back(); // Close paywall
-    // Or navigate to main app: Get.offAllNamed('/main');
+    Get.offAllNamed(AppRoutes.main);
   }
 }
 

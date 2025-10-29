@@ -4,9 +4,9 @@ import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/fingerprint_scanner.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/services/rate_app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:in_app_review/in_app_review.dart';
 
 /// Step 6: Final Encouragement - Launch into Freedom
 /// Final message of hope and launch button
@@ -157,27 +157,9 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
     await controller.acceptCovenant(true);
     await AnimationUtils.heavyHaptic();
 
-    // Request app review (fire and forget - don't block navigation)
-    // _requestAppReview();
+    await RateAppService().showOnboardingPrompt();
 
-    // Proceed to next step immediately
-    print('✅ Covenant accepted - proceeding to complete onboarding');
     widget.onComplete();
-  }
-
-  Future<void> _requestAppReview() async {
-    try {
-      final InAppReview inAppReview = InAppReview.instance;
-
-      // Check if review is available
-      if (await inAppReview.isAvailable()) {
-        // Request the review dialog
-        await inAppReview.requestReview();
-      }
-    } catch (e) {
-      // Silently fail if review is not available or fails
-      debugPrint('App review error: $e');
-    }
   }
 
   @override

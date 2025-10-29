@@ -1,4 +1,5 @@
 import 'package:faithlock/core/helpers/export.dart';
+import 'package:faithlock/services/rate_app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,16 +59,12 @@ class SettingsController extends GetxController {
     isDarkMode.value = value;
     await _prefs.setBool(_keyDarkMode, value);
     Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-
-
   }
 
   // Notification settings
   Future<void> toggleNotifications(bool value) async {
     notificationsEnabled.value = value;
     await _prefs.setBool(_keyNotifications, value);
-
-
   }
 
   // Language settings
@@ -78,16 +75,12 @@ class SettingsController extends GetxController {
     // Update app locale
     final locale = Locale(languageCode);
     Get.updateLocale(locale);
-
-
   }
 
   // Security settings
   Future<void> toggleBiometric(bool value) async {
     biometricEnabled.value = value;
     await _prefs.setBool(_keyBiometric, value);
-
-
   }
 
   // Privacy settings
@@ -101,23 +94,16 @@ class SettingsController extends GetxController {
   Future<void> toggleCrashReporting(bool value) async {
     crashReportingEnabled.value = value;
     await _prefs.setBool(_keyCrashReporting, value);
-
-
   }
 
   // Support actions
   Future<void> rateApp() async {
-    // TODO: Implement in-app review when package is added
-    UIHelper.showInfoSnackBar(
-      'App rating will be available soon',
-    );
-
-
+    RateAppService().showRatingOnProfile();
   }
 
   Future<void> contactSupport() async {
-    const String email = 'support@faithlock.com';
-    const String subject = 'Fast App Support Request';
+    const String email = 'faithlock@appbiz-studio.com';
+    const String subject = 'Support Request';
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
@@ -129,8 +115,6 @@ class SettingsController extends GetxController {
 
     if (await canLaunchUrl(emailUri)) {
       await launchUrl(emailUri);
-
-
     } else {
       UIHelper.showErrorSnackBar(
         'Could not open email client',
@@ -139,13 +123,21 @@ class SettingsController extends GetxController {
   }
 
   Future<void> openPrivacyPolicy() async {
-    const String privacyUrl = 'https://faithlock.com/privacy';
+    const String privacyUrl =
+        'https://appbiz-studio.com/apps/faithlock/privacy/';
     final Uri uri = Uri.parse(privacyUrl);
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 
+  Future<void> openTerms() async {
+    const String termsUrl = 'https://appbiz-studio.com/apps/faithlock/terms/';
+    final Uri uri = Uri.parse(termsUrl);
 
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -155,14 +147,10 @@ class SettingsController extends GetxController {
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
-
-
     }
   }
 
   Future<void> shareApp() async {
-
-
     UIHelper.showSuccessSnackBar('Share feature coming soon!');
   }
 
@@ -170,8 +158,6 @@ class SettingsController extends GetxController {
   Future<void> clearAppData() async {
     await _prefs.clear();
     // TODO: Clear secure storage when available
-
-
 
     // Reset to defaults
     await _loadSettings();

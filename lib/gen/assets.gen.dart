@@ -9,6 +9,36 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsDatabasesGen {
+  const $AssetsDatabasesGen();
+
+  /// File path: assets/databases/bible_bsb.db
+  String get bibleBsb => 'assets/databases/bible_bsb.db';
+
+  /// File path: assets/databases/fix_temptation_duplicates.sql
+  String get fixTemptationDuplicates =>
+      'assets/databases/fix_temptation_duplicates.sql';
+
+  /// File path: assets/databases/migration_add_curriculum.sql
+  String get migrationAddCurriculum =>
+      'assets/databases/migration_add_curriculum.sql';
+
+  /// File path: assets/databases/seed_curriculum.sql
+  String get seedCurriculum => 'assets/databases/seed_curriculum.sql';
+
+  /// File path: assets/databases/seed_curriculum.sql.bak
+  String get seedCurriculumSql => 'assets/databases/seed_curriculum.sql.bak';
+
+  /// List of all assets
+  List<String> get values => [
+        bibleBsb,
+        fixTemptationDuplicates,
+        migrationAddCurriculum,
+        seedCurriculum,
+        seedCurriculumSql
+      ];
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
@@ -33,6 +63,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsDatabasesGen databases = $AssetsDatabasesGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }

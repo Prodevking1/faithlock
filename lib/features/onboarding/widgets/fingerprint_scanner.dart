@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
@@ -30,12 +31,13 @@ class _FingerprintScannerState extends State<FingerprintScanner>
   bool _isScanning = false;
   bool _scanComplete = false;
   bool _showButton = false;
+  Timer? _hapticTimer;
 
   @override
   void initState() {
     super.initState();
     _scanController = AnimationController(
-      duration: const Duration(milliseconds: 3500), // Augmenté de 2000 à 3500
+      duration: const Duration(milliseconds: 3500), 
       vsync: this,
     );
     _sealController = AnimationController(
@@ -54,6 +56,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
 
   @override
   void dispose() {
+    _hapticTimer?.cancel();
     _scanController.dispose();
     _sealController.dispose();
     super.dispose();
@@ -83,38 +86,24 @@ class _FingerprintScannerState extends State<FingerprintScanner>
 
     setState(() => _isScanning = true);
 
-    // Initial haptic feedback
     await AnimationUtils.mediumHaptic();
 
-    // Animate scan with periodic haptics
-    _scanController.forward().then((_) async {
-      // Haptic feedback during scan
-      await AnimationUtils.lightHaptic();
-    });
-
-    // Haptic at 25% progress
-    Future.delayed(const Duration(milliseconds: 875), () {
+    _hapticTimer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       AnimationUtils.lightHaptic();
     });
 
-    // Haptic at 50% progress
-    Future.delayed(const Duration(milliseconds: 1750), () {
-      AnimationUtils.lightHaptic();
-    });
-
-    // Haptic at 75% progress
-    Future.delayed(const Duration(milliseconds: 2625), () {
-      AnimationUtils.lightHaptic();
-    });
+    _scanController.forward();
 
     await Future.delayed(const Duration(milliseconds: 3500));
+
+    _hapticTimer?.cancel();
+    _hapticTimer = null;
 
     setState(() {
       _scanComplete = true;
       _isScanning = false;
     });
 
-    // Heavy haptic for completion
     await AnimationUtils.heavyHaptic();
 
     await _sealController.forward();

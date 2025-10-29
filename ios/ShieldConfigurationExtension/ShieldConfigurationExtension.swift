@@ -36,7 +36,8 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
                 color: .black
             ),
             subtitle: ShieldConfiguration.Label(
-                text: "Take a moment to pray.\n\nYou'll unlock this app after completing your prayer session.",
+                text:
+                    "Take a moment to pray.\n\nYou'll unlock this app after completing your prayer session.",
                 color: UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
             ),
             primaryButtonLabel: ShieldConfiguration.Label(
@@ -44,10 +45,6 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
                 color: .white
             ),
             primaryButtonBackgroundColor: UIColor(red: 0.2, green: 0.6, blue: 0.4, alpha: 1.0),
-            secondaryButtonLabel: ShieldConfiguration.Label(
-                text: "Later",
-                color: UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
-            )
         )
     }
 
@@ -56,8 +53,12 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         return ShieldConfiguration()
     }
 
-    override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory) -> ShieldConfiguration {
-        NSLog("🛡️ ShieldConfigurationExtension: configuration(shielding webDomain, in category) CALLED")
+    override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory)
+        -> ShieldConfiguration
+    {
+        NSLog(
+            "🛡️ ShieldConfigurationExtension: configuration(shielding webDomain, in category) CALLED"
+        )
         return ShieldConfiguration()
     }
 }

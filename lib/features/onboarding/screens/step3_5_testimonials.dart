@@ -71,23 +71,26 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
   Future<void> _startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    // Phase 1: Header
-    // await AnimationUtils.typeText(
-    //   fullText: 'You are not alone in this battle.',
-    //   onUpdate: (text) => setState(() => _headerText = text),
-    //   onCursorVisibility: (visible) =>
-    //       setState(() => _showHeaderCursor = visible),
-    //   speedMs: 40,n
-    // );
+    await AnimationUtils.typeText(
+      fullText:
+          'Others felt the same pain you just saw.\n\nHere\'s what happened...',
+      onUpdate: (text) => setState(() => _headerText = text),
+      onCursorVisibility: (visible) =>
+          setState(() => _showHeaderCursor = visible),
+      speedMs: 40,
+    );
 
-    await AnimationUtils.pause(durationMs: 1000);
+    await AnimationUtils.pause(durationMs: 1500);
 
-    // Phase 2: Show badges
+    setState(() {
+      _headerText = '';
+      _showHeaderCursor = false;
+    });
+
     setState(() => _showBadges = true);
     await AnimationUtils.mediumHaptic();
     await AnimationUtils.pause(durationMs: 1500);
 
-    // Phase 3: Show testimonials one by one
     setState(() => _showTestimonials = true);
     for (int i = 0; i < _testimonials.length; i++) {
       setState(() => _visibleTestimonialIndex = i);
@@ -97,7 +100,6 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
 
     await AnimationUtils.pause(durationMs: 1000);
 
-    // Phase 4: Show continue button
     setState(() => _showContinueButton = true);
     await AnimationUtils.mediumHaptic();
   }
@@ -156,10 +158,9 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
 
                       const SizedBox(height: 16),
 
-                      // "Join 10,000+ users" section
                       if (_showBadges) ...[
                         Text(
-                          'Join 10,000+ believers who transformed their lives',
+                          'Join believers who transformed their lives',
                           textAlign: TextAlign.center,
                           style: OnboardingTheme.callout.copyWith(
                             color: OnboardingTheme.goldColor,
@@ -245,7 +246,7 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
     return Center(
       child: _buildBadge(
         icon: '🏆',
-        text: '#1 App',
+        text: 'Best app',
         subtitle: 'Faith & Focus',
       ),
     );
@@ -400,23 +401,19 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
           const SizedBox(height: 12),
 
           // Before/After (compact, no arrow)
-          Row(
+          Column(
+            spacing: 8,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: _buildBeforeAfter(
-                  label: 'Before',
-                  text: testimonial['before']!,
-                  color: OnboardingTheme.systemRed,
-                ),
+              _buildBeforeAfter(
+                label: 'Before',
+                text: testimonial['before']!,
+                color: OnboardingTheme.systemRed,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildBeforeAfter(
-                  label: 'After',
-                  text: testimonial['after']!,
-                  color: OnboardingTheme.systemGreen,
-                ),
+              _buildBeforeAfter(
+                label: 'After',
+                text: testimonial['after']!,
+                color: OnboardingTheme.systemGreen,
               ),
             ],
           ),
@@ -454,35 +451,42 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
     required String text,
     required Color color,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            label,
-            style: OnboardingTheme.caption.copyWith(
-              color: color,
-              fontWeight: FontWeight.w700,
-              fontSize: 11,
-              letterSpacing: 0.3,
+    return Container(
+      padding: EdgeInsets.all(8),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: color.withValues(alpha: .05),
+          borderRadius: BorderRadius.circular(8)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              label,
+              style: OnboardingTheme.caption.copyWith(
+                color: color,
+                fontWeight: FontWeight.w700,
+                fontSize: 11,
+                letterSpacing: 0.3,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          text,
-          style: OnboardingTheme.caption.copyWith(
-            color: OnboardingTheme.labelPrimary,
-            fontSize: 14,
-            height: 1.3,
+          const SizedBox(height: 6),
+          Text(
+            text,
+            style: OnboardingTheme.caption.copyWith(
+              color: OnboardingTheme.labelPrimary,
+              fontSize: 14,
+              height: 1.3,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
@@ -28,6 +29,9 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
   final RxString screenTimeStatus = RxString('Unknown');
   final RxInt selectedAppsCount = RxInt(0);
 
+  // Timer for periodic schedule checks
+  Timer? _scheduleCheckTimer;
+
   @override
   void onInit() {
     super.onInit();
@@ -40,14 +44,34 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       await checkScreenTimeAuthorization();
       await _loadSelectedAppsCount();
       await _checkForSelectedApps();
+
+      // Start periodic check for schedule changes (every minute)
+      _startScheduleMonitoring();
     });
   }
 
   @override
   void onClose() {
+    // Cancel timer
+    _scheduleCheckTimer?.cancel();
+
     // Unregister lifecycle observer
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
+  }
+
+  /// Start monitoring schedules for active state changes
+  void _startScheduleMonitoring() {
+    // Check every minute if schedule active state has changed
+    _scheduleCheckTimer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) async {
+        if (schedules.isNotEmpty && selectedAppsCount.value > 0) {
+          await _updateShieldsBasedOnSchedules();
+        }
+      },
+    );
+    debugPrint('✅ Started schedule monitoring - checking every minute');
   }
 
   @override
@@ -57,6 +81,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       checkScreenTimeAuthorization();
       _loadSelectedAppsCount();
       _checkScheduleEndedFlag();
+      _updateShieldsBasedOnSchedules();
     }
   }
 
@@ -234,38 +259,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       if (selectedAppsCount.value > 0) {
         await loadSchedules();
         await _setupSchedulesFromOnboarding();
-
-        final hasActiveSchedule = schedules.any((s) {
-          if (s['enabled'] != true) return false;
-
-          final currentTime = TimeOfDay.now();
-          final currentMinutes = currentTime.hour * 60 + currentTime.minute;
-
-          final startHour = s['startHour'] as int;
-          final startMinute = s['startMinute'] as int;
-          final endHour = s['endHour'] as int;
-          final endMinute = s['endMinute'] as int;
-
-          final startMinutes = startHour * 60 + startMinute;
-          final endMinutes = endHour * 60 + endMinute;
-
-          if (endMinutes < startMinutes) {
-            return currentMinutes >= startMinutes ||
-                currentMinutes < endMinutes;
-          }
-
-          return currentMinutes >= startMinutes && currentMinutes < endMinutes;
-        });
-
-        if (hasActiveSchedule) {
-          try {
-            await _screenTimeService.applyBlockingNow();
-            debugPrint(
-                '✅ Applied blocking immediately - currently in active schedule');
-          } catch (e) {
-            debugPrint('⚠️ Failed to apply immediate blocking: $e');
-          }
-        }
+        await _updateShieldsBasedOnSchedules();
 
         final enabledCount =
             schedules.where((s) => s['enabled'] == true).length;
@@ -377,11 +371,11 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
           );
 
           if (result == true) {
-            // Navigate to profile tab (index 3)
+            // Navigate to profile tab (index 2)
             Get.back(); // Go back to main screen
             try {
               final navController = Get.find<NavigationController>();
-              navController.changePage(3); // Profile tab
+              navController.changePage(2); // Profile tab
             } catch (e) {
               debugPrint('⚠️ Navigation controller not found: $e');
             }
@@ -538,14 +532,35 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         debugPrint('   ${s['name']}: enabled=$enabled, active=$isActive');
       }
 
-      // ❌ REMOVED: No immediate blocking/unblocking
-      // DeviceActivityMonitor will automatically handle blocking based on schedules
+      // Update shields based on active schedules
+      await _updateShieldsBasedOnSchedules();
 
       debugPrint(
           '✅ Schedules saved and re-setup successfully (${enabledSchedules.length} enabled)');
     } catch (e) {
       debugPrint('⚠️ Failed to save/re-setup schedules: $e');
       rethrow;
+    }
+  }
+
+  /// Apply or remove shields based on currently active schedules
+  Future<void> _updateShieldsBasedOnSchedules() async {
+    try {
+      // Check if any schedule is currently active
+      final hasActiveSchedule = schedules.any((s) => isScheduleActive(s));
+
+      if (hasActiveSchedule) {
+        // At least one schedule is active, apply shields
+        await _screenTimeService.applyShields();
+        debugPrint('🔒 Shields applied - schedule(s) currently active');
+      } else {
+        // No schedules active, remove shields
+        await _screenTimeService.removeShields();
+        debugPrint('🔓 Shields removed - no schedules currently active');
+      }
+    } catch (e) {
+      debugPrint('⚠️ Error updating shields: $e');
+      // Don't rethrow - shield updates shouldn't break the flow
     }
   }
 
@@ -613,8 +628,9 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
     await _loadSelectedAppsCount();
   }
 
-  /// Test blocking for 15 minutes (iOS minimum interval)
-  Future<void> testBlockingNow() async {
+  /// Test schedule monitoring without immediate blocking
+  /// Schedule starts in 5 minutes, lasts 15 minutes (iOS minimum)
+  Future<void> testScheduleMonitoring() async {
     final context = Get.context;
     if (context == null) return;
 
@@ -627,47 +643,66 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         return;
       }
 
-      // Create temporary test schedule (15 min minimum for iOS)
-      final now = TimeOfDay.now();
-      final endTime = TimeOfDay(
-        hour: (now.hour + ((now.minute + 15) ~/ 60)) % 24,
-        minute: (now.minute + 15) % 60,
-      );
+      if (selectedAppsCount.value == 0) {
+        FastToast.warning(
+          'Please select apps first via Profile tab',
+          title: 'No Apps Selected',
+        );
+        return;
+      }
+
+      // Calculate times: Start in 5 min, last 15 min (iOS minimum)
+      final now = DateTime.now();
+      final startTime = now.add(const Duration(minutes: 5));
+      final endTime = startTime.add(const Duration(minutes: 15));
+
+      debugPrint('========================================');
+      debugPrint('🧪 TEST SCHEDULE (NO IMMEDIATE BLOCKING)');
+      debugPrint('========================================');
+      debugPrint('⏰ Current: ${now.hour}:${now.minute.toString().padLeft(2, '0')}');
+      debugPrint('⏰ Will START at: ${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} (+5 min)');
+      debugPrint('⏰ Will END at: ${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')} (+20 min)');
+      debugPrint('📱 Apps should NOT be blocked right now');
+      debugPrint('📱 Apps WILL be blocked when schedule starts');
+      debugPrint('========================================');
 
       final testSchedules = [
         {
-          'name': 'Test_Lock',
+          'name': 'TEST_MONITOR',
           'icon': '🧪',
-          'startHour': now.hour,
-          'startMinute': now.minute,
+          'startHour': startTime.hour,
+          'startMinute': startTime.minute,
           'endHour': endTime.hour,
           'endMinute': endTime.minute,
           'enabled': true,
         }
       ];
 
-      // Setup test schedule
+      // Setup test schedule WITHOUT applying shields
       await _screenTimeService.setupSchedules(testSchedules);
 
-      // ✅ Using Get.context for custom duration toast
+      debugPrint('✅ Test schedule setup complete - monitoring started');
+      debugPrint('⏳ Waiting for iOS to call intervalDidStart in 5 minutes...');
+      debugPrint('📊 Watch Xcode logs for: "🔒 MONITOR: Schedule \'TEST_MONITOR\' started"');
+
       final ctx = Get.context;
       if (ctx != null) {
         FastToast.showSuccess(
           context: ctx,
-          title: 'Test Lock Active',
+          title: 'Test Schedule Created',
           message:
-              'Apps will be blocked for 15 minutes. Try opening a selected app.',
-          duration: const Duration(seconds: 5),
+              'Apps NOT blocked now. Will block in 5 min when schedule starts. Check Xcode logs.',
+          duration: const Duration(seconds: 6),
         );
       }
     } catch (e) {
+      debugPrint('❌ Test failed: $e');
       final ctx = Get.context;
       if (ctx != null) {
         FastToast.showError(
           context: ctx,
-          title: 'Error',
-          message:
-              'Failed to start test: ${e.toString().contains('intervalTooShort') ? 'iOS requires 15 min minimum' : e}',
+          title: 'Test Failed',
+          message: 'Error: $e',
           duration: const Duration(seconds: 5),
         );
       }

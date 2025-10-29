@@ -1,17 +1,24 @@
 import 'dart:convert';
+
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Controller for managing Scripture Lock onboarding flow and progress
 class ScriptureOnboardingController extends GetxController {
+  // Use PreferencesService for onboarding state (cleared on uninstall)
+  final PreferencesService _prefs = PreferencesService();
+  // Use StorageService for user data (persists in Keychain)
   final StorageService _storage = StorageService();
   final PostHogService _analytics = PostHogService.instance;
 
   // Storage keys
   static const String _keyOnboardingComplete = 'scripture_onboarding_complete';
+  static const String _keySummaryComplete = 'onboarding_summary_complete';
+  static const String _keyHasAccessedFeatures = 'has_accessed_app_features';
   static const String _keyUserName = 'user_name';
   static const String _keyUserAge = 'user_age';
   static const String _keyUserHoursPerDay = 'user_hours_per_day';
@@ -24,7 +31,7 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keySchedules = 'onboarding_schedules';
 
   // Observable state
-  final RxInt currentStep = RxInt(5);
+  final RxInt currentStep = RxInt(1);
   final RxString userName = RxString('User');
   final RxInt userAge = RxInt(25);
   final RxDouble hoursPerDay = RxDouble(5.0);
@@ -102,18 +109,17 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Check if onboarding has been completed
   Future<bool> isOnboardingComplete() async {
-    final complete = await _storage.readBool(_keyOnboardingComplete);
+    final complete = await _prefs.readBool(_keyOnboardingComplete);
     return complete ?? false;
   }
 
-  /// Move to next step (including step 1.5)
+  /// Move to next step
   void nextStep() async {
     // Track step exit before moving
     if (_analytics.isReady) {
       await _trackStepExit();
     }
 
-    // Step progression: 1 → 1.5 (2) → 2 (3) → 3 (4) → 4 (5) → 5 (6) → 6 (7) → Testimonials (8) → Screen Time (9)
     if (currentStep.value < 9) {
       currentStep.value++;
 
@@ -121,6 +127,13 @@ class ScriptureOnboardingController extends GetxController {
       if (_analytics.isReady) {
         await _trackStepEntry();
       }
+    }
+  }
+
+  /// Jump to specific step (debug only)
+  void jumpToStep(int step) {
+    if (step >= 1 && step <= 9) {
+      currentStep.value = step;
     }
   }
 
@@ -350,7 +363,7 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Complete onboarding
   Future<void> completeOnboarding() async {
-    await _storage.writeBool(_keyOnboardingComplete, true);
+    await _prefs.writeBool(_keyOnboardingComplete, true);
 
     // Track onboarding completion
     if (_analytics.isReady) {
@@ -358,15 +371,96 @@ class ScriptureOnboardingController extends GetxController {
     }
   }
 
+  /// Complete summary screen
+  Future<void> completeSummary() async {
+    await _prefs.writeBool(_keySummaryComplete, true);
+  }
+
+  /// Check if summary is complete
+  Future<bool> isSummaryComplete() async {
+    return await _prefs.readBool(_keySummaryComplete) ?? false;
+  }
+
+  /// Check if user has ever accessed app features (with active subscription)
+  Future<bool> hasAccessedFeatures() async {
+    return await _prefs.readBool(_keyHasAccessedFeatures) ?? false;
+  }
+
+  /// Mark that user has accessed app features
+  /// Call this when user successfully enters MainScreen with active subscription
+  Future<void> markFeaturesAccessed() async {
+    await _prefs.writeBool(_keyHasAccessedFeatures, true);
+    debugPrint('✅ User marked as having accessed app features');
+  }
+
   /// Reset onboarding (for testing)
   Future<void> resetOnboarding() async {
-    await _storage.writeBool(_keyOnboardingComplete, false);
+    await _prefs.writeBool(_keyOnboardingComplete, false);
+    await _prefs.writeBool(_keySummaryComplete, false);
+    await _prefs.writeBool(_keyHasAccessedFeatures, false);
     currentStep.value = 1;
     hoursPerDay.value = 0.0;
     selectedCategories.clear();
     selectedApps.clear();
     intensityLevel.value = 'Balanced';
     covenantAccepted.value = false;
+  }
+
+  /// Fill with realistic demo data (for testing/demos)
+  Future<void> fillWithDemoData() async {
+    // Save realistic demo data
+    await saveUserName('John');
+    await saveUserAge(28);
+    await saveHoursPerDay(6.5);
+    await savePrayerFrequency(3);
+    await save30DayGoals([
+      'Spend more time in prayer',
+      'Read the Bible daily',
+      'Reduce phone addiction',
+    ]);
+    await saveVerseCategories([
+      'Temptation & Purity',
+      'Self-Control & Discipline',
+      'Time & Wisdom',
+    ]);
+    await saveSelectedApps([
+      'Instagram',
+      'TikTok',
+      'YouTube',
+    ]);
+    await saveIntensityLevel('Balanced');
+    await acceptCovenant(true);
+
+    // Save default schedules (already initialized in onInit)
+    final defaultSchedules = [
+      {
+        'name': 'Morning Focus',
+        'icon': '🌅',
+        'start': const TimeOfDay(hour: 8, minute: 0),
+        'end': const TimeOfDay(hour: 10, minute: 0),
+        'enabled': true,
+      },
+      {
+        'name': 'Afternoon Lock',
+        'icon': '☀️',
+        'start': const TimeOfDay(hour: 12, minute: 0),
+        'end': const TimeOfDay(hour: 16, minute: 0),
+        'enabled': true,
+      },
+      {
+        'name': 'Night Protection',
+        'icon': '🌙',
+        'start': const TimeOfDay(hour: 20, minute: 0),
+        'end': const TimeOfDay(hour: 23, minute: 0),
+        'enabled': true,
+      },
+    ];
+    await saveSchedules(defaultSchedules);
+
+    // Complete onboarding
+    await completeOnboarding();
+
+    debugPrint('✅ Demo data filled successfully');
   }
 
   // =========================================================================
@@ -377,23 +471,23 @@ class ScriptureOnboardingController extends GetxController {
   String _getStepName(int step) {
     switch (step) {
       case 1:
-        return 'Divine Revelation';
-      case 2:
         return 'Name Capture';
+      case 2:
+        return 'Divine Revelation';
       case 3:
         return 'Self Confrontation';
       case 4:
-        return 'Eternal Warfare';
+        return 'Testimonials';
       case 5:
-        return 'Call to Covenant';
+        return 'Eternal Warfare';
       case 6:
-        return 'Armor Configuration';
+        return 'Call to Covenant';
       case 7:
         return 'Final Encouragement';
       case 8:
-        return 'Testimonials';
-      case 9:
         return 'Screen Time Permission';
+      case 9:
+        return 'Notification Permission';
       default:
         return 'Unknown Step';
     }
@@ -430,50 +524,54 @@ class ScriptureOnboardingController extends GetxController {
   /// Get metadata for each step based on user choices
   Map<String, dynamic>? _getStepMetadata(int step) {
     switch (step) {
-      case 2: // Name Capture
+      case 1:
         return {
           if (userName.value.isNotEmpty) 'user_name_provided': true,
           if (userAge.value > 0) 'user_age': userAge.value,
         };
 
-      case 3: // Self Confrontation (Hours per day)
+      case 2:
+        return {
+          'viewed_divine_revelation': true,
+        };
+
+      case 3:
         return {
           'hours_per_day': hoursPerDay.value,
           'hours_category': _categorizeHours(hoursPerDay.value),
-        };
-
-      case 4: // Eternal Warfare (Prayer frequency)
-        return {
           'prayer_times_per_week': prayerTimesPerWeek.value,
-          'prayer_frequency_category': _categorizePrayerFrequency(prayerTimesPerWeek.value),
+          'prayer_frequency_category':
+              _categorizePrayerFrequency(prayerTimesPerWeek.value),
         };
 
-      case 5: // Call to Covenant
-        return {
-          'covenant_accepted': covenantAccepted.value,
-        };
-
-      case 6: // Armor Configuration (Schedules)
-        return {
-          'schedules_configured': true,
-        };
-
-      case 7: // Final Encouragement (Categories & Apps)
-        return {
-          'verse_categories_count': selectedCategories.length,
-          'verse_categories': selectedCategories.join(','),
-          'selected_apps_count': selectedApps.length,
-          'intensity_level': intensityLevel.value,
-        };
-
-      case 8: // Testimonials
+      case 4:
         return {
           'viewed_testimonials': true,
         };
 
-      case 9: // Screen Time Permission
+      case 5:
         return {
-          'screen_time_permission_step': true,
+          'viewed_eternal_warfare': true,
+        };
+
+      case 6:
+        return {
+          'covenant_accepted': covenantAccepted.value,
+        };
+
+      case 7:
+        return {
+          'viewed_final_encouragement': true,
+        };
+
+      case 8:
+        return {
+          'screen_time_permission_requested': true,
+        };
+
+      case 9:
+        return {
+          'notification_permission_requested': true,
         };
 
       default:

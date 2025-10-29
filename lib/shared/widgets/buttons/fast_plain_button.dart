@@ -1,8 +1,8 @@
 /// **FastPlainButton** - Minimal text-only button for subtle actions.
 ///
-/// **Use Case:** 
-/// For low-priority actions that don't need visual emphasis, like "Skip", 
-/// "Learn More", or "Forgot Password". Provides a clean text-only appearance 
+/// **Use Case:**
+/// For low-priority actions that don't need visual emphasis, like "Skip",
+/// "Learn More", or "Forgot Password". Provides a clean text-only appearance
 /// that doesn't compete with primary actions while remaining interactive.
 ///
 /// **Key Features:**
@@ -80,7 +80,7 @@ class FastPlainButton extends StatelessWidget {
         ? (Theme.of(context).platform == TargetPlatform.iOS
             ? CupertinoColors.inactiveGray
             : Colors.grey)
-        : (textColor ?? 
+        : (textColor ??
             (Theme.of(context).platform == TargetPlatform.iOS
                 ? CupertinoColors.activeBlue
                 : theme.primaryColor));
@@ -93,7 +93,8 @@ class FastPlainButton extends StatelessWidget {
                 ? CupertinoActivityIndicator(color: effectiveTextColor)
                 : CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(effectiveTextColor),
                   ),
           )
         : Row(
@@ -131,7 +132,8 @@ class FastPlainButton extends StatelessWidget {
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       return CupertinoButton(
         onPressed: (isDisabled || isLoading) ? null : _handleTap,
-        padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         minimumSize: Size.fromHeight(height ?? 44),
         child: Container(
           width: width,
@@ -145,7 +147,8 @@ class FastPlainButton extends StatelessWidget {
         onPressed: (isDisabled || isLoading) ? null : _handleTap,
         style: TextButton.styleFrom(
           foregroundColor: effectiveTextColor,
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: padding ??
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           minimumSize: Size(width ?? 0, height ?? 44),
         ),
         child: Container(

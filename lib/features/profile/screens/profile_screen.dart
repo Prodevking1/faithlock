@@ -4,6 +4,7 @@ import 'package:faithlock/features/auth/controllers/signout_controller.dart';
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/profile/controllers/profile_controller.dart';
 import 'package:faithlock/features/profile/controllers/settings_controller.dart';
+import 'package:faithlock/gen/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,29 +33,18 @@ class ProfileScreen extends StatelessWidget {
   // iOS Native Style
   Widget _buildIOSProfileScreen(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          'profile'.tr,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
-        border: null,
-      ),
       backgroundColor:
           CupertinoColors.systemGroupedBackground.resolveFrom(context),
       child: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            // User Info Section with enhanced design
+            SliverToBoxAdapter(
+              child: _buildHeaderSection(),
+            ),
             SliverToBoxAdapter(
               child: _buildIOSUserInfoSection(context),
             ),
-
-            // Profile & Settings Sections with better spacing
             SliverToBoxAdapter(
               child: _buildIOSSettingsList(context),
             ),
@@ -62,6 +52,10 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildHeaderSection() {
+    return Assets.images.appIcon.image(height: 200);
   }
 
   Widget _buildIOSUserInfoSection(BuildContext context) {
@@ -225,7 +219,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   )),
             ),
-        ], title: 'profile'.tr),
+        ]),
 
         // App Settings Section
         _buildIOSSection([
@@ -339,60 +333,15 @@ class ProfileScreen extends StatelessWidget {
               iconColor: CupertinoColors.systemIndigo,
               onTap: settingsController.openPrivacyPolicy,
             ),
-          _buildIOSListTile(
-            context,
-            leading: CupertinoIcons.square_list,
-            title: 'Monitor Debug',
-            subtitle: 'Check DeviceActivityMonitor status',
-            iconColor: CupertinoColors.systemPurple,
-            onTap: () => Get.toNamed('/monitor-debug'),
-          ),
-        ], title: 'support'.tr),
-
-        // Sign Out Section
-        if (appFeatures.deleteAccount)
-          _buildIOSSection([
+          if (appFeatures.termsSettings)
             _buildIOSListTile(
               context,
-              leading: CupertinoIcons.square_arrow_right_fill,
-              title: 'signOut'.tr,
-              isDestructive: true,
-              onTap: () => _showIOSSignOutDialog(context),
+              leading: CupertinoIcons.doc_text_fill,
+              title: 'Terms and conditions',
+              iconColor: CupertinoColors.systemIndigo,
+              onTap: settingsController.openTerms,
             ),
-          ]),
-
-        const SizedBox(height: 32),
-
-        // App Version with better styling
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: CupertinoColors.systemGrey6.resolveFrom(context),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                CupertinoIcons.info_circle_fill,
-                size: 16,
-                color: CupertinoColors.tertiaryLabel.resolveFrom(context),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '${'version'.tr} ${settingsController.appVersion.value} (${settingsController.buildNumber.value})',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: CupertinoColors.tertiaryLabel.resolveFrom(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 40),
+        ], title: 'support'.tr),
       ],
     );
   }
@@ -475,7 +424,6 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            // Leading icon with background
             Container(
               width: 32,
               height: 32,
@@ -506,7 +454,7 @@ class ProfileScreen extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontSize: 17,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       color: titleColor ??
                           (isDestructive
                               ? CupertinoColors.systemRed
@@ -549,16 +497,11 @@ class ProfileScreen extends StatelessWidget {
   // Android Material Style
   Widget _buildAndroidProfileScreen(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('profile'.tr),
-        elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // User Info Section
+
             _buildAndroidUserInfoSection(context),
 
             const SizedBox(height: 24),
@@ -689,45 +632,8 @@ class ProfileScreen extends StatelessWidget {
               title: 'privacyPolicy'.tr,
               onTap: settingsController.openPrivacyPolicy,
             ),
-            _buildAndroidListTile(
-              context,
-              leading: Icons.bug_report,
-              title: 'Monitor Debug',
-              subtitle: 'Check DeviceActivityMonitor status',
-              onTap: () => Get.toNamed('/monitor-debug'),
-            ),
           ],
         ),
-
-        // Sign Out
-        _buildAndroidSection(
-          context,
-          '',
-          [
-            if (appFeatures.deleteAccount)
-              _buildAndroidListTile(
-                context,
-                leading: Icons.logout,
-                title: 'signOut'.tr,
-                titleColor: Colors.red,
-                iconColor: Colors.red,
-                onTap: () => _showAndroidSignOutDialog(context),
-              ),
-          ],
-        ),
-
-        const SizedBox(height: 16),
-
-        // App Version
-        if (appFeatures.showAppVersion)
-          Text(
-            '${'version'.tr} ${settingsController.appVersion.value} (${settingsController.buildNumber.value})',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[500],
-                ),
-          ),
-
-        const SizedBox(height: 32),
       ],
     );
   }

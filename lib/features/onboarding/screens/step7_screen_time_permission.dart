@@ -1,10 +1,11 @@
+import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_plain_button.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_confirmation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,8 @@ class Step7ScreenTimePermission extends StatefulWidget {
 
 class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
   final controller = Get.find<ScriptureOnboardingController>();
+  final ScreenTimeService _screenTimeService = ScreenTimeService();
+  final StorageService _storage = StorageService();
 
   // Phase 7.1 - Introduction
   String _introText = '';
@@ -37,6 +40,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
 
   // Phase 7.3 - Call to Action
   bool _showButton = false;
+  bool _isRequestingPermission = false;
 
   double _opacity = 1.0;
 
@@ -101,12 +105,40 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
   }
 
   Future<void> _onConnectScreenTime() async {
+    if (_isRequestingPermission) return;
+
     await AnimationUtils.heavyHaptic();
 
-    // TODO: Request Screen Time permission here
-    // For now, just complete the onboarding
+    setState(() {
+      _isRequestingPermission = true;
+    });
 
-    widget.onComplete();
+    try {
+      debugPrint('🛡️ Requesting Screen Time permission...');
+      final granted = await _screenTimeService.requestAuthorization();
+
+      if (granted) {
+        debugPrint('✅ Screen Time permission granted');
+      } else {
+        debugPrint('❌ Screen Time permission denied');
+      }
+
+      // Mark that we asked for permission
+      await _storage.writeBool('screen_time_prompt_shown', true);
+
+      // Move to next step (notifications)
+      widget.onComplete();
+    } catch (e) {
+      debugPrint('❌ Error requesting Screen Time permission: $e');
+      // Still move forward even if there's an error
+      widget.onComplete();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRequestingPermission = false;
+        });
+      }
+    }
   }
 
   Future<void> _onSkipPermission() async {
@@ -119,7 +151,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
           'Without Screen Time permission, FaithLock cannot protect you from your chosen apps.\n\nYou can enable this later in Settings.',
       confirmText: 'Skip for Now',
       cancelText: 'Grant Permission',
-      isDestructiveConfirm: false, 
+      isDestructiveConfirm: false,
     );
 
     if (shouldSkip) {
@@ -272,65 +304,33 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                     text: 'Build discipline through daily verses',
                   ),
 
-                  const SizedBox(height: 32),
-
-                  // Social proof
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.people,
-                          size: 18,
-                          color: OnboardingTheme.goldColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '10,000+ believers protected daily',
-                          style: OnboardingTheme.footnote.copyWith(
-                            color: OnboardingTheme.goldColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
                   const SizedBox(height: 40),
 
                   // Primary button
                   Center(
                     child: FastButton(
-                      text: 'Grant Permission',
-                      onTap: _onConnectScreenTime,
+                      text: _isRequestingPermission
+                          ? 'Requesting...'
+                          : 'Grant Permission',
+                      onTap:
+                          _isRequestingPermission ? null : _onConnectScreenTime,
                       backgroundColor: OnboardingTheme.goldColor,
                       textColor: OnboardingTheme.backgroundColor,
                       style: FastButtonStyle.filled,
+                      isLoading: _isRequestingPermission,
                     ),
                   ),
 
                   const SizedBox(height: 16),
 
                   // Skip button avec friction (using FastPlainButton)
-                  Center(
-                    child: FastPlainButton(
-                      text: 'Continue without protection',
-                      onTap: _onSkipPermission,
-                      textColor: OnboardingTheme.labelTertiary,
-                    ),
-                  ),
+                  // Center(
+                  //   child: FastPlainButton(
+                  //     text: 'Continue without protection',
+                  //     onTap: _onSkipPermission,
+                  //     textColor: OnboardingTheme.labelTertiary,
+                  //   ),
+                  // ),
                 ],
               ],
             ),

@@ -317,6 +317,30 @@ class ScreenTimeService {
     }
   }
 
+  /// Apply shields to block apps based on saved selection
+  /// Call this when a schedule becomes active
+  Future<void> applyShields() async {
+    try {
+      await _channel.invokeMethod('applyShields');
+      debugPrint('✅ Shields applied - apps are blocked');
+    } catch (e) {
+      debugPrint('❌ Error applying shields: $e');
+      throw Exception('Failed to apply shields: $e');
+    }
+  }
+
+  /// Remove shields to unblock apps
+  /// Call this when all schedules end or are disabled
+  Future<void> removeShields() async {
+    try {
+      await _channel.invokeMethod('removeShields');
+      debugPrint('✅ Shields removed - apps are unblocked');
+    } catch (e) {
+      debugPrint('❌ Error removing shields: $e');
+      throw Exception('Failed to remove shields: $e');
+    }
+  }
+
   void dispose() {
     // Cleanup if needed
   }

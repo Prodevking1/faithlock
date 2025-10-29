@@ -45,7 +45,7 @@ class StorageService {
 
   /// Writes a [int] value to secure storage.
   Future<void> writeInt(String key, int value) async {
-    await writeInt(key, value);
+    await writeString(key, value.toString());
   }
 
   /// Writes a [Map] to secure storage by encoding it to JSON.
@@ -73,6 +73,13 @@ class StorageService {
     final value = await readString(key);
     if (value == null) return null;
     return value.toLowerCase() == 'true';
+  }
+
+  /// Reads an [int] value from secure storage.
+  Future<int?> readInt(String key) async {
+    final value = await readString(key);
+    if (value == null) return null;
+    return int.tryParse(value);
   }
 
   /// Reads a [Map] from secure storage by decoding the JSON string.

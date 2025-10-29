@@ -3,11 +3,16 @@ import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/config/env.dart';
 import 'package:faithlock/core/localization/app_translations.dart';
 import 'package:faithlock/core/theme/export.dart';
+import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
+import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/auto_navigation_service.dart';
 import 'package:faithlock/services/deep_link_service.dart';
-import 'package:faithlock/services/storage/secure_storage_service.dart';
+import 'package:faithlock/services/notifications/local_notification_service.dart';
+import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
+import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +28,7 @@ void main() async {
 
   await Future.wait([
     _initializeSupabase(),
+    _initializeDatabase(),
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -48,9 +54,76 @@ Future<void> _initializeSupabase() async {
   }
 }
 
+Future<void> _initializeDatabase() async {
+  try {
+    final FaithLockDatabaseService db = FaithLockDatabaseService();
+    await db.database;
+    debugPrint('✅ Database initialized');
+  } catch (e) {
+    debugPrint('❌ Database initialization failed: $e');
+    rethrow;
+  }
+}
+
+Future<bool> _shouldShowOnboarding() async {
+  try {
+    final prefs = PreferencesService();
+    final hasCompletedOnboarding =
+        await prefs.readBool('scripture_onboarding_complete') ?? false;
+    return !hasCompletedOnboarding;
+  } catch (e) {
+    debugPrint('⚠️ Error checking onboarding status: $e');
+    return true;
+  }
+}
+
 void _initializeNonCriticalServices() {
   Future.microtask(() async {
     debugPrint('⏳ Loading non-critical services in background...');
+
+    try {
+      final LocalNotificationService notificationService =
+          LocalNotificationService();
+      await notificationService.initialize();
+
+      Future.delayed(const Duration(seconds: 2), () async {
+        final context = Get.context;
+        if (context != null) {
+          final prefs = PreferencesService();
+          final hasAsked =
+              await prefs.readBool('notification_permission_asked') ?? false;
+
+          print('asked notif ${hasAsked}');
+
+          if (await _shouldShowOnboarding() == false && !hasAsked) {
+            final permissionsGranted =
+                await _requestNotificationPermissionsWithDialog(
+              context,
+              notificationService,
+            );
+            debugPrint(
+                '✅ LocalNotificationService initialized (permissions: $permissionsGranted)');
+
+            // Mark that we asked
+            await prefs.writeBool('notification_permission_asked', true);
+
+            if (!permissionsGranted) {
+              debugPrint('⚠️ Notification permissions denied by user!');
+              debugPrint(
+                  '💡 User needs to enable notifications in iOS Settings');
+            }
+
+            // Wait before next prompt to avoid overwhelming user
+            await Future.delayed(const Duration(seconds: 3));
+          } else {
+            debugPrint(
+                'ℹ️ Notification permissions already requested in the past');
+          }
+        }
+      });
+    } catch (e) {
+      debugPrint('⚠️ LocalNotificationService initialization failed: $e');
+    }
 
     try {
       final PostHogService postHog = PostHogService.instance;
@@ -85,8 +158,54 @@ void _initializeNonCriticalServices() {
       debugPrint('⚠️ DeepLinkService initialization failed: $e');
     }
 
+    try {
+      // Unlock Timer Service
+      final UnlockTimerService unlockTimerService = UnlockTimerService();
+      unlockTimerService.initialize();
+      debugPrint('✅ UnlockTimerService initialized');
+    } catch (e) {
+      debugPrint('⚠️ UnlockTimerService initialization failed: $e');
+    }
+
+    try {
+      // App Launch Service - set as natural launch by default
+      final AppLaunchService launchService = AppLaunchService();
+      await launchService.setLaunchSource(AppLaunchService.sourceNatural);
+      debugPrint('✅ AppLaunchService initialized (natural launch)');
+    } catch (e) {
+      debugPrint('⚠️ AppLaunchService initialization failed: $e');
+    }
+
     debugPrint('✅ All non-critical services loaded');
   });
+}
+
+Future<bool> _requestNotificationPermissionsWithDialog(
+  BuildContext context,
+  LocalNotificationService notificationService,
+) async {
+  // Show explanatory dialog first and wait for user to tap Continue
+  await FastAlertDialog.show(
+    context: context,
+    title: '🔔 Enable Notifications',
+    message: 'Notifications are essential for FaithLock to work properly.\n\n'
+        'We\'ll remind you to re-lock your apps after the unlock timer expires, '
+        'helping you stay focused on your spiritual journey.\n\n'
+        'Tap "Continue" to enable notifications.',
+    actions: [
+      FastDialogAction(
+        text: 'Continue',
+        isDefault: true,
+        onPressed: () => Navigator.of(context).pop(true),
+      ),
+    ],
+  );
+
+  // Wait a brief moment for dialog animation to complete
+  await Future.delayed(const Duration(milliseconds: 300));
+
+  // Now request permissions (iOS system prompt will appear)
+  return await notificationService.requestPermissions();
 }
 
 class App extends StatefulWidget {
@@ -119,18 +238,6 @@ class _AppState extends State<App> {
     await autoNavService.checkAndNavigate();
   }
 
-  Future<bool> _shouldShowOnboarding() async {
-    try {
-      final storage = Get.find<StorageService>();
-      final hasCompletedOnboarding =
-          await storage.readBool('scripture_onboarding_complete') ?? false;
-      return !hasCompletedOnboarding;
-    } catch (e) {
-      debugPrint('⚠️ Error checking onboarding status: $e');
-      return true;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -143,6 +250,7 @@ class _AppState extends State<App> {
       initialBinding: AppBindings(),
       initialRoute: AppRoutes.main,
       getPages: AppRoutes.getPages(),
+      // home: InitialRouteScreen(),
       translations: AppTranslations(),
       localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,

@@ -34,13 +34,11 @@ class ScheduleScreen extends StatelessWidget {
         backgroundColor: FastColors.surface(context),
         elevation: 0,
         actions: [
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.refresh,
-          //     color: FastColors.primaryText(context),
-          //   ),
-          //   onPressed: controller.refreshSchedules,
-          // ),
+          IconButton(
+            icon: const Icon(Icons.science_outlined),
+            tooltip: 'Test Schedule (5 min delay)',
+            onPressed: controller.testScheduleMonitoring,
+          ),
         ],
       ),
       body: SafeArea(

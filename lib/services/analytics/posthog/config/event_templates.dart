@@ -25,6 +25,8 @@ enum PostHogEventType {
   tutorialCompleted,
   onboardingCompleted,
   feedbackSubmitted,
+  rateIntentShown,
+  rateIntentSkipped,
 
   // Marketing events
   campaignViewed,
@@ -71,6 +73,8 @@ class PostHogEventTemplates {
     PostHogEventType.tutorialCompleted: 'tutorial_completed',
     PostHogEventType.onboardingCompleted: 'onboarding_completed',
     PostHogEventType.feedbackSubmitted: 'feedback_submitted',
+    PostHogEventType.rateIntentShown: 'rate_intent_shown',
+    PostHogEventType.rateIntentSkipped: 'rate_intent_skipped',
 
     // Marketing events
     PostHogEventType.campaignViewed: 'campaign_viewed',
@@ -141,6 +145,18 @@ class PostHogEventTemplates {
           'user_id': null,
         };
 
+      case PostHogEventType.rateIntentShown:
+        return {
+          'source': null,
+          'timestamp': null,
+        };
+
+      case PostHogEventType.rateIntentSkipped:
+        return {
+          'source': null,
+          'timestamp': null,
+        };
+
       default:
         return <String, dynamic>{};
     }
@@ -154,6 +170,8 @@ class PostHogEventTemplates {
     'feature_used': ['feature_name'],
     'campaign_viewed': ['campaign_id', 'campaign_name'],
     'error_occurred': ['error_type', 'error_message'],
+    'rate_intent_shown': ['source'],
+    'rate_intent_skipped': ['source'],
   };
 
   // Validate an event

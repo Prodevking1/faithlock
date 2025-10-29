@@ -18,4 +18,8 @@ abstract class Env {
 
   @EnviedField(varName: 'REVENUECAT_API_KEY')
   static String revenueCatApiKey = _Env.revenueCatApiKey;
+
+   @EnviedField(varName: 'OPENAI_API_KEY')
+  static String openAiApiKey = _Env.openAiApiKey;
+
 }
