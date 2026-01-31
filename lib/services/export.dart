@@ -1,5 +1,4 @@
 export 'api/http/http_service.dart';
-export 'api/supabase/export.dart';
 export 'cache/image_cache_service.dart';
 export 'connectivity/connectivity_service.dart';
 export 'database/local_database_service.dart';

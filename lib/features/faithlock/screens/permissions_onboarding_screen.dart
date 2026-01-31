@@ -155,9 +155,7 @@ class _PermissionsOnboardingScreenState
 
               // Grant Access button
               FastButton(
-                text: _isRequesting
-                    ? 'Requesting...'
-                    : 'Grant Screen Time Access',
+                text: _isRequesting ? 'Requesting...' : 'Continue',
                 onTap: _isRequesting ? null : _requestPermission,
                 isLoading: _isRequesting,
               ),

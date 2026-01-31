@@ -1,10 +1,8 @@
 import 'package:faithlock/config/app_config.dart';
-import 'package:faithlock/core/helpers/ui_helper.dart';
-import 'package:faithlock/features/auth/controllers/signout_controller.dart';
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
-import 'package:faithlock/features/profile/controllers/profile_controller.dart';
+import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
 import 'package:faithlock/features/profile/controllers/settings_controller.dart';
-import 'package:faithlock/gen/assets.gen.dart';
+import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +10,6 @@ import 'package:get/get.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
-  final ProfileController profileController = Get.put(ProfileController());
   final SettingsController settingsController = Get.put(SettingsController());
 
   // Use lazy initialization to avoid blocking UI
@@ -40,12 +37,6 @@ class ProfileScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
-              child: _buildHeaderSection(),
-            ),
-            SliverToBoxAdapter(
-              child: _buildIOSUserInfoSection(context),
-            ),
-            SliverToBoxAdapter(
               child: _buildIOSSettingsList(context),
             ),
           ],
@@ -54,173 +45,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderSection() {
-    return Assets.images.appIcon.image(height: 200);
-  }
-
-  Widget _buildIOSUserInfoSection(BuildContext context) {
-    if (!AppConfig.appFeatures.showProfile) {
-      return const SizedBox.shrink();
-    }
-    return Obx(() => Container(
-          margin: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: CupertinoColors.systemBackground.resolveFrom(context),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: CupertinoColors.systemGrey
-                    .resolveFrom(context)
-                    .withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              // Avatar with status indicator
-              Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: CupertinoColors.systemGrey5.resolveFrom(context),
-                        width: 3,
-                      ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor:
-                          CupertinoColors.systemGrey5.resolveFrom(context),
-                      backgroundImage:
-                          NetworkImage(profileController.user.value.avatarUrl),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 4,
-                    right: 4,
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.systemGreen,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: CupertinoColors.systemBackground
-                              .resolveFrom(context),
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Name with better typography
-              Text(
-                profileController.user.value.fullName,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: CupertinoColors.label.resolveFrom(context),
-                  letterSpacing: -0.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 6),
-
-              // Email with icon
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    CupertinoIcons.mail_solid,
-                    size: 14,
-                    color: CupertinoColors.secondaryLabel.resolveFrom(context),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    profileController.user.value.email,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color:
-                          CupertinoColors.secondaryLabel.resolveFrom(context),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-
-              // Member since with better styling
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: CupertinoColors.systemGrey6.resolveFrom(context),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      CupertinoIcons.calendar,
-                      size: 12,
-                      color: CupertinoColors.tertiaryLabel.resolveFrom(context),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${'memberSince'.tr} ${profileController.user.value.joinDate}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color:
-                            CupertinoColors.tertiaryLabel.resolveFrom(context),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
-
   Widget _buildIOSSettingsList(BuildContext context) {
     final appFeatures = AppConfig.appFeatures;
 
     return Column(
       children: [
-        // Profile Actions Section
-        _buildIOSSection([
-          if (appFeatures.editProfile)
-            _buildIOSListTile(
-              context,
-              leading: CupertinoIcons.person_circle_fill,
-              title: 'editProfile'.tr,
-              subtitle: 'updatePersonalInfo'.tr,
-              onTap: profileController.navigateToEditProfile,
-            ),
-          if (appFeatures.pushNotifications)
-            _buildIOSListTile(
-              context,
-              leading: CupertinoIcons.bell_fill,
-              title: 'notifications'.tr,
-              subtitle: 'pushNotifications'.tr,
-              trailing: Obx(() => Transform.scale(
-                    scale: 0.8,
-                    child: CupertinoSwitch(
-                      value: profileController.pushNotifications.value,
-                      onChanged: profileController.togglePushNotifications,
-                    ),
-                  )),
-            ),
-        ]),
-
         // App Settings Section
         _buildIOSSection([
           // _buildIOSListTile(
@@ -284,6 +113,27 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   )),
             ),
+
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell,
+            title: 'Notifications',
+            subtitle: 'Get reminders for scheduled locks',
+            onTap: () => Get.put(FaithLockSettingsController())
+                .requestNotificationsPermission(),
+            trailing: Obx(() {
+              final isGranted = settingsController.notificationsEnabled.value;
+              return Icon(
+                isGranted
+                    ? CupertinoIcons.checkmark_circle_fill
+                    : CupertinoIcons.exclamationmark_circle,
+                color: isGranted
+                    ? CupertinoColors.systemGreen
+                    : CupertinoColors.systemRed,
+                size: 20,
+              );
+            }),
+          ),
           if (appFeatures.languageSelection)
             _buildIOSListTile(
               context,
@@ -342,6 +192,33 @@ class ProfileScreen extends StatelessWidget {
               onTap: settingsController.openTerms,
             ),
         ], title: 'support'.tr),
+
+        // Subscription Section
+        Obx(() {
+          final hasSubscription =
+              RevenueCatService.instance.isSubscriptionActive.value;
+
+          return _buildIOSSection([
+            if (hasSubscription)
+              _buildIOSListTile(
+                context,
+                leading: CupertinoIcons.creditcard_fill,
+                title: 'Manage Subscription',
+                subtitle: 'View and manage your subscription',
+                iconColor: CupertinoColors.systemPurple,
+                onTap: settingsController.manageSubscription,
+              )
+            else
+              _buildIOSListTile(
+                context,
+                leading: CupertinoIcons.star_fill,
+                title: 'Get FaithLock Pro',
+                subtitle: 'Unlock all features with premium',
+                iconColor: CupertinoColors.systemYellow,
+                onTap: () => Get.to(() => const PaywallScreen()),
+              ),
+          ], title: 'subscription'.tr);
+        }),
       ],
     );
   }
@@ -375,7 +252,7 @@ class ProfileScreen extends StatelessWidget {
                 BoxShadow(
                   color: CupertinoColors.systemGrey
                       .resolveFrom(Get.context!)
-                      .withOpacity(0.08),
+                      .withValues(alpha: 0.08),
                   blurRadius: 8,
                   offset: const Offset(0, 1),
                 ),
@@ -429,9 +306,9 @@ class ProfileScreen extends StatelessWidget {
               height: 32,
               decoration: BoxDecoration(
                 color: isDestructive
-                    ? CupertinoColors.systemRed.withOpacity(0.1)
+                    ? CupertinoColors.systemRed.withValues(alpha: 0.1)
                     : (iconColor ?? CupertinoColors.systemBlue)
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -500,12 +377,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // User Info Section
-
-            _buildAndroidUserInfoSection(context),
-
             const SizedBox(height: 24),
-
             // Settings List
             _buildAndroidSettingsList(context),
           ],
@@ -514,74 +386,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAndroidUserInfoSection(BuildContext context) {
-    return Obx(() => Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage:
-                    NetworkImage(profileController.user.value.avatarUrl),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                profileController.user.value.fullName,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                profileController.user.value.email,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '${'memberSince'.tr} ${profileController.user.value.joinDate}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
-                    ),
-              ),
-            ],
-          ),
-        ));
-  }
-
   Widget _buildAndroidSettingsList(BuildContext context) {
     final appFeatures = AppConfig.appFeatures;
 
     return Column(
       children: [
-        // Profile Actions
-        _buildAndroidSection(
-          context,
-          'profile'.tr,
-          [
-            if (appFeatures.editProfile)
-              _buildAndroidListTile(
-                context,
-                leading: Icons.edit,
-                title: 'editProfile'.tr,
-                subtitle: 'updatePersonalInfo'.tr,
-                onTap: profileController.navigateToEditProfile,
-              ),
-            if (appFeatures.pushNotifications)
-              _buildAndroidListTile(
-                context,
-                leading: Icons.notifications,
-                title: 'pushNotifications'.tr,
-                trailing: Obx(() => Switch(
-                      value: profileController.pushNotifications.value,
-                      onChanged: profileController.togglePushNotifications,
-                    )),
-              ),
-          ],
-        ),
-
         // App Settings
         _buildAndroidSection(
           context,
@@ -634,6 +443,37 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+
+        // Subscription Section
+        Obx(() {
+          final hasSubscription =
+              RevenueCatService.instance.isSubscriptionActive.value;
+
+          return _buildAndroidSection(
+            context,
+            'subscription'.tr,
+            [
+              if (hasSubscription)
+                _buildAndroidListTile(
+                  context,
+                  leading: Icons.credit_card,
+                  title: 'Manage Subscription',
+                  subtitle: 'View and manage your subscription',
+                  iconColor: Colors.purple,
+                  onTap: settingsController.manageSubscription,
+                )
+              else
+                _buildAndroidListTile(
+                  context,
+                  leading: Icons.star,
+                  title: 'Become Premium',
+                  subtitle: 'Unlock all features with premium',
+                  iconColor: Colors.amber,
+                  onTap: () => Get.to(() => const PaywallScreen()),
+                ),
+            ],
+          );
+        }),
       ],
     );
   }
@@ -821,104 +661,6 @@ class ProfileScreen extends StatelessWidget {
         ),
       );
     }
-  }
-
-  // Sign Out Dialogs
-  void _showIOSSignOutDialog(BuildContext context) {
-    showCupertinoDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => CupertinoAlertDialog(
-        title: Text(
-          'signOut'.tr,
-          style: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        content: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            'signOutConfirmation'.tr,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => Get.back(),
-            child: Text(
-              'cancel'.tr,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            onPressed: () async {
-              Get.back();
-              // Show loading indicator
-              showCupertinoDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => const CupertinoAlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CupertinoActivityIndicator(),
-                      SizedBox(height: 16),
-                      Text('Signing out...'),
-                    ],
-                  ),
-                ),
-              );
-
-              await SignOutController().signOut();
-              Get.back(); // Close loading dialog
-              UIHelper.showSuccessSnackBar('signedOutSuccess'.tr);
-            },
-            child: Text(
-              'signOut'.tr,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAndroidSignOutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('signOut'.tr),
-        content: Text('signOutConfirmation'.tr),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text('cancel'.tr),
-          ),
-          TextButton(
-            onPressed: () async {
-              await SignOutController().signOut();
-              Get.back();
-              UIHelper.showSuccessSnackBar('signedOutSuccess'.tr);
-            },
-            child: Text(
-              'signOut'.tr,
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildLanguagePickerItem(String flag, String language) {

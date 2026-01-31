@@ -157,7 +157,7 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
     await controller.acceptCovenant(true);
     await AnimationUtils.heavyHaptic();
 
-    await RateAppService().showOnboardingPrompt();
+    await RateAppService().showOnboardingPrompt(useOnboardingWrapper: true);
 
     widget.onComplete();
   }

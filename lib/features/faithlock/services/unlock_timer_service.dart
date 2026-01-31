@@ -83,6 +83,10 @@ class UnlockTimerService with WidgetsBindingObserver {
   /// Schedule notification to fire when unlock expires
   Future<void> _scheduleRelockNotification(DateTime scheduledTime) async {
     try {
+      // Note: LocalNotificationService must be initialized in onboarding
+      // before this method is called. If not initialized, notifications won't work.
+      // We don't initialize here to avoid triggering iOS permission prompt.
+
       // Cancel any existing scheduled notification
       await _notificationService.cancelNotification(100);
 
@@ -144,6 +148,10 @@ class UnlockTimerService with WidgetsBindingObserver {
   /// Start repeating reminder notification (every 5 minutes until app opened)
   Future<void> _startReminderTimer() async {
     try {
+      // Note: LocalNotificationService must be initialized in onboarding
+      // before this method is called. If not initialized, notifications won't work.
+      // We don't initialize here to avoid triggering iOS permission prompt.
+
       // Cancel any existing reminders first (IDs 101-124)
       for (int i = 101; i <= 124; i++) {
         await _notificationService.cancelNotification(i);
@@ -182,6 +190,10 @@ class UnlockTimerService with WidgetsBindingObserver {
   /// Cancel all reminder notifications
   Future<void> _cancelReminders() async {
     try {
+      // Note: LocalNotificationService must be initialized in onboarding
+      // before this method is called. If not initialized, cancellation is a no-op.
+      // We don't initialize here to avoid triggering iOS permission prompt.
+
       // Cancel all scheduled reminder notifications (IDs 101-124)
       for (int i = 101; i <= 124; i++) {
         await _notificationService.cancelNotification(i);

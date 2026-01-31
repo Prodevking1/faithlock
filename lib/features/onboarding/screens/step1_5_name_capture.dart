@@ -132,114 +132,114 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
             bottom: OnboardingTheme.verticalPadding,
           ),
           child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Intro text (iOS-styled, centered)
-                    if (_introText.isNotEmpty)
-                      RichText(
-                        text: TextSpan(
-                          style: OnboardingTheme.title3,
-                          children: [
-                            TextSpan(text: _introText),
-                            if (_showIntroCursor)
-                              const WidgetSpan(
-                                child: FeatherCursor(),
-                                alignment: PlaceholderAlignment.middle,
-                              ),
-                          ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Intro text (iOS-styled, centered)
+              if (_introText.isNotEmpty)
+                RichText(
+                  text: TextSpan(
+                    style: OnboardingTheme.title3,
+                    children: [
+                      TextSpan(text: _introText),
+                      if (_showIntroCursor)
+                        const WidgetSpan(
+                          child: FeatherCursor(),
+                          alignment: PlaceholderAlignment.middle,
                         ),
-                      ),
-
-                    // Name Input
-                    if (_showNameInput) ...[
-                      const SizedBox(height: OnboardingTheme.space40),
-                      KeyboardListener(
-                        focusNode: FocusNode(),
-                        onKeyEvent: (KeyEvent event) {
-                          if (event is KeyDownEvent &&
-                              (event.logicalKey == LogicalKeyboardKey.enter ||
-                                  event.logicalKey ==
-                                      LogicalKeyboardKey.numpadEnter)) {
-                            _onNameSubmit();
-                          }
-                        },
-                        child: FastTextInput(
-                          controller: _nameController,
-                          hintText: 'Your name',
-                          textCapitalization: TextCapitalization.words,
-                          focusNode: _nameFocusNode,
-                          textStyle: OnboardingTheme.title3.copyWith(
-                            color: OnboardingTheme.goldColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: OnboardingTheme.space32),
-                      Center(
-                        child: FastButton(
-                          text: 'Continue',
-                          onTap: _onNameSubmit,
-                          backgroundColor: OnboardingTheme.goldColor,
-                          textColor: OnboardingTheme.backgroundColor,
-                          style: FastButtonStyle.filled,
-                        ),
-                      ),
                     ],
+                  ),
+                ),
 
-                    if (_showAgeInput) ...[
-                      const SizedBox(height: OnboardingTheme.space32),
-                      Center(
-                        child: Text(
-                          _userAge.round().toString(),
-                          style: OnboardingTheme.displayNumber.copyWith(
-                            color: OnboardingTheme.goldColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: OnboardingTheme.space4),
-                      Center(
-                        child: Text(
-                          'years old',
-                          style: OnboardingTheme.displayUnit,
-                        ),
-                      ),
-                      const SizedBox(height: OnboardingTheme.space32),
-                      Center(
-                        child: FastSlider(
-                          value: _userAge,
-                          min: 13,
-                          max: 100,
-                          divisions: 87,
-                          activeColor: OnboardingTheme.goldColor,
-                          onChanged: _onAgeChanged,
-                        ),
-                      ),
+              // Name Input
+              if (_showNameInput) ...[
+                const SizedBox(height: OnboardingTheme.space40),
+                KeyboardListener(
+                  focusNode: FocusNode(),
+                  onKeyEvent: (KeyEvent event) {
+                    if (event is KeyDownEvent &&
+                        (event.logicalKey == LogicalKeyboardKey.enter ||
+                            event.logicalKey ==
+                                LogicalKeyboardKey.numpadEnter)) {
+                      _onNameSubmit();
+                    }
+                  },
+                  child: FastTextInput(
+                    controller: _nameController,
+                    hintText: 'Your name',
+                    textCapitalization: TextCapitalization.words,
+                    focusNode: _nameFocusNode,
+                    textStyle: OnboardingTheme.title3.copyWith(
+                      color: OnboardingTheme.goldColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: OnboardingTheme.space32),
+                Center(
+                  child: FastButton(
+                    text: 'Continue',
+                    onTap: _onNameSubmit,
+                    backgroundColor: OnboardingTheme.goldColor,
+                    textColor: OnboardingTheme.backgroundColor,
+                    style: FastButtonStyle.filled,
+                  ),
+                ),
+              ],
 
-                      const SizedBox(height: OnboardingTheme.space32),
-                      // // iOS-style instruction
-                      // Center(
-                      //   child: Text(
-                      //     'Slide to select your age',
-                      //     style: OnboardingTheme.subhead.copyWith(
-                      //       fontWeight: FontWeight.w600,
-                      //       color: OnboardingTheme.goldColor
-                      //           .withValues(alpha: 0.7),
-                      //     ),
-                      //     textAlign: TextAlign.center,
-                      //   ),
-                      // ),
-                      // const SizedBox(height: OnboardingTheme.space24),
-                      // Continue button
-                      Center(
-                        child: FastButton(
-                          text: 'Continue',
-                          onTap: _userAge >= 13 ? _proceedToNextStep : null,
-                          backgroundColor: OnboardingTheme.goldColor,
-                          textColor: OnboardingTheme.backgroundColor,
-                          style: FastButtonStyle.filled,
-                        ),
-                      ),
-                    ],
+              if (_showAgeInput) ...[
+                const SizedBox(height: OnboardingTheme.space32),
+                Center(
+                  child: Text(
+                    _userAge.round().toString(),
+                    style: OnboardingTheme.displayNumber.copyWith(
+                      color: OnboardingTheme.goldColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: OnboardingTheme.space4),
+                Center(
+                  child: Text(
+                    'years old',
+                    style: OnboardingTheme.displayUnit,
+                  ),
+                ),
+                const SizedBox(height: OnboardingTheme.space32),
+                Center(
+                  child: FastSlider(
+                    value: _userAge,
+                    min: 13,
+                    max: 110,
+                    divisions: 110,
+                    activeColor: OnboardingTheme.goldColor,
+                    onChanged: _onAgeChanged,
+                  ),
+                ),
+
+                const SizedBox(height: OnboardingTheme.space32),
+                // // iOS-style instruction
+                // Center(
+                //   child: Text(
+                //     'Slide to select your age',
+                //     style: OnboardingTheme.subhead.copyWith(
+                //       fontWeight: FontWeight.w600,
+                //       color: OnboardingTheme.goldColor
+                //           .withValues(alpha: 0.7),
+                //     ),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
+                // const SizedBox(height: OnboardingTheme.space24),
+                // Continue button
+                Center(
+                  child: FastButton(
+                    text: 'Continue',
+                    onTap: _userAge >= 13 ? _proceedToNextStep : null,
+                    backgroundColor: OnboardingTheme.goldColor,
+                    textColor: OnboardingTheme.backgroundColor,
+                    style: FastButtonStyle.filled,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

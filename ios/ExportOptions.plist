@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>development</string>
+	<key>teamID</key>
+	<string>SKQDF59NKD</string>
+	<key>uploadBitcode</key>
+	<false/>
+	<key>compileBitcode</key>
+	<false/>
+	<key>uploadSymbols</key>
+	<true/>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<key>signingCertificate</key>
+	<string>Apple Development</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>studio.appbiz.faithlock</key>
+		<string>match Development studio.appbiz.faithlock</string>
+		<key>studio.appbiz.faithlock.DeviceActivityMonitorExtension</key>
+		<string>match Development studio.appbiz.faithlock.DeviceActivityMonitorExtension</string>
+		<key>studio.appbiz.faithlock.ShieldConfigurationExtension</key>
+		<string>match Development studio.appbiz.faithlock.ShieldConfigurationExtension</string>
+	</dict>
+</dict>
+</plist>

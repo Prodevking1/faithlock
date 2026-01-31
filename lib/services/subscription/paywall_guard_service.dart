@@ -1,9 +1,10 @@
 import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.dart';
-import 'package:faithlock/features/paywall/screens/subscription_expired_screen.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+
+import '../../features/paywall/screens/subscription_expired_screen.dart';
 
 /// Service to guard premium features behind paywall
 /// Prevents bypass of paywall by checking subscription status
@@ -20,46 +21,44 @@ class PaywallGuardService {
     String? placementId,
     bool showPaywallIfInactive = true,
   }) async {
+    // BYPASS: Always return true for development/testing
+    debugPrint('🔓 [PaywallGuard] BYPASS ACTIVE - Always granting access');
+    return true;
+
+    // Original code (commented out):
     try {
       debugPrint('🔒 [PaywallGuard] Checking subscription access...');
-
+      if (!_revenueCat.isInitialized) {
+        debugPrint(
+            '⚠️ [PaywallGuard] RevenueCat not yet initialized - assuming no subscription');
+        if (showPaywallIfInactive) {
+          debugPrint('🚪 [PaywallGuard] Showing onboarding summary...');
+          Get.offAll(() => const OnboardingSummaryScreen());
+        }
+        return false;
+      }
+      await _revenueCat.refreshCustomerInfo();
+      debugPrint('✅ [PaywallGuard] Customer info refreshed');
       final hasSubscription = _revenueCat.hasAnyActiveSubscription;
-
       if (hasSubscription) {
         debugPrint('✅ [PaywallGuard] Active subscription found');
         return true;
       }
-
       debugPrint('⚠️ [PaywallGuard] No active subscription');
-
       if (showPaywallIfInactive) {
-        // Check if user had a subscription that expired
         final expiredInfo = await _checkExpiredSubscription();
-
         if (expiredInfo.hadSubscription) {
           debugPrint(
               '🔄 [PaywallGuard] Expired subscription detected - showing expired screen');
-          Get.offAll(
-            () => SubscriptionExpiredScreen(
-              wasTrialUser: expiredInfo.wasTrialUser,
-              expirationDate: expiredInfo.expirationDate,
-            ),
-          );
+          Get.offAll(() => SubscriptionExpiredScreen(
+                wasTrialUser: expiredInfo.wasTrialUser,
+                expirationDate: expiredInfo.expirationDate,
+              ));
         } else {
           debugPrint('🚪 [PaywallGuard] Never subscribed - showing paywall...');
-          Get.offAll(
-            // () => PaywallScreen(
-            //   placementId: placementId ?? 'guard_check',
-            //   redirectToHomeOnClose: true,
-            // ),
-
-            () => Get.offAll(
-              () => OnboardingSummaryScreen(),
-            ),
-          );
+          Get.offAll(() => Get.offAll(() => OnboardingSummaryScreen()));
         }
       }
-
       return false;
     } catch (e) {
       debugPrint('❌ [PaywallGuard] Error checking subscription: $e');
@@ -128,7 +127,16 @@ class PaywallGuardService {
 
   /// Check subscription status without navigation
   bool hasActiveSubscription() {
-    return _revenueCat.hasAnyActiveSubscription;
+    // BYPASS: Always return true for development/testing
+    return true;
+
+    // Original code (commented out):
+    // try {
+    //   return _revenueCat.hasAnyActiveSubscription;
+    // } catch (e) {
+    //   debugPrint('⚠️ [PaywallGuard] RevenueCat not yet initialized: $e');
+    //   return false;
+    // }
   }
 
   /// Get subscription status for display

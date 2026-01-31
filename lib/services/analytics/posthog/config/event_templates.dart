@@ -27,6 +27,7 @@ enum PostHogEventType {
   feedbackSubmitted,
   rateIntentShown,
   rateIntentSkipped,
+  rateCompleted,
 
   // Marketing events
   campaignViewed,
@@ -75,6 +76,7 @@ class PostHogEventTemplates {
     PostHogEventType.feedbackSubmitted: 'feedback_submitted',
     PostHogEventType.rateIntentShown: 'rate_intent_shown',
     PostHogEventType.rateIntentSkipped: 'rate_intent_skipped',
+    PostHogEventType.rateCompleted: 'rate_completed',
 
     // Marketing events
     PostHogEventType.campaignViewed: 'campaign_viewed',
@@ -154,6 +156,11 @@ class PostHogEventTemplates {
       case PostHogEventType.rateIntentSkipped:
         return {
           'source': null,
+          'timestamp': null,
+        };
+
+      case PostHogEventType.rateCompleted:
+        return {
           'timestamp': null,
         };
 

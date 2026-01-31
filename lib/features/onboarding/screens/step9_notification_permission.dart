@@ -117,6 +117,11 @@ class _Step9NotificationPermissionState
       debugPrint('🔔 [STEP 9] Mounted state: $mounted');
       debugPrint('🔔 [STEP 9] Time: ${DateTime.now()}');
 
+      // Initialize notification service first (if not already done)
+      debugPrint('🔔 [STEP 9] Initializing LocalNotificationService...');
+      await _notificationService.initialize();
+      debugPrint('✅ [STEP 9] LocalNotificationService initialized');
+
       // Request permission and wait for user response
       final startTime = DateTime.now();
       final granted = await _notificationService.requestPermissions();

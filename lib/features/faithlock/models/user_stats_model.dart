@@ -38,7 +38,8 @@ class UserStats {
   }
 
   factory UserStats.fromJson(Map<String, dynamic> json) {
-    final categoriesJson = json['verses_by_category'] as Map<String, dynamic>? ?? {};
+    final categoriesJson =
+        json['verses_by_category'] as Map<String, dynamic>? ?? {};
     final versesByCategory = <VerseCategory, int>{};
 
     categoriesJson.forEach((key, value) {
@@ -50,7 +51,8 @@ class UserStats {
       totalVersesRead: json['total_verses_read'] as int? ?? 0,
       currentStreak: json['current_streak'] as int? ?? 0,
       longestStreak: json['longest_streak'] as int? ?? 0,
-      screenTimeReducedMinutes: json['screen_time_reduced_minutes'] as int? ?? 0,
+      screenTimeReducedMinutes:
+          json['screen_time_reduced_minutes'] as int? ?? 0,
       successfulUnlocks: json['successful_unlocks'] as int? ?? 0,
       failedAttempts: json['failed_attempts'] as int? ?? 0,
       versesByCategory: versesByCategory,
@@ -95,7 +97,8 @@ class UserStats {
       totalVersesRead: totalVersesRead ?? this.totalVersesRead,
       currentStreak: currentStreak ?? this.currentStreak,
       longestStreak: longestStreak ?? this.longestStreak,
-      screenTimeReducedMinutes: screenTimeReducedMinutes ?? this.screenTimeReducedMinutes,
+      screenTimeReducedMinutes:
+          screenTimeReducedMinutes ?? this.screenTimeReducedMinutes,
       successfulUnlocks: successfulUnlocks ?? this.successfulUnlocks,
       failedAttempts: failedAttempts ?? this.failedAttempts,
       versesByCategory: versesByCategory ?? this.versesByCategory,
@@ -111,9 +114,19 @@ class UserStats {
     if (screenTimeReducedMinutes < 60) {
       return '$screenTimeReducedMinutes min';
     }
+
     final hours = screenTimeReducedMinutes ~/ 60;
-    final minutes = screenTimeReducedMinutes % 60;
-    return '${hours}h ${minutes}min';
+    if (hours < 24) {
+      return '$hours h';
+    }
+
+    final days = hours ~/ 24;
+    if (days < 30) {
+      return '$days days';
+    }
+
+    final months = days ~/ 30;
+    return '$months months';
   }
 
   double get successRate {

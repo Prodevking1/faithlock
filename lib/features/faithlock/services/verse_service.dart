@@ -142,16 +142,14 @@ class VerseService {
     return grouped;
   }
 
-  // Get daily verse (could be based on date seed for consistency)
+  // Get daily verse (randomly selected)
   Future<BibleVerse?> getDailyVerse() async {
     final allVerses = await _db.getAllVerses();
     if (allVerses.isEmpty) return null;
 
-    // Use date as seed for consistent daily verse
-    final today = DateTime.now();
-    final dayOfYear = today.difference(DateTime(today.year, 1, 1)).inDays;
-
-    return allVerses[dayOfYear % allVerses.length];
+    // Randomly shuffle and pick the first verse
+    allVerses.shuffle();
+    return allVerses.first;
   }
 
   // Get recently shown verses (from unlock history)

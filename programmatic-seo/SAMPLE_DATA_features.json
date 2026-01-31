@@ -1,0 +1,145 @@
+[
+  {
+    "name": "Bible Quiz to Unlock Phone",
+    "slug": "bible-quiz-unlock-phone",
+    "tagline": "Answer Scripture correctly before accessing apps",
+    "description": "<p>FaithLock's signature feature requires you to correctly answer a Bible quiz before unlocking blocked applications. This transforms every unlock attempt into a moment of Scripture engagement and spiritual growth.</p><p>Unlike simple delay-based blockers, our quiz system ensures genuine engagement with God's Word—you can't just tap through mindlessly.</p>",
+    "howItWorks": "<h3>How the Bible Quiz System Works:</h3><ol><li><strong>App Block Triggers</strong>: When you try to open a blocked app (Instagram, TikTok, etc.), FaithLock intervenes</li><li><strong>Random Verse Presented</strong>: A curated Bible verse appears with context</li><li><strong>Quiz Question</strong>: Multiple choice, fill-in-blank, or thematic question about the verse</li><li><strong>Limited Attempts</strong>: You have 2-3 attempts to answer correctly</li><li><strong>Unlock or Reflect</strong>: Correct answer unlocks app; incorrect prompts reflection time</li></ol><p>The quiz difficulty adapts to your Scripture knowledge level, ensuring it's challenging but not frustrating.</p>",
+    "benefits": [
+      "Memorize Scripture naturally through repetition",
+      "Break the mindless scrolling dopamine loop",
+      "60-70% higher effectiveness than delay-based blockers",
+      "Transforms temptation into spiritual growth opportunity",
+      "Customizable difficulty levels",
+      "Progress tracking shows verses learned"
+    ],
+    "useCases": [
+      {
+        "title": "College Student Overcoming Social Media Addiction",
+        "description": "Sarah, 21, was checking Instagram 80+ times daily. With Bible Quiz unlock, she now reads 30+ verses per day just from unlock attempts. After 30 days, her social media time dropped 73% and she's memorized 45 verses."
+      },
+      {
+        "title": "Young Professional Breaking News Doomscrolling",
+        "description": "Marcus found himself doomscrolling news apps during work. Bible Quiz helped him redirect that compulsion into Scripture reading, transforming anxious scrolling into peaceful meditation on God's Word."
+      },
+      {
+        "title": "Parent Modeling Digital Discipline",
+        "description": "Jennifer uses Bible Quiz with her teens, showing them healthy phone boundaries while engaging the whole family in Scripture memorization challenges."
+      }
+    ],
+    "screenshots": [],
+    "videoDemo": "",
+    "faqs": [
+      {
+        "question": "What happens if I can't answer the Bible quiz?",
+        "answer": "After 2-3 incorrect attempts, you're encouraged to reflect on the verse for 60 seconds before trying again. This isn't punishment—it's an opportunity to genuinely engage with Scripture rather than rush through."
+      },
+      {
+        "question": "Can I choose which apps require Bible quiz?",
+        "answer": "Absolutely! You select which apps get blocked and require quiz unlock. Common choices: Instagram, TikTok, Twitter/X, YouTube, news apps. You control the list completely."
+      },
+      {
+        "question": "What if I'm new to the Bible and don't know answers?",
+        "answer": "Our adaptive difficulty system starts with basic verses and questions. You'll learn progressively. Plus, every quiz includes the verse text, so you're learning as you answer. New believers love this feature for Bible literacy building."
+      },
+      {
+        "question": "How is this different from apps that just show verses?",
+        "answer": "Simply displaying verses allows mindless tapping through. Our quiz REQUIRES engagement and comprehension. Brain science shows active retrieval (quizzing) creates 2-3x stronger memory retention than passive reading."
+      }
+    ],
+    "bibleVerses": [
+      {
+        "reference": "Psalm 119:11",
+        "text": "I have hidden your word in my heart that I might not sin against you."
+      },
+      {
+        "reference": "Joshua 1:8",
+        "text": "Keep this Book of the Law always on your lips; meditate on it day and night, so that you may be careful to do everything written in it."
+      }
+    ],
+    "seoTitle": "App That Makes You Read Bible to Unlock Phone: FaithLock Quiz System",
+    "seoDescription": "Discover how FaithLock's Bible quiz system transforms phone unlocking into Scripture memorization. The most effective Christian app blocker for iPhone (2026)."
+  },
+  {
+    "name": "30-Day Spiritual Covenant Tracking",
+    "slug": "30-day-covenant-tracking",
+    "tagline": "Sacred commitment with measurable accountability",
+    "description": "<p>The 30-Day Covenant is FaithLock's unique approach to habit formation—combining spiritual commitment with practical accountability. It's not just a challenge; it's a sacred agreement with God to prioritize His presence over digital distractions.</p>",
+    "howItWorks": "<h3>Covenant Journey:</h3><ol><li><strong>Initial Commitment</strong>: Choose 1-3 life transformation goals (restore prayer life, heal relationships, overcome fear, etc.)</li><li><strong>Personalized Schedule</strong>: Set your app blocking times aligned with spiritual rhythms</li><li><strong>Daily Check-ins</strong>: Morning reflection and evening gratitude prompts</li><li><strong>Streak Tracking</strong>: Visual progress calendar with covenant milestones</li><li><strong>Accountability Reminders</strong>: Gentle notifications referencing your chosen goals</li><li><strong>Celebration Moments</strong>: Special encouragement at Days 7, 14, 21, and 30</li></ol>",
+    "benefits": [
+      "70%+ completion rate (vs 12% for generic challenges)",
+      "Spiritual framing increases motivation and perseverance",
+      "Tracks both negative (screen time down) and positive (prayer time up) metrics",
+      "Community covenant groups for shared accountability",
+      "Biblical teaching on covenant significance",
+      "Graduation certificate and reflection journal"
+    ],
+    "useCases": [
+      {
+        "title": "Restored Prayer Life",
+        "description": "James committed to restoring his morning prayer time stolen by news scrolling. The 30-day covenant helped him build a sustainable 5 AM prayer habit that's continued 6 months post-covenant."
+      },
+      {
+        "title": "Relationship Healing",
+        "description": "Emily chose 'heal relationships' as her goal. By reducing phone time at meals, she reconnected with her husband. They now have phone-free dinners 6 nights a week."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What if I break my covenant?",
+        "answer": "Grace > guilt. If you slip, you don't restart at Day 0. We encourage reflection (Why did I break it? What was I feeling?), prayer, and continuation. The covenant is about progress, not perfection. God's mercies are new every morning."
+      },
+      {
+        "question": "Can I do multiple covenants?",
+        "answer": "Yes! Many users do sequential 30-day covenants, each with different goals. Some do their first focused on screen time reduction, second on prayer consistency, third on relationship restoration."
+      }
+    ],
+    "bibleVerses": [
+      {
+        "reference": "Psalm 50:14",
+        "text": "Sacrifice thank offerings to God, fulfill your vows to the Most High."
+      }
+    ],
+    "seoTitle": "30-Day Spiritual Covenant: Christian Phone Addiction Recovery Program",
+    "seoDescription": "Join thousands in FaithLock's 30-Day Spiritual Covenant—a sacred commitment to break phone addiction and restore spiritual disciplines. 70% success rate."
+  },
+  {
+    "name": "App Blocks Instagram Until You Read Bible",
+    "slug": "app-blocks-instagram-bible",
+    "tagline": "Scripture before scrolling - hard app blocking",
+    "description": "<p>FaithLock integrates with iOS Family Controls to create true, unbreakable app blocks. Unlike weak delay-based apps, you CANNOT access Instagram, TikTok, or other selected apps until completing your Bible quiz.</p><p>This hard blocking + Scripture requirement is the most effective combination for breaking compulsive social media habits.</p>",
+    "howItWorks": "<h3>Hard Block Technology:</h3><ol><li><strong>iOS Family Controls Integration</strong>: Leverages Apple's screen time API for system-level blocking</li><li><strong>Uninstall Protection</strong>: Cannot be bypassed by deleting app</li><li><strong>Custom App Selection</strong>: You choose which apps to block (Instagram, TikTok, Twitter, YouTube, etc.)</li><li><strong>Scheduled Blocking</strong>: Set specific times (e.g., 9 PM - 7 AM, during work hours)</li><li><strong>Emergency Override</strong>: With intentional friction and reflection period</li></ol>",
+    "benefits": [
+      "Proven 73% reduction in targeted app usage",
+      "No workarounds or bypasses (unlike weak blockers)",
+      "Combines behavioral psychology + spiritual motivation",
+      "Custom blocking schedules per app",
+      "Works even if FaithLock is deleted (system-level)",
+      "Reports show blocked attempts and Bible verses read"
+    ],
+    "useCases": [
+      {
+        "title": "TikTok Addiction Broken",
+        "description": "Zoe was spending 4-5 hours daily on TikTok. Hard blocking with Bible requirement helped her go from 300+ daily opens to 8-10, with each requiring Scripture engagement first."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Can I get around the block if it's urgent?",
+        "answer": "Yes, but with intentional friction. Emergency override requires: 1) Stating the genuine urgent reason, 2) 60-second reflection period, 3) Confirmation. This prevents impulsive bypass while allowing legitimate needs."
+      },
+      {
+        "question": "What apps can I block?",
+        "answer": "Any app on your iPhone: Instagram, TikTok, Twitter/X, YouTube, Facebook, Snapchat, Reddit, news apps, games, etc. Most users block 3-8 apps that consume most time."
+      }
+    ],
+    "bibleVerses": [
+      {
+        "reference": "1 Corinthians 6:12",
+        "text": "I have the right to do anything—but I will not be mastered by anything."
+      }
+    ],
+    "seoTitle": "App That Blocks Instagram Until You Read Bible - FaithLock (iPhone)",
+    "seoDescription": "FaithLock blocks Instagram, TikTok & social media with unbreakable system-level blocking + Bible quiz requirement. The most effective Christian app blocker for iOS."
+  }
+]

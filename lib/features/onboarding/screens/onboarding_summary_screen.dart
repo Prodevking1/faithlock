@@ -697,7 +697,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                 children: [
                   Text(
                     title,
-                    style: OnboardingTheme.callout.copyWith(
+                    style: OnboardingTheme.body.copyWith(
                       color: OnboardingTheme.labelPrimary,
                       fontWeight: FontWeight.w600,
                     ),

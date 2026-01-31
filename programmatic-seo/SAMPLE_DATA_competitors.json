@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Bible Mode",
+    "slug": "bible-mode",
+    "tagline": "Replace mindless scrolling with Scripture",
+    "description": "Bible Mode is a Christian screen time app that helps you break phone addiction by requiring you to read Bible verses before unlocking apps. Features physical Bible scanning and claims 98% reduction in screen time.",
+    "price": "$4.99 one-time",
+    "platforms": ["iOS"],
+    "features": {
+      "bibleQuiz": false,
+      "physicalBibleScan": true,
+      "screenTimeTracking": true,
+      "appBlocking": true,
+      "androidSupport": false,
+      "30DayCovenant": false,
+      "progressAnalytics": "Basic",
+      "customScheduling": true,
+      "bibleVerseLibrary": "Limited",
+      "accountabilityPartner": false
+    },
+    "pros": [
+      "Unique physical Bible scanning feature",
+      "One-time payment (no subscription)",
+      "Claims 98% screen time reduction",
+      "iOS Family Controls integration",
+      "Daily devotionals included"
+    ],
+    "cons": [
+      "iOS only (no Android)",
+      "No Bible quiz functionality",
+      "Limited analytics",
+      "No accountability features",
+      "Minimal SEO presence"
+    ],
+    "appStoreUrl": "https://apps.apple.com/us/app/bible-mode-reduce-screen-time/id6744124873",
+    "websiteUrl": "https://www.biblemode.app/",
+    "downloads": 150000,
+    "rating": 4.7,
+    "seoTitle": "FaithLock vs Bible Mode: Which Christian Screen Time App is Better? (2026 Comparison)",
+    "seoDescription": "Comprehensive comparison of FaithLock and Bible Mode features, pricing, and effectiveness. See which faith-based app blocker helps you overcome phone addiction through Scripture."
+  },
+  {
+    "name": "Holy Focus",
+    "slug": "holy-focus",
+    "tagline": "Block apps & pray - dopamine detox with Jesus",
+    "description": "Holy Focus is a Christian screen time app that replaces distractions with daily prayer. Features 300+ handpicked prayers, Bible verses, and faith-based icons. Offers both time-slot and usage-based app blocking.",
+    "price": "Freemium (Premium $4.99/month)",
+    "platforms": ["iOS"],
+    "features": {
+      "bibleQuiz": false,
+      "physicalBibleScan": false,
+      "screenTimeTracking": true,
+      "appBlocking": true,
+      "androidSupport": false,
+      "30DayCovenant": false,
+      "progressAnalytics": "Prayer streaks only",
+      "customScheduling": true,
+      "bibleVerseLibrary": "300+ prayers & verses",
+      "accountabilityPartner": false
+    },
+    "pros": [
+      "300+ Christian icons, Bible verses & prayers",
+      "Prayer streak tracking",
+      "Both time-slot and usage-based limits",
+      "Freemium model available",
+      "Beautiful UI design"
+    ],
+    "cons": [
+      "Controversial ads (AI girlfriend reported)",
+      "iOS only",
+      "No quiz or accountability features",
+      "Subscription required for full features",
+      "Brand perception issues"
+    ],
+    "appStoreUrl": "https://apps.apple.com/us/app/block-apps-pray-holy-focus/id6744828672",
+    "websiteUrl": "",
+    "downloads": 50000,
+    "rating": 4.3,
+    "seoTitle": "FaithLock vs Holy Focus: Honest Comparison of Christian App Blockers (2026)",
+    "seoDescription": "Compare FaithLock and Holy Focus features, pricing, and user reviews. Find the best professional Christian screen time app without controversial ads."
+  },
+  {
+    "name": "Pray Screen Time",
+    "slug": "pray-screen-time",
+    "tagline": "Pray before unlocking - Bible focus app",
+    "description": "Pray Screen Time helps you pause, pray, and reflect before accessing selected apps. Available on both iOS and Android with daily Bible verses to inspire and guide users.",
+    "price": "Freemium",
+    "platforms": ["iOS", "Android"],
+    "features": {
+      "bibleQuiz": false,
+      "physicalBibleScan": false,
+      "screenTimeTracking": "Basic",
+      "appBlocking": true,
+      "androidSupport": true,
+      "30DayCovenant": false,
+      "progressAnalytics": "Minimal",
+      "customScheduling": "Limited",
+      "bibleVerseLibrary": "Daily verses only",
+      "accountabilityPartner": false
+    },
+    "pros": [
+      "Cross-platform (iOS & Android)",
+      "Free to use",
+      "Daily Bible verses",
+      "Simple interface",
+      "Prayer prompts before unlocking"
+    ],
+    "cons": [
+      "Basic features only",
+      "Lower quality compared to competitors",
+      "Ads before prayers (including inappropriate content)",
+      "No advanced analytics",
+      "Minimal app blocking customization"
+    ],
+    "appStoreUrl": "https://apps.apple.com/us/app/pray-screen-time-bible-focus/id6737241669",
+    "websiteUrl": "",
+    "downloads": 20000,
+    "rating": 3.9,
+    "seoTitle": "FaithLock vs Pray Screen Time: Which Christian App Blocker Works Better?",
+    "seoDescription": "Detailed comparison of FaithLock and Pray Screen Time for breaking phone addiction. See features, pricing, and why FaithLock is the premium choice."
+  },
+  {
+    "name": "Bible Break",
+    "slug": "bible-break",
+    "tagline": "Screen time limit with gamified Bible reading",
+    "description": "Bible Break gamifies Scripture reading by giving you 1 minute of screen time for every Bible verse you read. Unique approach combining app blocking with positive reinforcement.",
+    "price": "Freemium",
+    "platforms": ["iOS"],
+    "features": {
+      "bibleQuiz": false,
+      "physicalBibleScan": false,
+      "screenTimeTracking": true,
+      "appBlocking": true,
+      "androidSupport": false,
+      "30DayCovenant": false,
+      "progressAnalytics": "Verse count only",
+      "customScheduling": false,
+      "bibleVerseLibrary": "Large (YouVersion integration)",
+      "accountabilityPartner": false
+    },
+    "pros": [
+      "Unique gamification: 1 verse = 1 minute",
+      "YouVersion Bible integration",
+      "Encourages consistent Scripture reading",
+      "Free tier available",
+      "Novel approach to screen time"
+    ],
+    "cons": [
+      "Very new (launched 2025)",
+      "iOS only",
+      "Limited customization",
+      "No accountability features",
+      "Can be 'gamed' by quick reading"
+    ],
+    "appStoreUrl": "https://apps.apple.com/us/app/bible-break-screen-time-limit/id6755405918",
+    "websiteUrl": "",
+    "downloads": 10000,
+    "rating": 4.2,
+    "seoTitle": "FaithLock vs Bible Break: Comparison of Gamified Christian Screen Time Apps",
+    "seoDescription": "Compare FaithLock's quiz system with Bible Break's gamified approach. Which Christian app blocker helps you overcome phone addiction more effectively?"
+  },
+  {
+    "name": "One Sec",
+    "slug": "one-sec",
+    "tagline": "Take a deep breath before scrolling",
+    "description": "One Sec is a secular screen time app that forces you to take a deep breath before opening addictive apps. Uses behavioral psychology to break the dopamine loop. No spiritual angle.",
+    "price": "Freemium ($2.99/month Premium)",
+    "platforms": ["iOS", "Android"],
+    "features": {
+      "bibleQuiz": false,
+      "physicalBibleScan": false,
+      "screenTimeTracking": true,
+      "appBlocking": "Delay-based (not hard block)",
+      "androidSupport": true,
+      "30DayCovenant": false,
+      "progressAnalytics": "Advanced",
+      "customScheduling": true,
+      "bibleVerseLibrary": "N/A (secular)",
+      "accountabilityPartner": false
+    },
+    "pros": [
+      "Proven 57% reduction in app usage",
+      "Cross-platform",
+      "Behavioral psychology-based",
+      "Advanced analytics",
+      "Affordable pricing"
+    ],
+    "cons": [
+      "No spiritual/faith component",
+      "Delay-based (not hard block)",
+      "Secular approach only",
+      "No Bible or Christian content",
+      "Mindfulness-focused (not Christian)"
+    ],
+    "appStoreUrl": "",
+    "websiteUrl": "https://one-sec.app/",
+    "downloads": 500000,
+    "rating": 4.6,
+    "seoTitle": "FaithLock vs One Sec: Christian Alternative to Secular Screen Time Apps",
+    "seoDescription": "Why Christians choose FaithLock over One Sec. Compare features and see how Scripture-based app blocking transforms phone addiction into spiritual growth."
+  }
+]

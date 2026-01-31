@@ -12,8 +12,14 @@ import 'package:flutter/widgets.dart';
 class $AssetsDatabasesGen {
   const $AssetsDatabasesGen();
 
+  /// File path: assets/databases/README.md
+  String get readme => 'assets/databases/README.md';
+
   /// File path: assets/databases/bible_bsb.db
   String get bibleBsb => 'assets/databases/bible_bsb.db';
+
+  /// File path: assets/databases/bible_bsb.db.backup
+  String get bibleBsbDb => 'assets/databases/bible_bsb.db.backup';
 
   /// File path: assets/databases/fix_temptation_duplicates.sql
   String get fixTemptationDuplicates =>
@@ -29,13 +35,30 @@ class $AssetsDatabasesGen {
   /// File path: assets/databases/seed_curriculum.sql.bak
   String get seedCurriculumSql => 'assets/databases/seed_curriculum.sql.bak';
 
+  /// File path: assets/databases/seed_curriculum_200_additional.sql
+  String get seedCurriculum200Additional =>
+      'assets/databases/seed_curriculum_200_additional.sql';
+
+  /// File path: assets/databases/seed_curriculum_complete_500.sql
+  String get seedCurriculumComplete500 =>
+      'assets/databases/seed_curriculum_complete_500.sql';
+
+  /// File path: assets/databases/seed_curriculum_extended.sql
+  String get seedCurriculumExtended =>
+      'assets/databases/seed_curriculum_extended.sql';
+
   /// List of all assets
   List<String> get values => [
+        readme,
         bibleBsb,
+        bibleBsbDb,
         fixTemptationDuplicates,
         migrationAddCurriculum,
         seedCurriculum,
-        seedCurriculumSql
+        seedCurriculumSql,
+        seedCurriculum200Additional,
+        seedCurriculumComplete500,
+        seedCurriculumExtended
       ];
 }
 

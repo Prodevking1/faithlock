@@ -47,9 +47,11 @@ class DeepLinkService {
   /// Initialize notification handling
   Future<void> _initializeNotifications() async {
     const initializationSettingsIOS = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      // CRITICAL: Do NOT request permissions here
+      // Permissions are requested during onboarding flow only
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
       onDidReceiveLocalNotification: null,
     );
 

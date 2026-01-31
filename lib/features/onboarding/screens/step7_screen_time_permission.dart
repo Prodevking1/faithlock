@@ -150,7 +150,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
       message:
           'Without Screen Time permission, FaithLock cannot protect you from your chosen apps.\n\nYou can enable this later in Settings.',
       confirmText: 'Skip for Now',
-      cancelText: 'Grant Permission',
+      cancelText: 'Continue',
       isDestructiveConfirm: false,
     );
 
@@ -311,7 +311,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                     child: FastButton(
                       text: _isRequestingPermission
                           ? 'Requesting...'
-                          : 'Grant Permission',
+                          : 'Continue',
                       onTap:
                           _isRequestingPermission ? null : _onConnectScreenTime,
                       backgroundColor: OnboardingTheme.goldColor,

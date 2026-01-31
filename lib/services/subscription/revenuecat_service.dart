@@ -20,6 +20,10 @@ class RevenueCatService extends GetxService {
   // Current customer info
   CustomerInfo? _currentCustomerInfo;
   List<Offering> _offerings = [];
+  bool _isInitialized = false;
+
+  /// Check if RevenueCat has been initialized
+  bool get isInitialized => _isInitialized;
 
   /// Initialize RevenueCat service
   Future<void> initialize({
@@ -47,10 +51,12 @@ class RevenueCatService extends GetxService {
       await _refreshCustomerInfo();
       await _loadOfferings();
 
+      _isInitialized = true;
       print('✅ RevenueCat initialized successfully');
     } catch (e) {
       lastError.value = 'Failed to initialize RevenueCat: $e';
       print('❌ RevenueCat initialization error: $e');
+      _isInitialized = false;
     } finally {
       isLoading.value = false;
     }
@@ -148,16 +154,31 @@ class RevenueCatService extends GetxService {
 
   /// Check if user has active subscription for a specific entitlement
   bool hasActiveSubscription(String entitlementId) {
+    if (!_isInitialized) {
+      debugPrint('⚠️ [RevenueCat] hasActiveSubscription called before initialization - returning false');
+      return false;
+    }
     return _currentCustomerInfo?.entitlements.active[entitlementId] != null;
   }
 
   /// Check if user has any active subscription
   bool get hasAnyActiveSubscription {
-    return _currentCustomerInfo?.entitlements.active.isNotEmpty ?? false;
+    if (!_isInitialized) {
+      debugPrint('⚠️ [RevenueCat] hasAnyActiveSubscription called before initialization - returning false');
+      return false;
+    }
+    final hasActive = _currentCustomerInfo?.entitlements.active.isNotEmpty ?? false;
+    debugPrint('🔍 [RevenueCat] hasAnyActiveSubscription: $hasActive');
+    debugPrint('📋 [RevenueCat] Active entitlements: ${_currentCustomerInfo?.entitlements.active.keys.toList()}');
+    return hasActive;
   }
 
   /// Get subscription status info
   SubscriptionStatus getSubscriptionStatus() {
+    if (!_isInitialized) {
+      debugPrint('⚠️ [RevenueCat] getSubscriptionStatus called before initialization - returning unknown');
+      return SubscriptionStatus.unknown;
+    }
     if (_currentCustomerInfo == null) {
       return SubscriptionStatus.unknown;
     }
@@ -202,6 +223,10 @@ class RevenueCatService extends GetxService {
 
   /// Invalidate customer info cache and refresh
   Future<void> refreshCustomerInfo() async {
+    if (!_isInitialized) {
+      debugPrint('⚠️ [RevenueCat] refreshCustomerInfo called before initialization - skipping');
+      return;
+    }
     await _refreshCustomerInfo();
   }
 

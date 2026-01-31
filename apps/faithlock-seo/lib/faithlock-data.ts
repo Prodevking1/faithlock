@@ -1,0 +1,268 @@
+/**
+ * FAITHLOCK - Single Source of Truth
+ * ===================================
+ * ALL app data used across the SEO site lives here.
+ * Update this file when real metrics change.
+ *
+ * Last updated: 2026-01-31
+ *
+ * RULES:
+ * - Never fabricate user counts, reviews, or ratings
+ * - Industry stats must include source
+ * - App claims must be verifiable
+ * - Use framing language (see COPY section) instead of fake numbers
+ */
+
+// ─── PRICING ────────────────────────────────────────────────
+export const PRICING = {
+  model: 'freemium' as const,
+  trial: {
+    enabled: true,
+    days: 3,
+    label: '3-day free trial',
+  },
+  plans: {
+    weekly: {
+      price: 4.99,
+      currency: 'USD',
+      label: '$4.99/week',
+      period: 'week',
+    },
+    annual: {
+      price: 24.99,
+      currency: 'USD',
+      label: '$24.99/year',
+      period: 'year',
+      savings: 'Save 90%',
+    },
+  },
+  // What the free tier includes
+  freeFeatures: [
+    'Daily Bible verse unlock',
+    'Basic app blocking',
+    'Streak tracking',
+  ],
+  premiumFeatures: [
+    'Unlimited app blocking',
+    'Screen time insights',
+    '30-day spiritual covenant',
+    'Custom schedules',
+    'Prayer reminders',
+  ],
+} as const
+
+// ─── PLATFORM ───────────────────────────────────────────────
+export const PLATFORM = {
+  available: ['iOS'] as const,
+  minVersion: 'iOS 16+',
+  androidStatus: 'coming soon' as const,
+  appStoreUrl: 'https://pim.ms/kTxgKF4',
+  requiresScreenTimeAPI: true,
+} as const
+
+// ─── APP FEATURES (verifiable from the actual app) ──────────
+export const FEATURES = {
+  bibleVerseUnlock: {
+    name: 'Bible Verse Unlock',
+    description: 'Read a Scripture verse to unlock your blocked apps',
+    unlockTime: '~30 seconds',
+  },
+  appBlocking: {
+    name: 'Custom App Blocking',
+    description: 'Choose which apps to lock: social media, games, browsers',
+  },
+  streakTracking: {
+    name: 'Streak Tracking',
+    description: 'Track your daily consistency with verse reading',
+  },
+  screenTimeInsights: {
+    name: 'Screen Time Insights',
+    description: 'See how your phone usage changes over time',
+  },
+  spiritualCovenant: {
+    name: '30-Day Spiritual Covenant',
+    description: 'Commit to 30 days of replacing scrolling with Scripture',
+  },
+  scheduledLocks: {
+    name: 'Scheduled Lock Times',
+    description: 'Auto-lock during morning devotion, work hours, or family time',
+  },
+  prayerReminders: {
+    name: 'Prayer Reminders',
+    description: 'Gentle nudges to pause and pray throughout your day',
+  },
+} as const
+
+// ─── INDUSTRY STATISTICS (with sources - these are NOT FaithLock stats) ──
+// Use these for educational content, NOT as FaithLock claims
+export const INDUSTRY_STATS = {
+  phoneChecksPerDay: {
+    value: 96,
+    label: '96 times/day',
+    description: 'Average phone checks per day',
+    source: 'Asurion, 2023',
+  },
+  averageScreenTime: {
+    value: '7+ hours',
+    description: 'Average daily screen time for US adults',
+    source: 'DataReportal, 2024',
+  },
+  socialMediaTime: {
+    value: '2h 23min',
+    description: 'Average daily social media time',
+    source: 'DataReportal, 2024',
+  },
+  phoneAddictionRate: {
+    value: '57%',
+    description: 'Of Americans consider themselves addicted to their phones',
+    source: 'Reviews.org, 2023',
+  },
+  screenTimeReductionWithTools: {
+    value: '20-30%',
+    description: 'Typical screen time reduction with blocking tools',
+    source: 'Journal of Behavioral Addictions, 2022',
+  },
+} as const
+
+// ─── REAL APP METRICS ───────────────────────────────────────
+// Only include what's actually true. Update as the app grows.
+export const APP_METRICS = {
+  // Set to null when we don't have meaningful numbers to show
+  // This prevents us from displaying embarrassingly small or fake numbers
+  users: null as number | null, // Don't display until meaningful (1,000+)
+  rating: null as number | null, // Don't display until 50+ reviews
+  reviewCount: null as number | null, // Don't display until 50+ reviews
+  downloads: null as number | null, // Don't display until meaningful
+
+  // Things we CAN verify from the app itself
+  versesInLibrary: 365, // actual number of verses in the app - UPDATE this
+  bibleTranslation: 'KJV',
+} as const
+
+// ─── COPY & FRAMING ────────────────────────────────────────
+// Strategic copy that's honest but compelling - no fake numbers
+export const COPY = {
+  tagline: 'Stop scrolling. Start Scripture.',
+  subtitle: 'Turn phone addiction into daily devotion.',
+  description:
+    'FaithLock blocks distracting apps and unlocks them with Bible verses—building a consistent Scripture habit without relying on willpower alone.',
+
+  // CTA copy - no fake user counts
+  ctaPrimary: 'Try FaithLock Free',
+  ctaSecondary: 'Start Your Free Trial',
+
+  // Social proof without fake numbers
+  // Use these INSTEAD of "Join 25,000+ Christians"
+  socialProof: {
+    // When we have no meaningful user count:
+    noNumbers: 'Join Christians replacing scrolling with Scripture',
+    // When we reach 1,000+:
+    withNumbers: (count: string) =>
+      `Join ${count} Christians replacing scrolling with Scripture`,
+  },
+
+  // Value props - factual, no inflated claims
+  valueProps: [
+    'Replace mindless scrolling with daily Scripture',
+    'Build a consistent Bible habit in 30 seconds a day',
+    'Block any app and unlock it with a verse',
+  ],
+
+  // How it works - factual
+  howItWorks: [
+    {
+      step: '1',
+      title: 'Choose Your Distractions',
+      description:
+        'Lock social media, games, shopping—anything stealing your attention.',
+    },
+    {
+      step: '2',
+      title: 'Unlock with Scripture',
+      description:
+        'Read a Bible verse to access your apps. Takes about 30 seconds.',
+    },
+    {
+      step: '3',
+      title: 'Build the Habit',
+      description:
+        'Track your streak and watch your Scripture habit grow day by day.',
+    },
+  ],
+} as const
+
+// ─── COMPANY ────────────────────────────────────────────────
+export const COMPANY = {
+  name: 'AppBiz Studio',
+  email: 'hello@appbiz-studio.com',
+  privacyUrl: 'https://appbiz-studio.com/apps/faithlock/privacy',
+  termsUrl: 'https://appbiz-studio.com/apps/faithlock/terms',
+} as const
+
+// ─── SEO SITE CONFIG ────────────────────────────────────────
+export const SITE = {
+  name: 'FaithLock',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://faithlock.com',
+  appStoreUrl:
+    process.env.NEXT_PUBLIC_APP_STORE_URL || PLATFORM.appStoreUrl,
+} as const
+
+// ─── HELPER: should we show a metric? ──────────────────────
+// Returns the value only if it's meaningful enough to display
+export function displayMetric(
+  value: number | null,
+  threshold: number
+): string | null {
+  if (value === null || value < threshold) return null
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M+`
+  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}K+`
+  return `${value}+`
+}
+
+// ─── COMPARISON DATA (FaithLock's real features for /compare) ──
+export const FAITHLOCK_COMPARISON = {
+  name: 'FaithLock',
+  price: PRICING.plans.weekly.label,
+  pricingModel: `Freemium (${PRICING.plans.weekly.label} Premium)`,
+  platforms: PLATFORM.available,
+  features: {
+    bibleQuiz: false, // We do verse reading, not quiz
+    bibleVerseUnlock: true, // Our core feature
+    screenTimeTracking: true,
+    appBlocking: true,
+    customScheduling: true,
+    streakTracking: true,
+    spiritualCovenant: true,
+    prayerReminders: true,
+    androidSupport: false,
+    accountabilityPartner: false, // Not yet
+  },
+} as const
+
+// ─── BIBLE VERSES (used across the site for decoration) ─────
+export const FEATURED_VERSES = [
+  {
+    reference: 'Philippians 4:8',
+    text: 'Finally, brothers and sisters, whatever is true, whatever is noble, whatever is right, whatever is pure, whatever is lovely, whatever is admirable—if anything is excellent or praiseworthy—think about such things.',
+  },
+  {
+    reference: 'Psalm 119:37',
+    text: 'Turn my eyes away from worthless things; preserve my life according to your word.',
+  },
+  {
+    reference: 'Proverbs 25:28',
+    text: 'Like a city whose walls are broken through is a person who lacks self-control.',
+  },
+  {
+    reference: 'Colossians 3:2',
+    text: 'Set your minds on things above, not on earthly things.',
+  },
+  {
+    reference: '1 Corinthians 6:12',
+    text: '"I have the right to do anything," you say—but not everything is beneficial. "I have the right to do anything"—but I will not be mastered by anything.',
+  },
+  {
+    reference: 'Ephesians 5:15-16',
+    text: 'Be very careful, then, how you live—not as unwise but as wise, making the most of every opportunity.',
+  },
+] as const

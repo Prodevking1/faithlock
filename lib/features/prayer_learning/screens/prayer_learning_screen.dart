@@ -182,7 +182,9 @@ class PrayerLearningScreen extends StatelessWidget {
         await statsService.resetStreak();
         debugPrint('🔥 Streak reset due to prayer abandonment');
       }
-      Get.back();
+
+      // Navigate back to main screen (can't use Get.back() because navigation stack was cleared)
+      Get.offAllNamed('/main');
     }
   }
 
@@ -758,8 +760,8 @@ class PrayerLearningScreen extends StatelessWidget {
                       await controller.startUnlockTimer(duration);
                     }
 
-                    // Always close the prayer screen
-                    Get.back();
+                    // Navigate back to main screen (can't use Get.back() because navigation stack was cleared)
+                    Get.offAllNamed('/main');
                   },
                   backgroundColor: OnboardingTheme.goldColor,
                   textColor: OnboardingTheme.backgroundColor,

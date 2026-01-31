@@ -1,7 +1,7 @@
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
-import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.dart';
 import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
 import 'package:faithlock/navigation/screens/main_screen.dart';
+import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/paywall_guard_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,66 +17,50 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
   @override
   void initState() {
     super.initState();
-    _determineInitialRoute();
+    // Wait for first frame before navigating
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _determineInitialRoute();
+    });
   }
 
   Future<void> _determineInitialRoute() async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    try {
+      // Initialize controller needed by MainScreen and onboarding
+      Get.put(ScriptureOnboardingController(), permanent: true);
 
-    final controller = Get.put(
-      ScriptureOnboardingController(),
-      permanent: true,
-    );
+      // Check if user has completed onboarding
+      final prefs = PreferencesService();
+      final hasCompletedOnboarding =
+          await prefs.readBool('scripture_onboarding_complete') ?? false;
 
-    final onboardingComplete = await controller.isOnboardingComplete();
-    debugPrint('🔍 [InitialRoute] Onboarding complete: $onboardingComplete');
+      debugPrint('📋 [InitialRoute] Onboarding completed: $hasCompletedOnboarding');
 
-    if (!onboardingComplete) {
-      debugPrint('📖 [InitialRoute] → ScriptureOnboardingScreen');
-      Get.off(() => ScriptureOnboardingScreen());
-      return;
-    }
+      if (!hasCompletedOnboarding) {
+        // User hasn't completed onboarding - show onboarding flow
+        debugPrint('🎯 [InitialRoute] Navigating to onboarding');
+        Get.off(() => const ScriptureOnboardingScreen());
+        return;
+      }
 
-    final summaryComplete = await controller.isSummaryComplete();
-    debugPrint('🔍 [InitialRoute] Summary complete: $summaryComplete');
-
-    if (!summaryComplete) {
-      debugPrint('📊 [InitialRoute] → OnboardingSummaryScreen (first time)');
-      Get.off(() => const OnboardingSummaryScreen());
-      return;
-    }
-
-    // Step 3: Check if user has ever accessed app features
-    final hasAccessedFeatures = await controller.hasAccessedFeatures();
-    debugPrint(
-        '🔍 [InitialRoute] Has accessed features: $hasAccessedFeatures');
-
-    // If user never accessed features, show summary again
-    // This handles the case where user completed onboarding but never subscribed
-    if (!hasAccessedFeatures) {
-      debugPrint(
-          '📊 [InitialRoute] → OnboardingSummaryScreen (never accessed features)');
-      Get.off(() => const OnboardingSummaryScreen());
-      return;
-    }
-
-    // Step 4: Check subscription status
-    final hasSubscription = PaywallGuardService().hasActiveSubscription();
-    debugPrint('🔍 [InitialRoute] Has subscription: $hasSubscription');
-
-    if (!hasSubscription) {
-      debugPrint('🚪 [InitialRoute] → PaywallScreen/ExpiredScreen');
-      // PaywallGuardService will decide between PaywallScreen or SubscriptionExpiredScreen
-      await PaywallGuardService().checkSubscriptionAccess(
-        placementId: 'initial_route_guard',
+      // User has completed onboarding - check subscription status
+      debugPrint('✅ [InitialRoute] Onboarding completed - checking subscription');
+      final paywallGuard = PaywallGuardService();
+      final hasAccess = await paywallGuard.checkSubscriptionAccess(
+        placementId: 'app_launch',
         showPaywallIfInactive: true,
       );
-      return;
-    }
 
-    // Step 5: All checks passed - navigate to MainScreen
-    debugPrint('✅ [InitialRoute] → MainScreen');
-    Get.offAll(() => const MainScreen());
+      // If user has active subscription, go to MainScreen
+      // Otherwise, PaywallGuardService will handle navigation to paywall/expired screen
+      if (hasAccess) {
+        debugPrint('✅ [InitialRoute] Access granted - navigating to MainScreen');
+        Get.off(() => const MainScreen());
+      }
+    } catch (e) {
+      debugPrint('❌ [InitialRoute] Error determining route: $e');
+      // Fallback to onboarding on error
+      Get.off(() => const ScriptureOnboardingScreen());
+    }
   }
 
   @override

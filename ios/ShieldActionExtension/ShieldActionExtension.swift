@@ -5,8 +5,8 @@
 //  Created for FaithLock
 //
 
+import Foundation
 import ManagedSettings
-import UIKit
 import UserNotifications
 
 // Override the functions below to customize the shield actions used in various situations.
@@ -20,7 +20,10 @@ class ShieldActionExtension: ShieldActionDelegate {
         NSLog("========================================")
     }
 
-    override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+    override func handle(
+        action: ShieldAction, for application: ApplicationToken,
+        completionHandler: @escaping (ShieldActionResponse) -> Void
+    ) {
         NSLog("🎬 ShieldActionExtension: handle(action:for application:) CALLED")
 
         switch action {
@@ -55,39 +58,45 @@ class ShieldActionExtension: ShieldActionDelegate {
     }
 
     /// Send a local notification to prompt user to open the app
-    private func sendPrayerNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "🙏 Prayer Time"
-        content.body = "Tap to open FaithLock and complete your prayer session"
-        content.sound = .default
-        content.badge = 1
-        content.categoryIdentifier = "PRAYER_REMINDER"
+   private func sendPrayerNotification() {
+ let content = UNMutableNotificationContent()
+ content.title = "🙏 Prayer Time"
+ content.body = "Tap to open FaithLock and complete your prayer session"
+ content.sound = .default
+ content.badge = 1
+ content.categoryIdentifier = "PRAYER_REMINDER"
 
-        // Add custom data for deep linking
-        content.userInfo = ["navigate_to": "prayer_learning"]
+ // Add custom data for deep linking
+ content.userInfo = ["navigate_to": "prayer_learning"]
 
-        // Deliver immediately
-        let request = UNNotificationRequest(
-            identifier: "prayer_session_\(UUID().uuidString)",
-            content: content,
-            trigger: nil // nil = deliver immediately
-        )
+ // Deliver immediately
+ let request = UNNotificationRequest(
+     identifier: "prayer_session_\(UUID().uuidString)",
+     content: content,
+     trigger: nil // nil = deliver immediately
+ )
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                NSLog("❌ Failed to send notification: \(error)")
-            } else {
-                NSLog("✅ Prayer notification sent successfully")
-            }
-        }
+ UNUserNotificationCenter.current().add(request) { error in
+     if let error = error {
+         NSLog("❌ Failed to send notification: \(error)")
+     } else {
+         NSLog("✅ Prayer notification sent successfully")
+     }
+ }
     }
 
-    override func handle(action: ShieldAction, for webDomain: WebDomainToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+    override func handle(
+        action: ShieldAction, for webDomain: WebDomainToken,
+        completionHandler: @escaping (ShieldActionResponse) -> Void
+    ) {
         NSLog("🌐 ShieldActionExtension: handle(action:for webDomain:) CALLED")
         completionHandler(.close)
     }
 
-    override func handle(action: ShieldAction, for category: ActivityCategoryToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+    override func handle(
+        action: ShieldAction, for category: ActivityCategoryToken,
+        completionHandler: @escaping (ShieldActionResponse) -> Void
+    ) {
         NSLog("📁 ShieldActionExtension: handle(action:for category:) CALLED")
         completionHandler(.close)
     }

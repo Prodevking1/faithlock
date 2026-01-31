@@ -3,15 +3,12 @@ import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/core/constants/core/fast_spacing.dart';
 import 'package:faithlock/features/faithlock/controllers/stats_controller.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
-import 'package:faithlock/shared/widgets/typography/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-/// Modern Spiritual Dashboard Screen
-/// Displays user statistics with a spiritual, motivating design
+/// Compact Dashboard Screen - Single View (No Scroll)
 class StatsDashboardScreen extends StatefulWidget {
   const StatsDashboardScreen({super.key});
 
@@ -29,46 +26,42 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     controller = Get.put(StatsController());
     WidgetsBinding.instance.addObserver(this);
 
-    // Initial load
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await controller.loadStats();
       await controller.loadLockedAppsCount();
-
-      // Prompt to select apps if none selected
       _checkAndPromptAppSelection();
     });
   }
 
-  /// Check if no apps are selected and prompt user
   Future<void> _checkAndPromptAppSelection() async {
-    // Wait a bit for UI to settle
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (controller.lockedAppsCount.value == 0) {
       final shouldSelect = await showCupertinoDialog<bool>(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: const Text('🔒 No Apps Locked'),
-          content: const Padding(
-            padding: EdgeInsets.only(top: 12),
-            child: Text(
-              'You haven\'t selected any apps to lock yet. Would you like to choose some apps now?',
-              style: TextStyle(fontSize: 14),
+            context: context,
+            builder: (context) => CupertinoAlertDialog(
+              title: const Text('🔒 No Apps Locked'),
+              content: const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: Text(
+                  'You haven\'t selected any apps to lock yet. Would you like to choose some apps now?',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+              actions: [
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Later'),
+                ),
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  isDefaultAction: true,
+                  child: const Text('Select Apps'),
+                ),
+              ],
             ),
-          ),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Later'),
-            ),
-            CupertinoDialogAction(
-              onPressed: () => Navigator.of(context).pop(true),
-              isDefaultAction: true,
-              child: const Text('Select Apps'),
-            ),
-          ],
-        ),
-      ) ?? false;
+          ) ??
+          false;
 
       if (shouldSelect) {
         await controller.openAppPicker();
@@ -84,7 +77,6 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Refresh stats when app resumes (user returns from background)
     if (state == AppLifecycleState.resumed) {
       controller.loadStats();
       controller.loadLockedAppsCount();
@@ -94,183 +86,219 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F0),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Obx(() {
-            // Loading state
-            if (controller.isLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: FastColors.primary,
-                ),
-              );
-            }
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: OnboardingTheme.goldColor,
+              ),
+            );
+          }
 
-            // Error state
-            if (controller.errorMessage.value.isNotEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: FastColors.error,
-                    ),
-                    FastSpacing.h16,
-                    Text(
-                      controller.errorMessage.value,
-                      style: TextStyle(
-                        color: FastColors.secondaryText(context),
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    FastSpacing.h24,
-                    FastButton(
-                      text: 'Retry',
-                      onTap: controller.loadStats,
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return SingleChildScrollView(
+          if (controller.errorMessage.value.isNotEmpty) {
+            return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Personalized Greeting
-                  _buildGreetingHeader(context, controller),
-                  FastSpacing.h24,
-
-                  // SECTION 1: Hero Streak Card (greeting + 7-day calendar)
-                  _buildHeroStreakCard(context, controller),
-                  FastSpacing.h24,
-
-                  // SECTION 2: Quick Stats Grid (2x2)
-                  _buildQuickStatsGrid(context, controller),
-                  FastSpacing.h32,
-                  FastSpacing.h4,
-
-                  // SECTION 3: CTA Button
-                  _buildCompactCTAButton(context),
-                  FastSpacing.h24,
+                  Icon(Icons.error_outline, size: 64, color: FastColors.error),
+                  FastSpacing.h16,
+                  Text(
+                    controller.errorMessage.value,
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             );
-          }),
-        ),
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                _buildHeader(context),
+                const SizedBox(height: 20),
+                _buildStreakCard(context),
+                const SizedBox(height: 16),
+                _buildStatsGrid(context),
+                const SizedBox(height: 20),
+                _buildReadingSection(context),
+                const SizedBox(height: 20),
+                _buildStartSessionButton(context),
+                const SizedBox(height: 16),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  /// Personalized Greeting Header
-  Widget _buildGreetingHeader(
-      BuildContext context, StatsController controller) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Row(
-        children: [
-          Text(
-            controller.getGreetingEmoji(),
-            style: const TextStyle(fontSize: 32),
+  /// Compact header (60px)
+  Widget _buildHeader(BuildContext context) {
+    final name = controller.userName.value.isNotEmpty
+        ? controller.userName.value
+        : 'Friend';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 6),
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: 'May your day be ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    TextSpan(
+                      text: 'Blessed, $name.',
+                      style: TextStyle(color: OnboardingTheme.goldColor),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
+        ),
+        const SizedBox(width: 12),
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                OnboardingTheme.goldColor,
+                OnboardingTheme.goldColor.withValues(alpha: 0.7),
+              ],
+            ),
+          ),
+          child: Center(
             child: Text(
-              controller.getVariedGreeting(),
-              style: TextStyle(
-                fontFamily: OnboardingTheme.fontFamily,
-                color: FastColors.primaryText(context),
-                fontSize: 24,
+              name[0].toUpperCase(),
+              style: const TextStyle(
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
-                letterSpacing: -0.5,
+                color: Colors.white,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  /// SECTION 1: Hero Streak Card (emotional & motivational design)
-  Widget _buildHeroStreakCard(
-      BuildContext context, StatsController controller) {
+  /// Ultra Compact Streak Card
+  Widget _buildStreakCard(BuildContext context) {
     final streak = controller.userStats.value?.currentStreak ?? 0;
     final longestStreak = controller.userStats.value?.longestStreak ?? 0;
     final progress = controller.getProgressToNextMilestone();
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: FastColors.surfaceVariant(context),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: FastColors.border(context),
-          width: 1,
-        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
-          // Header: Motivational Message with Longest Streak Badge
+          // Streak number + longest streak in one row
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Motivational Message
-              Expanded(
-                child: Text(
-                  controller.getMotivationalMessage(),
-                  style: TextStyle(
-                    fontFamily: OnboardingTheme.fontFamily,
-                    color: FastColors.primaryText(context),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    height: 1.3,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              if (longestStreak > 0)
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFD700).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFFFFD700).withValues(alpha: 0.3),
-                      width: 1,
+              // Streak number
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    '🔥',
+                    style: TextStyle(
+                      fontSize: 20,
+                      height: 1.0,
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  const SizedBox(width: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        '🏆',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      const SizedBox(width: 4),
                       Text(
-                        '$longestStreak',
+                        '$streak',
                         style: TextStyle(
-                          fontFamily: OnboardingTheme.fontFamily,
-                          color: const Color(0xFFDAA520),
-                          fontSize: 13,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
+                          color: OnboardingTheme.goldColor,
+                          height: 1.0,
+                          letterSpacing: -1,
+                        ),
+                      ),
+                      Text(
+                        'DAYS',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.grey[500],
+                          letterSpacing: 0.6,
                         ),
                       ),
                     ],
                   ),
+                ],
+              ),
+              // Longest streak badge
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF8E1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('🏆', style: TextStyle(fontSize: 12)),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Longest: $longestStreak',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: OnboardingTheme.goldColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
 
-          // Week Days Calendar with glow effect
+          // Week days - compact
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: ['M', 'T', 'W', 'T', 'F', 'S', 'S']
                 .asMap()
                 .entries
@@ -284,16 +312,18 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                   Text(
                     dayLabel,
                     style: TextStyle(
-                      fontFamily: OnboardingTheme.fontFamily,
-                      color: FastColors.secondaryText(context),
-                      fontSize: 12,
+                      fontSize: 9,
                       fontWeight: FontWeight.w600,
+                      color: isCompleted
+                          ? OnboardingTheme.goldColor
+                          : Colors.grey[400],
+                      letterSpacing: 0.2,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 5),
                   Container(
-                    width: 38,
-                    height: 38,
+                    width: 26,
+                    height: 26,
                     decoration: BoxDecoration(
                       color: isCompleted
                           ? OnboardingTheme.goldColor
@@ -301,386 +331,367 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: isCompleted
-                            ? FastColors.streakOrange
-                            : FastColors.separator(context),
+                            ? OnboardingTheme.goldColor
+                            : Colors.grey[300]!,
                         width: 2,
                       ),
-                      boxShadow: isCompleted
-                          ? [
-                              BoxShadow(
-                                color: FastColors.streakOrange
-                                    .withValues(alpha: 0.25),
-                                blurRadius: 4,
-                                spreadRadius: 0,
-                              ),
-                            ]
-                          : null,
                     ),
-                    child: Center(
-                      child: Text(
-                        isCompleted ? '✓' : '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    child: isCompleted
+                        ? const Icon(
+                            Icons.check_rounded,
+                            color: Colors.white,
+                            size: 13,
+                          )
+                        : null,
                   ),
                 ],
               );
             }).toList(),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 6),
 
-          // Progress Bar to next milestone
+          // Progress bar
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      controller.getNextMilestoneText(),
-                      style: TextStyle(
-                        fontFamily: OnboardingTheme.fontFamily,
-                        color: FastColors.secondaryText(context),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '${(progress * 100).toInt()}%',
-                    style: TextStyle(
-                      fontFamily: OnboardingTheme.fontFamily,
-                      color: FastColors.streakOrange,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(6),
                 child: LinearProgressIndicator(
                   value: progress,
-                  minHeight: 8,
-                  backgroundColor:
-                      FastColors.separator(context).withValues(alpha: 0.3),
+                  minHeight: 5,
+                  backgroundColor: Colors.grey[200],
                   valueColor:
-                      AlwaysStoppedAnimation<Color>(FastColors.streakOrange),
+                      AlwaysStoppedAnimation<Color>(OnboardingTheme.goldColor),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                '${(progress * 100).toInt()}% to next goal',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[500],
+                  letterSpacing: 0.2,
                 ),
               ),
             ],
           ),
-          // const SizedBox(height: 16),
-
-          // Inspirational Quote (spiritual element)
-          // Container(
-          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          //   decoration: BoxDecoration(
-          //     color: FastColors.surface(context),
-          //     borderRadius: BorderRadius.circular(12),
-          //     border: Border.all(
-          //       color: FastColors.separator(context),
-          //       width: 1,
-          //     ),
-          //   ),
-          //   child: Text(
-          //     controller.getInspirationalVerseQuote(),
-          //     style: TextStyle(
-          //       fontFamily: OnboardingTheme.fontFamily,
-          //       color: FastColors.secondaryText(context),
-          //       fontSize: 13,
-          //       fontStyle: FontStyle.italic,
-          //       height: 1.4,
-          //     ),
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
-  /// SECTION 2: Impact Stats - Priority order
-  Widget _buildQuickStatsGrid(
-    BuildContext context,
-    StatsController controller,
-  ) {
-    return Column(
-      children: [
-        Row(
-          spacing: 12,
-          children: [
-            Expanded(
-              child: _buildSavedTimeSection(
-                context,
-                value:
-                    '${controller.userStats.value?.screenTimeReducedFormatted ?? 0}',
+  /// Stats grid with proper spacing
+  Widget _buildStatsGrid(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Large time card
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.only(
+                  top: 18, left: 16, right: 16, bottom: 24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
+                  width: 2,
+                ),
+              ),
+              child: FittedBox(
+                // <--- Scales content to fit the container
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text('⏱️', style: TextStyle(fontSize: 32)),
+                    Text(
+                      controller.userStats.value?.screenTimeReducedFormatted ??
+                          '0h 0m',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      maxLines: 1, // Prevent wrapping
+                    ),
+                    Text(
+                      'TIME SAVED',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[500],
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            Expanded(
-                child: Column(
-              spacing: 12,
-              children: [
-                _buildCompactStatRow(
-                  context,
-                  icon: '📖',
-                  value: '${controller.userStats.value?.totalVersesRead ?? 0}',
-                  label: 'Verses Read',
-                ),
-                _buildLockedAppsRow(
-                  context,
-                  controller: controller,
-                ),
-              ],
-            )),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSavedTimeSection(
-    BuildContext context, {
-    required String value,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-      decoration: BoxDecoration(
-        color: FastColors.surfaceVariant(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: FastColors.streakOrange.withValues(alpha: 0.3),
-          width: 2,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            '🏆',
-            style: TextStyle(fontSize: 36),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontFamily: OnboardingTheme.fontFamily,
-              color: FastColors.primaryText(context),
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.5,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Time Saved',
-            style: TextStyle(
-              fontFamily: OnboardingTheme.fontFamily,
-              color: FastColors.secondaryText(context),
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Compact Stat Row - For secondary metrics
-  Widget _buildCompactStatRow(
-    BuildContext context, {
-    required String icon,
-    required String value,
-    required String label,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(
-        color: FastColors.surfaceVariant(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: FastColors.border(context),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Text(
-            icon,
-            style: const TextStyle(fontSize: 24),
           ),
           const SizedBox(width: 12),
+          // Small cards column
           Expanded(
+            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontFamily: OnboardingTheme.fontFamily,
-                    color: FastColors.primaryText(context),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontFamily: OnboardingTheme.fontFamily,
-                    color: FastColors.primaryText(context),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Locked Apps Row - Clickable with arrow to open app picker
-  Widget _buildLockedAppsRow(
-    BuildContext context, {
-    required StatsController controller,
-  }) {
-    return Obx(
-      () => GestureDetector(
-        onTap: () async {
-          await controller.openAppPicker();
-        },
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              decoration: BoxDecoration(
-                color: FastColors.surfaceVariant(context),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: FastColors.border(context),
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Text(
-                    '🔒',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
+                // Verses read
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${controller.lockedAppsCount.value}',
-                          style: TextStyle(
-                            fontFamily: OnboardingTheme.fontFamily,
-                            color: FastColors.primaryText(context),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        Text(
-                          'Apps Locked',
-                          style: TextStyle(
-                            fontFamily: OnboardingTheme.fontFamily,
-                            color: FastColors.primaryText(context),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
+                        const Text('📖', style: TextStyle(fontSize: 28)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          flex: 2,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // 1. Tell the column to take up minimum space
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // 2. Removed Spacer() - it was causing the "Infinite Height" error
+                                Text(
+                                  '${controller.userStats.value?.totalVersesRead ?? 0}',
+                                  style: const TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  'VERSES READ',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[500],
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 12),
+                // Apps blocked
+                Expanded(
+                  child: Obx(() => GestureDetector(
+                        onTap: () => controller.openAppPicker(),
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('🔒', style: TextStyle(fontSize: 28)),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${controller.lockedAppsCount.value}',
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'APPS BLOCKED',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey[500],
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                ),
+              ],
             ),
-            FastSpacing.h4,
-            FastText.caption2('Tap to manage apps')
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  /// SECTION 3: Egg-shaped CTA Button with gold design
-  Widget _buildCompactCTAButton(BuildContext context) {
+  /// Compact reading section (140px)
+  Widget _buildReadingSection(BuildContext context) {
+    return Obx(() {
+      final verse = controller.dailyVerse.value;
+      final isFavorite = controller.isDailyVerseFavorite.value;
+
+      if (verse == null) {
+        return const SizedBox.shrink();
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'READING OF THE MOMENT',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              color: Colors.grey[500],
+              letterSpacing: 0.6,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(
+                image: NetworkImage(
+                  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.7),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: GestureDetector(
+                    onTap: () => controller.toggleDailyVerseFavorite(),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        isFavorite ? Icons.bookmark : Icons.bookmark_border,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        verse.reference,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '"${verse.text}"',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.white.withValues(alpha: 0.9),
+                          height: 1.3,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  /// Compact start button (56px)
+  Widget _buildStartSessionButton(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         HapticFeedback.mediumImpact();
-        // Navigate to prayer and refresh stats when returning
         await Get.toNamed(AppRoutes.prayerLearning);
-        // Refresh stats after prayer session
         controller.loadStats();
         controller.loadLockedAppsCount();
       },
-      child: Center(
-        child: TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0.95, end: 1.0),
-          duration: const Duration(milliseconds: 1200),
-          curve: Curves.easeOutBack,
-          builder: (context, double value, child) {
-            return Transform.scale(
-              scale: value,
-              child: Container(
-                width: 350,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFFFFD700),
-                      Color(0xFFDAA520),
-                      Color(0xFFB8860B),
-                    ],
-                    stops: [0.0, 0.6, 1.0],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFFFD700).withValues(alpha: 0.4),
-                      blurRadius: 25,
-                      spreadRadius: 2,
-                      offset: const Offset(0, 12),
-                    ),
-                    BoxShadow(
-                      color: const Color(0xFFFFD700).withValues(alpha: 0.2),
-                      blurRadius: 15,
-                      spreadRadius: -5,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      '🙏',
-                      style: TextStyle(fontSize: 32),
-                    ),
-                    FastText.footnote(
-                      'Start\nPraying',
-                      textAlign: TextAlign.center,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    )
-                  ],
-                ),
+      child: Container(
+        width: double.infinity,
+        height: 56,
+        decoration: BoxDecoration(
+          color: const Color(0xFF2B2B2B),
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 15,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text('🙏', style: TextStyle(fontSize: 22)),
+            SizedBox(width: 10),
+            Text(
+              'Let\'s Pray Now',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );

@@ -11,6 +11,7 @@ class StatsController extends GetxController {
   final StatsService _statsService = StatsService();
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final StorageService _storage = StorageService();
+  final VerseService _verseService = VerseService();
 
   // Observable state
   final Rx<UserStats?> userStats = Rx<UserStats?>(null);
@@ -18,6 +19,8 @@ class StatsController extends GetxController {
   final RxString errorMessage = RxString('');
   final RxInt lockedAppsCount = RxInt(0);
   final RxString userName = RxString('');
+  final Rx<BibleVerse?> dailyVerse = Rx<BibleVerse?>(null);
+  final RxBool isDailyVerseFavorite = RxBool(false);
 
   // Timer for periodic refresh after picker
   Timer? _refreshTimer;
@@ -28,9 +31,12 @@ class StatsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // TEMPORARY: Reset test streak data - Remove this line after app restart
+    // _statsService.resetAllStats();
     loadStats();
     loadLockedAppsCount();
     loadUserName();
+    loadDailyVerse();
   }
 
   /// Load user name from storage
@@ -65,6 +71,35 @@ class StatsController extends GetxController {
       lockedAppsCount.value = count;
     } catch (e) {
       lockedAppsCount.value = 0;
+    }
+  }
+
+  /// Load daily verse from database
+  Future<void> loadDailyVerse() async {
+    try {
+      final verse = await _verseService.getDailyVerse();
+      dailyVerse.value = verse;
+
+      if (verse != null) {
+        final isFav = await _verseService.isFavorite(verse.id);
+        isDailyVerseFavorite.value = isFav;
+      }
+    } catch (e) {
+      dailyVerse.value = null;
+      isDailyVerseFavorite.value = false;
+    }
+  }
+
+  /// Toggle favorite status for daily verse
+  Future<void> toggleDailyVerseFavorite() async {
+    try {
+      if (dailyVerse.value == null) return;
+
+      final newStatus =
+          await _verseService.toggleFavorite(dailyVerse.value!.id);
+      isDailyVerseFavorite.value = newStatus;
+    } catch (e) {
+      // Handle error silently or show message
     }
   }
 

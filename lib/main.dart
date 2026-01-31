@@ -5,21 +5,20 @@ import 'package:faithlock/core/localization/app_translations.dart';
 import 'package:faithlock/core/theme/export.dart';
 import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
 import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
+import 'package:faithlock/features/onboarding/screens/initial_route_screen.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/auto_navigation_service.dart';
-import 'package:faithlock/services/deep_link_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
+import 'package:faithlock/services/notifications/notification_navigation_service.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
-import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +26,6 @@ void main() async {
   debugPrint('🚀 FaithLock: Starting app initialization...');
 
   await Future.wait([
-    _initializeSupabase(),
     _initializeDatabase(),
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
@@ -42,26 +40,21 @@ void main() async {
   runApp(const App());
 }
 
-Future<void> _initializeSupabase() async {
-  try {
-    await Supabase.initialize(
-      url: Env.supabaseUrl,
-      anonKey: Env.supabaseAnonKey,
-    );
-    debugPrint('✅ Supabase initialized');
-  } catch (e) {
-    debugPrint('❌ Supabase initialization failed: $e');
-  }
-}
-
 Future<void> _initializeDatabase() async {
   try {
     final FaithLockDatabaseService db = FaithLockDatabaseService();
-    await db.database;
+    await db.database.timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        throw Exception('Database initialization timed out after 10 seconds');
+      },
+    );
     debugPrint('✅ Database initialized');
-  } catch (e) {
+  } catch (e, stackTrace) {
     debugPrint('❌ Database initialization failed: $e');
-    rethrow;
+    debugPrint('Stack trace: $stackTrace');
+    // Don't rethrow - allow app to continue without database
+    // The app can handle missing data gracefully
   }
 }
 
@@ -81,48 +74,25 @@ void _initializeNonCriticalServices() {
   Future.microtask(() async {
     debugPrint('⏳ Loading non-critical services in background...');
 
+    // Initialize LocalNotificationService for handling notification taps
+    // This does NOT request permissions - only sets up the tap handler
     try {
       final LocalNotificationService notificationService =
           LocalNotificationService();
       await notificationService.initialize();
-
-      Future.delayed(const Duration(seconds: 2), () async {
-        final context = Get.context;
-        if (context != null) {
-          final prefs = PreferencesService();
-          final hasAsked =
-              await prefs.readBool('notification_permission_asked') ?? false;
-
-          print('asked notif ${hasAsked}');
-
-          if (await _shouldShowOnboarding() == false && !hasAsked) {
-            final permissionsGranted =
-                await _requestNotificationPermissionsWithDialog(
-              context,
-              notificationService,
-            );
-            debugPrint(
-                '✅ LocalNotificationService initialized (permissions: $permissionsGranted)');
-
-            // Mark that we asked
-            await prefs.writeBool('notification_permission_asked', true);
-
-            if (!permissionsGranted) {
-              debugPrint('⚠️ Notification permissions denied by user!');
-              debugPrint(
-                  '💡 User needs to enable notifications in iOS Settings');
-            }
-
-            // Wait before next prompt to avoid overwhelming user
-            await Future.delayed(const Duration(seconds: 3));
-          } else {
-            debugPrint(
-                'ℹ️ Notification permissions already requested in the past');
-          }
-        }
-      });
+      debugPrint('✅ LocalNotificationService initialized');
     } catch (e) {
       debugPrint('⚠️ LocalNotificationService initialization failed: $e');
+    }
+
+    // Initialize NotificationNavigationService to handle iOS MethodChannel navigation
+    try {
+      final NotificationNavigationService navService =
+          NotificationNavigationService();
+      await navService.initialize();
+      debugPrint('✅ NotificationNavigationService initialized');
+    } catch (e) {
+      debugPrint('⚠️ NotificationNavigationService initialization failed: $e');
     }
 
     try {
@@ -149,14 +119,14 @@ void _initializeNonCriticalServices() {
       debugPrint('⚠️ RevenueCat initialization failed: $e');
     }
 
-    try {
-      // Deep Links
-      final DeepLinkService deepLinkService = DeepLinkService();
-      await deepLinkService.initialize();
-      debugPrint('✅ DeepLinkService initialized');
-    } catch (e) {
-      debugPrint('⚠️ DeepLinkService initialization failed: $e');
-    }
+    // try {
+    //   // Deep Links
+    //   final DeepLinkService deepLinkService = DeepLinkService();
+    //   await deepLinkService.initialize();
+    //   debugPrint('✅ DeepLinkService initialized');
+    // } catch (e) {
+    //   debugPrint('⚠️ DeepLinkService initialization failed: $e');
+    // }
 
     try {
       // Unlock Timer Service
@@ -180,33 +150,8 @@ void _initializeNonCriticalServices() {
   });
 }
 
-Future<bool> _requestNotificationPermissionsWithDialog(
-  BuildContext context,
-  LocalNotificationService notificationService,
-) async {
-  // Show explanatory dialog first and wait for user to tap Continue
-  await FastAlertDialog.show(
-    context: context,
-    title: '🔔 Enable Notifications',
-    message: 'Notifications are essential for FaithLock to work properly.\n\n'
-        'We\'ll remind you to re-lock your apps after the unlock timer expires, '
-        'helping you stay focused on your spiritual journey.\n\n'
-        'Tap "Continue" to enable notifications.',
-    actions: [
-      FastDialogAction(
-        text: 'Continue',
-        isDefault: true,
-        onPressed: () => Navigator.of(context).pop(true),
-      ),
-    ],
-  );
-
-  // Wait a brief moment for dialog animation to complete
-  await Future.delayed(const Duration(milliseconds: 300));
-
-  // Now request permissions (iOS system prompt will appear)
-  return await notificationService.requestPermissions();
-}
+// Function removed - notification permissions are now requested during onboarding
+// See: lib/features/onboarding/ for permission flow
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -220,22 +165,22 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
 
+    // Auto-navigation is now handled by InitialRouteScreen
+    // This prevents double navigation logic
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAutoNavigation();
+      _checkPrayerNavigation();
     });
   }
 
-  Future<void> _checkAutoNavigation() async {
-    final shouldShowOnboarding = await _shouldShowOnboarding();
-
-    if (shouldShowOnboarding) {
-      debugPrint('📚 First launch - navigating to onboarding');
-      Get.offAllNamed(AppRoutes.scriptureOnboarding);
-      return;
+  Future<void> _checkPrayerNavigation() async {
+    // Only check for prayer navigation flag
+    // Don't interfere with InitialRouteScreen's routing logic
+    try {
+      final autoNavService = AutoNavigationService();
+      await autoNavService.checkAndNavigate();
+    } catch (e) {
+      debugPrint('⚠️ Error checking prayer navigation: $e');
     }
-
-    final autoNavService = AutoNavigationService();
-    await autoNavService.checkAndNavigate();
   }
 
   @override
@@ -248,9 +193,8 @@ class _AppState extends State<App> {
           FastTheme.isDarkMode(context) ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       initialBinding: AppBindings(),
-      initialRoute: AppRoutes.main,
       getPages: AppRoutes.getPages(),
-      // home: InitialRouteScreen(),
+      home: InitialRouteScreen(),
       translations: AppTranslations(),
       localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,

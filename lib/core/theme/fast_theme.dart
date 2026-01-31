@@ -282,6 +282,7 @@ class FastTheme {
       colorScheme: _iOSLightColorScheme,
       textTheme: _textTheme,
       fontFamily: FastFonts.primary,
+
       platform: TargetPlatform.iOS,
       useMaterial3: true,
 

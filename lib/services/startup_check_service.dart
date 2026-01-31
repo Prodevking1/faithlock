@@ -58,7 +58,8 @@ class StartupCheckService {
       return;
     }
 
-    debugPrint('✅ Startup checks passed - Screen Time authorized and apps selected');
+    debugPrint(
+        '✅ Startup checks passed - Screen Time authorized and apps selected');
   }
 
   /// Prompt user to authorize Screen Time
@@ -66,7 +67,8 @@ class StartupCheckService {
     if (!context.mounted) return false;
 
     // Check if we already asked
-    final hasAskedBefore = await _storage.readBool('screen_time_prompt_shown') ?? false;
+    final hasAskedBefore =
+        await _storage.readBool('screen_time_prompt_shown') ?? false;
 
     // Show explanatory dialog
     await FastAlertDialog.show(
@@ -78,7 +80,7 @@ class StartupCheckService {
           '• Block distracting apps\n'
           '• Unlock apps temporarily after prayer\n'
           '• Help you stay focused on God\n\n'
-          'Tap "Enable" to grant permission.',
+          'Tap "Enable" to Continue.',
       actions: [
         if (hasAskedBefore)
           FastDialogAction(
@@ -117,13 +119,13 @@ class StartupCheckService {
     if (!context.mounted) return;
 
     // Check if we already asked
-    final hasAskedBefore = await _storage.readBool('app_selection_prompt_shown') ?? false;
+    final hasAskedBefore =
+        await _storage.readBool('app_selection_prompt_shown') ?? false;
 
     await FastAlertDialog.show(
       context: context,
       title: '📱 Select Apps to Block',
-      message:
-          'Choose which apps to protect with FaithLock.\n\n'
+      message: 'Choose which apps to protect with FaithLock.\n\n'
           'You can select social media, games, or any distracting apps.\n\n'
           'These apps will be blocked until you complete your daily prayer.',
       actions: [

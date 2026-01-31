@@ -1,6 +1,4 @@
 PODS:
-  - app_links (0.0.2):
-    - Flutter
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -19,55 +17,6 @@ PODS:
   - libphonenumber_plugin (0.0.1):
     - Flutter
     - PhoneNumberKit (~> 3.7.8)
-  - onesignal_flutter (5.2.9):
-    - Flutter
-    - OneSignalXCFramework (= 5.2.9)
-  - OneSignalXCFramework (5.2.9):
-    - OneSignalXCFramework/OneSignalComplete (= 5.2.9)
-  - OneSignalXCFramework/OneSignal (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalExtension
-    - OneSignalXCFramework/OneSignalLiveActivities
-    - OneSignalXCFramework/OneSignalNotifications
-    - OneSignalXCFramework/OneSignalOSCore
-    - OneSignalXCFramework/OneSignalOutcomes
-    - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalComplete (5.2.9):
-    - OneSignalXCFramework/OneSignal
-    - OneSignalXCFramework/OneSignalInAppMessages
-    - OneSignalXCFramework/OneSignalLocation
-  - OneSignalXCFramework/OneSignalCore (5.2.9)
-  - OneSignalXCFramework/OneSignalExtension (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalInAppMessages (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalNotifications
-    - OneSignalXCFramework/OneSignalOSCore
-    - OneSignalXCFramework/OneSignalOutcomes
-    - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalLiveActivities (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalOSCore
-    - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalLocation (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalNotifications
-    - OneSignalXCFramework/OneSignalOSCore
-    - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalNotifications (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalExtension
-    - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalOSCore (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-  - OneSignalXCFramework/OneSignalOutcomes (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-  - OneSignalXCFramework/OneSignalUser (5.2.9):
-    - OneSignalXCFramework/OneSignalCore
-    - OneSignalXCFramework/OneSignalNotifications
-    - OneSignalXCFramework/OneSignalOSCore
-    - OneSignalXCFramework/OneSignalOutcomes
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -81,7 +30,7 @@ PODS:
   - PhoneNumberKit/PhoneNumberKitCore (3.7.11)
   - PhoneNumberKit/UIKit (3.7.11):
     - PhoneNumberKit/PhoneNumberKitCore
-  - PostHog (3.34.0)
+  - PostHog (3.37.2)
   - posthog_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -109,7 +58,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - app_links (from `.symlinks/plugins/app_links/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -119,7 +67,6 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
-  - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -133,7 +80,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - OneSignalXCFramework
     - PhoneNumberKit
     - PostHog
     - PurchasesHybridCommon
@@ -141,8 +87,6 @@ SPEC REPOS:
     - Sentry
 
 EXTERNAL SOURCES:
-  app_links:
-    :path: ".symlinks/plugins/app_links/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
@@ -161,8 +105,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/in_app_review/ios"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
-  onesignal_flutter:
-    :path: ".symlinks/plugins/onesignal_flutter/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -185,7 +127,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  app_links: 3da4c36b46cac3bf24eb897f1a6ce80bda109874
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_local_notifications: ad39620c743ea4c15127860f4b5641649a988100
@@ -195,13 +136,11 @@ SPEC CHECKSUMS:
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   in_app_review: 7dd1ea365263f834b8464673f9df72c80c17c937
   libphonenumber_plugin: e3f18ea4f29a54af15a8853817c3773c31646cff
-  onesignal_flutter: 5a1d26b973b26b77b522ed16fdfb0495cb9e980e
-  OneSignalXCFramework: f5b2a3c4f130e4c910ead7bb25bed7455e976fbf
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PhoneNumberKit: ced55861269312a5e3bc2ef82a58d6255b1c976a
-  PostHog: bbb7eaecb2f5a286d9da3c833cbb18ae08799655
+  PostHog: 6e90f34cb71fc0881d8f98b8654e8e1799d72dbe
   posthog_flutter: 631ab870f7daf1ed190deeb2414eb3e347445f37
   purchases_flutter: 818eabac676b9037ac7692d4bc48a52a10b276be
   PurchasesHybridCommon: ae7a0a6e105ecdde3e8816a004e57f0a2a7b9261

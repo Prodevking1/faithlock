@@ -82,8 +82,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
             }
           }),
 
-          // Demo button (always visible, even in production)
-          _buildDemoButton(controller),
+          // _buildDemoButton(controller),
 
           // // Debug controls (only in debug mode)
           // if (kDebugMode) _buildDebugControls(controller),

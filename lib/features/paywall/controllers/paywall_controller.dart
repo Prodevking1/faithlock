@@ -22,7 +22,9 @@ class PaywallController extends GetxController
   // Observable state
   final RxBool isLoading = true.obs;
   final RxBool trialReminderEnabled = true.obs;
-  final RxBool freeTrialEnabled = true.obs;
+  // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+  // Will be re-enabled once Apple approves this feature
+  // final RxBool freeTrialEnabled = true.obs;
   final RxBool showPromoCodeField = false.obs;
   final RxString promoCode = ''.obs;
   final RxInt selectedPlanIndex = 0.obs;
@@ -123,11 +125,13 @@ class PaywallController extends GetxController
         selectedPlanIndex.value = 0;
       }
 
+      // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+      // Will be re-enabled once Apple approves this feature
       // Check if selected plan is yearly
-      if (selectedPlanIndex.value < availablePackages.length) {
-        freeTrialEnabled.value =
-            isYearlyPackage(availablePackages[selectedPlanIndex.value]);
-      }
+      // if (selectedPlanIndex.value < availablePackages.length) {
+      //   freeTrialEnabled.value =
+      //       isYearlyPackage(availablePackages[selectedPlanIndex.value]);
+      // }
 
       // Track paywall viewed
       if (_analytics.isReady) {
@@ -151,8 +155,23 @@ class PaywallController extends GetxController
     return periodLower.contains('year') || periodLower.contains('y');
   }
 
+  /// Check if selected package has a free trial
+  bool get hasFreeTrial {
+    if (selectedPlanIndex.value >= packages.length) return false;
+    final selectedPackage = packages[selectedPlanIndex.value];
+    return selectedPackage.storeProduct.introductoryPrice != null;
+  }
+
+  /// Get CTA button text based on selected plan
+  String get ctaButtonText {
+    return hasFreeTrial ? 'Start Free Trial' : 'Start Your Journey';
+  }
+
   void selectPlan(int index) async {
     if (index < 0 || index >= packages.length) return;
+
+    // Haptic feedback on plan selection
+    HapticFeedback.selectionClick();
 
     cardAnimationController.forward().then((_) {
       cardAnimationController.reverse();
@@ -160,14 +179,16 @@ class PaywallController extends GetxController
 
     selectedPlanIndex.value = index;
 
-    final isYearly = isYearlyPackage(packages[index]);
-    freeTrialEnabled.value = isYearly;
+    // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+    // Will be re-enabled once Apple approves this feature
+    // final isYearly = isYearlyPackage(packages[index]);
+    // freeTrialEnabled.value = isYearly;
 
-    if (isYearly) {
-      switchAnimationController.forward();
-    } else {
-      switchAnimationController.reverse();
-    }
+    // if (isYearly) {
+    //   switchAnimationController.forward();
+    // } else {
+    //   switchAnimationController.reverse();
+    // }
 
     // Track plan selection
     if (_analytics.isReady) {
@@ -183,34 +204,38 @@ class PaywallController extends GetxController
     }
   }
 
-  void toggleFreeTrial(bool value) {
-    freeTrialEnabled.value = value;
+  // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+  // Will be re-enabled once Apple approves this feature
+  // Reason: Apple rejected the ability for users to disable free trial
+  // This functionality allows users to opt-out of free trial periods
+  // void toggleFreeTrial(bool value) {
+  //   freeTrialEnabled.value = value;
 
-    // If enabling trial, switch to yearly plan
-    if (value) {
-      final yearlyIndex = packages.indexWhere(isYearlyPackage);
-      if (yearlyIndex != -1) {
-        selectedPlanIndex.value = yearlyIndex;
-      }
-    }
+  //   // If enabling trial, switch to yearly plan
+  //   if (value) {
+  //     final yearlyIndex = packages.indexWhere(isYearlyPackage);
+  //     if (yearlyIndex != -1) {
+  //       selectedPlanIndex.value = yearlyIndex;
+  //     }
+  //   }
 
-    // If disabling trial and current plan is yearly, switch to non-yearly
-    if (!value && selectedPlanIndex.value < packages.length) {
-      if (isYearlyPackage(packages[selectedPlanIndex.value])) {
-        final nonYearlyIndex =
-            packages.indexWhere((pkg) => !isYearlyPackage(pkg));
-        if (nonYearlyIndex != -1) {
-          selectedPlanIndex.value = nonYearlyIndex;
-        }
-      }
-    }
+  //   // If disabling trial and current plan is yearly, switch to non-yearly
+  //   if (!value && selectedPlanIndex.value < packages.length) {
+  //     if (isYearlyPackage(packages[selectedPlanIndex.value])) {
+  //       final nonYearlyIndex =
+  //           packages.indexWhere((pkg) => !isYearlyPackage(pkg));
+  //       if (nonYearlyIndex != -1) {
+  //         selectedPlanIndex.value = nonYearlyIndex;
+  //       }
+  //     }
+  //   }
 
-    if (value) {
-      switchAnimationController.forward();
-    } else {
-      switchAnimationController.reverse();
-    }
-  }
+  //   if (value) {
+  //     switchAnimationController.forward();
+  //   } else {
+  //     switchAnimationController.reverse();
+  //   }
+  // }
 
   String getPlanTitle(Package package) {
     if (isYearlyPackage(package)) {
@@ -236,12 +261,13 @@ class PaywallController extends GetxController
     final price = product.priceString;
 
     if (isYearlyPackage(package)) {
-      return price;
+      return '$price/year';
     }
 
     final period = product.subscriptionPeriod;
     if (period != null) {
       final unitStr = period.toLowerCase();
+
       if (unitStr.contains('month') || unitStr.contains('m')) {
         return '$price/month';
       }
@@ -254,35 +280,49 @@ class PaywallController extends GetxController
   }
 
   String getSavingsText(Package package) {
+    debugPrint('📊 getSavingsText called for package: ${package.identifier}');
+    debugPrint('📊 Package period: ${package.storeProduct.subscriptionPeriod}');
+    debugPrint('📊 Is yearly? ${isYearlyPackage(package)}');
+
     if (isYearlyPackage(package)) {
-      final monthlyPackage = packages.firstWhereOrNull((pkg) {
+      final weeklyPackage = packages.firstWhereOrNull((pkg) {
         final period = pkg.storeProduct.subscriptionPeriod;
-        return period != null && period.toLowerCase().contains('month');
+        if (period == null) return false;
+        final periodLower = period.toLowerCase();
+        // Check for ISO 8601 format: P1W or text format containing 'week'
+        return periodLower.contains('p1w') ||
+            periodLower.contains('week') ||
+            (periodLower.contains('w') && !periodLower.contains('y'));
       });
 
-      if (monthlyPackage == null) return 'BEST VALUE';
+      debugPrint('📊 Weekly package found: ${weeklyPackage?.identifier}');
+
+      if (weeklyPackage == null) {
+        debugPrint('📊 No weekly package found - returning empty');
+        return '';
+      }
 
       final yearlyPrice = package.storeProduct.price;
-      final monthlyPrice = monthlyPackage.storeProduct.price;
-      final yearlyEquivalent = monthlyPrice * 12;
-      final savings =
-          ((yearlyEquivalent - yearlyPrice) / yearlyEquivalent * 100);
+      final weeklyPrice = weeklyPackage.storeProduct.price;
+      final yearlyEquivalent = weeklyPrice * 52; // 52 weeks in a year
+      final savingsAmount = yearlyEquivalent - yearlyPrice;
+      final savingsPercentage = (savingsAmount / yearlyEquivalent) * 100;
 
-      if (savings > 0) {
-        return 'SAVE ${savings.round()}%';
+      debugPrint(
+          '📊 Savings calculation: yearly=$yearlyPrice, weekly=$weeklyPrice, equivalent=$yearlyEquivalent, savings=$savingsAmount, percentage=${savingsPercentage.toStringAsFixed(0)}%');
+
+      if (savingsAmount > 0) {
+        final result = 'Save ${savingsPercentage.toStringAsFixed(0)}%';
+        debugPrint('📊 Returning: $result');
+        return result;
       }
 
-      return 'BEST VALUE';
+      debugPrint('📊 Savings <= 0 - returning empty');
+      return '';
     }
 
-    final period = package.storeProduct.subscriptionPeriod;
-    if (period != null) {
-      final unitStr = period.toLowerCase();
-      if (unitStr.contains('week') || unitStr.contains('w')) {
-        return 'TRY FIRST';
-      }
-    }
-
+    // No badge for non-yearly plans
+    debugPrint('📊 Not yearly plan - returning empty');
     return '';
   }
 
@@ -326,6 +366,10 @@ class PaywallController extends GetxController
       final result = await _revenueCat.purchaseSubscription(selectedPackage);
 
       if (result.success) {
+        debugPrint('✅ [Paywall] Purchase successful!');
+        debugPrint(
+            '📦 [Paywall] Customer Info: ${result.customerInfo?.entitlements.active}');
+
         // Track purchase completed
         if (_analytics.isReady) {
           await _analytics.paywall.trackPurchaseCompleted(
@@ -345,13 +389,10 @@ class PaywallController extends GetxController
 
         // Show success feedback
         HapticFeedback.mediumImpact();
-        FastToast.success(
-          'Your free trial has started. Enjoy premium features!',
-          title: 'Success!',
-        );
 
         // Navigate to main app or close paywall
-        _handleSuccessfulSubscription();
+        // Note: Don't show toast before navigation as it causes overlay errors
+        await _handleSuccessfulSubscription();
       } else {
         // Purchase cancelled or failed
         if (result.error?.contains('cancelled') ?? false) {
@@ -409,12 +450,8 @@ class PaywallController extends GetxController
         }
 
         HapticFeedback.mediumImpact();
-        FastToast.success(
-          'Your subscription has been restored successfully.',
-          title: 'Purchases Restored!',
-        );
 
-        _handleSuccessfulSubscription();
+        await _handleSuccessfulSubscription();
       } else if (result.success && !result.hasActiveSubscriptions) {
         FastToast.warning(
           'No active subscriptions found to restore.',
@@ -525,7 +562,13 @@ class PaywallController extends GetxController
     }
   }
 
-  void _handleSuccessfulSubscription() {
+  Future<void> _handleSuccessfulSubscription() async {
+    // Wait a bit for RevenueCat to propagate subscription state
+    // This prevents the initial route screen from checking too early
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    debugPrint(
+        '✅ [Paywall] Subscription successful - navigating to MainScreen');
     Get.offAllNamed(AppRoutes.main);
   }
 }

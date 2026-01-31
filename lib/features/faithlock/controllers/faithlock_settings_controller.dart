@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/features/faithlock/controllers/schedule_controller.dart';
+import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Controller for FaithLock Settings Screen
 /// Manages permissions and app configuration
 class FaithLockSettingsController extends GetxController with WidgetsBindingObserver {
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final LockService _lockService = LockService();
+  final LocalNotificationService _notificationService = LocalNotificationService();
 
   // Observable state
   final RxBool isScreenTimeAuthorized = RxBool(false);
@@ -43,8 +46,9 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Refresh permissions when app comes back to foreground
     if (state == AppLifecycleState.resumed) {
-      debugPrint('📱 App resumed - refreshing Screen Time permissions');
+      debugPrint('📱 App resumed - refreshing permissions');
       checkScreenTimePermission();
+      checkNotificationsPermission();
       loadSelectedAppsCount();
     }
   }
@@ -156,10 +160,26 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
 
   /// Check Notifications permission status
   Future<void> checkNotificationsPermission() async {
-    // TODO: Implement notifications permission check
-    // For now, set as granted
-    isNotificationsAuthorized.value = true;
-    notificationsStatus.value = 'Granted';
+    try {
+      final status = await Permission.notification.status;
+      isNotificationsAuthorized.value = status.isGranted;
+
+      if (status.isGranted) {
+        notificationsStatus.value = 'Granted';
+      } else if (status.isDenied) {
+        notificationsStatus.value = 'Denied';
+      } else if (status.isPermanentlyDenied) {
+        notificationsStatus.value = 'Blocked';
+      } else {
+        notificationsStatus.value = 'Not Set';
+      }
+
+      debugPrint('📱 Notification permission status: ${notificationsStatus.value}');
+    } catch (e) {
+      debugPrint('❌ Error checking notification permission: $e');
+      notificationsStatus.value = 'Unknown';
+      isNotificationsAuthorized.value = false;
+    }
   }
 
   /// Request Notifications permission
@@ -167,12 +187,78 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
     final context = Get.context;
     if (context == null) return;
 
-    // TODO: Implement notifications permission request
-    FastToast.showInfo(
-      context: context,
-      title: 'Coming Soon',
-      message: 'Notification permissions will be implemented next',
-    );
+    try {
+      // Check current status first
+      final currentStatus = await Permission.notification.status;
+
+      // If permanently denied, go directly to settings
+      if (currentStatus.isPermanentlyDenied) {
+        debugPrint('⚠️ Notifications permanently denied - opening settings');
+        await _openNotificationSettings(context);
+        return;
+      }
+
+      // Initialize notification service if needed
+      await _notificationService.initialize();
+
+      // Request permission
+      debugPrint('📱 Requesting notification permission...');
+      final granted = await _notificationService.requestPermissions();
+
+      // Refresh status
+      await checkNotificationsPermission();
+
+      if (granted) {
+        FastToast.showSuccess(
+          context: context,
+          title: 'Notifications Enabled',
+          message: 'You\'ll receive reminders to re-lock apps and pray',
+        );
+      } else {
+        // Permission denied - offer to open settings
+        FastToast.showWarning(
+          context: context,
+          title: 'Notifications Disabled',
+          message: 'Tap to open Settings and enable notifications',
+          duration: const Duration(seconds: 4),
+        );
+
+        // Wait a bit then open settings
+        await Future.delayed(const Duration(milliseconds: 500));
+        await _openNotificationSettings(context);
+      }
+    } catch (e) {
+      debugPrint('❌ Error requesting notification permission: $e');
+      FastToast.showError(
+        context: context,
+        title: 'Error',
+        message: 'Failed to request notification permission',
+      );
+    }
+  }
+
+  /// Open iOS Settings to notification page for the app
+  Future<void> _openNotificationSettings(BuildContext context) async {
+    try {
+      final opened = await openAppSettings();
+
+      if (!opened) {
+        FastToast.showError(
+          context: context,
+          title: 'Error',
+          message: 'Could not open Settings. Please enable notifications manually.',
+        );
+      } else {
+        debugPrint('✅ Opened app settings for notifications');
+      }
+    } catch (e) {
+      debugPrint('❌ Error opening settings: $e');
+      FastToast.showError(
+        context: context,
+        title: 'Error',
+        message: 'Could not open Settings',
+      );
+    }
   }
 
   /// Toggle master lock enabled/disabled
@@ -238,6 +324,9 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
         return;
       }
 
+      // Save count before showing picker to detect changes
+      final previousCount = selectedAppsCount.value;
+
       await _screenTimeService.presentAppPicker();
       await loadSelectedAppsCount();
 
@@ -246,22 +335,25 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
         await scheduleController.refreshSchedules();
       } catch (e) {}
 
-      if (selectedAppsCount.value > 0) {
-        await _setupSchedulesFromStorage();
-        if (context.mounted) {
-          FastToast.showSuccess(
-            context: context,
-            title: 'Apps Selected & Locked',
-            message: 'Your apps will be automatically blocked during scheduled times',
-          );
-        }
-      } else {
-        if (context.mounted) {
-          FastToast.showInfo(
-            context: context,
-            title: 'No Apps Selected',
-            message: 'Select apps to enable blocking',
-          );
+      // Only show toast if selection changed
+      if (selectedAppsCount.value != previousCount) {
+        if (selectedAppsCount.value > 0) {
+          await _setupSchedulesFromStorage();
+          if (context.mounted) {
+            FastToast.showSuccess(
+              context: context,
+              title: 'Apps Selected & Locked',
+              message: 'Your apps will be automatically blocked during scheduled times',
+            );
+          }
+        } else {
+          if (context.mounted) {
+            FastToast.showInfo(
+              context: context,
+              title: 'No Apps Selected',
+              message: 'Select apps to enable blocking',
+            );
+          }
         }
       }
     } catch (e) {

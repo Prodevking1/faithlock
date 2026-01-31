@@ -163,6 +163,27 @@ class SettingsScreen extends StatelessWidget {
 
           _buildDivider(context),
 
+          // Notifications Toggle
+          Obx(() => _buildToggleTile(
+                context: context,
+                icon: CupertinoIcons.bell,
+                title: 'Enable Notifications',
+                subtitle: controller.isNotificationsAuthorized.value
+                    ? 'Get reminders to re-lock and pray'
+                    : 'Tap to enable notifications',
+                value: controller.isNotificationsAuthorized.value,
+                onChanged: (value) async {
+                  if (value) {
+                    await controller.requestNotificationsPermission();
+                  } else {
+                    // If user wants to disable, open settings
+                    await controller.requestNotificationsPermission();
+                  }
+                },
+              )),
+
+          _buildDivider(context),
+
           // Emergency Bypass
           _buildNavigationTile(
             context: context,

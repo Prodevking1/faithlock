@@ -16,6 +16,9 @@ class AutoNavigationService {
 
   Future<void> checkAndNavigate() async {
     try {
+      // Wait a bit to let notification handler execute first if app was launched by notification
+      await Future.delayed(const Duration(milliseconds: 1000));
+
       int attempts = 0;
       while (Get.context == null && attempts < 10) {
         await Future.delayed(const Duration(milliseconds: 500));
@@ -27,7 +30,9 @@ class AutoNavigationService {
       final shouldPray = await _checkPrayerFlag();
       if (shouldPray) {
         debugPrint('🙏 Prayer flag detected - navigating immediately');
-        _clearPrayerFlag();
+        // DON'T clear the flag here - let LocalNotificationService handle it
+        // This ensures the notification tap handler can also see the flag
+        // _clearPrayerFlag(); // REMOVED
         Get.toNamed(AppRoutes.prayerLearning);
         return;
       }

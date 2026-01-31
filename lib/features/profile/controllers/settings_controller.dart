@@ -1,7 +1,9 @@
 import 'package:faithlock/core/helpers/export.dart';
 import 'package:faithlock/services/rate_app_service.dart';
+import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -152,6 +154,43 @@ class SettingsController extends GetxController {
 
   Future<void> shareApp() async {
     UIHelper.showSuccessSnackBar('Share feature coming soon!');
+  }
+
+  // Subscription management
+  Future<void> manageSubscription() async {
+    try {
+      // Check if user has an active subscription
+      final revenueCatService = RevenueCatService.instance;
+
+      if (!revenueCatService.isInitialized) {
+        UIHelper.showErrorSnackBar(
+          'Subscription service not available. Please try again later.',
+        );
+        return;
+      }
+
+      // Get customer info to access subscription management URL
+      final customerInfo = await Purchases.getCustomerInfo();
+      final managementURL = customerInfo.managementURL;
+
+      if (managementURL != null) {
+        final uri = Uri.parse(managementURL);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        } else {
+          UIHelper.showErrorSnackBar('Could not open subscription management');
+        }
+      } else {
+        UIHelper.showErrorSnackBar(
+          'No active subscription found',
+        );
+      }
+    } catch (e) {
+      print('Error opening subscription management: $e');
+      UIHelper.showErrorSnackBar(
+        'Could not open subscription management',
+      );
+    }
   }
 
   // Clear all app data

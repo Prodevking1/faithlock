@@ -1,7 +1,9 @@
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/paywall/controllers/paywall_controller.dart';
-import 'package:flutter/cupertino.dart';
+// 🚫 DISABLED: Unused import (CupertinoSwitch is commented out)
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PaywallScreen extends StatelessWidget {
@@ -31,44 +33,44 @@ class PaywallScreen extends StatelessWidget {
         elevation: 0,
         leading: const SizedBox(width: 48),
         title: _buildHeader(isDark),
-        // actions: [
-        //   TweenAnimationBuilder<double>(
-        //       tween: Tween(begin: 0.0, end: 1.0),
-        //       duration: const Duration(seconds: 5),
-        //       builder: (context, value, child) {
-        //         if (value < 1.0) {
-        //           return Container(
-        //             height: 24,
-        //             width: 24,
-        //             margin: const EdgeInsets.only(right: 8),
-        //             child: CircularProgressIndicator(
-        //               strokeWidth: 2,
-        //               value: value,
-        //               valueColor:
-        //                   const AlwaysStoppedAnimation<Color>(Colors.grey),
-        //               backgroundColor: Colors.grey.withValues(alpha: 0.2),
-        //             ),
-        //           );
-        //         }
-        //         return GestureDetector(
-        //           onTap: controller.closePaywall,
-        //           child: Container(
-        //             width: 32,
-        //             height: 32,
-        //             margin: const EdgeInsets.only(right: 8),
-        //             decoration: BoxDecoration(
-        //               color: Colors.white.withValues(alpha: 0.08),
-        //               shape: BoxShape.circle,
-        //             ),
-        //             child: const Icon(
-        //               Icons.close,
-        //               size: 18,
-        //               color: Colors.white,
-        //             ),
-        //           ),
-        //         );
-        //       }),
-        // ],
+        actions: [
+          TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0.0, end: 1.0),
+              duration: const Duration(seconds: 5),
+              builder: (context, value, child) {
+                if (value < 1.0) {
+                  return Container(
+                    height: 24,
+                    width: 24,
+                    margin: const EdgeInsets.only(right: 8),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      value: value,
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(Colors.grey),
+                      backgroundColor: Colors.grey.withValues(alpha: 0.2),
+                    ),
+                  );
+                }
+                return GestureDetector(
+                  onTap: controller.closePaywall,
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.08),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }),
+        ],
       ),
       body: SafeArea(
         top: false,
@@ -253,29 +255,33 @@ class PaywallScreen extends StatelessWidget {
 
           const SizedBox(height: OnboardingTheme.space20),
 
+          // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+          // Will be re-enabled once Apple approves this feature
           // Free trial toggle
-          _buildFreeTrialToggle(isDark, controller),
+          // _buildFreeTrialToggle(isDark, controller),
 
           const SizedBox(height: OnboardingTheme.space24),
 
+          _buildUnlockButton(controller),
+
           // Unlock button
-          Obx(() {
-            final selectedIndex = controller.selectedPlanIndex.value;
-            return Column(
-              children: [
-                // if (selectedIndex == 1) ...[
-                //   Text(
-                //     'Cancel anytime. No commitment required.',
-                //     style: OnboardingTheme.caption.copyWith(
-                //       color: OnboardingTheme.labelSecondary,
-                //     ),
-                //   ),
-                //   const SizedBox(height: OnboardingTheme.space12),
-                // ],
-                _buildUnlockButton(controller),
-              ],
-            );
-          }),
+          // Obx(() {
+          //   // final selectedIndex = controller.selectedPlanIndex.value;
+          //   return Column(
+          //     children: [
+          //       // if (selectedIndex == 1) ...[
+          //       //   Text(
+          //       //     'Cancel anytime. No commitment required.',
+          //       //     style: OnboardingTheme.caption.copyWith(
+          //       //       color: OnboardingTheme.labelSecondary,
+          //       //     ),
+          //       //   ),
+          //       //   const SizedBox(height: OnboardingTheme.space12),
+          //       // ],
+          //       _buildUnlockButton(controller),
+          //     ],
+          //   );
+          // }),
 
           const SizedBox(height: OnboardingTheme.space20),
 
@@ -332,7 +338,6 @@ class PaywallScreen extends StatelessWidget {
         final int index = entry.key;
         final package = entry.value;
         final isSelected = controller.selectedPlanIndex.value == index;
-        final isYearly = controller.isYearlyPackage(package);
 
         return Column(
           children: [
@@ -423,61 +428,79 @@ class PaywallScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFreeTrialToggle(bool isDark, PaywallController controller) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Enable free trial',
-          style: OnboardingTheme.callout.copyWith(
-            color: OnboardingTheme.labelPrimary,
-          ),
-        ),
-        Obx(() => CupertinoSwitch(
-              value: controller.freeTrialEnabled.value,
-              onChanged: controller.toggleFreeTrial,
-              activeTrackColor: OnboardingTheme.goldColor,
-            )),
-      ],
-    );
-  }
+  // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
+  // Will be re-enabled once Apple approves this feature
+  // Reason: Apple rejected the ability for users to disable free trial
+  // This UI allows users to toggle free trial on/off
+  // Widget _buildFreeTrialToggle(bool isDark, PaywallController controller) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         'Enable free trial',
+  //         style: OnboardingTheme.callout.copyWith(
+  //           color: OnboardingTheme.labelPrimary,
+  //         ),
+  //       ),
+  //       Obx(() => CupertinoSwitch(
+  //             value: controller.freeTrialEnabled.value,
+  //             onChanged: controller.toggleFreeTrial,
+  //             activeTrackColor: OnboardingTheme.goldColor,
+  //           )),
+  //     ],
+  //   );
+  // }
 
   Widget _buildUnlockButton(PaywallController controller) {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ElevatedButton(
-        onPressed:
-            controller.isPurchasing.value ? null : controller.startSubscription,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: OnboardingTheme.goldColor,
-          foregroundColor: OnboardingTheme.backgroundColor,
-          disabledBackgroundColor:
-              OnboardingTheme.goldColor.withValues(alpha: 0.6),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
-          ),
-        ),
-        child: controller.isPurchasing.value
-            ? SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    OnboardingTheme.backgroundColor,
-                  ),
-                ),
-              )
-            : Text(
-                'Start Your Journey',
-                style: OnboardingTheme.callout.copyWith(
-                  color: OnboardingTheme.backgroundColor,
-                  fontWeight: FontWeight.w600,
-                ),
+    return Obx(() => SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: controller.isPurchasing.value
+                ? null
+                : () {
+                    HapticFeedback.mediumImpact();
+                    controller.startSubscription();
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: OnboardingTheme.goldColor,
+              foregroundColor: OnboardingTheme.backgroundColor,
+              disabledBackgroundColor:
+                  OnboardingTheme.goldColor.withValues(alpha: 0.6),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(OnboardingTheme.radiusMedium),
               ),
-      ),
-    );
+            ),
+            child: controller.isPurchasing.value
+                ? SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        OnboardingTheme.backgroundColor,
+                      ),
+                    ),
+                  )
+                : Text(
+                    (controller.selectedPlanIndex.value <
+                                controller.packages.length &&
+                            controller
+                                    .packages[
+                                        controller.selectedPlanIndex.value]
+                                    .storeProduct
+                                    .introductoryPrice !=
+                                null)
+                        ? 'Start Free Trial'
+                        : 'Start Your Journey',
+                    style: OnboardingTheme.callout.copyWith(
+                      color: OnboardingTheme.backgroundColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+          ),
+        ));
   }
 
   Widget _buildFooterLinks(bool isDark, PaywallController controller) {

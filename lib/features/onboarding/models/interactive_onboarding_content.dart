@@ -310,7 +310,7 @@ class InteractiveOnboardingContent {
           requiresActions: true,
           canSkip: true,
           skipLabel: 'Skip permissions',
-          continueLabel: 'Grant Permissions',
+          continueLabel: 'Continues',
         ),
 
         // Étape 5: Permissions optionnelles avancées

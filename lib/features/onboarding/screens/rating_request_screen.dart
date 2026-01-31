@@ -12,6 +12,7 @@ class RatingRequestScreen extends StatefulWidget {
   final String message;
   final VoidCallback onRate;
   final VoidCallback onSkip;
+  final bool useOnboardingWrapper;
 
   const RatingRequestScreen({
     super.key,
@@ -19,6 +20,7 @@ class RatingRequestScreen extends StatefulWidget {
     required this.message,
     required this.onRate,
     required this.onSkip,
+    this.useOnboardingWrapper = false,
   });
 
   @override
@@ -139,24 +141,22 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return OnboardingWrapper(
-      child: AnimatedOpacity(
-        opacity: _opacity,
-        duration: const Duration(milliseconds: 1000),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              left: OnboardingTheme.horizontalPadding,
-              right: OnboardingTheme.horizontalPadding,
-              top: 100,
-              bottom: OnboardingTheme.verticalPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
+  Widget _buildContent() {
+    return AnimatedOpacity(
+      opacity: _opacity,
+      duration: const Duration(milliseconds: 1000),
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            left: OnboardingTheme.horizontalPadding,
+            right: OnboardingTheme.horizontalPadding,
+            top: 100,
+            bottom: OnboardingTheme.verticalPadding,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
                 if (_introText.isNotEmpty)
                   RichText(
                     text: TextSpan(
@@ -294,10 +294,27 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                     ),
                   ),
                 ],
-              ],
-            ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Use OnboardingWrapper when in onboarding context
+    if (widget.useOnboardingWrapper) {
+      return OnboardingWrapper(
+        child: _buildContent(),
+      );
+    }
+
+    // Use plain Scaffold when called outside onboarding
+    return Scaffold(
+      backgroundColor: OnboardingTheme.backgroundColor,
+      body: SafeArea(
+        child: _buildContent(),
       ),
     );
   }

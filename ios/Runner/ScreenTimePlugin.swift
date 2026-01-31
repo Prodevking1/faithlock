@@ -29,7 +29,8 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
     private let store = ManagedSettingsStore(named: ManagedSettingsStore.Name("faithlock"))
 
     // App Group for sharing data between app and extensions
-    private let appGroupIdentifier = "group.com.faithlock.app"
+    // CRITICAL: Must match ShieldActionExtension and AppGroupStorage.dart
+    private let appGroupIdentifier = "group.com.appbiz.faithlock"
     private var sharedDefaults: UserDefaults? {
         return UserDefaults(suiteName: appGroupIdentifier)
     }
@@ -931,7 +932,7 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
     private func handleShouldNavigateToPrayer(result: @escaping FlutterResult) {
         // Read flag from App Group shared storage
-        let defaults = UserDefaults(suiteName: "group.com.appbiz.faithlock")
+        let defaults = UserDefaults(suiteName: appGroupIdentifier)
         let shouldNavigate = defaults?.bool(forKey: "should_navigate_to_prayer") ?? false
 
         if shouldNavigate {

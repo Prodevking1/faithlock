@@ -45,15 +45,15 @@ class OnboardingTheme {
   static const String bodyFontFamily = 'Garamond';
 
   // Garamond Font Sizes (optimized for serif readability)
-  static const double largeTitleSize = 48.0; // Large Title - larger for Garamond impact
-  static const double title1Size = 38.0; // Title 1 - biblical verses
-  static const double title2Size = 32.0; // Title 2 - biblical text size
-  static const double title3Size = 28.0; // Title 3 - questions (increased significantly)
-  static const double bodySize = 24.0; // Body - increased for serif readability
-  static const double calloutSize = 20.0; // Callout
-  static const double subheadSize = 18.0; // Subhead
-  static const double footnoteSize = 16.0; // Footnote - references
-  static const double caption1Size = 14.0; // Caption 1
+  static const double largeTitleSize = 42.0;
+  static const double title1Size = 34.0;
+  static const double title2Size = 26.0;
+  static const double title3Size = 22.0;
+  static const double bodySize = 20.0;
+  static const double calloutSize = 18.0;
+  static const double subheadSize = 16.0;
+  static const double footnoteSize = 14.0;
+  static const double caption1Size = 13.0;
 
   // Garamond Line Heights (more spacious for serif)
   static const double lineHeightTight = 1.3; // Increased for Garamond

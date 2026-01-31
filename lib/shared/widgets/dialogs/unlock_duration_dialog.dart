@@ -279,11 +279,11 @@ class _UnlockDurationSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CupertinoButton(
-                    child: const Text('Annuler'),
+                    child: const Text('Cancel'),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const Text(
-                    'Durée personnalisée',
+                    'Custom Duration',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
@@ -292,11 +292,9 @@ class _UnlockDurationSheet extends StatelessWidget {
                   CupertinoButton(
                     child: const Text('OK'),
                     onPressed: () {
-                      Navigator.pop(context); // Close picker
+                      Navigator.pop(context);
                       Navigator.pop(
-                          context,
-                          Duration(
-                              minutes: selectedMinutes)); // Return duration
+                          context, Duration(minutes: selectedMinutes));
                     },
                   ),
                 ],
@@ -309,7 +307,7 @@ class _UnlockDurationSheet extends StatelessWidget {
                     selectedMinutes = index + 1;
                   },
                   children: List.generate(
-                    120, // 1-120 minutes
+                    1440,
                     (index) => Center(
                       child: Text(
                         '${index + 1} minute${index + 1 > 1 ? 's' : ''}',

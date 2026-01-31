@@ -32,7 +32,7 @@ class RateAppService {
     return !shown;
   }
 
-  Future<void> showOnboardingPrompt() async {
+  Future<void> showOnboardingPrompt({bool useOnboardingWrapper = false}) async {
     if (!await shouldShowOnboardingPrompt()) return;
 
     await _storage.writeBool(_keyOnboardingPromptShown, true);
@@ -44,6 +44,7 @@ class RateAppService {
         title: 'Ready to help others? 💛',
         message:
             'If you\'re excited about your spiritual journey with FaithLock, help others discover it too!',
+        useOnboardingWrapper: useOnboardingWrapper,
         onRate: () async {
           if (_analytics.isReady) {
             await _analytics.events.track(
@@ -138,15 +139,22 @@ class RateAppService {
     try {
       debugPrint('🔔 Requesting in-app review...');
 
-      if (await _inAppReview.isAvailable()) {
-        await _inAppReview.requestReview();
-        await Future.delayed(const Duration(milliseconds: 300));
-        debugPrint('✅ Rate app prompt shown successfully');
-      } else {
-        debugPrint('⚠️ In-app review not available');
+      // Request in-app review (works on TestFlight if quota not exhausted)
+      await _inAppReview.requestReview();
+
+      await _storage.writeBool(_keyHasRated, true);
+      debugPrint('✅ In-app review requested');
+
+      if (_analytics.isReady) {
+        await _analytics.events.track(
+          PostHogEventType.rateCompleted,
+          {
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        );
       }
     } catch (e) {
-      debugPrint('❌ Error showing rate prompt: $e');
+      debugPrint('❌ Error showing rating: $e');
     }
   }
 }
