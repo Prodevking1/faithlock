@@ -3,6 +3,7 @@ import 'package:faithlock/core/constants/core/fast_spacing.dart';
 import 'package:faithlock/features/faithlock/controllers/unlock_controller.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/layout/export.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,7 +23,10 @@ class UnlockScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircularProgressIndicator.adaptive(),
+                  const JudahMascot(
+                    state: JudahState.sleeping,
+                    size: JudahSize.l,
+                  ),
                   FastSpacing.h16,
                   Text(
                     'Loading verse...',
@@ -74,21 +78,35 @@ class UnlockScreen extends StatelessWidget {
               children: [
                 FastSpacing.h24,
 
-                // Lock icon
+                // Judah mascot - state changes based on answer
                 Center(
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: FastColors.primary.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.lock_outline,
-                      size: 40,
-                      color: FastColors.primary,
-                    ),
-                  ),
+                  child: Obx(() {
+                    final isRevealed = controller.isAnswerRevealed.value;
+                    final selectedIdx = controller.selectedAnswer.value;
+                    final correctIdx = controller.currentQuiz.value?.correctAnswerIndex;
+                    final isCorrect = isRevealed && selectedIdx == correctIdx;
+                    final isWrong = isRevealed && selectedIdx != correctIdx;
+
+                    final JudahState mascotState;
+                    final String? mascotMessage;
+
+                    if (isCorrect) {
+                      mascotState = JudahState.happy;
+                      mascotMessage = 'Yes!';
+                    } else if (isWrong) {
+                      mascotState = JudahState.encouraging;
+                      mascotMessage = 'Try again.';
+                    } else {
+                      mascotState = JudahState.encouraging;
+                      mascotMessage = null;
+                    }
+
+                    return JudahMascot(
+                      state: mascotState,
+                      size: JudahSize.l,
+                      message: mascotMessage,
+                    );
+                  }),
                 ),
 
                 FastSpacing.h24,

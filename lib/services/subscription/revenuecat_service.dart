@@ -1,3 +1,4 @@
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -125,6 +126,72 @@ class RevenueCatService extends GetxService {
     } catch (e) {
       lastError.value = 'Unexpected error: $e';
       return PurchaseResult(success: false, error: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Purchase a subscription package with a promotional offer (iOS only).
+  ///
+  /// App Store Connect config:
+  ///   Weekly plan → Promotional Offers → Create
+  ///   Type: Free | Duration: 1 billing period (= 1 free week)
+  ///   Identifier: e.g. "faithlock_winback_freeweek"
+  ///
+  /// RevenueCat Dashboard:
+  ///   Settings → App Store Connect → Upload Subscription Key (.p8)
+  Future<PurchaseResult> purchaseWithPromotionalOffer(Package package) async {
+    try {
+      isLoading.value = true;
+      lastError.value = '';
+
+      final product = package.storeProduct;
+      final discounts = product.discounts;
+
+      // Check if product has promotional offers configured
+      if (discounts == null || discounts.isEmpty) {
+        debugPrint('⚠️ [RevenueCat] No promotional offers on product — falling back to normal purchase');
+        return purchaseSubscription(package);
+      }
+
+      // Use the first available promotional offer
+      final discount = discounts.first;
+      debugPrint('🎁 [RevenueCat] Found promotional offer: ${discount.identifier}');
+
+      // Get signed promotional offer from RevenueCat
+      final promoOffer = await Purchases.getPromotionalOffer(product, discount);
+
+      // Purchase with the promotional offer (iOS only)
+      final purchaserInfo =
+          await Purchases.purchaseDiscountedPackage(package, promoOffer);
+
+      await _refreshCustomerInfo();
+
+      return PurchaseResult(
+        success: true,
+        customerInfo: purchaserInfo.customerInfo,
+        transaction: purchaserInfo.storeTransaction,
+      );
+    } on PlatformException catch (e) {
+      final errorCode = PurchasesErrorHelper.getErrorCode(e);
+
+      // If promotional offer fails, fall back to normal purchase
+      if (errorCode == PurchasesErrorCode.invalidPromotionalOfferError ||
+          errorCode == PurchasesErrorCode.ineligibleError) {
+        debugPrint('⚠️ [RevenueCat] Promo offer ineligible — falling back to normal purchase');
+        return purchaseSubscription(package);
+      }
+
+      if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
+        return PurchaseResult(success: false, error: 'Purchase was cancelled');
+      }
+
+      lastError.value = 'Purchase failed: ${e.message}';
+      return PurchaseResult(success: false, error: e.message);
+    } catch (e) {
+      debugPrint('⚠️ [RevenueCat] Promo purchase error — falling back: $e');
+      // Fallback to normal purchase on any error
+      return purchaseSubscription(package);
     } finally {
       isLoading.value = false;
     }
@@ -299,6 +366,7 @@ class RevenueCatService extends GetxService {
     if (_currentCustomerInfo == null) return;
 
     final activeEntitlements = _currentCustomerInfo!.entitlements.active;
+    final wasActive = isSubscriptionActive.value;
     isSubscriptionActive.value = activeEntitlements.isNotEmpty;
 
     if (activeEntitlements.isNotEmpty) {
@@ -321,11 +389,24 @@ class RevenueCatService extends GetxService {
               .add(Duration(days: 7));
         }
       }
+
+      // User just subscribed — cancel win-back notifications
+      if (!wasActive && isSubscriptionActive.value) {
+        debugPrint('🎉 [RevenueCat] Subscription activated — cancelling win-back');
+        WinBackNotificationService().cancelWinBackSequence(reason: 'subscribed');
+      }
     } else {
       subscriptionTier.value = '';
       subscriptionEndDate.value = null;
       isInFreeTrial.value = false;
       trialEndDate.value = null;
+
+      // Subscription just expired — trigger win-back notifications
+      if (wasActive && !isSubscriptionActive.value) {
+        debugPrint('⚠️ [RevenueCat] Subscription expired — scheduling win-back');
+        WinBackNotificationService()
+            .scheduleWinBackSequence(source: 'subscription_expired');
+      }
     }
   }
 

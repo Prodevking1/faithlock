@@ -1,6 +1,5 @@
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
-import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
@@ -156,12 +155,12 @@ class _Step9NotificationPermissionState
 
       if (!mounted) return;
 
-      // Complete onboarding and navigate to summary screen
+      // Complete onboarding and go to mascot transition
       await controller.completeOnboarding();
 
       if (!mounted) return;
 
-      Get.off(() => const OnboardingSummaryScreen());
+      controller.nextStep();
     } catch (e) {
       debugPrint('❌ Error requesting Notifications permission: $e');
 
@@ -175,7 +174,7 @@ class _Step9NotificationPermissionState
 
       if (!mounted) return;
 
-      Get.off(() => const OnboardingSummaryScreen());
+      controller.nextStep();
     } finally {
       if (mounted) {
         setState(() {
@@ -201,7 +200,7 @@ class _Step9NotificationPermissionState
     if (shouldSkip) {
       await _prefs.writeBool('notification_permission_asked', true);
       await controller.completeOnboarding();
-      Get.off(() => const OnboardingSummaryScreen());
+      controller.nextStep();
     }
   }
 

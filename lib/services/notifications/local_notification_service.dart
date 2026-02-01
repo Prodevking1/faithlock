@@ -2,6 +2,7 @@ import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/services/app_group_storage.dart';
 import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/export.dart';
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -106,6 +107,34 @@ class LocalNotificationService {
           Get.offAllNamed(AppRoutes.relockInProgress);
 
           debugPrint('✅ Navigated to relock screen');
+        }
+
+        // Handle win-back notifications (winback_0, winback_1, ..., winback_4)
+        if (payload.startsWith(WinBackNotificationService.payloadPrefix)) {
+          debugPrint('💰 Win-back notification tapped: $payload');
+
+          // Extract notification index for tracking
+          final parts = payload.split('_');
+          if (parts.length == 2) {
+            final index = int.tryParse(parts[1]);
+            if (index != null) {
+              WinBackNotificationService().trackNotificationTapped(index);
+
+              // If this is the offer notification (#3, index 2),
+              // mark promo eligible and go directly to paywall
+              if (index == WinBackNotificationService.offerNotificationIndex) {
+                await WinBackNotificationService().markPromoEligible();
+                debugPrint('🎁 Win-back promo notification tapped — navigating to paywall with promo');
+                // Navigate to main — PaywallController will detect promo flag
+                Get.offAllNamed(AppRoutes.main);
+                return;
+              }
+            }
+          }
+
+          // For other win-back notifications, navigate to main
+          Get.offAllNamed(AppRoutes.main);
+          debugPrint('✅ Navigated to main from win-back notification');
         }
       }
     }

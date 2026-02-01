@@ -120,7 +120,7 @@ class ScriptureOnboardingController extends GetxController {
       await _trackStepExit();
     }
 
-    if (currentStep.value < 9) {
+    if (currentStep.value < 10) {
       currentStep.value++;
 
       // Track new step entry
@@ -132,7 +132,7 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Jump to specific step (debug only)
   void jumpToStep(int step) {
-    if (step >= 1 && step <= 9) {
+    if (step >= 1 && step <= 10) {
       currentStep.value = step;
     }
   }
@@ -488,6 +488,8 @@ class ScriptureOnboardingController extends GetxController {
         return 'Screen Time Permission';
       case 9:
         return 'Notification Permission';
+      case 10:
+        return 'Mascot Transition';
       default:
         return 'Unknown Step';
     }

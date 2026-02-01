@@ -2,7 +2,9 @@ import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,6 +45,12 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
     );
 
     _startAnimation();
+    _triggerWinBack();
+  }
+
+  void _triggerWinBack() {
+    WinBackNotificationService()
+        .scheduleWinBackSequence(source: 'expired_screen');
   }
 
   @override
@@ -128,35 +136,16 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Animated icon
+                // Judah sad mascot
                 AnimatedBuilder(
                   animation: _pulseAnimation,
                   builder: (context, child) {
                     return Transform.scale(
                       scale: _pulseAnimation.value,
-                      child: Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              OnboardingTheme.goldColor.withValues(alpha: 0.3),
-                              OnboardingTheme.goldColor.withValues(alpha: 0.1),
-                            ],
-                          ),
-                          border: Border.all(
-                            color: OnboardingTheme.goldColor,
-                            width: 3,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.schedule,
-                          size: 60,
-                          color: OnboardingTheme.goldColor,
-                        ),
+                      child: const JudahMascot(
+                        state: JudahState.sad,
+                        size: JudahSize.xl,
+                        showMessage: false,
                       ),
                     );
                   },

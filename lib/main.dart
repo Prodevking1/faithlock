@@ -11,6 +11,7 @@ import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/auto_navigation_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/notifications/notification_navigation_service.dart';
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -127,6 +128,14 @@ void _initializeNonCriticalServices() {
     // } catch (e) {
     //   debugPrint('⚠️ DeepLinkService initialization failed: $e');
     // }
+
+    // Win-back: check if sequence completed (after RevenueCat)
+    try {
+      await WinBackNotificationService().checkAndMarkCompleted();
+      debugPrint('✅ WinBackNotificationService checked');
+    } catch (e) {
+      debugPrint('⚠️ WinBackNotificationService check failed: $e');
+    }
 
     try {
       // Unlock Timer Service

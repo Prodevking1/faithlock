@@ -6,6 +6,7 @@ import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_icon_button.dart';
 import 'package:faithlock/shared/widgets/dialogs/unlock_duration_dialog.dart';
 import 'package:faithlock/shared/widgets/inputs/fast_text_input.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -652,10 +653,11 @@ class PrayerLearningScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Victory icon
-                Text(
-                  '🎉✨',
-                  style: TextStyle(fontSize: 60),
+                // Judah celebrating
+                const JudahMascot(
+                  state: JudahState.happy,
+                  size: JudahSize.xl,
+                  showMessage: false,
                 ),
 
                 const SizedBox(height: 24),

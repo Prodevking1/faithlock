@@ -4,6 +4,7 @@ import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/controls/fast_slider.dart';
 import 'package:faithlock/shared/widgets/inputs/fast_text_input.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
 
   String _introText = '';
   bool _showIntroCursor = false;
+  bool _showMascot = false;
   bool _showNameInput = false;
   bool _showAgeInput = false;
   double _userAge = 21.0;
@@ -52,6 +54,10 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
 
   Future<void> _startAnimation() async {
     await Future.delayed(Duration(milliseconds: 300));
+
+    // Show Judah mascot first
+    setState(() => _showMascot = true);
+    await Future.delayed(Duration(milliseconds: 600));
 
     // Ask for name first (iOS-optimized timing)
     await AnimationUtils.typeText(
@@ -78,9 +84,10 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
     await controller.saveUserName(name);
     await AnimationUtils.heavyHaptic();
 
-    // Hide name input and ask for age
+    // Hide name input, mascot, and ask for age
     setState(() {
       _showNameInput = false;
+      _showMascot = false;
       _introText = '';
       _showIntroCursor = false;
     });
@@ -135,6 +142,22 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Judah mascot greeting
+              if (_showMascot)
+                Center(
+                  child: AnimatedOpacity(
+                    opacity: _showMascot ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 600),
+                    child: const JudahMascot(
+                      state: JudahState.neutral,
+                      size: JudahSize.xl,
+                      showMessage: false,
+                    ),
+                  ),
+                ),
+              if (_showMascot && _introText.isNotEmpty)
+                const SizedBox(height: OnboardingTheme.space24),
+
               // Intro text (iOS-styled, centered)
               if (_introText.isNotEmpty)
                 RichText(

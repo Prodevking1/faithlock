@@ -1,11 +1,12 @@
 import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' hide PurchaseResult;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +31,9 @@ class PaywallController extends GetxController
   final RxInt selectedPlanIndex = 0.obs;
   final RxString lastError = ''.obs;
   final RxBool isPurchasing = false.obs;
+
+  // Win-back promo state
+  final RxBool isWinBackPromo = false.obs;
 
   // RevenueCat data
   final RxList<Package> packages = <Package>[].obs;
@@ -59,7 +63,30 @@ class PaywallController extends GetxController
     _initializeAnimations();
     _loadSettings();
     _bindPromoCodeController();
+    _checkWinBackPromo();
     _loadOfferings();
+  }
+
+  /// Check if user is eligible for win-back promo (48h window)
+  Future<void> _checkWinBackPromo() async {
+    try {
+      final eligible = await WinBackNotificationService().isPromoEligible();
+      isWinBackPromo.value = eligible;
+
+      if (eligible) {
+        debugPrint('🎁 [Paywall] Win-back promo detected — will pre-select monthly');
+
+        // Track promo paywall viewed
+        if (_analytics.isReady) {
+          _analytics.events.trackCustom('winback_promo_paywall_viewed', {
+            'placement_id': placementId ?? 'unknown',
+            'timestamp': DateTime.now().toIso8601String(),
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('⚠️ [Paywall] Error checking win-back promo: $e');
+    }
   }
 
   void _initializeAnimations() {
@@ -119,10 +146,23 @@ class PaywallController extends GetxController
 
       packages.value = availablePackages;
 
-      // Select yearly plan by default if available
-      selectedPlanIndex.value = availablePackages.indexWhere(isYearlyPackage);
-      if (selectedPlanIndex.value == -1) {
-        selectedPlanIndex.value = 0;
+      // If win-back promo is active, pre-select weekly plan (lower commitment)
+      if (isWinBackPromo.value) {
+        final weeklyIndex =
+            availablePackages.indexWhere((pkg) => !isYearlyPackage(pkg));
+        if (weeklyIndex != -1) {
+          selectedPlanIndex.value = weeklyIndex;
+          debugPrint('🎁 [Paywall] Pre-selected weekly plan for win-back promo');
+        } else {
+          selectedPlanIndex.value = 0;
+        }
+      } else {
+        // Select yearly plan by default if available
+        selectedPlanIndex.value =
+            availablePackages.indexWhere(isYearlyPackage);
+        if (selectedPlanIndex.value == -1) {
+          selectedPlanIndex.value = 0;
+        }
       }
 
       // 🚫 DISABLED: Apple App Review rejection - Free trial toggle
@@ -327,8 +367,9 @@ class PaywallController extends GetxController
   }
 
   void closePaywall() {
-    // ❌ trackPaywallDismissed désactivé - événement redondant
-    // Métrique équivalente: bounce_rate = 1 - (completed / viewed)
+    // Trigger win-back sequence when user closes without subscribing
+    WinBackNotificationService()
+        .scheduleWinBackSequence(source: 'paywall_closed');
 
     if (redirectToHomeOnClose) {
       Get.until((route) => route.isFirst);
@@ -362,13 +403,36 @@ class PaywallController extends GetxController
       // ❌ trackPurchaseStarted désactivé - événement redondant
       // Métrique équivalente: total_attempts = completed + failed
 
-      // Attempt purchase
-      final result = await _revenueCat.purchaseSubscription(selectedPackage);
+      // Attempt purchase — use promotional offer if win-back promo
+      final PurchaseResult result;
+      if (isWinBackPromo.value) {
+        debugPrint('🎁 [Paywall] Attempting purchase with promotional offer');
+        result =
+            await _revenueCat.purchaseWithPromotionalOffer(selectedPackage);
+      } else {
+        result = await _revenueCat.purchaseSubscription(selectedPackage);
+      }
 
       if (result.success) {
         debugPrint('✅ [Paywall] Purchase successful!');
         debugPrint(
             '📦 [Paywall] Customer Info: ${result.customerInfo?.entitlements.active}');
+
+        // Clear win-back promo eligibility after successful purchase
+        if (isWinBackPromo.value) {
+          await WinBackNotificationService().clearPromoEligible();
+
+          // Track promo conversion
+          if (_analytics.isReady) {
+            _analytics.events.trackCustom('winback_promo_converted', {
+              'plan_type': getPlanTitle(selectedPackage).toLowerCase(),
+              'plan_id': selectedPackage.identifier,
+              'revenue': product.price,
+              'currency': product.currencyCode,
+              'timestamp': DateTime.now().toIso8601String(),
+            });
+          }
+        }
 
         // Track purchase completed
         if (_analytics.isReady) {

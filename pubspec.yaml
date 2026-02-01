@@ -99,6 +99,7 @@ flutter:
     - assets/icons/
     - assets/fonts/
     - assets/databases/
+    - assets/mascot/
     - shorebird.yaml
 
   fonts:

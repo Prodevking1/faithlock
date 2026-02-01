@@ -248,7 +248,77 @@ class PaywallScreen extends StatelessWidget {
           // Features list
           _buildFeaturesList(isDark),
 
-          const SizedBox(height: OnboardingTheme.space32),
+          // Win-back promo banner
+          Obx(() {
+            if (!controller.isWinBackPromo.value) {
+              return const SizedBox.shrink();
+            }
+            return Padding(
+              padding:
+                  const EdgeInsets.only(bottom: OnboardingTheme.space20),
+              child: Container(
+                padding: const EdgeInsets.all(OnboardingTheme.space16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      OnboardingTheme.goldColor.withValues(alpha: 0.15),
+                      OnboardingTheme.goldColor.withValues(alpha: 0.08),
+                    ],
+                  ),
+                  borderRadius:
+                      BorderRadius.circular(OnboardingTheme.radiusMedium),
+                  border: Border.all(
+                    color: OnboardingTheme.goldColor.withValues(alpha: 0.5),
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          const EdgeInsets.all(OnboardingTheme.space8),
+                      decoration: BoxDecoration(
+                        color:
+                            OnboardingTheme.goldColor.withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.card_giftcard,
+                        size: 20,
+                        color: OnboardingTheme.goldColor,
+                      ),
+                    ),
+                    const SizedBox(width: OnboardingTheme.space12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your free week is here',
+                            style: OnboardingTheme.callout.copyWith(
+                              color: OnboardingTheme.goldColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '7 days free — no payment required',
+                            style: OnboardingTheme.footnote.copyWith(
+                              color: OnboardingTheme.labelSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+
+          const SizedBox(height: OnboardingTheme.space12),
 
           // Pricing plans
           Obx(() => _buildPricingPlans(isDark, controller)),

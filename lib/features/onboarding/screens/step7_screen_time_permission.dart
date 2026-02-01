@@ -6,6 +6,7 @@ import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_confirmation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -258,31 +259,11 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                   const SizedBox(height: 24),
 
                   // Icon illustratif avec animation
-                  Center(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                            OnboardingTheme.goldColor.withValues(alpha: 0.05),
-                          ],
-                        ),
-                        border: Border.all(
-                          color:
-                              OnboardingTheme.goldColor.withValues(alpha: 0.4),
-                          width: 2,
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.shield,
-                        size: 50,
-                        color: OnboardingTheme.goldColor,
-                      ),
+                  const Center(
+                    child: JudahMascot(
+                      state: JudahState.pointing,
+                      size: JudahSize.l,
+                      showMessage: false,
                     ),
                   ),
 

@@ -10,6 +10,9 @@ import 'package:faithlock/features/onboarding/screens/step4_call_to_covenant.dar
 import 'package:faithlock/features/onboarding/screens/step6_final_encouragement.dart';
 import 'package:faithlock/features/onboarding/screens/step7_screen_time_permission.dart';
 import 'package:faithlock/features/onboarding/screens/step9_notification_permission.dart';
+import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -68,6 +71,11 @@ class ScriptureOnboardingScreen extends StatelessWidget {
 
               case 9:
                 return const Step9NotificationPermission();
+
+              case 10:
+                return _MascotTransitionStep(
+                  userName: controller.userName.value,
+                );
 
               default:
                 return Scaffold(
@@ -282,6 +290,80 @@ class ScriptureOnboardingScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Mascot transition step - Judah proud moment before summary
+class _MascotTransitionStep extends StatefulWidget {
+  final String userName;
+
+  const _MascotTransitionStep({required this.userName});
+
+  @override
+  State<_MascotTransitionStep> createState() => _MascotTransitionStepState();
+}
+
+class _MascotTransitionStepState extends State<_MascotTransitionStep> {
+  bool _showContent = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTransition();
+  }
+
+  Future<void> _startTransition() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    setState(() => _showContent = true);
+
+    // Auto-navigate to summary after 3 seconds
+    await Future.delayed(const Duration(seconds: 3));
+    if (mounted) {
+      Get.off(() => const OnboardingSummaryScreen());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OnboardingWrapper(
+      child: AnimatedOpacity(
+        opacity: _showContent ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 800),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: OnboardingTheme.horizontalPadding,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const JudahMascot(
+                  state: JudahState.proud,
+                  size: JudahSize.xl,
+                  showMessage: false,
+                ),
+                const SizedBox(height: OnboardingTheme.space32),
+                Text(
+                  'All set, ${widget.userName}.',
+                  style: OnboardingTheme.title2.copyWith(
+                    color: OnboardingTheme.labelPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: OnboardingTheme.space16),
+                Text(
+                  "I've got your back.",
+                  style: OnboardingTheme.title3.copyWith(
+                    color: OnboardingTheme.goldColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

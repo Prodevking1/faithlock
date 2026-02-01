@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/shared/widgets/animations/confetti_celebration.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -157,35 +158,19 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Animated icon
+                // Judah mascot - state changes based on relock progress
                 ScaleTransition(
                   scale: _scaleAnimation,
                   child: FadeTransition(
                     opacity: _opacityAnimation,
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: _isRelocking
-                            ? FastColors.primary.withValues(alpha: 0.1)
-                            : _relockSuccess
-                                ? Colors.green.withValues(alpha: 0.1)
-                                : Colors.red.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _isRelocking
-                            ? CupertinoIcons.lock_rotation
-                            : _relockSuccess
-                                ? CupertinoIcons.lock_fill
-                                : CupertinoIcons.exclamationmark_triangle,
-                        size: 60,
-                        color: _isRelocking
-                            ? FastColors.primary
-                            : _relockSuccess
-                                ? Colors.green
-                                : Colors.red,
-                      ),
+                    child: JudahMascot(
+                      state: _isRelocking
+                          ? JudahState.encouraging
+                          : _relockSuccess
+                              ? JudahState.happy
+                              : JudahState.sad,
+                      size: JudahSize.xl,
+                      showMessage: false,
                     ),
                   ),
                 ),

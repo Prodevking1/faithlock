@@ -3,6 +3,7 @@ import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/core/constants/core/fast_spacing.dart';
 import 'package:faithlock/features/faithlock/controllers/stats_controller.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,15 +38,29 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (controller.lockedAppsCount.value == 0) {
+      final name = controller.userName.value.isNotEmpty
+          ? controller.userName.value
+          : 'Friend';
+
       final shouldSelect = await showCupertinoDialog<bool>(
             context: context,
             builder: (context) => CupertinoAlertDialog(
-              title: const Text('🔒 No Apps Locked'),
-              content: const Padding(
-                padding: EdgeInsets.only(top: 12),
+              title: Column(
+                children: [
+                  JudahMascot(
+                    state: JudahState.pointing,
+                    size: JudahSize.l,
+                    showMessage: false,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('No Apps Locked'),
+                ],
+              ),
+              content: Padding(
+                padding: const EdgeInsets.only(top: 12),
                 child: Text(
-                  'You haven\'t selected any apps to lock yet. Would you like to choose some apps now?',
-                  style: TextStyle(fontSize: 14),
+                  'Pick the apps to block, $name.',
+                  style: const TextStyle(fontSize: 14),
                 ),
               ),
               actions: [
@@ -138,65 +153,77 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     );
   }
 
-  /// Compact header (60px)
-  Widget _buildHeader(BuildContext context) {
+  /// Determine Judah's state and message based on context
+  JudahState _getJudahState() {
+    final streak = controller.userStats.value?.currentStreak ?? 0;
+    final previousStreak = controller.userStats.value?.longestStreak ?? 0;
+
+    // Streak lost: had streak before but now 0
+    if (streak == 0 && previousStreak > 0) {
+      return JudahState.sad;
+    }
+
+    // Streak 7+ days: proud
+    if (streak >= 7) {
+      return JudahState.proud;
+    }
+
+    // Evening: praying
+    final hour = DateTime.now().hour;
+    if (hour >= 20) {
+      return JudahState.praying;
+    }
+
+    // Default: neutral
+    return JudahState.neutral;
+  }
+
+  String _getJudahMessage() {
     final name = controller.userName.value.isNotEmpty
         ? controller.userName.value
         : 'Friend';
+    final streak = controller.userStats.value?.currentStreak ?? 0;
+    final previousStreak = controller.userStats.value?.longestStreak ?? 0;
+    final hour = DateTime.now().hour;
 
+    if (streak == 0 && previousStreak > 0) {
+      return 'New day, $name.';
+    }
+    if (streak >= 7) {
+      return '$streak days. Respect.';
+    }
+    if (hour < 12) {
+      return 'Morning, $name.';
+    }
+    if (hour < 18) {
+      return 'Keep going, $name.';
+    }
+    if (hour < 20) {
+      return 'Almost there, $name.';
+    }
+    return 'Peaceful evening, $name.';
+  }
+
+  /// Compact header with Judah mascot (60px)
+  Widget _buildHeader(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 6),
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                  ),
-                  children: [
-                    const TextSpan(
-                      text: 'May your day be ',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: 'Blessed, $name.',
-                      style: TextStyle(color: OnboardingTheme.goldColor),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        // Judah mascot replaces the initials avatar
+        JudahMascot(
+          state: _getJudahState(),
+          size: JudahSize.m,
+          showMessage: false,
         ),
         const SizedBox(width: 12),
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                OnboardingTheme.goldColor,
-                OnboardingTheme.goldColor.withValues(alpha: 0.7),
-              ],
-            ),
-          ),
-          child: Center(
-            child: Text(
-              name[0].toUpperCase(),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        Expanded(
+          child: Text(
+            _getJudahMessage(),
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.2,
             ),
           ),
         ),

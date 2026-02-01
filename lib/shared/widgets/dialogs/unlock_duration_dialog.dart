@@ -1,5 +1,6 @@
 import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _UnlockDurationSheet extends StatelessWidget {
           top: false,
           child: Column(
             children: [
-              // Header
+              // Header with Judah proud
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -46,12 +47,18 @@ class _UnlockDurationSheet extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
+                    const JudahMascot(
+                      state: JudahState.proud,
+                      size: JudahSize.m,
+                      showMessage: false,
+                    ),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FastText.title1(
-                            '🔓 Unlock apps',
+                            'Unlock apps',
                           ),
                           const SizedBox(height: 4),
                           Text(
