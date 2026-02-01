@@ -44,6 +44,7 @@ app.*.map.json
 
 # Sensitive files
 lib/core/config/env.dart
+.env
 .env.development
 .env.staging
 .env.production
