@@ -67,7 +67,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
   Future<void> _phase71Introduction() async {
     await AnimationUtils.typeText(
       fullText:
-          '${controller.userName.value}, this is the final step to activate your spiritual shield...',
+          'screenPerm_intro'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _introText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntroCursor = visible),
@@ -85,7 +85,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
 
     await AnimationUtils.typeText(
       fullText:
-          'To protect you with Scripture every time you unlock, I need Screen Time permission.\n\nWithout this, your shield cannot activate.',
+          'screenPerm_explanation'.tr,
       onUpdate: (text) => setState(() => _explanationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showExplanationCursor = visible),
@@ -147,11 +147,11 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
 
     // Show confirmation dialog with high friction using FastConfirmationDialog
     final shouldSkip = await FastConfirmationDialog.show(
-      title: 'Continue Without Protection?',
+      title: 'screenPerm_dialogTitle'.tr,
       message:
-          'Without Screen Time permission, FaithLock cannot protect you from your chosen apps.\n\nYou can enable this later in Settings.',
-      confirmText: 'Skip for Now',
-      cancelText: 'Continue',
+          'screenPerm_dialogMessage'.tr,
+      confirmText: 'screenPerm_skipForNow'.tr,
+      cancelText: 'continue_btn'.tr,
       isDestructiveConfirm: false,
     );
 
@@ -247,7 +247,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                   // Main message
                   Center(
                     child: Text(
-                      'Activate Your Spiritual Shield',
+                      'screenPerm_activateTitle'.tr,
                       style: OnboardingTheme.title2.copyWith(
                         color: OnboardingTheme.labelPrimary,
                         fontWeight: FontWeight.w600,
@@ -272,17 +272,17 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                   // Benefits list
                   _buildBenefitItem(
                     icon: Icons.menu_book,
-                    text: 'Scripture appears before you unlock',
+                    text: 'screenPerm_benefit1'.tr,
                   ),
                   const SizedBox(height: 16),
                   _buildBenefitItem(
                     icon: Icons.security,
-                    text: 'Your chosen apps are protected',
+                    text: 'screenPerm_benefit2'.tr,
                   ),
                   const SizedBox(height: 16),
                   _buildBenefitItem(
                     icon: Icons.trending_up,
-                    text: 'Build discipline through daily verses',
+                    text: 'screenPerm_benefit3'.tr,
                   ),
 
                   const SizedBox(height: 40),
@@ -291,8 +291,8 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                   Center(
                     child: FastButton(
                       text: _isRequestingPermission
-                          ? 'Requesting...'
-                          : 'Continue',
+                          ? 'screenPerm_requesting'.tr
+                          : 'continue_btn'.tr,
                       onTap:
                           _isRequestingPermission ? null : _onConnectScreenTime,
                       backgroundColor: OnboardingTheme.goldColor,

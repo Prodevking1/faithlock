@@ -2,19 +2,23 @@ import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-/// Win-back notification service — 5 high-quality notifications then silence.
+/// Win-back notification service — 4 strategy notifications then silence.
 ///
-/// Notification IDs: 200-204 (avoiding 100-124 used by UnlockTimerService)
+/// Notification IDs: 200-204
 ///
 /// Sequence:
-/// - +2h:   The Gift (pure value, no ask)
-/// - +24h:  The Mirror (identity + aspiration)
-/// - +3d:   The Offer (50% off, 48h urgency)
+/// - +1h:   The Offer (free week, strike while warm)
+/// - +24h:  The Offer Reminder (second chance)
+/// - +3d:   The Mirror (identity + aspiration)
 /// - +5d:   The Story (testimonial + emotion)
 /// - +7d:   The Goodbye (reverse psychology, final)
 ///
-/// After notification 5, the sequence stops permanently.
+/// Daily Bible verses continue independently via DailyVerseNotificationService
+/// at the user's configured times (1-3x/day from onboarding).
+///
+/// After the goodbye, the sequence stops permanently.
 /// Respecting the user = they keep notifications enabled for the app.
 class WinBackNotificationService {
   static final WinBackNotificationService _instance =
@@ -41,48 +45,45 @@ class WinBackNotificationService {
   // Payload prefix for tap handling
   static const String payloadPrefix = 'winback';
 
-  // The offer notification index (notification #3 = index 2)
-  static const int offerNotificationIndex = 2;
+  // The offer notification indices (index 0 = +1h, index 1 = +24h reminder)
+  static const int offerNotificationIndex = 0;
+  static const int offerReminderNotificationIndex = 1;
 
-  /// The 5-notification sequence
-  static const List<_WinBackNotification> _sequence = [
-    // +2h — The Gift: pure value, zero ask
+  /// The 5-notification win-back strategy sequence
+  static final List<_WinBackNotification> _sequence = [
+    // +1h — The Offer: free week, strike while warm
     _WinBackNotification(
       index: 0,
-      delay: Duration(hours: 2),
-      title: 'A verse for your evening',
-      body:
-          '"The LORD himself goes before you and will be with you; he will never leave you." — Deuteronomy 31:8. No subscription needed for this one.',
-      strategy: 'gift',
+      delay: Duration(hours: 1),
+      title: 'winback_title2'.tr,
+      body: 'winback_body2'.tr,
+      strategy: 'offer',
     ),
 
-    // +24h — The Mirror: identity + aspiration
+    // +24h — The Offer Reminder: second chance
     _WinBackNotification(
       index: 1,
       delay: Duration(hours: 24),
-      title: 'You installed FaithLock for a reason',
-      body:
-          'Something made you want to change. That desire? It\'s still there. Don\'t let it fade quietly.',
-      strategy: 'mirror',
+      title: 'winback_title2'.tr,
+      body: 'winback_body2'.tr,
+      strategy: 'offer_reminder',
     ),
 
-    // +3 days — The Offer: free week, zero risk
+    // +3 days — The Mirror: identity + aspiration
     _WinBackNotification(
       index: 2,
       delay: Duration(days: 3),
-      title: 'Your free week is waiting',
-      body:
-          'No payment, no commitment — just 7 days with Judah by your side. Tap to claim your free week before it expires.',
-      strategy: 'offer',
+      title: 'winback_title3'.tr,
+      body: 'winback_body3'.tr,
+      strategy: 'mirror',
     ),
 
     // +5 days — The Story: emotion + indirect proof
     _WinBackNotification(
       index: 3,
       delay: Duration(days: 5),
-      title: '"I used to unlock Instagram 80 times a day"',
-      body:
-          'One of our users shared this. Now he reads a verse before every unlock. Small change, big transformation. Your story could be next.',
+      title: 'winback_title4'.tr,
+      body: 'winback_body4'.tr,
       strategy: 'story',
     ),
 
@@ -90,14 +91,15 @@ class WinBackNotificationService {
     _WinBackNotification(
       index: 4,
       delay: Duration(days: 7),
-      title: 'This is our last message',
-      body:
-          'We respect your decision. If you ever want Judah back as your guardian, we\'ll be here. No more notifications from us. Take care.',
+      title: 'winback_title5'.tr,
+      body: 'winback_body5'.tr,
       strategy: 'goodbye',
     ),
   ];
 
-  /// Schedule the full 5-notification win-back sequence.
+  /// Schedule the win-back strategy sequence.
+  ///
+  /// Daily Bible verses continue independently via DailyVerseNotificationService.
   ///
   /// [source] identifies where the trigger came from:
   /// - `paywall_closed`: user dismissed the paywall
@@ -108,7 +110,8 @@ class WinBackNotificationService {
       // Don't schedule if already completed (respect the "goodbye")
       final alreadyCompleted = await _prefs.readBool(_keyCompleted) ?? false;
       if (alreadyCompleted) {
-        debugPrint('ℹ️ [WinBack] Sequence already completed — respecting silence');
+        debugPrint(
+            'ℹ️ [WinBack] Sequence already completed — respecting silence');
         return;
       }
 
@@ -126,7 +129,7 @@ class WinBackNotificationService {
       await _prefs.writeBool(_keyActive, true);
       await _prefs.writeString(_keySource, source);
 
-      // Schedule all 5 notifications
+      // Schedule the 4 win-back strategy notifications
       for (final notification in _sequence) {
         final scheduledDate = now.add(notification.delay);
 
@@ -151,7 +154,8 @@ class WinBackNotificationService {
         'notification_count': _notificationCount,
       });
 
-      debugPrint('✅ [WinBack] 5-notification sequence scheduled from $source');
+      debugPrint(
+          '✅ [WinBack] $_notificationCount strategy notifications scheduled from $source');
     } catch (e) {
       debugPrint('❌ [WinBack] Error scheduling sequence: $e');
     }
@@ -184,7 +188,8 @@ class WinBackNotificationService {
           'days_active': daysActive,
         });
 
-        debugPrint('🔕 [WinBack] Sequence cancelled (reason: $reason, days: $daysActive)');
+        debugPrint(
+            '🔕 [WinBack] Sequence cancelled (reason: $reason, days: $daysActive)');
       }
     } catch (e) {
       debugPrint('❌ [WinBack] Error cancelling sequence: $e');
@@ -219,7 +224,8 @@ class WinBackNotificationService {
 
         debugPrint('✅ [WinBack] Sequence completed — entering silence mode');
       } else {
-        debugPrint('ℹ️ [WinBack] Sequence active, day ${daysSinceStart + 1}/7');
+        debugPrint(
+            'ℹ️ [WinBack] Sequence active, day ${daysSinceStart + 1}/7');
       }
     } catch (e) {
       debugPrint('❌ [WinBack] Error checking completion: $e');
@@ -254,10 +260,11 @@ class WinBackNotificationService {
   }
 
   /// Mark user as eligible for win-back promo (48h window).
-  /// Called when user taps notification #3 (the offer).
+  /// Called when user taps the offer notification.
   Future<void> markPromoEligible() async {
     await _prefs.writeBool(_keyPromoEligible, true);
-    await _prefs.writeString(_keyPromoSetAt, DateTime.now().toIso8601String());
+    await _prefs.writeString(
+        _keyPromoSetAt, DateTime.now().toIso8601String());
 
     _trackEvent('winback_promo_eligible', {});
 
@@ -283,7 +290,8 @@ class WinBackNotificationService {
       return false;
     }
 
-    debugPrint('✅ [WinBack] Promo still eligible (${hoursSinceSet}h / 48h)');
+    debugPrint(
+        '✅ [WinBack] Promo still eligible (${hoursSinceSet}h / 48h)');
     return true;
   }
 
@@ -329,7 +337,7 @@ class _WinBackNotification {
   final String body;
   final String strategy;
 
-  const _WinBackNotification({
+  _WinBackNotification({
     required this.index,
     required this.delay,
     required this.title,

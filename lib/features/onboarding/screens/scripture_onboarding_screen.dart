@@ -5,7 +5,6 @@ import 'package:faithlock/features/onboarding/screens/step1_5_name_capture.dart'
 import 'package:faithlock/features/onboarding/screens/step1_divine_revelation.dart';
 import 'package:faithlock/features/onboarding/screens/step2_self_confrontation.dart';
 import 'package:faithlock/features/onboarding/screens/step3_5_testimonials.dart';
-import 'package:faithlock/features/onboarding/screens/step3_eternal_warfare.dart';
 import 'package:faithlock/features/onboarding/screens/step4_call_to_covenant.dart';
 import 'package:faithlock/features/onboarding/screens/step6_final_encouragement.dart';
 import 'package:faithlock/features/onboarding/screens/step7_screen_time_permission.dart';
@@ -50,29 +49,24 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                 );
 
               case 5:
-                return Step3EternalWarfare(
-                  onComplete: () => controller.nextStep(),
-                );
-
-              case 6:
                 return Step4CallToCovenant(
                   onComplete: () => controller.nextStep(),
                 );
 
-              case 7:
+              case 6:
                 return Step6FinalEncouragement(
                   onComplete: () => controller.nextStep(),
                 );
 
-              case 8:
+              case 7:
                 return Step7ScreenTimePermission(
                   onComplete: () => controller.nextStep(),
                 );
 
-              case 9:
+              case 8:
                 return const Step9NotificationPermission();
 
-              case 10:
+              case 9:
                 return _MascotTransitionStep(
                   userName: controller.userName.value,
                 );
@@ -168,7 +162,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
               children: [
                 // Current step indicator
                 Text(
-                  'DEBUG MODE - Step ${controller.currentStep.value}/9',
+                  'DEBUG MODE - Step ${controller.currentStep.value}/8',
                   style: const TextStyle(
                     color: Colors.red,
                     fontSize: 12,
@@ -182,7 +176,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                   spacing: 6,
                   runSpacing: 6,
                   children: [
-                    for (int i = 1; i <= 9; i++)
+                    for (int i = 1; i <= 8; i++)
                       _buildDebugButton(
                         label: '$i',
                         onPressed: () => controller.jumpToStep(i),

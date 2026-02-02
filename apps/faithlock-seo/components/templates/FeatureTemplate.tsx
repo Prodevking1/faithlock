@@ -2,6 +2,7 @@ import { Feature } from '@/lib/types'
 import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
+import RichText from '@/components/ui/RichText'
 
 interface FeatureTemplateProps {
   feature: Feature
@@ -28,9 +29,9 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
           <p className="text-lg md:text-xl text-warm-200 font-medium mb-6">
             {feature.tagline}
           </p>
-          <div
+          <RichText
+            content={feature.description}
             className="prose prose-lg max-w-2xl prose-invert text-white/70 [&_p]:text-white/70 [&_li]:text-white/70 [&_strong]:text-white"
-            dangerouslySetInnerHTML={{ __html: feature.description }}
           />
         </div>
       </div>
@@ -40,9 +41,9 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
         <section className="mb-16 md:mb-20">
           <div className="card p-8 md:p-10 bg-brand-50/50 border-brand-100">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-brand-900">How It Works</h2>
-            <div
+            <RichText
+              content={feature.howItWorks}
               className="prose prose-lg max-w-none [&_h3]:text-brand-800 [&_ol]:list-none [&_ol]:pl-0 [&_li]:pl-0 [&_li]:mb-4"
-              dangerouslySetInnerHTML={{ __html: feature.howItWorks }}
             />
           </div>
         </section>
@@ -173,9 +174,6 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
             size="large"
             showAppleIcon
           />
-          <p className="mt-4 text-sm text-white/50">
-            No credit card required
-          </p>
         </section>
 
         {/* Related Features */}

@@ -30,6 +30,9 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keySacredCovenantAccepted = 'sacred_covenant_accepted';
   static const String _keySchedules = 'onboarding_schedules';
 
+  /// Total steps in this onboarding flow (override in subclasses)
+  int get totalSteps => 8;
+
   // Observable state
   final RxInt currentStep = RxInt(1);
   final RxString userName = RxString('User');
@@ -120,7 +123,7 @@ class ScriptureOnboardingController extends GetxController {
       await _trackStepExit();
     }
 
-    if (currentStep.value < 10) {
+    if (currentStep.value < 9) {
       currentStep.value++;
 
       // Track new step entry
@@ -132,7 +135,7 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Jump to specific step (debug only)
   void jumpToStep(int step) {
-    if (step >= 1 && step <= 10) {
+    if (step >= 1 && step <= 9) {
       currentStep.value = step;
     }
   }
@@ -479,16 +482,14 @@ class ScriptureOnboardingController extends GetxController {
       case 4:
         return 'Testimonials';
       case 5:
-        return 'Eternal Warfare';
-      case 6:
         return 'Call to Covenant';
-      case 7:
+      case 6:
         return 'Final Encouragement';
-      case 8:
+      case 7:
         return 'Screen Time Permission';
-      case 9:
+      case 8:
         return 'Notification Permission';
-      case 10:
+      case 9:
         return 'Mascot Transition';
       default:
         return 'Unknown Step';
@@ -553,25 +554,20 @@ class ScriptureOnboardingController extends GetxController {
 
       case 5:
         return {
-          'viewed_eternal_warfare': true,
+          'covenant_accepted': covenantAccepted.value,
         };
 
       case 6:
         return {
-          'covenant_accepted': covenantAccepted.value,
+          'viewed_final_encouragement': true,
         };
 
       case 7:
         return {
-          'viewed_final_encouragement': true,
-        };
-
-      case 8:
-        return {
           'screen_time_permission_requested': true,
         };
 
-      case 9:
+      case 8:
         return {
           'notification_permission_requested': true,
         };

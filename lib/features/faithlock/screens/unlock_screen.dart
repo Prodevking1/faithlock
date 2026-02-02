@@ -29,7 +29,7 @@ class UnlockScreen extends StatelessWidget {
                   ),
                   FastSpacing.h16,
                   Text(
-                    'Loading verse...',
+                    'loadingVerse'.tr,
                     style: TextStyle(color: FastColors.secondaryText(context)),
                   ),
                 ],
@@ -45,7 +45,7 @@ class UnlockScreen extends StatelessWidget {
                   Icon(Icons.error_outline, size: 64, color: FastColors.error),
                   FastSpacing.h16,
                   Text(
-                    'Failed to load verse',
+                    'failedToLoadVerse'.tr,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -60,7 +60,7 @@ class UnlockScreen extends StatelessWidget {
                   ),
                   FastSpacing.h24,
                   FastButton(
-                    text: 'Retry',
+                    text: 'retry'.tr,
                     onTap: controller.retryWithNewVerse,
                   ),
                 ],
@@ -92,10 +92,10 @@ class UnlockScreen extends StatelessWidget {
 
                     if (isCorrect) {
                       mascotState = JudahState.happy;
-                      mascotMessage = 'Yes!';
+                      mascotMessage = 'correctAnswer'.tr;
                     } else if (isWrong) {
                       mascotState = JudahState.encouraging;
-                      mascotMessage = 'Try again.';
+                      mascotMessage = 'wrongAnswer'.tr;
                     } else {
                       mascotState = JudahState.encouraging;
                       mascotMessage = null;
@@ -113,7 +113,7 @@ class UnlockScreen extends StatelessWidget {
 
                 // Title
                 Text(
-                  'Read & Answer to Unlock',
+                  'readAndAnswer'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
@@ -125,7 +125,7 @@ class UnlockScreen extends StatelessWidget {
                 FastSpacing.h8,
 
                 Text(
-                  'Reflect on this verse before continuing',
+                  'reflectOnVerse'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -292,7 +292,10 @@ class UnlockScreen extends StatelessWidget {
 
                 // Attempt counter
                 Text(
-                  'Attempt ${controller.attemptCount.value} of ${UnlockController.maxAttempts}',
+                  'attemptCount'.trParams({
+                    'current': controller.attemptCount.value.toString(),
+                    'max': UnlockController.maxAttempts.toString(),
+                  }),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
@@ -305,13 +308,13 @@ class UnlockScreen extends StatelessWidget {
                 // Submit button
                 if (!controller.isAnswerRevealed.value)
                   FastButton(
-                    text: 'Submit Answer',
+                    text: 'submitAnswer'.tr,
                     onTap: controller.submitAnswer,
                     isDisabled: controller.selectedAnswer.value == -1,
                   )
                 else
                   FastButton(
-                    text: 'Try New Verse',
+                    text: 'tryNewVerse'.tr,
                     onTap: controller.retryWithNewVerse,
                   ),
 
@@ -319,18 +322,18 @@ class UnlockScreen extends StatelessWidget {
 
                 // Emergency bypass button
                 FastButton(
-                  text: 'Emergency Bypass',
+                  text: 'emergencyBypassTitle'.tr,
                   style: FastButtonStyle.plain,
                   textColor: FastColors.tertiaryText(context),
                   onTap: () {
                     Get.defaultDialog(
-                      title: 'Emergency Bypass',
+                      title: 'emergencyBypassTitle'.tr,
                       titleStyle: TextStyle(color: FastColors.primaryText(context)),
                       backgroundColor: FastColors.surface(context),
-                      middleText: 'Using emergency bypass will break your streak and count as a failed attempt. Are you sure?',
+                      middleText: 'emergencyBypassMessage'.tr,
                       middleTextStyle: TextStyle(color: FastColors.secondaryText(context)),
-                      textCancel: 'Cancel',
-                      textConfirm: 'Bypass',
+                      textCancel: 'cancel'.tr,
+                      textConfirm: 'bypass'.tr,
                       confirmTextColor: FastColors.error,
                       onConfirm: () {
                         Get.back();

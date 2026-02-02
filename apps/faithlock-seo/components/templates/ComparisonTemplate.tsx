@@ -248,9 +248,6 @@ export default function ComparisonTemplate({
             size="large"
             showAppleIcon
           />
-          <p className="mt-4 text-sm text-white/50">
-            No credit card required
-          </p>
         </section>
 
         {/* Related */}

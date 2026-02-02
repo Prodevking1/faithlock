@@ -167,9 +167,6 @@ export default async function FeaturesPage() {
             size="large"
             showAppleIcon
           />
-          <p className="mt-4 text-sm text-white/50">
-            No credit card required
-          </p>
         </section>
       </div>
     </div>

@@ -30,6 +30,7 @@ class OnboardingWrapper extends StatelessWidget {
 
             OnboardingProgressBar(
               currentStep: controller.currentStep.value,
+              totalSteps: controller.totalSteps,
             ),
 
             // Positioned(

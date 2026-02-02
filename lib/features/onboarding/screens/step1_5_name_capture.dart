@@ -56,12 +56,12 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
     await Future.delayed(Duration(milliseconds: 300));
 
     // Show Judah mascot first
-    setState(() => _showMascot = true);
-    await Future.delayed(Duration(milliseconds: 600));
+    // setState(() => _showMascot = true);
+    // await Future.delayed(Duration(milliseconds: 600));
 
     // Ask for name first (iOS-optimized timing)
     await AnimationUtils.typeText(
-      fullText: 'Before we continue...\nWhat is your name?',
+      fullText: 'nameCapture_intro'.tr,
       onUpdate: (text) => setState(() => _introText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntroCursor = visible),
@@ -95,7 +95,7 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
     await Future.delayed(Duration(milliseconds: AnimationUtils.pauseShort));
 
     await AnimationUtils.typeText(
-      fullText: 'How old are you, $name?',
+      fullText: 'nameCapture_ageQuestion'.trParams({'name': name}),
       onUpdate: (text) => setState(() => _introText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntroCursor = visible),
@@ -138,132 +138,133 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
             top: 100, // Space for progress bar
             bottom: OnboardingTheme.verticalPadding,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Judah mascot greeting
-              if (_showMascot)
-                Center(
-                  child: AnimatedOpacity(
-                    opacity: _showMascot ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 600),
-                    child: const JudahMascot(
-                      state: JudahState.neutral,
-                      size: JudahSize.xl,
-                      showMessage: false,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Judah mascot greeting
+                if (_showMascot)
+                  Center(
+                    child: AnimatedOpacity(
+                      opacity: _showMascot ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 600),
+                      child: const JudahMascot(
+                        state: JudahState.neutral,
+                        size: JudahSize.xl,
+                        showMessage: false,
+                      ),
                     ),
                   ),
-                ),
-              if (_showMascot && _introText.isNotEmpty)
-                const SizedBox(height: OnboardingTheme.space24),
+                if (_showMascot && _introText.isNotEmpty)
+                  const SizedBox(height: OnboardingTheme.space24),
 
-              // Intro text (iOS-styled, centered)
-              if (_introText.isNotEmpty)
-                RichText(
-                  text: TextSpan(
-                    style: OnboardingTheme.title3,
-                    children: [
-                      TextSpan(text: _introText),
-                      if (_showIntroCursor)
-                        const WidgetSpan(
-                          child: FeatherCursor(),
-                          alignment: PlaceholderAlignment.middle,
-                        ),
-                    ],
-                  ),
-                ),
-
-              // Name Input
-              if (_showNameInput) ...[
-                const SizedBox(height: OnboardingTheme.space40),
-                KeyboardListener(
-                  focusNode: FocusNode(),
-                  onKeyEvent: (KeyEvent event) {
-                    if (event is KeyDownEvent &&
-                        (event.logicalKey == LogicalKeyboardKey.enter ||
-                            event.logicalKey ==
-                                LogicalKeyboardKey.numpadEnter)) {
-                      _onNameSubmit();
-                    }
-                  },
-                  child: FastTextInput(
-                    controller: _nameController,
-                    hintText: 'Your name',
-                    textCapitalization: TextCapitalization.words,
-                    focusNode: _nameFocusNode,
-                    textStyle: OnboardingTheme.title3.copyWith(
-                      color: OnboardingTheme.goldColor,
+                // Intro text (iOS-styled, centered)
+                if (_introText.isNotEmpty)
+                  RichText(
+                    text: TextSpan(
+                      style: OnboardingTheme.title3,
+                      children: [
+                        TextSpan(text: _introText),
+                        if (_showIntroCursor)
+                          const WidgetSpan(
+                            child: FeatherCursor(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(height: OnboardingTheme.space32),
-                Center(
-                  child: FastButton(
-                    text: 'Continue',
-                    onTap: _onNameSubmit,
-                    backgroundColor: OnboardingTheme.goldColor,
-                    textColor: OnboardingTheme.backgroundColor,
-                    style: FastButtonStyle.filled,
+
+                // Name Input
+                if (_showNameInput) ...[
+                  const SizedBox(height: OnboardingTheme.space40),
+                  KeyboardListener(
+                    focusNode: FocusNode(),
+                    onKeyEvent: (KeyEvent event) {
+                      if (event is KeyDownEvent &&
+                          (event.logicalKey == LogicalKeyboardKey.enter ||
+                              event.logicalKey ==
+                                  LogicalKeyboardKey.numpadEnter)) {
+                        _onNameSubmit();
+                      }
+                    },
+                    child: FastTextInput(
+                      controller: _nameController,
+                      hintText: 'nameCapture_hint'.tr,
+                      textCapitalization: TextCapitalization.words,
+                      focusNode: _nameFocusNode,
+                      textStyle: OnboardingTheme.title3.copyWith(
+                        color: OnboardingTheme.goldColor,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: OnboardingTheme.space32),
+                  Center(
+                    child: FastButton(
+                      text: 'continue_btn'.tr,
+                      onTap: _onNameSubmit,
+                      backgroundColor: OnboardingTheme.goldColor,
+                      textColor: OnboardingTheme.backgroundColor,
+                      style: FastButtonStyle.filled,
+                    ),
+                  ),
+                ],
+
+                if (_showAgeInput) ...[
+                  const SizedBox(height: OnboardingTheme.space32),
+                  Center(
+                    child: Text(
+                      _userAge.round().toString(),
+                      style: OnboardingTheme.displayNumber.copyWith(
+                        color: OnboardingTheme.goldColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: OnboardingTheme.space4),
+                  Center(
+                    child: Text(
+                      'nameCapture_yearsOld'.tr,
+                      style: OnboardingTheme.displayUnit,
+                    ),
+                  ),
+                  const SizedBox(height: OnboardingTheme.space32),
+                  Center(
+                    child: FastSlider(
+                      value: _userAge,
+                      min: 13,
+                      max: 110,
+                      divisions: 110,
+                      activeColor: OnboardingTheme.goldColor,
+                      onChanged: _onAgeChanged,
+                    ),
+                  ),
+
+                  const SizedBox(height: OnboardingTheme.space32),
+                  // // iOS-style instruction
+                  // Center(
+                  //   child: Text(
+                  //     'Slide to select your age',
+                  //     style: OnboardingTheme.subhead.copyWith(
+                  //       fontWeight: FontWeight.w600,
+                  //       color: OnboardingTheme.goldColor
+                  //           .withValues(alpha: 0.7),
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: OnboardingTheme.space24),
+                  // Continue button
+                  Center(
+                    child: FastButton(
+                      text: 'continue_btn'.tr,
+                      onTap: _userAge >= 13 ? _proceedToNextStep : null,
+                      backgroundColor: OnboardingTheme.goldColor,
+                      textColor: OnboardingTheme.backgroundColor,
+                      style: FastButtonStyle.filled,
+                    ),
+                  ),
+                ],
               ],
-
-              if (_showAgeInput) ...[
-                const SizedBox(height: OnboardingTheme.space32),
-                Center(
-                  child: Text(
-                    _userAge.round().toString(),
-                    style: OnboardingTheme.displayNumber.copyWith(
-                      color: OnboardingTheme.goldColor,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: OnboardingTheme.space4),
-                Center(
-                  child: Text(
-                    'years old',
-                    style: OnboardingTheme.displayUnit,
-                  ),
-                ),
-                const SizedBox(height: OnboardingTheme.space32),
-                Center(
-                  child: FastSlider(
-                    value: _userAge,
-                    min: 13,
-                    max: 110,
-                    divisions: 110,
-                    activeColor: OnboardingTheme.goldColor,
-                    onChanged: _onAgeChanged,
-                  ),
-                ),
-
-                const SizedBox(height: OnboardingTheme.space32),
-                // // iOS-style instruction
-                // Center(
-                //   child: Text(
-                //     'Slide to select your age',
-                //     style: OnboardingTheme.subhead.copyWith(
-                //       fontWeight: FontWeight.w600,
-                //       color: OnboardingTheme.goldColor
-                //           .withValues(alpha: 0.7),
-                //     ),
-                //     textAlign: TextAlign.center,
-                //   ),
-                // ),
-                // const SizedBox(height: OnboardingTheme.space24),
-                // Continue button
-                Center(
-                  child: FastButton(
-                    text: 'Continue',
-                    onTap: _userAge >= 13 ? _proceedToNextStep : null,
-                    backgroundColor: OnboardingTheme.goldColor,
-                    textColor: OnboardingTheme.backgroundColor,
-                    style: FastButtonStyle.filled,
-                  ),
-                ),
-              ],
-            ],
+            ),
           ),
         ),
       ),

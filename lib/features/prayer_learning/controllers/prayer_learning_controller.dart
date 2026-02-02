@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:faithlock/features/faithlock/models/export.dart';
+import 'package:faithlock/features/faithlock/services/badge_service.dart';
+import 'package:faithlock/features/faithlock/services/gamification_dialog_service.dart';
 import 'package:faithlock/features/faithlock/services/question_generator.dart';
 import 'package:faithlock/features/faithlock/services/stats_service.dart';
+import 'package:faithlock/features/faithlock/services/streak_freeze_service.dart';
 import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/features/faithlock/services/verse_selection_strategy.dart';
 import 'package:faithlock/features/lock_challenge/models/verse_question.dart';
 import 'package:faithlock/services/ai/meditation_validator_service.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/rate_app_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:get/get.dart';
 
 /// Validation states for meditation response
@@ -26,6 +30,7 @@ class PrayerLearningController extends GetxController {
   final StatsService _statsService = StatsService();
   final VerseSelectionStrategy _verseStrategy = VerseSelectionStrategy();
   final MeditationValidatorService _validator = MeditationValidatorService();
+  final PostHogService _analytics = PostHogService.instance;
 
   // Text controllers - persist across rebuilds
   late final TextEditingController meditationTextController;
@@ -80,6 +85,13 @@ class PrayerLearningController extends GetxController {
     });
 
     _loadVerse();
+
+    // Track session started
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('prayer_session_started', {
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+    }
   }
 
   @override
@@ -183,6 +195,16 @@ class PrayerLearningController extends GetxController {
     final allowSkip = canSkipMeditation;
 
     if ((canProceed || allowSkip) && currentStep.value < stepTitles.length - 1) {
+      // Track step completed
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('prayer_step_completed', {
+          'step_index': currentStep.value,
+          'step_name': stepTitles[currentStep.value],
+          'verse_reference': selectedVerse.value?.reference ?? 'unknown',
+          'was_skipped': allowSkip && !canProceed,
+        });
+      }
+
       // Calculate partial score for this step
       _updateCompletionScore();
 
@@ -434,11 +456,109 @@ class PrayerLearningController extends GetxController {
       }
     }
 
+    // Track session completed
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('prayer_session_completed', {
+        'verse_reference': selectedVerse.value?.reference ?? 'unknown',
+        'completion_score': completionScore.value,
+        'meditation_quality': meditationQualityScore.value,
+        'session_duration_seconds': sessionDuration,
+        'unlock_duration_minutes': unlockDurationMinutes.value,
+      });
+    }
+
     try {
       await _saveStats();
     } catch (e) {
       debugPrint('⚠️ Failed to save stats: $e');
     }
+
+    // Check and award badges
+    List<Badge> newBadges = [];
+    try {
+      final badgeService = BadgeService();
+      final updatedStats = await _statsService.getUserStats();
+      newBadges = await badgeService.checkAndAwardBadges(
+        stats: updatedStats,
+        sessionScore: completionScore.value,
+        sessionHour: DateTime.now().hour,
+        usedStreakFreeze: _statsService.lastStreakFreezeUsed,
+      );
+
+      // Track analytics for freeze and badges
+      if (_analytics.isReady) {
+        if (_statsService.lastStreakFreezeUsed) {
+          final freezeState = await StreakFreezeService().getFreezeState();
+          _analytics.events.trackCustom('streak_freeze_used', {
+            'streak_preserved': updatedStats.currentStreak,
+            'freezes_remaining': freezeState.freezesRemaining,
+          });
+        }
+        if (_statsService.lastStreakWasLost) {
+          _analytics.events.trackCustom('streak_lost', {
+            'previous_streak': _statsService.lostStreakValue,
+          });
+        }
+        for (final badge in newBadges) {
+          _analytics.events.trackCustom('badge_earned', {
+            'badge_id': badge.id.name,
+            'badge_name': badge.name,
+            'badge_category': badge.category.name,
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('⚠️ Badge check failed: $e');
+    }
+
+    // Show gamification dialogs after UI is ready
+    final freezeUsed = _statsService.lastStreakFreezeUsed;
+    final streakLost = _statsService.lastStreakWasLost;
+    final lostValue = _statsService.lostStreakValue;
+    _statsService.resetStreakFlags();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final context = Get.context;
+      if (context == null || !context.mounted) return;
+
+      if (freezeUsed) {
+        try {
+          final freezeState = await StreakFreezeService().getFreezeState();
+          final stats = await _statsService.getUserStats();
+          if (context.mounted) {
+            await GamificationDialogService.showStreakFreezeSaved(
+              context: context,
+              currentStreak: stats.currentStreak,
+              freezesRemaining: freezeState.freezesRemaining,
+            );
+          }
+        } catch (e) {
+          debugPrint('⚠️ Failed to show freeze dialog: $e');
+        }
+      } else if (streakLost && lostValue > 1) {
+        try {
+          if (context.mounted) {
+            await GamificationDialogService.showStreakLost(
+              context: context,
+              lostStreak: lostValue,
+            );
+          }
+        } catch (e) {
+          debugPrint('⚠️ Failed to show streak lost dialog: $e');
+        }
+      }
+
+      if (newBadges.isNotEmpty && context.mounted) {
+        try {
+          await GamificationDialogService.showBadgesEarned(
+            context: context,
+            badges: newBadges,
+          );
+        } catch (e) {
+          debugPrint('⚠️ Failed to show badge dialog: $e');
+        }
+      }
+    });
 
     await RateAppService().showFirstPrayerPrompt();
   }

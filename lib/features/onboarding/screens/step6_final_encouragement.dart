@@ -74,7 +74,7 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
 
     await AnimationUtils.typeText(
       fullText:
-          '$userName, you are not alone in this battle.\n\nGod\'s Word will be your shield every single day.',
+          'finalEnc_message'.trParams({'name': userName}),
       onUpdate: (text) => setState(() => _encouragementText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showEncouragementCursor = visible),
@@ -92,7 +92,7 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
 
     await AnimationUtils.typeText(
       fullText:
-          'I can do all things through Christ who strengthens me.\n— Philippians 4:13',
+          'finalEnc_verse'.tr,
       onUpdate: (text) => setState(() => _scriptureText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showScriptureCursor = visible),
@@ -110,7 +110,7 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
 
     await AnimationUtils.typeText(
       fullText:
-          'Your journey to freedom starts now.\n\nEvery time you resist, you become stronger.',
+          'finalEnc_final'.tr,
       onUpdate: (text) => setState(() => _finalText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showFinalCursor = visible),

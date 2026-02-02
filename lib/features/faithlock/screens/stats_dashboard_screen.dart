@@ -2,10 +2,11 @@ import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/core/constants/core/fast_colors.dart';
 import 'package:faithlock/core/constants/core/fast_spacing.dart';
 import 'package:faithlock/features/faithlock/controllers/stats_controller.dart';
+import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +41,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     if (controller.lockedAppsCount.value == 0) {
       final name = controller.userName.value.isNotEmpty
           ? controller.userName.value
-          : 'Friend';
+          : 'friend'.tr;
 
       final shouldSelect = await showCupertinoDialog<bool>(
             context: context,
@@ -53,25 +54,25 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                     showMessage: false,
                   ),
                   const SizedBox(height: 8),
-                  const Text('No Apps Locked'),
+                  Text('noAppsLocked'.tr),
                 ],
               ),
               content: Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
-                  'Pick the apps to block, $name.',
+                  'pickAppsToBlock'.trParams({'name': name}),
                   style: const TextStyle(fontSize: 14),
                 ),
               ),
               actions: [
                 CupertinoDialogAction(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Later'),
+                  child: Text('later'.tr),
                 ),
                 CupertinoDialogAction(
                   onPressed: () => Navigator.of(context).pop(true),
                   isDefaultAction: true,
-                  child: const Text('Select Apps'),
+                  child: Text('selectApps'.tr),
                 ),
               ],
             ),
@@ -95,6 +96,8 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     if (state == AppLifecycleState.resumed) {
       controller.loadStats();
       controller.loadLockedAppsCount();
+      controller.loadFreezeState();
+      controller.loadEarnedBadges();
     }
   }
 
@@ -140,7 +143,9 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                 _buildStreakCard(context),
                 const SizedBox(height: 16),
                 _buildStatsGrid(context),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+                _buildBadgesRow(context),
+                const SizedBox(height: 16),
                 _buildReadingSection(context),
                 const SizedBox(height: 20),
                 _buildStartSessionButton(context),
@@ -181,27 +186,27 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
   String _getJudahMessage() {
     final name = controller.userName.value.isNotEmpty
         ? controller.userName.value
-        : 'Friend';
+        : 'friend'.tr;
     final streak = controller.userStats.value?.currentStreak ?? 0;
     final previousStreak = controller.userStats.value?.longestStreak ?? 0;
     final hour = DateTime.now().hour;
 
     if (streak == 0 && previousStreak > 0) {
-      return 'New day, $name.';
+      return 'judahNewDay'.trParams({'name': name});
     }
     if (streak >= 7) {
-      return '$streak days. Respect.';
+      return 'judahStreak'.trParams({'streak': streak.toString()});
     }
     if (hour < 12) {
-      return 'Morning, $name.';
+      return 'judahMorning'.trParams({'name': name});
     }
     if (hour < 18) {
-      return 'Keep going, $name.';
+      return 'judahKeepGoing'.trParams({'name': name});
     }
     if (hour < 20) {
-      return 'Almost there, $name.';
+      return 'judahAlmostThere'.trParams({'name': name});
     }
-    return 'Peaceful evening, $name.';
+    return 'judahEvening'.trParams({'name': name});
   }
 
   /// Compact header with Judah mascot (60px)
@@ -283,7 +288,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                         ),
                       ),
                       Text(
-                        'DAYS',
+                        'days'.tr,
                         style: TextStyle(
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
@@ -295,29 +300,61 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                   ),
                 ],
               ),
-              // Longest streak badge
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('🏆', style: TextStyle(fontSize: 12)),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Longest: $longestStreak',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: OnboardingTheme.goldColor,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Streak freeze indicator
+                  if (controller.freezeState.value != null &&
+                      controller.freezeState.value!.freezesRemaining > 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
+                      margin: const EdgeInsets.only(right: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE3F2FD),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('🧊', style: TextStyle(fontSize: 12)),
+                          const SizedBox(width: 3),
+                          Text(
+                            'x${controller.freezeState.value!.freezesRemaining}',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1565C0),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  // Longest streak badge
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF8E1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('🏆', style: TextStyle(fontSize: 12)),
+                        const SizedBox(width: 4),
+                        Text(
+                          'longestStreak'.trParams({'count': longestStreak.toString()}),
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: OnboardingTheme.goldColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -326,7 +363,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
           // Week days - compact
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+            children: ['mon'.tr, 'tue'.tr, 'wed'.tr, 'thu'.tr, 'fri'.tr, 'sat'.tr, 'sun'.tr]
                 .asMap()
                 .entries
                 .map((entry) {
@@ -392,7 +429,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
               ),
               const SizedBox(height: 6),
               Text(
-                '${(progress * 100).toInt()}% to next goal',
+                'progressToGoal'.trParams({'percent': (progress * 100).toInt().toString()}),
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -448,7 +485,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                       maxLines: 1, // Prevent wrapping
                     ),
                     Text(
-                      'TIME SAVED',
+                      'timeSaved'.tr,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
@@ -501,7 +538,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'VERSES READ',
+                                  'versesRead'.tr,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -552,7 +589,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
-                                        'APPS BLOCKED',
+                                        'appsBlocked'.tr,
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -577,6 +614,113 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
     );
   }
 
+  /// Badges horizontal row - compact display
+  Widget _buildBadgesRow(BuildContext context) {
+    final allBadges = BadgeDefinitions.allBadges;
+    final earnedIds = controller.earnedBadges
+        .map((e) => e.badgeId)
+        .toSet();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'achievements'.tr.toUpperCase(),
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: Colors.grey[500],
+            letterSpacing: 0.6,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 56,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: allBadges.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              final badge = allBadges[index];
+              final isEarned = earnedIds.contains(badge.id.name);
+
+              return GestureDetector(
+                onTap: () => _showBadgeInfo(context, badge, isEarned),
+                child: Container(
+                  width: 56,
+                  decoration: BoxDecoration(
+                    color: isEarned ? Colors.white : Colors.grey[100],
+                    borderRadius: BorderRadius.circular(14),
+                    border: isEarned
+                        ? Border.all(
+                            color: OnboardingTheme.goldColor
+                                .withValues(alpha: 0.4),
+                            width: 1.5,
+                          )
+                        : null,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        badge.emoji,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: isEarned ? null : Colors.grey[400],
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        isEarned ? badge.name.split(' ').first : '???',
+                        style: TextStyle(
+                          fontSize: 7,
+                          fontWeight: FontWeight.w600,
+                          color:
+                              isEarned ? Colors.grey[700] : Colors.grey[400],
+                          letterSpacing: 0.2,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Show badge info popup
+  void _showBadgeInfo(BuildContext context, Badge badge, bool isEarned) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('${badge.emoji} ${badge.name}'),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            isEarned
+                ? badge.description
+                : '${badge.description}\n\nNot yet earned.',
+            style: TextStyle(
+              color: isEarned ? null : Colors.grey[600],
+            ),
+          ),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Compact reading section (140px)
   Widget _buildReadingSection(BuildContext context) {
     return Obx(() {
@@ -591,7 +735,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'READING OF THE MOMENT',
+            'readingOfTheMoment'.tr,
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w700,
@@ -707,12 +851,12 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('🙏', style: TextStyle(fontSize: 22)),
-            SizedBox(width: 10),
+          children: [
+            const Text('🙏', style: TextStyle(fontSize: 22)),
+            const SizedBox(width: 10),
             Text(
-              'Let\'s Pray Now',
-              style: TextStyle(
+              'letsPrayNow'.tr,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,

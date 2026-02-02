@@ -1,10 +1,16 @@
 import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
+import 'package:faithlock/features/faithlock/models/export.dart';
+import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
 import 'package:faithlock/features/profile/controllers/settings_controller.dart';
+import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
+import 'package:faithlock/services/notifications/local_notification_service.dart';
+import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -64,17 +70,17 @@ class ProfileScreen extends StatelessWidget {
           Obx(() {
             String subtitle;
             if (!faithLockController.isScreenTimeAuthorized.value) {
-              subtitle = 'Screen Time permission required';
+              subtitle = 'screenTimePermRequired'.tr;
             } else if (faithLockController.selectedAppsCount.value > 0) {
-              subtitle = 'Apps configured - tap to modify';
+              subtitle = 'appsConfigured'.tr;
             } else {
-              subtitle = 'No apps selected yet';
+              subtitle = 'noAppsSelected'.tr;
             }
 
             return _buildIOSListTile(
               context,
               leading: CupertinoIcons.square_grid_2x2,
-              title: 'Blocked Apps',
+              title: 'blockedApps'.tr,
               subtitle: subtitle,
               iconColor: CupertinoColors.systemRed,
               trailing: Row(
@@ -117,8 +123,8 @@ class ProfileScreen extends StatelessWidget {
           _buildIOSListTile(
             context,
             leading: CupertinoIcons.bell,
-            title: 'Notifications',
-            subtitle: 'Get reminders for scheduled locks',
+            title: 'notifications'.tr,
+            subtitle: 'notificationsSub'.tr,
             onTap: () => Get.put(FaithLockSettingsController())
                 .requestNotificationsPermission(),
             trailing: Obx(() {
@@ -187,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
             _buildIOSListTile(
               context,
               leading: CupertinoIcons.doc_text_fill,
-              title: 'Terms and conditions',
+              title: 'termsAndConditions'.tr,
               iconColor: CupertinoColors.systemIndigo,
               onTap: settingsController.openTerms,
             ),
@@ -203,8 +209,8 @@ class ProfileScreen extends StatelessWidget {
               _buildIOSListTile(
                 context,
                 leading: CupertinoIcons.creditcard_fill,
-                title: 'Manage Subscription',
-                subtitle: 'View and manage your subscription',
+                title: 'manageSubscription'.tr,
+                subtitle: 'manageSubscriptionSub'.tr,
                 iconColor: CupertinoColors.systemPurple,
                 onTap: settingsController.manageSubscription,
               )
@@ -212,14 +218,349 @@ class ProfileScreen extends StatelessWidget {
               _buildIOSListTile(
                 context,
                 leading: CupertinoIcons.star_fill,
-                title: 'Get FaithLock Pro',
-                subtitle: 'Unlock all features with premium',
+                title: 'getFaithLockPro'.tr,
+                subtitle: 'unlockAllFeatures'.tr,
                 iconColor: CupertinoColors.systemYellow,
                 onTap: () => Get.to(() => const PaywallScreen()),
               ),
           ], title: 'subscription'.tr);
         }),
+
+        // Debug Panel (only in debug mode)
+        if (kDebugMode) _buildDebugPanel(context),
       ],
+    );
+  }
+
+  // ─── DEBUG PANEL ─────────────────────────────────────────
+
+  Widget _buildDebugPanel(BuildContext context) {
+    return Column(
+      children: [
+        _buildIOSSection([
+          _buildIOSSectionHeader(context, 'Notifications'),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell_fill,
+            title: 'Send Win-Back #1 (Offer)',
+            subtitle: '+1h — Free week promo',
+            iconColor: CupertinoColors.systemOrange,
+            onTap: () => _debugSendWinBackNotification(context, 0),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell_fill,
+            title: 'Send Win-Back #2 (Mirror)',
+            subtitle: '+3d — Identity + aspiration',
+            iconColor: CupertinoColors.systemOrange,
+            onTap: () => _debugSendWinBackNotification(context, 1),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.book_fill,
+            title: 'Send Daily Verse',
+            subtitle: 'Immediate verse notification',
+            iconColor: CupertinoColors.systemTeal,
+            onTap: () => _debugSendDailyVerseNotification(context),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.arrow_counterclockwise,
+            title: 'Reset Win-Back Sequence',
+            subtitle: 'Clear completed state',
+            iconColor: CupertinoColors.systemGrey,
+            onTap: () => _debugResetWinBack(context),
+          ),
+        ], title: '🛠 DEBUG PANEL'),
+
+        _buildIOSSection([
+          _buildIOSSectionHeader(context, 'Streak & Freeze'),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.flame_fill,
+            title: 'Simulate Streak Freeze Saved',
+            subtitle: 'Show freeze dialog (streak=5, freezes=2)',
+            iconColor: CupertinoColors.systemBlue,
+            onTap: () => _debugShowStreakFreezeSaved(context),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.heart_slash_fill,
+            title: 'Simulate Streak Lost',
+            subtitle: 'Show streak lost dialog (12-day streak)',
+            iconColor: CupertinoColors.systemRed,
+            onTap: () => _debugShowStreakLost(context),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.snow,
+            title: 'Use a Freeze',
+            subtitle: 'Consume 1 streak freeze',
+            iconColor: CupertinoColors.systemCyan,
+            onTap: () => _debugUseFreeze(context),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.arrow_counterclockwise,
+            title: 'Reset Streak to 0',
+            subtitle: 'Keep longest streak intact',
+            iconColor: CupertinoColors.systemGrey,
+            onTap: () => _debugResetStreak(context),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.trash,
+            title: 'Reset ALL Stats',
+            subtitle: 'Streak + longest + last unlock',
+            iconColor: CupertinoColors.destructiveRed,
+            onTap: () => _debugResetAllStats(context),
+          ),
+        ]),
+
+        _buildIOSSection([
+          _buildIOSSectionHeader(context, 'Badges'),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.star_circle_fill,
+            title: 'Award All Badges',
+            subtitle: 'Grant all 12 badges at once',
+            iconColor: CupertinoColors.systemYellow,
+            onTap: () => _debugAwardAllBadges(context),
+          ),
+          ..._buildBadgeAwardTiles(context),
+        ]),
+
+        _buildIOSSection([
+          _buildIOSSectionHeader(context, 'Badge Dialogs'),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.sparkles,
+            title: 'Show Badge Dialog (First Prayer)',
+            subtitle: 'Simulate earning firstPrayer badge',
+            iconColor: CupertinoColors.systemPurple,
+            onTap: () => _debugShowBadgeDialog(context, BadgeId.firstPrayer),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.sparkles,
+            title: 'Show Badge Dialog (Streak Warrior)',
+            subtitle: 'Simulate earning streakWarrior badge',
+            iconColor: CupertinoColors.systemPurple,
+            onTap: () => _debugShowBadgeDialog(context, BadgeId.streakWarrior),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.sparkles,
+            title: 'Show Multiple Badges',
+            subtitle: 'Show 3 badge dialogs in sequence',
+            iconColor: CupertinoColors.systemPurple,
+            onTap: () => _debugShowMultipleBadgeDialogs(context),
+          ),
+        ]),
+
+        const SizedBox(height: 40),
+      ],
+    );
+  }
+
+  Widget _buildIOSSectionHeader(BuildContext context, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: CupertinoColors.secondaryLabel.resolveFrom(context),
+          letterSpacing: 0.8,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildBadgeAwardTiles(BuildContext context) {
+    return BadgeId.values.map((badgeId) {
+      final badge = BadgeDefinitions.getBadge(badgeId);
+      return _buildIOSListTile(
+        context,
+        leading: CupertinoIcons.rosette,
+        title: '${badge.emoji} ${badge.name}',
+        subtitle: 'Award badge: ${badgeId.name}',
+        iconColor: CupertinoColors.systemIndigo,
+        onTap: () => _debugAwardSingleBadge(context, badgeId),
+      );
+    }).toList();
+  }
+
+  // ─── DEBUG ACTIONS ───────────────────────────────────────
+
+  void _debugSendWinBackNotification(BuildContext context, int index) {
+    final titles = [
+      'winback_title2'.tr, // Offer
+      'winback_title3'.tr, // Mirror
+      'winback_title4'.tr, // Story
+      'winback_title5'.tr, // Goodbye
+    ];
+    final bodies = [
+      'winback_body2'.tr,
+      'winback_body3'.tr,
+      'winback_body4'.tr,
+      'winback_body5'.tr,
+    ];
+
+    final safeIndex = index.clamp(0, 3);
+    LocalNotificationService().showNotification(
+      id: 900 + safeIndex,
+      title: titles[safeIndex],
+      body: bodies[safeIndex],
+      payload: '${WinBackNotificationService.payloadPrefix}_$safeIndex',
+    );
+    _showDebugToast(context, 'Win-back #${safeIndex + 1} sent');
+  }
+
+  void _debugSendDailyVerseNotification(BuildContext context) async {
+    final verseService = VerseService();
+    final verse = await verseService.getDailyVerse();
+    final text = verse != null
+        ? '"${verse.text}" — ${verse.reference}'
+        : 'Open FaithLock for your daily verse';
+
+    LocalNotificationService().showNotification(
+      id: 950,
+      title: 'Daily Verse',
+      body: text,
+      payload: verse != null
+          ? '${DailyVerseNotificationService.payloadPrefix}_${verse.id}'
+          : DailyVerseNotificationService.payloadPrefix,
+    );
+    _showDebugToast(context, 'Daily verse notification sent');
+  }
+
+  void _debugResetWinBack(BuildContext context) async {
+    await WinBackNotificationService().reset();
+    _showDebugToast(context, 'Win-back sequence reset');
+  }
+
+  void _debugShowStreakFreezeSaved(BuildContext context) {
+    GamificationDialogService.showStreakFreezeSaved(
+      context: context,
+      currentStreak: 5,
+      freezesRemaining: 2,
+    );
+  }
+
+  void _debugShowStreakLost(BuildContext context) {
+    GamificationDialogService.showStreakLost(
+      context: context,
+      lostStreak: 12,
+    );
+  }
+
+  void _debugUseFreeze(BuildContext context) async {
+    final service = StreakFreezeService();
+    await service.initializeIfNeeded();
+    final used = await service.tryUseFreeze();
+    final state = await service.getFreezeState();
+    _showDebugToast(
+      context,
+      used
+          ? 'Freeze used! ${state.freezesRemaining}/${state.maxFreezes} remaining'
+          : 'No freeze available (remaining: ${state.freezesRemaining}, consecutive: ${state.usedConsecutiveFreeze})',
+    );
+  }
+
+  void _debugResetStreak(BuildContext context) async {
+    await StatsService().resetStreak();
+    _showDebugToast(context, 'Current streak reset to 0');
+  }
+
+  void _debugResetAllStats(BuildContext context) async {
+    await showCupertinoDialog<bool>(
+      context: context,
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('Reset ALL Stats?'),
+        content: const Text(
+            'This will clear streak, longest streak, and last unlock date. Cannot be undone.'),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              await StatsService().resetAllStats();
+              Navigator.of(ctx).pop();
+              if (context.mounted) {
+                _showDebugToast(context, 'All stats cleared');
+              }
+            },
+            child: const Text('Reset'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _debugAwardAllBadges(BuildContext context) async {
+    final badgeService = BadgeService();
+    int awarded = 0;
+    for (final badgeId in BadgeId.values) {
+      final isNew = await badgeService.awardBadge(badgeId);
+      if (isNew) awarded++;
+    }
+    if (context.mounted) {
+      _showDebugToast(context, '$awarded new badges awarded (${BadgeId.values.length} total)');
+    }
+  }
+
+  void _debugAwardSingleBadge(BuildContext context, BadgeId badgeId) async {
+    final badgeService = BadgeService();
+    final isNew = await badgeService.awardBadge(badgeId);
+    final badge = BadgeDefinitions.getBadge(badgeId);
+    if (context.mounted) {
+      if (isNew) {
+        _showDebugToast(context, '${badge.emoji} ${badge.name} awarded!');
+      } else {
+        _showDebugToast(context, '${badge.emoji} ${badge.name} already earned');
+      }
+    }
+  }
+
+  void _debugShowBadgeDialog(BuildContext context, BadgeId badgeId) {
+    final badge = BadgeDefinitions.getBadge(badgeId);
+    GamificationDialogService.showBadgeEarned(
+      context: context,
+      badge: badge,
+    );
+  }
+
+  void _debugShowMultipleBadgeDialogs(BuildContext context) {
+    final badges = [
+      BadgeDefinitions.getBadge(BadgeId.firstPrayer),
+      BadgeDefinitions.getBadge(BadgeId.streakStarter),
+      BadgeDefinitions.getBadge(BadgeId.verseExplorer),
+    ];
+    GamificationDialogService.showBadgesEarned(
+      context: context,
+      badges: badges,
+    );
+  }
+
+  void _showDebugToast(BuildContext context, String message) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('Debug'),
+        content: Text(message),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -457,8 +798,8 @@ class ProfileScreen extends StatelessWidget {
                 _buildAndroidListTile(
                   context,
                   leading: Icons.credit_card,
-                  title: 'Manage Subscription',
-                  subtitle: 'View and manage your subscription',
+                  title: 'manageSubscription'.tr,
+                  subtitle: 'manageSubscriptionSub'.tr,
                   iconColor: Colors.purple,
                   onTap: settingsController.manageSubscription,
                 )
@@ -466,8 +807,8 @@ class ProfileScreen extends StatelessWidget {
                 _buildAndroidListTile(
                   context,
                   leading: Icons.star,
-                  title: 'Become Premium',
-                  subtitle: 'Unlock all features with premium',
+                  title: 'becomePremium'.tr,
+                  subtitle: 'unlockAllFeatures'.tr,
                   iconColor: Colors.amber,
                   onTap: () => Get.to(() => const PaywallScreen()),
                 ),

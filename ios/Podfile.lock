@@ -30,7 +30,7 @@ PODS:
   - PhoneNumberKit/PhoneNumberKitCore (3.7.11)
   - PhoneNumberKit/UIKit (3.7.11):
     - PhoneNumberKit/PhoneNumberKitCore
-  - PostHog (3.37.2)
+  - PostHog (3.38.0)
   - posthog_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -140,7 +140,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PhoneNumberKit: ced55861269312a5e3bc2ef82a58d6255b1c976a
-  PostHog: 6e90f34cb71fc0881d8f98b8654e8e1799d72dbe
+  PostHog: b42fd6ae60326411582e97bea5786ba748cab8a0
   posthog_flutter: 631ab870f7daf1ed190deeb2414eb3e347445f37
   purchases_flutter: 818eabac676b9037ac7692d4bc48a52a10b276be
   PurchasesHybridCommon: ae7a0a6e105ecdde3e8816a004e57f0a2a7b9261

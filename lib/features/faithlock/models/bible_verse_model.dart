@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class BibleVerse {
   final String id;
   final String text;
@@ -130,15 +132,15 @@ extension VerseCategoryExtension on VerseCategory {
   String get displayName {
     switch (this) {
       case VerseCategory.temptation:
-        return 'Temptation';
+        return 'categoryTemptation'.tr;
       case VerseCategory.fearAnxiety:
-        return 'Fear & Anxiety';
+        return 'categoryFearAnxiety'.tr;
       case VerseCategory.pride:
-        return 'Pride';
+        return 'categoryPride'.tr;
       case VerseCategory.lust:
-        return 'Lust';
+        return 'categoryLust'.tr;
       case VerseCategory.anger:
-        return 'Anger';
+        return 'categoryAnger'.tr;
     }
   }
 

@@ -2,6 +2,7 @@ import { GlossaryTerm } from '@/lib/types'
 import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
+import RichText from '@/components/ui/RichText'
 
 interface GlossaryTemplateProps {
   term: GlossaryTerm
@@ -44,9 +45,9 @@ export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900">
             Understanding {term.term}
           </h2>
-          <div
+          <RichText
+            content={term.detailedExplanation}
             className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: term.detailedExplanation }}
           />
         </section>
 
@@ -56,9 +57,9 @@ export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
             A Biblical View of {term.term}
           </h2>
-          <div
+          <RichText
+            content={term.christianPerspective}
             className="prose prose-lg max-w-none prose-invert text-white/80 [&_p]:text-white/80 [&_li]:text-white/80 [&_strong]:text-white mb-8"
-            dangerouslySetInnerHTML={{ __html: term.christianPerspective }}
           />
           {term.bibleVerses && term.bibleVerses.length > 0 && (
             <div className="space-y-4 mt-8">
@@ -172,9 +173,6 @@ export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
             size="large"
             showAppleIcon
           />
-          <p className="mt-4 text-sm text-white/50">
-            No credit card required
-          </p>
         </section>
 
         {/* Related */}

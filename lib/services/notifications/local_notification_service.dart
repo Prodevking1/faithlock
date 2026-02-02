@@ -1,7 +1,10 @@
 import 'package:faithlock/app_routes.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/app_group_storage.dart';
 import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/export.dart';
+import 'package:faithlock/navigation/controllers/navigation_controller.dart';
+import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -120,9 +123,20 @@ class LocalNotificationService {
             if (index != null) {
               WinBackNotificationService().trackNotificationTapped(index);
 
-              // If this is the offer notification (#3, index 2),
+              // Track in PostHog
+              final analytics = PostHogService.instance;
+              if (analytics.isReady) {
+                analytics.events.trackCustom('notification_tapped', {
+                  'type': 'winback',
+                  'notification_index': index,
+                  'payload': payload,
+                });
+              }
+
+              // If this is the offer notification or its +24h reminder,
               // mark promo eligible and go directly to paywall
-              if (index == WinBackNotificationService.offerNotificationIndex) {
+              if (index == WinBackNotificationService.offerNotificationIndex ||
+                  index == WinBackNotificationService.offerReminderNotificationIndex) {
                 await WinBackNotificationService().markPromoEligible();
                 debugPrint('🎁 Win-back promo notification tapped — navigating to paywall with promo');
                 // Navigate to main — PaywallController will detect promo flag
@@ -135,6 +149,33 @@ class LocalNotificationService {
           // For other win-back notifications, navigate to main
           Get.offAllNamed(AppRoutes.main);
           debugPrint('✅ Navigated to main from win-back notification');
+        }
+
+        // Handle daily verse notifications (daily_verse_{verseId})
+        if (payload.startsWith(DailyVerseNotificationService.payloadPrefix)) {
+          debugPrint('📖 Daily verse notification tapped: $payload');
+
+          // Track in PostHog
+          final analytics = PostHogService.instance;
+          if (analytics.isReady) {
+            analytics.events.trackCustom('notification_tapped', {
+              'type': 'daily_verse',
+              'payload': payload,
+            });
+          }
+
+          // Navigate to main, then switch to Library tab
+          Get.offAllNamed(AppRoutes.main);
+
+          // Wait for navigation to complete, then switch to Library tab
+          Future.delayed(const Duration(milliseconds: 300), () {
+            try {
+              NavigationController.to.changePage(1);
+              debugPrint('✅ Navigated to Library tab from daily verse notification');
+            } catch (e) {
+              debugPrint('⚠️ Could not switch to Library tab: $e');
+            }
+          });
         }
       }
     }

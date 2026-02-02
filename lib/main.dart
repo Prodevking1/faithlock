@@ -11,6 +11,7 @@ import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/auto_navigation_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/notifications/notification_navigation_service.dart';
+import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
@@ -135,6 +136,14 @@ void _initializeNonCriticalServices() {
       debugPrint('✅ WinBackNotificationService checked');
     } catch (e) {
       debugPrint('⚠️ WinBackNotificationService check failed: $e');
+    }
+
+    // Daily verse: reschedule upcoming notifications on each app launch
+    try {
+      await DailyVerseNotificationService().scheduleUpcoming();
+      debugPrint('✅ DailyVerseNotificationService scheduled');
+    } catch (e) {
+      debugPrint('⚠️ DailyVerseNotificationService scheduling failed: $e');
     }
 
     try {

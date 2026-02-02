@@ -26,7 +26,7 @@ class SettingsScreen extends StatelessWidget {
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                'Settings',
+                'settings'.tr,
                 style: TextStyle(
                   color: FastColors.primaryText(context),
                   fontSize: 34,
@@ -48,21 +48,21 @@ class SettingsScreen extends StatelessWidget {
                   FastSpacing.h24,
 
                   // Permissions Section
-                  _buildSectionHeader('Permissions', context),
+                  _buildSectionHeader('permissions'.tr, context),
                   FastSpacing.h8,
                   _buildPermissionsCard(context, controller),
 
                   FastSpacing.h32,
 
                   // App Behavior Section
-                  _buildSectionHeader('App Behavior', context),
+                  _buildSectionHeader('appBehavior'.tr, context),
                   FastSpacing.h8,
                   _buildBehaviorCard(context, controller),
 
                   FastSpacing.h32,
 
                   // About Section
-                  _buildSectionHeader('About', context),
+                  _buildSectionHeader('about'.tr, context),
                   FastSpacing.h8,
                   _buildAboutCard(context, controller),
 
@@ -111,8 +111,8 @@ class SettingsScreen extends StatelessWidget {
           Obx(() => _buildPermissionTile(
                 context: context,
                 icon: CupertinoIcons.device_phone_portrait,
-                title: 'Screen Time',
-                subtitle: 'Required to block apps during schedules',
+                title: 'screenTime'.tr,
+                subtitle: 'screenTimeRequired'.tr,
                 status: controller.screenTimeStatus.value,
                 isAuthorized: controller.isScreenTimeAuthorized.value,
                 onTap: () => controller.requestScreenTimePermission(),
@@ -124,8 +124,8 @@ class SettingsScreen extends StatelessWidget {
           Obx(() => _buildPermissionTile(
                 context: context,
                 icon: CupertinoIcons.bell,
-                title: 'Notifications',
-                subtitle: 'Get reminders for scheduled locks',
+                title: 'notifications'.tr,
+                subtitle: 'notificationsSub'.tr,
                 status: controller.notificationsStatus.value,
                 isAuthorized: controller.isNotificationsAuthorized.value,
                 onTap: () => controller.requestNotificationsPermission(),
@@ -155,8 +155,8 @@ class SettingsScreen extends StatelessWidget {
           Obx(() => _buildToggleTile(
                 context: context,
                 icon: CupertinoIcons.lock_shield,
-                title: 'Enable Lock System',
-                subtitle: 'Master switch for all schedules',
+                title: 'enableLockSystem'.tr,
+                subtitle: 'masterSwitch'.tr,
                 value: controller.isLockEnabled.value,
                 onChanged: (value) => controller.toggleLockEnabled(value),
               )),
@@ -167,10 +167,10 @@ class SettingsScreen extends StatelessWidget {
           Obx(() => _buildToggleTile(
                 context: context,
                 icon: CupertinoIcons.bell,
-                title: 'Enable Notifications',
+                title: 'enableNotifications'.tr,
                 subtitle: controller.isNotificationsAuthorized.value
-                    ? 'Get reminders to re-lock and pray'
-                    : 'Tap to enable notifications',
+                    ? 'enableNotificationsSub'.tr
+                    : 'tapToEnableNotifications'.tr,
                 value: controller.isNotificationsAuthorized.value,
                 onChanged: (value) async {
                   if (value) {
@@ -188,8 +188,8 @@ class SettingsScreen extends StatelessWidget {
           _buildNavigationTile(
             context: context,
             icon: CupertinoIcons.exclamationmark_triangle,
-            title: 'Emergency Bypass',
-            subtitle: 'Access settings in case of emergency',
+            title: 'emergencyBypass'.tr,
+            subtitle: 'emergencyBypassSub'.tr,
             trailing: const Icon(CupertinoIcons.chevron_right, size: 20),
             onTap: () => controller.showEmergencyBypassInfo(),
           ),
@@ -200,17 +200,17 @@ class SettingsScreen extends StatelessWidget {
           Obx(() {
             String subtitle;
             if (!controller.isScreenTimeAuthorized.value) {
-              subtitle = 'Screen Time permission required';
+              subtitle = 'screenTimePermRequired'.tr;
             } else if (controller.selectedAppsCount.value > 0) {
-              subtitle = 'Apps configured - tap to modify';
+              subtitle = 'appsConfigured'.tr;
             } else {
-              subtitle = 'No apps selected yet';
+              subtitle = 'noAppsSelected'.tr;
             }
 
             return _buildNavigationTile(
               context: context,
               icon: CupertinoIcons.square_grid_2x2,
-              title: 'Blocked Apps',
+              title: 'blockedApps'.tr,
               subtitle: subtitle,
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -259,8 +259,8 @@ class SettingsScreen extends StatelessWidget {
           _buildNavigationTile(
             context: context,
             icon: CupertinoIcons.info_circle,
-            title: 'About FaithLock',
-            subtitle: 'Version 1.0.0',
+            title: 'aboutFaithLock'.tr,
+            subtitle: 'version'.trParams({'version': '1.0.0'}),
             trailing: const Icon(CupertinoIcons.chevron_right, size: 20),
             onTap: () => controller.showAboutInfo(),
           ),
@@ -268,8 +268,8 @@ class SettingsScreen extends StatelessWidget {
           _buildNavigationTile(
             context: context,
             icon: CupertinoIcons.doc_text,
-            title: 'Privacy Policy',
-            subtitle: 'How we protect your data',
+            title: 'privacyPolicy'.tr,
+            subtitle: 'privacyPolicySub'.tr,
             trailing: const Icon(CupertinoIcons.chevron_right, size: 20),
             onTap: () => controller.openPrivacyPolicy(),
           ),
@@ -277,8 +277,8 @@ class SettingsScreen extends StatelessWidget {
           _buildNavigationTile(
             context: context,
             icon: CupertinoIcons.heart,
-            title: 'Support',
-            subtitle: 'Get help or send feedback',
+            title: 'support'.tr,
+            subtitle: 'supportSub'.tr,
             trailing: const Icon(CupertinoIcons.chevron_right, size: 20),
             onTap: () => controller.openSupport(),
           ),

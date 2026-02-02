@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +13,9 @@ class StatsController extends GetxController {
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final StorageService _storage = StorageService();
   final VerseService _verseService = VerseService();
+  final PostHogService _analytics = PostHogService.instance;
+  final StreakFreezeService _freezeService = StreakFreezeService();
+  final BadgeService _badgeService = BadgeService();
 
   // Observable state
   final Rx<UserStats?> userStats = Rx<UserStats?>(null);
@@ -21,6 +25,8 @@ class StatsController extends GetxController {
   final RxString userName = RxString('');
   final Rx<BibleVerse?> dailyVerse = Rx<BibleVerse?>(null);
   final RxBool isDailyVerseFavorite = RxBool(false);
+  final Rx<StreakFreezeState?> freezeState = Rx<StreakFreezeState?>(null);
+  final RxList<EarnedBadge> earnedBadges = <EarnedBadge>[].obs;
 
   // Timer for periodic refresh after picker
   Timer? _refreshTimer;
@@ -37,6 +43,15 @@ class StatsController extends GetxController {
     loadLockedAppsCount();
     loadUserName();
     loadDailyVerse();
+    loadFreezeState();
+    loadEarnedBadges();
+
+    // Track dashboard viewed
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('stats_dashboard_viewed', {
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+    }
   }
 
   /// Load user name from storage
@@ -90,6 +105,26 @@ class StatsController extends GetxController {
     }
   }
 
+  /// Load streak freeze state
+  Future<void> loadFreezeState() async {
+    try {
+      final state = await _freezeService.getFreezeState();
+      freezeState.value = state;
+    } catch (e) {
+      freezeState.value = null;
+    }
+  }
+
+  /// Load earned badges from database
+  Future<void> loadEarnedBadges() async {
+    try {
+      final badges = await _badgeService.getEarnedBadges();
+      earnedBadges.assignAll(badges);
+    } catch (e) {
+      earnedBadges.clear();
+    }
+  }
+
   /// Toggle favorite status for daily verse
   Future<void> toggleDailyVerseFavorite() async {
     try {
@@ -98,6 +133,15 @@ class StatsController extends GetxController {
       final newStatus =
           await _verseService.toggleFavorite(dailyVerse.value!.id);
       isDailyVerseFavorite.value = newStatus;
+
+      // Track favorite toggle
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('daily_verse_favorite_toggled', {
+          'verse_id': dailyVerse.value!.id,
+          'verse_reference': dailyVerse.value!.reference,
+          'is_favorite': newStatus,
+        });
+      }
     } catch (e) {
       // Handle error silently or show message
     }
@@ -107,6 +151,13 @@ class StatsController extends GetxController {
   /// Starts a periodic check to detect when picker is closed and selection changes
   Future<void> openAppPicker() async {
     try {
+      // Track app picker opened
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('app_picker_opened', {
+          'current_locked_count': lockedAppsCount.value,
+        });
+      }
+
       // Store current count before opening picker
       final currentCount = lockedAppsCount.value;
 
@@ -150,6 +201,8 @@ class StatsController extends GetxController {
   /// Refresh statistics (pull-to-refresh)
   Future<void> refreshStats() async {
     await loadStats();
+    await loadFreezeState();
+    await loadEarnedBadges();
   }
 
   /// Get formatted streak text

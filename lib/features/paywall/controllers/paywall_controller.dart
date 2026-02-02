@@ -367,6 +367,19 @@ class PaywallController extends GetxController
   }
 
   void closePaywall() {
+    // Track paywall dismissed
+    if (_analytics.isReady) {
+      final selectedPlan = selectedPlanIndex.value < packages.length
+          ? getPlanTitle(packages[selectedPlanIndex.value]).toLowerCase()
+          : 'none';
+      _analytics.events.trackCustom('paywall_dismissed', {
+        'placement_id': placementId ?? 'unknown',
+        'selected_plan': selectedPlan,
+        'is_winback_promo': isWinBackPromo.value,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+    }
+
     // Trigger win-back sequence when user closes without subscribing
     WinBackNotificationService()
         .scheduleWinBackSequence(source: 'paywall_closed');

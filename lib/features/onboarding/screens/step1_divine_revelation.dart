@@ -41,7 +41,7 @@ class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
 
     // Phase 1: Type verse (0-3s)
     await AnimationUtils.typeText(
-      fullText: 'Redeem the time, for the days are evil.',
+      fullText: 'divineRev_verse'.tr,
       onUpdate: (text) => setState(() => _verseText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showVerseCursor = visible),
@@ -50,17 +50,17 @@ class _Step1DivineRevelationState extends State<Step1DivineRevelation> {
     );
 
     // Add reference
-    setState(() => _verseText += '\n— Ephesians 5:16');
+    setState(() => _verseText += '\n${'divineRev_reference'.tr}');
 
     await AnimationUtils.pause(durationMs: 1000);
 
     final userName = controller.userName.value.isNotEmpty
         ? controller.userName.value
-        : 'friend';
+        : 'friend'.tr;
 
     await AnimationUtils.typeText(
       fullText:
-          '$userName, God sees every moment. How are you using the time He gave you?',
+          'divineRev_question'.trParams({'name': userName}),
       onUpdate: (text) => setState(() => _questionText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showQuestionCursor = visible),

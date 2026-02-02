@@ -47,7 +47,7 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
       backgroundColor: FastColors.surface(context),
       appBar: AppBar(
         title: Text(
-          'Verse Library',
+          'verseLibrary'.tr,
           style: TextStyle(
             color: FastColors.primaryText(context),
             fontSize: 20,
@@ -102,7 +102,7 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
                       children: [
                         _buildFilterChip(
                           context,
-                          label: 'All',
+                          label: 'all'.tr,
                           isSelected: controller.selectedCategory.value == null,
                           onTap: () => controller.filterByCategory(null),
                         ),
@@ -159,7 +159,7 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
                           ),
                           FastSpacing.h24,
                           FastButton(
-                            text: 'Retry',
+                            text: 'retry'.tr,
                             onTap: controller.loadVerses,
                           ),
                         ],
@@ -181,8 +181,8 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
                           FastSpacing.h16,
                           Text(
                             controller.showFavoritesOnly.value
-                                ? 'No favorite verses yet'
-                                : 'No verses found',
+                                ? 'noFavoriteVersesYet'.tr
+                                : 'noVersesFound'.tr,
                             style: TextStyle(
                               color: FastColors.secondaryText(context),
                               fontSize: 18,
@@ -192,8 +192,8 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
                           FastSpacing.h8,
                           Text(
                             controller.showFavoritesOnly.value
-                                ? 'Tap the heart icon to add favorites'
-                                : 'Try a different search or category',
+                                ? 'tapHeartToAdd'.tr
+                                : 'tryDifferentSearch'.tr,
                             style: TextStyle(
                               color: FastColors.tertiaryText(context),
                               fontSize: 14,
@@ -224,7 +224,7 @@ class _VerseLibraryScreenState extends State<VerseLibraryScreen> {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Loading more verses...',
+                                  'loadingMoreVerses'.tr,
                                   style: TextStyle(
                                     color: FastColors.secondaryText(context),
                                     fontSize: 14,

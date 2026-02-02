@@ -1,6 +1,9 @@
+export 'badge_service.dart';
 export 'faithlock_database_service.dart';
-export 'verse_service.dart';
-export 'stats_service.dart';
+export 'gamification_dialog_service.dart';
 export 'lock_service.dart';
-export 'screen_time_service.dart';
 export 'schedule_monitor_service.dart';
+export 'screen_time_service.dart';
+export 'stats_service.dart';
+export 'streak_freeze_service.dart';
+export 'verse_service.dart';

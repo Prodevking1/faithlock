@@ -4,6 +4,7 @@ import 'package:faithlock/features/faithlock/screens/relock_in_progress_screen.d
 import 'package:faithlock/features/faithlock/services/schedule_monitor_service.dart';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
+import 'package:faithlock/features/onboarding/screens/scripture_onboarding_v2_screen.dart';
 import 'package:faithlock/features/prayer_learning/export.dart';
 import 'package:faithlock/navigation/screens/main_screen.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
@@ -41,6 +42,7 @@ class AppRoutes {
   static const String root = '/';
   static const String onboarding = '/onboarding';
   static const String scriptureOnboarding = '/scripture-onboarding';
+  static const String scriptureOnboardingV2 = '/scripture-onboarding-v2';
   static const String permissionsOnboarding = '/permissions-onboarding';
   static const String prayerLearning = '/prayer-learning';
   static const String main = '/main';
@@ -53,6 +55,10 @@ class AppRoutes {
       GetPage<dynamic>(
         name: scriptureOnboarding,
         page: () => const ScriptureOnboardingScreen(),
+      ),
+      GetPage<dynamic>(
+        name: scriptureOnboardingV2,
+        page: () => const ScriptureOnboardingV2Screen(),
       ),
       GetPage<dynamic>(
         name: permissionsOnboarding,

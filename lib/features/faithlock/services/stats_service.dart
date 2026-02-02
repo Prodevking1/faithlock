@@ -1,10 +1,28 @@
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
+import 'package:faithlock/features/faithlock/services/streak_freeze_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
+import 'package:flutter/material.dart' hide Badge;
 
 class StatsService {
   final FaithLockDatabaseService _db = FaithLockDatabaseService();
   final StorageService _storage = StorageService();
+  final StreakFreezeService _freezeService = StreakFreezeService();
+
+  // Streak event flags (reset after dialogs are shown)
+  bool _lastStreakFreezeUsed = false;
+  bool _lastStreakWasLost = false;
+  int _lostStreakValue = 0;
+
+  bool get lastStreakFreezeUsed => _lastStreakFreezeUsed;
+  bool get lastStreakWasLost => _lastStreakWasLost;
+  int get lostStreakValue => _lostStreakValue;
+
+  void resetStreakFlags() {
+    _lastStreakFreezeUsed = false;
+    _lastStreakWasLost = false;
+    _lostStreakValue = 0;
+  }
 
   // Storage keys
   static const String _keyCurrentStreak = 'faithlock_current_streak';
@@ -55,42 +73,83 @@ class StatsService {
     await _db.insertDailyStats(updated);
   }
 
-  // Update streak
+  // Update streak (with freeze protection)
   Future<void> _updateStreak() async {
+    // Reset flags for this update cycle
+    _lastStreakFreezeUsed = false;
+    _lastStreakWasLost = false;
+    _lostStreakValue = 0;
+
+    // Ensure freeze service is initialized and recharged
+    await _freezeService.checkAndRecharge();
+
     final lastUnlockStr = await _storage.readString(_keyLastUnlockDate);
     final currentStreakStr = await _storage.readString(_keyCurrentStreak);
     final longestStreakStr = await _storage.readString(_keyLongestStreak);
 
-    final currentStreak = currentStreakStr != null ? int.tryParse(currentStreakStr) ?? 0 : 0;
-    final longestStreak = longestStreakStr != null ? int.tryParse(longestStreakStr) ?? 0 : 0;
+    final currentStreak =
+        currentStreakStr != null ? int.tryParse(currentStreakStr) ?? 0 : 0;
+    final longestStreak =
+        longestStreakStr != null ? int.tryParse(longestStreakStr) ?? 0 : 0;
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
     if (lastUnlockStr != null) {
       final lastUnlock = DateTime.parse(lastUnlockStr);
-      final lastUnlockDay = DateTime(lastUnlock.year, lastUnlock.month, lastUnlock.day);
+      final lastUnlockDay =
+          DateTime(lastUnlock.year, lastUnlock.month, lastUnlock.day);
 
       // Check if already unlocked today
       if (lastUnlockDay == today) {
         return; // Streak already counted for today
       }
 
-      // Check if it's consecutive day
       final daysDiff = today.difference(lastUnlockDay).inDays;
 
       if (daysDiff == 1) {
-        // Consecutive day - increment streak
+        // Consecutive day — increment streak
         final newStreak = currentStreak + 1;
         await _storage.writeString(_keyCurrentStreak, newStreak.toString());
 
-        // Update longest streak if needed
         if (newStreak > longestStreak) {
           await _storage.writeString(_keyLongestStreak, newStreak.toString());
         }
-      } else if (daysDiff > 1) {
-        // Streak broken - reset to 1
+
+        // Reset consecutive freeze flag (user showed up today)
+        await _freezeService.resetConsecutiveFlag();
+      } else if (daysDiff == 2) {
+        // Missed exactly 1 day — try streak freeze
+        final freezeUsed = await _freezeService.tryUseFreeze();
+
+        if (freezeUsed) {
+          // Freeze saved the streak — increment as if consecutive
+          final newStreak = currentStreak + 1;
+          await _storage.writeString(_keyCurrentStreak, newStreak.toString());
+
+          if (newStreak > longestStreak) {
+            await _storage.writeString(
+                _keyLongestStreak, newStreak.toString());
+          }
+
+          _lastStreakFreezeUsed = true;
+          debugPrint(
+              '🧊 Streak freeze saved streak! Now at $newStreak days');
+        } else {
+          // No freeze available — streak breaks
+          _lastStreakWasLost = true;
+          _lostStreakValue = currentStreak;
+          await _storage.writeString(_keyCurrentStreak, '1');
+          debugPrint(
+              '💔 Streak lost ($currentStreak days) — no freeze available');
+        }
+      } else if (daysDiff > 2) {
+        // Missed 2+ days — streak always breaks (can't chain freezes)
+        _lastStreakWasLost = true;
+        _lostStreakValue = currentStreak;
         await _storage.writeString(_keyCurrentStreak, '1');
+        debugPrint(
+            '💔 Streak lost ($currentStreak days) — missed $daysDiff days');
       }
     } else {
       // First unlock ever

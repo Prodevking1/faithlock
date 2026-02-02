@@ -25,9 +25,6 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
 
   Future<void> _determineInitialRoute() async {
     try {
-      // Initialize controller needed by MainScreen and onboarding
-      Get.put(ScriptureOnboardingController(), permanent: true);
-
       // Check if user has completed onboarding
       final prefs = PreferencesService();
       final hasCompletedOnboarding =
@@ -36,13 +33,17 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
       debugPrint('📋 [InitialRoute] Onboarding completed: $hasCompletedOnboarding');
 
       if (!hasCompletedOnboarding) {
-        // User hasn't completed onboarding - show onboarding flow
-        debugPrint('🎯 [InitialRoute] Navigating to onboarding');
+        // User hasn't completed onboarding - show V2 onboarding flow
+        // V2 screen creates its own controllers (registered as both base + V2 types)
+        debugPrint('🎯 [InitialRoute] Navigating to V2 onboarding');
         Get.off(() => const ScriptureOnboardingScreen());
         return;
       }
 
-      // User has completed onboarding - check subscription status
+      // User has completed onboarding - initialize controller for MainScreen
+      Get.put(ScriptureOnboardingController(), permanent: true);
+
+      // Check subscription status
       debugPrint('✅ [InitialRoute] Onboarding completed - checking subscription');
       final paywallGuard = PaywallGuardService();
       final hasAccess = await paywallGuard.checkSubscriptionAccess(
@@ -58,7 +59,7 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
       }
     } catch (e) {
       debugPrint('❌ [InitialRoute] Error determining route: $e');
-      // Fallback to onboarding on error
+      // Fallback to V2 onboarding on error
       Get.off(() => const ScriptureOnboardingScreen());
     }
   }

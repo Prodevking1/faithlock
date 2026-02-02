@@ -41,7 +41,7 @@ class FaithLockDatabaseService {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -116,19 +116,36 @@ class FaithLockDatabaseService {
       )
     ''');
 
+    // Earned badges table
+    await db.execute('''
+      CREATE TABLE earned_badges (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        badge_id TEXT NOT NULL UNIQUE,
+        earned_at TEXT NOT NULL
+      )
+    ''');
+
     // Seed initial verses
     await _seedInitialVerses(db);
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Handle database upgrades here
     if (oldVersion < 3) {
-      // Add unlock_duration_minutes column to unlock_history table
       await db.execute('''
         ALTER TABLE unlock_history
         ADD COLUMN unlock_duration_minutes INTEGER
       ''');
       debugPrint('✅ Database upgraded to version 3: Added unlock_duration_minutes column');
+    }
+    if (oldVersion < 4) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS earned_badges (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          badge_id TEXT NOT NULL UNIQUE,
+          earned_at TEXT NOT NULL
+        )
+      ''');
+      debugPrint('✅ Database upgraded to version 4: Added earned_badges table');
     }
   }
 
@@ -382,6 +399,32 @@ class FaithLockDatabaseService {
       debugPrint('❌ Failed to load curriculum verses: $e');
       rethrow;
     }
+  }
+
+  // ==================== BADGE OPERATIONS ====================
+
+  Future<int> insertEarnedBadge(Map<String, dynamic> badge) async {
+    final db = await database;
+    return await db.insert(
+      'earned_badges',
+      badge,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getEarnedBadges() async {
+    final db = await database;
+    return await db.query('earned_badges', orderBy: 'earned_at DESC');
+  }
+
+  Future<bool> isBadgeEarned(String badgeId) async {
+    final db = await database;
+    final result = await db.query(
+      'earned_badges',
+      where: 'badge_id = ?',
+      whereArgs: [badgeId],
+    );
+    return result.isNotEmpty;
   }
 
   // Close database

@@ -73,3 +73,6 @@ fastlane/test_output
 # Supabase related
 **/supabase/.branches
 **/supabase/.temp
+
+.env
+.env.*
