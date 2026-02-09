@@ -1,7 +1,7 @@
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
-import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
+import 'package:faithlock/features/paywall/screens/paywall_screen_v2.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
@@ -82,10 +82,7 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
   void _onRenewNow() async {
     await AnimationUtils.heavyHaptic();
 
-    Get.off(() => PaywallScreen(
-          placementId: 'subscription_expired',
-          redirectToHomeOnClose: false,
-        ));
+    Get.off(() => const PaywallScreenV2());
   }
 
   Future<void> _onContactSupport() async {

@@ -1,7 +1,7 @@
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
-import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
+import 'package:faithlock/features/paywall/screens/paywall_screen_v2.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _V2FreeForYouState extends State<V2FreeForYou> {
   Future<void> _onStartFreeTrial() async {
     await AnimationUtils.heavyHaptic();
     await controller.completeOnboarding();
-    Get.off(() => PaywallScreen());
+    Get.off(() => const PaywallScreenV2());
   }
 
   @override
@@ -216,12 +216,12 @@ class _V2FreeForYouState extends State<V2FreeForYou> {
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeOut,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: OnboardingTheme.space16),
+          padding: const EdgeInsets.only(bottom: OnboardingTheme.space12),
           child: Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 32,
+                height: 32,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: OnboardingTheme.goldColor.withValues(alpha: 0.15),
@@ -229,14 +229,14 @@ class _V2FreeForYouState extends State<V2FreeForYou> {
                 child: Icon(
                   icon,
                   color: OnboardingTheme.goldColor,
-                  size: 22,
+                  size: 16,
                 ),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   text,
-                  style: OnboardingTheme.body.copyWith(
+                  style: OnboardingTheme.footnote.copyWith(
                     color: OnboardingTheme.labelPrimary,
                   ),
                 ),

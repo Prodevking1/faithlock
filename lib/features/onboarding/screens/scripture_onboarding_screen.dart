@@ -4,11 +4,15 @@ import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.
 import 'package:faithlock/features/onboarding/screens/step1_5_name_capture.dart';
 import 'package:faithlock/features/onboarding/screens/step1_divine_revelation.dart';
 import 'package:faithlock/features/onboarding/screens/step2_self_confrontation.dart';
+import 'package:faithlock/features/onboarding/screens/step3_eternal_warfare.dart';
 import 'package:faithlock/features/onboarding/screens/step3_5_testimonials.dart';
 import 'package:faithlock/features/onboarding/screens/step4_call_to_covenant.dart';
 import 'package:faithlock/features/onboarding/screens/step6_final_encouragement.dart';
 import 'package:faithlock/features/onboarding/screens/step7_screen_time_permission.dart';
 import 'package:faithlock/features/onboarding/screens/step9_notification_permission.dart';
+import 'package:faithlock/features/onboarding/screens/v2_free_for_you.dart';
+import 'package:faithlock/features/onboarding/screens/onboarding_welcome_screen.dart';
+import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
@@ -18,6 +22,9 @@ import 'package:get/get.dart';
 /// Main Scripture Lock onboarding screen with personalized flow
 class ScriptureOnboardingScreen extends StatelessWidget {
   const ScriptureOnboardingScreen({super.key});
+
+  // Set to true to show skip button for testing
+  static const bool isTesting = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,47 +36,58 @@ class ScriptureOnboardingScreen extends StatelessWidget {
           Obx(() {
             switch (controller.currentStep.value) {
               case 1:
-                return Step1_5NameCapture(
+                return OnBoardingWelcomeScreen(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 2:
-                return Step1DivineRevelation(
+                return Step1_5NameCapture(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 3:
-                return Step2SelfConfrontation(
+                return Step1DivineRevelation(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 4:
-                return Step35Testimonials(
+                return Step2SelfConfrontation(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 5:
-                return Step4CallToCovenant(
+                return Step3EternalWarfare(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 6:
-                return Step6FinalEncouragement(
+                return Step35Testimonials(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 7:
-                return Step7ScreenTimePermission(
+                return Step4CallToCovenant(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 8:
-                return const Step9NotificationPermission();
+                return Step6FinalEncouragement(
+                  onComplete: () => controller.nextStep(),
+                );
 
               case 9:
-                return _MascotTransitionStep(
-                  userName: controller.userName.value,
+                return Step7ScreenTimePermission(
+                  onComplete: () => controller.nextStep(),
                 );
+
+              case 10:
+                return const Step9NotificationPermission();
+
+              case 11:
+                return const OnboardingSummaryScreen();
+
+              case 12:
+                return const V2FreeForYou();
 
               default:
                 return Scaffold(
@@ -86,10 +104,50 @@ class ScriptureOnboardingScreen extends StatelessWidget {
 
           // _buildDemoButton(controller),
 
+          // Skip button for testing
+          if (isTesting) _buildSkipButton(controller),
+
           // // Debug controls (only in debug mode)
           // if (kDebugMode) _buildDebugControls(controller),
         ],
       ),
+    );
+  }
+
+  /// Build skip button for testing
+  Widget _buildSkipButton(ScriptureOnboardingController controller) {
+    return Positioned(
+      top: MediaQuery.of(Get.context!).padding.top + 16,
+      left: 16,
+      child: Obx(() => GestureDetector(
+            onTap: () => controller.nextStep(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Skip ${controller.currentStep.value}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.skip_next,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 

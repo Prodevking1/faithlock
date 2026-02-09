@@ -138,7 +138,7 @@ const Map<String, String> en_US = {
   'judahMorning': 'Morning, @name.',
   'judahKeepGoing': 'Keep going, @name.',
   'judahAlmostThere': 'Almost there, @name.',
-  'judahEvening': 'Peaceful evening, @name.',
+  'judahEvening': 'Peaceful evening,\n@name.',
 
   // ═══════════════════════════════════════════
   // UNLOCK SCREEN
@@ -179,6 +179,13 @@ const Map<String, String> en_US = {
   // ═══════════════════════════════════════════
   'welcome_message':
       "Welcome! I'm Judah, and I'll help you stop mindless scrolling and build a real presence with God.",
+  'welcome_part1': "Welcome! I'm ",
+  'welcome_name': "Judah",
+  'welcome_part2': ", and I'll help you ",
+  'welcome_highlight1': "stop mindless scrolling",
+  'welcome_part3': " and build a ",
+  'welcome_highlight2': "real presence with God",
+  'welcome_part4': ".",
 
   // ═══════════════════════════════════════════
   // ONBOARDING: NAME CAPTURE (Step 2)
@@ -264,10 +271,11 @@ const Map<String, String> en_US = {
   'screenPerm_dialogMessage':
       'Without Screen Time permission, FaithLock cannot protect you from your chosen apps.\n\nYou can enable this later in Settings.',
   'screenPerm_skipForNow': 'Skip for Now',
-  'screenPerm_activateTitle': 'Activate Your Spiritual Shield',
-  'screenPerm_benefit1': 'Scripture appears before you unlock',
-  'screenPerm_benefit2': 'Your chosen apps are protected',
-  'screenPerm_benefit3': 'Build discipline through daily verses',
+  'screenPerm_activateTitle': 'Activate Your Shield',
+  'screenPerm_subtitle': 'FaithLock needs Screen Time permission to block apps and show Scripture before you open them.',
+  'screenPerm_benefit1': 'Block distracting apps when you need focus',
+  'screenPerm_benefit2': 'Read Scripture before accessing blocked apps',
+  'screenPerm_benefit3': 'Set schedules to protect your time',
   'screenPerm_requesting': 'Requesting...',
   'screenPerm_continueWithout': 'Continue without protection',
 
@@ -329,15 +337,83 @@ const Map<String, String> en_US = {
   // ═══════════════════════════════════════════
   // ONBOARDING: FREE FOR YOU (Step 10)
   // ═══════════════════════════════════════════
-  'freeForYou_title': 'FaithLock is free for you.',
+  'freeForYou_title': 'We want you to use FaithLock for free.',
   'freeForYou_subtitle':
-      "Everything you've set up is ready to transform your life.",
+      'Join thousands building stronger spiritual habits. No commitment.',
   'freeForYou_benefit1': 'Scripture before every unlock',
   'freeForYou_benefit2': 'Custom protection schedules',
   'freeForYou_benefit3': 'Daily verse notifications',
   'freeForYou_benefit4': 'Progress tracking & insights',
-  'freeForYou_startTrial': 'Start My Free Trial',
-  'freeForYou_trialPeriod': 'Try everything free for 7 days',
+  'freeForYou_startTrial': 'Try for \$0',
+  'freeForYou_trialPeriod': '3 days free, cancel anytime',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING: SUMMARY SCREEN
+  // ═══════════════════════════════════════════
+  'summaryScreen_loading': 'Activating your spiritual shield...',
+  'summaryScreen_title': '@name, Your Armor is Ready',
+  'summaryScreen_item1_title': 'Scripture Shield Activated',
+  'summaryScreen_item1_subtitle': 'Bible verses before every unlock',
+  'summaryScreen_item2_title': 'Protection Schedules Set',
+  'summaryScreen_item2_subtitle': 'Auto lock periods configured',
+  'summaryScreen_item3_title': 'Prayer Reminders Ready',
+  'summaryScreen_item3_subtitle': 'Stay accountable with gentle nudges',
+  'summaryScreen_item4_title': 'Sacred Covenant Sealed',
+  'summaryScreen_item4_subtitle': 'Your commitment is recorded',
+  'summaryScreen_transformation_title': 'Your Transformation Begins',
+  'summaryScreen_promise1': 'Reclaim 2-4 hours daily for prayer & family',
+  'summaryScreen_promise2': 'Reduce screen time by 70% in just 2 weeks',
+  'summaryScreen_promise3': 'Build a consistent daily prayer practice',
+  'summaryScreen_promise4': 'Experience true digital freedom & peace',
+  'summaryScreen_graph_title': "Time You'll Reclaim",
+  'summaryScreen_graph_subtitle': 'Every hour back for prayer & family',
+  'summaryScreen_graph_note': 'Based on averages from 500+ users',
+  'summaryScreen_testimonial': '"I was enslaved to my phone for years. FaithLock gave me back 3+ hours daily - now spent in prayer, with my kids, and in God\'s Word. My life has completely changed."',
+  'summaryScreen_testimonial_author': '— Sarah M., FaithLock User',
+  'summaryScreen_stats_title': 'Believers using FaithLock report:',
+  'summaryScreen_stat1_value': '70%',
+  'summaryScreen_stat1_label': 'Less\nScreen Time',
+  'summaryScreen_stat2_value': '3.5h',
+  'summaryScreen_stat2_label': 'Saved\nDaily',
+  'summaryScreen_stat3_value': '92%',
+  'summaryScreen_stat3_label': 'Stronger\nFaith',
+  'summaryScreen_urgency': 'Your setup expires in 24 hours',
+  'summaryScreen_cta': 'Try for \$0',
+  'summaryScreen_risk_reversal': '3 days free · Cancel anytime',
+  'summaryScreen_screenTimeToday': 'Screen Time\nToday',
+  'summaryScreen_screenTimeWeek2': 'Screen Time\nWeek 2',
+  'summaryScreen_dailyForMatters': 'daily for what matters',
+
+  // ═══════════════════════════════════════════
+  // PAYWALL
+  // ═══════════════════════════════════════════
+  'paywall_tryForZero': 'Try for \$0',
+  'paywall_startJourney': 'Start Your Journey',
+  'paywall_riskReversal': '3 days free · Cancel anytime',
+  // Paywall V2
+  'paywall_headline1': 'Your phone steals ',
+  'paywall_headline2': '4 hours',
+  'paywall_headline3': ' a day.',
+  'paywall_subheadline': 'Reclaim that time for God.',
+  'paywall_socialProof': 'Join @count believers taking back their time',
+  'paywall_benefit1': 'Block distracting apps during prayer time',
+  'paywall_benefit2': 'Build a daily Scripture habit that actually sticks',
+  'paywall_benefit3': 'Less scrolling, more time with the Word',
+  'paywall_benefit4': 'Track your spiritual growth with faith reports',
+  'paywall_urgencyTitle': 'LAUNCH PRICE ENDS IN',
+  'paywall_bestValue': 'BEST VALUE',
+  'paywall_priceAnchorPrefix': 'Less than ',
+  'paywall_day': 'day',
+  'paywall_priceAnchorSuffix': 'cheaper than a piece of gum',
+  'paywall_ctaFreeTrial': 'Start FREE for 3 Days',
+  'paywall_ctaNoTrial': 'Start Your Journey',
+  'paywall_reassurance': 'No charge today · Cancel anytime',
+  'paywall_secure': 'Secure',
+  'paywall_rating': '4.9 Rating',
+  'paywall_verified': 'Verified',
+  'paywall_restore': 'Restore',
+  'paywall_privacy': 'Privacy',
+  'paywall_terms': 'Terms',
 
   // ═══════════════════════════════════════════
   // NOTIFICATIONS: WIN-BACK SEQUENCE
@@ -345,16 +421,16 @@ const Map<String, String> en_US = {
   'winback_title1': 'A verse for your evening',
   'winback_body1':
       '"The Lord himself goes before you and will be with you; he will never leave you nor forsake you." — Deuteronomy 31:8',
-  'winback_title2': 'Your free week is waiting',
+  'winback_title2': '🎁 1 week FREE access — just for you',
   'winback_body2':
-      "You installed FaithLock because something needed to change. Your free trial is still available — let's start your transformation.",
+      "We're giving you 7 days of full FaithLock access, completely free. No commitment. Come back and let Scripture guard your heart.",
   'winback_title3': 'You installed FaithLock for a reason',
   'winback_body3':
       "That reason hasn't changed. Every day without your shield is a day unprotected. Come back and let Scripture guard your heart.",
   'winback_title4': '"I used to unlock Instagram 80 times a day"',
   'winback_body4':
       "Now I start every morning with a verse instead. FaithLock didn't just block apps — it rebuilt my relationship with God. — Marcus, 23",
-  'winback_title5': 'This is our last message',
+  'winback_title5': 'Your free week is still waiting',
   'winback_body5':
-      "We won't bother you again. But know this: your shield is ready whenever you are. God's Word never expires. Come back anytime.",
+      "We won't bother you again. If you don't want it, just ignore this message. Your 7 days of free access won't expire.",
 };

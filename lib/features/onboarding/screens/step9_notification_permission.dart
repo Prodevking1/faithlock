@@ -3,15 +3,18 @@ import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_c
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
+import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_plain_button.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_confirmation_dialog.dart';
+import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Step 9: Notification Permission - Enable prayer reminders and relock alerts
+/// After permission is granted, shows daily verses time selection (V2 feature)
 class Step9NotificationPermission extends StatefulWidget {
   const Step9NotificationPermission({super.key});
 
@@ -26,6 +29,11 @@ class _Step9NotificationPermissionState
   final LocalNotificationService _notificationService =
       LocalNotificationService();
   final PreferencesService _prefs = PreferencesService();
+  final DailyVerseNotificationService _dailyVerseService =
+      DailyVerseNotificationService();
+
+  // Current phase: 'permission' or 'timeSelection'
+  String _currentPhase = 'permission';
 
   // Phase 9.1 - Introduction
   String _introText = '';
@@ -38,6 +46,14 @@ class _Step9NotificationPermissionState
   // Phase 9.3 - Call to Action
   bool _showButton = false;
   bool _isRequestingPermission = false;
+
+  // Phase 9.4 - Daily Verses Time Selection
+  bool _showTimeSelection = false;
+  int _selectedFrequency = 1; // 1, 2, or 3 times per day
+  final List<TimeOfDay> _selectedTimes = [
+    const TimeOfDay(hour: 8, minute: 0), // Morning
+  ];
+  bool _isSavingTimes = false;
 
   double _opacity = 1.0;
 
@@ -113,39 +129,15 @@ class _Step9NotificationPermissionState
     try {
       debugPrint('🔔 [STEP 9] ========================================');
       debugPrint('🔔 [STEP 9] Starting notification permission request...');
-      debugPrint('🔔 [STEP 9] Mounted state: $mounted');
-      debugPrint('🔔 [STEP 9] Time: ${DateTime.now()}');
 
       // Initialize notification service first (if not already done)
-      debugPrint('🔔 [STEP 9] Initializing LocalNotificationService...');
       await _notificationService.initialize();
       debugPrint('✅ [STEP 9] LocalNotificationService initialized');
 
       // Request permission and wait for user response
-      final startTime = DateTime.now();
       final granted = await _notificationService.requestPermissions();
-      final endTime = DateTime.now();
-      final duration = endTime.difference(startTime);
 
       debugPrint('📱 [STEP 9] Permission response received: $granted');
-      debugPrint('📱 [STEP 9] Time taken: ${duration.inMilliseconds}ms');
-      debugPrint('📱 [STEP 9] Mounted state after request: $mounted');
-
-      // If response was instant (<100ms), permission was already decided
-      if (duration.inMilliseconds < 100) {
-        debugPrint(
-            '⚠️ [STEP 9] INSTANT RESPONSE - Permission was already decided by iOS');
-        debugPrint(
-            '💡 [STEP 9] User may have already accepted/denied in a previous session');
-        debugPrint(
-            '💡 [STEP 9] iOS does not show the dialog again after first decision');
-      }
-
-      if (granted) {
-        debugPrint('✅ Notifications permission granted');
-      } else {
-        debugPrint('❌ Notifications permission denied');
-      }
 
       // Mark that we asked for permission
       await _prefs.writeBool('notification_permission_asked', true);
@@ -155,21 +147,107 @@ class _Step9NotificationPermissionState
 
       if (!mounted) return;
 
-      // Complete onboarding and go to mascot transition
+      // Transition to time selection phase
+      _transitionToTimeSelection();
+    } catch (e) {
+      debugPrint('❌ Error requesting Notifications permission: $e');
+
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      if (!mounted) return;
+
+      // Still transition to time selection even if there's an error
+      _transitionToTimeSelection();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRequestingPermission = false;
+        });
+      }
+    }
+  }
+
+  void _transitionToTimeSelection() {
+    setState(() {
+      _currentPhase = 'timeSelection';
+      _showButton = false;
+      _showTimeSelection = true;
+    });
+    AnimationUtils.mediumHaptic();
+  }
+
+  void _onFrequencyChanged(int frequency) {
+    setState(() {
+      _selectedFrequency = frequency;
+      // Adjust time slots based on frequency
+      _selectedTimes.clear();
+      if (frequency >= 1) {
+        _selectedTimes.add(const TimeOfDay(hour: 8, minute: 0)); // Morning
+      }
+      if (frequency >= 2) {
+        _selectedTimes.add(const TimeOfDay(hour: 12, minute: 30)); // Noon
+      }
+      if (frequency >= 3) {
+        _selectedTimes.add(const TimeOfDay(hour: 20, minute: 0)); // Evening
+      }
+    });
+    AnimationUtils.lightHaptic();
+  }
+
+  Future<void> _showTimePicker(int index) async {
+    final currentTime = _selectedTimes[index];
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: currentTime,
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: OnboardingTheme.goldColor,
+              surface: Color(0xFF1C1C1E),
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() => _selectedTimes[index] = picked);
+      await AnimationUtils.lightHaptic();
+    }
+  }
+
+  Future<void> _onActivateDailyVerses() async {
+    if (_isSavingTimes) return;
+
+    setState(() => _isSavingTimes = true);
+
+    try {
+      await AnimationUtils.heavyHaptic();
+
+      // Enable daily verse notifications with selected times
+      await _dailyVerseService.enableWithMultipleTimes(_selectedTimes);
+
+      debugPrint(
+          '✅ [STEP 9] Daily verses enabled with ${_selectedTimes.length} time(s)');
+
+      // Complete onboarding and proceed
       await controller.completeOnboarding();
+
+      if (!mounted) return;
+
+      // Fade out and go to next step
+      setState(() => _opacity = 0.0);
+      await Future.delayed(const Duration(milliseconds: 600));
 
       if (!mounted) return;
 
       controller.nextStep();
     } catch (e) {
-      debugPrint('❌ Error requesting Notifications permission: $e');
+      debugPrint('❌ Error saving daily verse times: $e');
 
-      // Wait a bit before navigating
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      if (!mounted) return;
-
-      // Still complete onboarding even if there's an error
+      // Still proceed even if there's an error
       await controller.completeOnboarding();
 
       if (!mounted) return;
@@ -177,9 +255,7 @@ class _Step9NotificationPermissionState
       controller.nextStep();
     } finally {
       if (mounted) {
-        setState(() {
-          _isRequestingPermission = false;
-        });
+        setState(() => _isSavingTimes = false);
       }
     }
   }
@@ -201,6 +277,26 @@ class _Step9NotificationPermissionState
       await _prefs.writeBool('notification_permission_asked', true);
       await controller.completeOnboarding();
       controller.nextStep();
+    }
+  }
+
+  String _formatTime(TimeOfDay time) {
+    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final minute = time.minute.toString().padLeft(2, '0');
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+    return '$hour:$minute $period';
+  }
+
+  String _getTimeLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'dailyVerses_morning'.tr;
+      case 1:
+        return 'dailyVerses_afternoon'.tr;
+      case 2:
+        return 'dailyVerses_evening'.tr;
+      default:
+        return '';
     }
   }
 
@@ -234,6 +330,326 @@ class _Step9NotificationPermissionState
     );
   }
 
+  Widget _buildFrequencyChip(int frequency) {
+    final isSelected = _selectedFrequency == frequency;
+    final label = '${frequency}x';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: GestureDetector(
+        onTap: () => _onFrequencyChanged(frequency),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? OnboardingTheme.goldColor
+                : OnboardingTheme.cardBackground,
+            border: Border.all(
+              color: isSelected
+                  ? OnboardingTheme.goldColor
+                  : OnboardingTheme.cardBorder,
+              width: isSelected ? 2 : 1,
+            ),
+            borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
+          ),
+          child: Text(
+            label,
+            style: OnboardingTheme.body.copyWith(
+              color: isSelected
+                  ? OnboardingTheme.backgroundColor
+                  : OnboardingTheme.labelPrimary,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimePicker(int index) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: OnboardingTheme.space12),
+      child: GestureDetector(
+        onTap: () => _showTimePicker(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: OnboardingTheme.cardBackground,
+            border: Border.all(
+              color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                CupertinoIcons.clock,
+                color: OnboardingTheme.goldColor,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                _getTimeLabel(index),
+                style: OnboardingTheme.subhead.copyWith(
+                  color: OnboardingTheme.labelSecondary,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                _formatTime(_selectedTimes[index]),
+                style: OnboardingTheme.body.copyWith(
+                  color: OnboardingTheme.labelPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                CupertinoIcons.chevron_right,
+                color: OnboardingTheme.labelTertiary,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPermissionPhase() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Phase 9.1 - Introduction
+        if (_introText.isNotEmpty)
+          RichText(
+            text: TextSpan(
+              style: OnboardingTheme.bodyEmphasized,
+              children: [
+                TextSpan(text: _introText),
+                if (_showIntroCursor)
+                  const WidgetSpan(
+                    child: FeatherCursor(),
+                    alignment: PlaceholderAlignment.middle,
+                  ),
+              ],
+            ),
+          ),
+
+        // Phase 9.2 - Explanation
+        if (_explanationText.isNotEmpty)
+          RichText(
+            text: TextSpan(
+              style: OnboardingTheme.bodyEmphasized,
+              children: [
+                TextSpan(text: _explanationText),
+                if (_showExplanationCursor)
+                  const WidgetSpan(
+                    child: FeatherCursor(),
+                    alignment: PlaceholderAlignment.middle,
+                  ),
+              ],
+            ),
+          ),
+
+        // Phase 9.3 - Call to Action
+        if (_showButton) ...[
+          const SizedBox(height: 20),
+
+          // Judah with time selection
+          Center(
+            child: Transform.scale(
+              scale: 1.8,
+              child: JudahMascot(
+                state: JudahState.timeSelection,
+                size: JudahSize.l,
+                showMessage: false,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 42),
+
+          // Main message
+          Center(
+            child: Text(
+              'Enable Prayer Reminders',
+              style: OnboardingTheme.title2.copyWith(
+                color: OnboardingTheme.labelPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          // Benefits list
+          _buildBenefitItem(
+            icon: Icons.alarm,
+            text: 'Timely reminders to re-lock your apps',
+          ),
+          const SizedBox(height: 16),
+          _buildBenefitItem(
+            icon: Icons.church,
+            text: 'Prayer time notifications',
+          ),
+          const SizedBox(height: 16),
+          _buildBenefitItem(
+            icon: Icons.psychology,
+            text: 'Stay accountable to your spiritual goals',
+          ),
+
+          const SizedBox(height: 32),
+
+          // Info box
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            decoration: BoxDecoration(
+              color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  size: 18,
+                  color: OnboardingTheme.goldColor,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'We\'ll only send helpful reminders, not spam',
+                    style: OnboardingTheme.footnote.copyWith(
+                      color: OnboardingTheme.goldColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          // Primary button
+          Center(
+            child: FastButton(
+              text: _isRequestingPermission
+                  ? 'Requesting...'
+                  : 'Enable Notifications',
+              onTap: _isRequestingPermission ? null : _onEnableNotifications,
+              backgroundColor: OnboardingTheme.goldColor,
+              textColor: OnboardingTheme.backgroundColor,
+              style: FastButtonStyle.filled,
+              isLoading: _isRequestingPermission,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildTimeSelectionPhase() {
+    return AnimatedOpacity(
+      opacity: _showTimeSelection ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 600),
+      child: Column(
+        children: [
+          // Judah pointing with clock context
+          JudahMascot(
+            state: JudahState.pointing,
+            size: JudahSize.l,
+            message: 'dailyVerses_mascot'.tr,
+          ),
+          const SizedBox(height: OnboardingTheme.space24),
+
+          // Title
+          Text(
+            'dailyVerses_title'.tr,
+            style: OnboardingTheme.title2.copyWith(
+              color: OnboardingTheme.labelPrimary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: OnboardingTheme.space8),
+          Text(
+            'dailyVerses_subtitle'.tr,
+            style: OnboardingTheme.callout.copyWith(
+              color: OnboardingTheme.labelSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: OnboardingTheme.space32),
+
+          // Frequency selection
+          Text(
+            'dailyVerses_frequency'.tr,
+            style: OnboardingTheme.subhead.copyWith(
+              color: OnboardingTheme.goldColor,
+            ),
+          ),
+          const SizedBox(height: OnboardingTheme.space16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:
+                [1, 2, 3].map((freq) => _buildFrequencyChip(freq)).toList(),
+          ),
+          const SizedBox(height: OnboardingTheme.space32),
+
+          // Time pickers
+          Text(
+            'dailyVerses_when'.tr,
+            style: OnboardingTheme.subhead.copyWith(
+              color: OnboardingTheme.goldColor,
+            ),
+          ),
+          const SizedBox(height: OnboardingTheme.space16),
+          ...List.generate(
+            _selectedTimes.length,
+            (index) => _buildTimePicker(index),
+          ),
+          const SizedBox(height: OnboardingTheme.space40),
+
+          // Activate button
+          FastButton(
+            text: 'dailyVerses_activate'.tr,
+            onTap: _isSavingTimes ? null : _onActivateDailyVerses,
+            backgroundColor: OnboardingTheme.goldColor,
+            textColor: OnboardingTheme.backgroundColor,
+            style: FastButtonStyle.filled,
+            isLoading: _isSavingTimes,
+          ),
+          const SizedBox(height: OnboardingTheme.space16),
+
+          // Skip link
+          GestureDetector(
+            onTap: () async {
+              await AnimationUtils.lightHaptic();
+              await controller.completeOnboarding();
+              controller.nextStep();
+            },
+            child: Text(
+              'dailyVerses_later'.tr,
+              style: OnboardingTheme.subhead.copyWith(
+                color: OnboardingTheme.labelTertiary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return OnboardingWrapper(
@@ -242,181 +658,15 @@ class _Step9NotificationPermissionState
         duration: const Duration(milliseconds: 1000),
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: OnboardingTheme.horizontalPadding,
               right: OnboardingTheme.horizontalPadding,
-              top: 40,
+              top: _currentPhase == 'timeSelection' ? 70 : 40,
               bottom: OnboardingTheme.verticalPadding,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Phase 9.1 - Introduction
-                if (_introText.isNotEmpty)
-                  RichText(
-                    text: TextSpan(
-                      style: OnboardingTheme.bodyEmphasized,
-                      children: [
-                        TextSpan(text: _introText),
-                        if (_showIntroCursor)
-                          const WidgetSpan(
-                            child: FeatherCursor(),
-                            alignment: PlaceholderAlignment.middle,
-                          ),
-                      ],
-                    ),
-                  ),
-
-                // Phase 9.2 - Explanation
-                if (_explanationText.isNotEmpty)
-                  RichText(
-                    text: TextSpan(
-                      style: OnboardingTheme.bodyEmphasized,
-                      children: [
-                        TextSpan(text: _explanationText),
-                        if (_showExplanationCursor)
-                          const WidgetSpan(
-                            child: FeatherCursor(),
-                            alignment: PlaceholderAlignment.middle,
-                          ),
-                      ],
-                    ),
-                  ),
-
-                // Phase 9.3 - Call to Action
-                if (_showButton) ...[
-                  const SizedBox(height: 40),
-
-                  // Main message
-                  Center(
-                    child: Text(
-                      'Enable Prayer Reminders',
-                      style: OnboardingTheme.title2.copyWith(
-                        color: OnboardingTheme.labelPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Icon illustratif avec animation
-                  Center(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                            OnboardingTheme.goldColor.withValues(alpha: 0.05),
-                          ],
-                        ),
-                        border: Border.all(
-                          color:
-                              OnboardingTheme.goldColor.withValues(alpha: 0.4),
-                          width: 2,
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.notifications_active,
-                        size: 50,
-                        color: OnboardingTheme.goldColor,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Benefits list
-                  _buildBenefitItem(
-                    icon: Icons.alarm,
-                    text: 'Timely reminders to re-lock your apps',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildBenefitItem(
-                    icon: Icons.church,
-                    text: 'Prayer time notifications',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildBenefitItem(
-                    icon: Icons.psychology,
-                    text: 'Stay accountable to your spiritual goals',
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Info box
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          size: 18,
-                          color: OnboardingTheme.goldColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'We\'ll only send helpful reminders, not spam',
-                            style: OnboardingTheme.footnote.copyWith(
-                              color: OnboardingTheme.goldColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  // Primary button
-                  Center(
-                    child: FastButton(
-                      text: _isRequestingPermission
-                          ? 'Requesting...'
-                          : 'Enable Notifications',
-                      onTap: _isRequestingPermission
-                          ? null
-                          : _onEnableNotifications,
-                      backgroundColor: OnboardingTheme.goldColor,
-                      textColor: OnboardingTheme.backgroundColor,
-                      style: FastButtonStyle.filled,
-                      isLoading: _isRequestingPermission,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Skip button avec friction (using FastPlainButton)
-                  Center(
-                    child: FastPlainButton(
-                      text: 'Skip reminders',
-                      onTap: _onSkipNotifications,
-                      textColor: OnboardingTheme.labelTertiary,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+            child: _currentPhase == 'permission'
+                ? _buildPermissionPhase()
+                : _buildTimeSelectionPhase(),
           ),
         ),
       ),

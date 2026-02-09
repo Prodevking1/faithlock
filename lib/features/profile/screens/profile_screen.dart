@@ -2,7 +2,7 @@ import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
-import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
+import 'package:faithlock/features/paywall/screens/paywall_screen_v2.dart';
 import 'package:faithlock/features/profile/controllers/settings_controller.dart';
 import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
@@ -221,7 +221,7 @@ class ProfileScreen extends StatelessWidget {
                 title: 'getFaithLockPro'.tr,
                 subtitle: 'unlockAllFeatures'.tr,
                 iconColor: CupertinoColors.systemYellow,
-                onTap: () => Get.to(() => const PaywallScreen()),
+                onTap: () => Get.to(() => const PaywallScreenV2(placementId: 'profile')),
               ),
           ], title: 'subscription'.tr);
         }),
@@ -242,18 +242,42 @@ class ProfileScreen extends StatelessWidget {
           _buildIOSListTile(
             context,
             leading: CupertinoIcons.bell_fill,
-            title: 'Send Win-Back #1 (Offer)',
-            subtitle: '+1h — Free week promo',
+            title: 'Win-Back #1 (Offer)',
+            subtitle: '+24h — Free week promo',
             iconColor: CupertinoColors.systemOrange,
             onTap: () => _debugSendWinBackNotification(context, 0),
           ),
           _buildIOSListTile(
             context,
             leading: CupertinoIcons.bell_fill,
-            title: 'Send Win-Back #2 (Mirror)',
-            subtitle: '+3d — Identity + aspiration',
+            title: 'Win-Back #2 (Reminder)',
+            subtitle: '+48h — Offer reminder',
             iconColor: CupertinoColors.systemOrange,
             onTap: () => _debugSendWinBackNotification(context, 1),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell_fill,
+            title: 'Win-Back #3 (Mirror)',
+            subtitle: '+3d — Identity + aspiration',
+            iconColor: CupertinoColors.systemYellow,
+            onTap: () => _debugSendWinBackNotification(context, 2),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell_fill,
+            title: 'Win-Back #4 (Story)',
+            subtitle: '+5d — Testimonial',
+            iconColor: CupertinoColors.systemYellow,
+            onTap: () => _debugSendWinBackNotification(context, 3),
+          ),
+          _buildIOSListTile(
+            context,
+            leading: CupertinoIcons.bell_fill,
+            title: 'Win-Back #5 (Goodbye)',
+            subtitle: '+7d — Final message',
+            iconColor: CupertinoColors.systemRed,
+            onTap: () => _debugSendWinBackNotification(context, 4),
           ),
           _buildIOSListTile(
             context,
@@ -396,19 +420,21 @@ class ProfileScreen extends StatelessWidget {
 
   void _debugSendWinBackNotification(BuildContext context, int index) {
     final titles = [
-      'winback_title2'.tr, // Offer
-      'winback_title3'.tr, // Mirror
-      'winback_title4'.tr, // Story
-      'winback_title5'.tr, // Goodbye
+      'winback_title2'.tr, // Offer (+24h)
+      'winback_title2'.tr, // Reminder (+48h) - same as offer
+      'winback_title3'.tr, // Mirror (+3d)
+      'winback_title4'.tr, // Story (+5d)
+      'winback_title5'.tr, // Goodbye (+7d)
     ];
     final bodies = [
       'winback_body2'.tr,
+      'winback_body2'.tr, // Reminder - same as offer
       'winback_body3'.tr,
       'winback_body4'.tr,
       'winback_body5'.tr,
     ];
 
-    final safeIndex = index.clamp(0, 3);
+    final safeIndex = index.clamp(0, 4);
     LocalNotificationService().showNotification(
       id: 900 + safeIndex,
       title: titles[safeIndex],
@@ -810,7 +836,7 @@ class ProfileScreen extends StatelessWidget {
                   title: 'becomePremium'.tr,
                   subtitle: 'unlockAllFeatures'.tr,
                   iconColor: Colors.amber,
-                  onTap: () => Get.to(() => const PaywallScreen()),
+                  onTap: () => Get.to(() => const PaywallScreenV2(placementId: 'profile')),
                 ),
             ],
           );

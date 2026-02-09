@@ -141,7 +141,7 @@ const Map<String, String> fr_FR = {
   'judahMorning': 'Bonjour, @name.',
   'judahKeepGoing': 'Continue comme ça, @name.',
   'judahAlmostThere': 'Presque là, @name.',
-  'judahEvening': 'Bonne soirée, @name.',
+  'judahEvening': 'Bonne soirée,\n@name.',
 
   // ═══════════════════════════════════════════
   // UNLOCK SCREEN
@@ -182,6 +182,13 @@ const Map<String, String> fr_FR = {
   // ═══════════════════════════════════════════
   'welcome_message':
       "Bienvenue ! Moi c'est Judah, et je vais t'aider à arrêter le scroll inutile et bâtir une vraie présence avec Dieu.",
+  'welcome_part1': "Bienvenue ! Moi c'est ",
+  'welcome_name': "Judah",
+  'welcome_part2': ", et je vais t'aider à ",
+  'welcome_highlight1': "arrêter le scroll inutile",
+  'welcome_part3': " et bâtir une ",
+  'welcome_highlight2': "vraie présence avec Dieu",
+  'welcome_part4': ".",
 
   // ═══════════════════════════════════════════
   // ONBOARDING: NAME CAPTURE (Step 2)
@@ -270,11 +277,11 @@ const Map<String, String> fr_FR = {
   'screenPerm_dialogMessage':
       'Sans l\'autorisation Temps d\'écran, FaithLock ne peut pas te protéger de tes apps choisies.\n\nTu pourras l\'activer plus tard dans les Réglages.',
   'screenPerm_skipForNow': 'Passer pour l\'instant',
-  'screenPerm_activateTitle': 'Active ton bouclier spirituel',
-  'screenPerm_benefit1': 'Un verset apparaît avant chaque déverrouillage',
-  'screenPerm_benefit2': 'Tes apps choisies sont protégées',
-  'screenPerm_benefit3':
-      'Construis la discipline grâce aux versets quotidiens',
+  'screenPerm_activateTitle': 'Active ton bouclier',
+  'screenPerm_subtitle': 'FaithLock a besoin de l\'autorisation Temps d\'écran pour bloquer les apps et afficher les Écritures avant de les ouvrir.',
+  'screenPerm_benefit1': 'Bloque les apps distrayantes quand tu as besoin de focus',
+  'screenPerm_benefit2': 'Lis un verset avant d\'accéder aux apps bloquées',
+  'screenPerm_benefit3': 'Définis des horaires pour protéger ton temps',
   'screenPerm_requesting': 'Demande en cours...',
   'screenPerm_continueWithout': 'Continuer sans protection',
 
@@ -336,15 +343,83 @@ const Map<String, String> fr_FR = {
   // ═══════════════════════════════════════════
   // ONBOARDING: FREE FOR YOU (Step 10)
   // ═══════════════════════════════════════════
-  'freeForYou_title': 'FaithLock est gratuit pour toi.',
+  'freeForYou_title': 'On veut que tu utilises FaithLock gratuitement.',
   'freeForYou_subtitle':
-      'Tout ce que tu as configuré est prêt à transformer ta vie.',
+      'Rejoins des milliers qui renforcent leur vie spirituelle. Sans engagement.',
   'freeForYou_benefit1': 'Un verset avant chaque déverrouillage',
   'freeForYou_benefit2': 'Programmes de protection personnalisés',
   'freeForYou_benefit3': 'Notifications de versets quotidiens',
   'freeForYou_benefit4': 'Suivi des progrès et statistiques',
-  'freeForYou_startTrial': 'Commencer mon essai gratuit',
-  'freeForYou_trialPeriod': 'Tout essayer gratuitement pendant 7 jours',
+  'freeForYou_startTrial': 'Essayer pour 0 \$',
+  'freeForYou_trialPeriod': '3 jours gratuits, annulation à tout moment',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING: SUMMARY SCREEN
+  // ═══════════════════════════════════════════
+  'summaryScreen_loading': 'Activation de ton bouclier spirituel...',
+  'summaryScreen_title': '@name, Ton Armure est Prête',
+  'summaryScreen_item1_title': 'Bouclier des Écritures Activé',
+  'summaryScreen_item1_subtitle': 'Versets bibliques avant chaque déverrouillage',
+  'summaryScreen_item2_title': 'Programmes de Protection Définis',
+  'summaryScreen_item2_subtitle': 'Périodes de verrouillage auto configurées',
+  'summaryScreen_item3_title': 'Rappels de Prière Prêts',
+  'summaryScreen_item3_subtitle': 'Reste responsable avec des rappels doux',
+  'summaryScreen_item4_title': 'Alliance Sacrée Scellée',
+  'summaryScreen_item4_subtitle': 'Ton engagement est enregistré',
+  'summaryScreen_transformation_title': 'Ta Transformation Commence',
+  'summaryScreen_promise1': 'Récupère 2-4 heures par jour pour la prière et la famille',
+  'summaryScreen_promise2': 'Réduis le temps d\'écran de 70% en 2 semaines',
+  'summaryScreen_promise3': 'Construis une pratique de prière quotidienne',
+  'summaryScreen_promise4': 'Expérimente la vraie liberté numérique et la paix',
+  'summaryScreen_graph_title': 'Temps Que Tu Vas Récupérer',
+  'summaryScreen_graph_subtitle': 'Chaque heure retrouvée pour la prière et la famille',
+  'summaryScreen_graph_note': 'Basé sur les moyennes de 500+ utilisateurs',
+  'summaryScreen_testimonial': '"J\'étais esclave de mon téléphone pendant des années. FaithLock m\'a rendu 3+ heures par jour - maintenant passées en prière, avec mes enfants, et dans la Parole de Dieu. Ma vie a complètement changé."',
+  'summaryScreen_testimonial_author': '— Sarah M., Utilisatrice FaithLock',
+  'summaryScreen_stats_title': 'Les croyants utilisant FaithLock rapportent :',
+  'summaryScreen_stat1_value': '70%',
+  'summaryScreen_stat1_label': 'Moins de\nTemps d\'écran',
+  'summaryScreen_stat2_value': '3.5h',
+  'summaryScreen_stat2_label': 'Gagnées\nPar jour',
+  'summaryScreen_stat3_value': '92%',
+  'summaryScreen_stat3_label': 'Foi Plus\nForte',
+  'summaryScreen_urgency': 'Ta configuration expire dans 24 heures',
+  'summaryScreen_cta': 'Essayer pour 0 \$',
+  'summaryScreen_risk_reversal': '3 jours gratuits · Annulation à tout moment',
+  'summaryScreen_screenTimeToday': 'Temps d\'écran\nAujourd\'hui',
+  'summaryScreen_screenTimeWeek2': 'Temps d\'écran\nSemaine 2',
+  'summaryScreen_dailyForMatters': 'par jour pour ce qui compte',
+
+  // ═══════════════════════════════════════════
+  // PAYWALL
+  // ═══════════════════════════════════════════
+  'paywall_tryForZero': 'Essayer pour 0 \$',
+  'paywall_startJourney': 'Commencer ton parcours',
+  'paywall_riskReversal': '3 jours gratuits · Annulation à tout moment',
+  // Paywall V2
+  'paywall_headline1': 'Ton téléphone vole ',
+  'paywall_headline2': '4 heures',
+  'paywall_headline3': ' par jour.',
+  'paywall_subheadline': 'Récupère ce temps pour Dieu.',
+  'paywall_socialProof': 'Rejoins @count croyants qui reprennent leur temps',
+  'paywall_benefit1': 'Verrouille tes apps quand tu veux te concentrer sur Dieu',
+  'paywall_benefit2': 'Crée une habitude de lecture biblique qui tient',
+  'paywall_benefit3': 'Moins de scroll, plus de temps dans la Parole',
+  'paywall_benefit4': 'Vois ta foi grandir jour après jour',
+  'paywall_urgencyTitle': 'PRIX DE LANCEMENT SE TERMINE DANS',
+  'paywall_bestValue': 'MEILLEURE OFFRE',
+  'paywall_priceAnchorPrefix': 'Moins de ',
+  'paywall_day': 'jour',
+  'paywall_priceAnchorSuffix': 'moins cher qu\'un chewing-gum',
+  'paywall_ctaFreeTrial': 'Essaie GRATUITEMENT 3 Jours',
+  'paywall_ctaNoTrial': 'Commence ton parcours',
+  'paywall_reassurance': 'Aucun frais aujourd\'hui · Annulation à tout moment',
+  'paywall_secure': 'Sécurisé',
+  'paywall_rating': 'Note 4.9',
+  'paywall_verified': 'Vérifié',
+  'paywall_restore': 'Restaurer',
+  'paywall_privacy': 'Confidentialité',
+  'paywall_terms': 'Conditions',
 
   // ═══════════════════════════════════════════
   // NOTIFICATIONS: WIN-BACK SEQUENCE
@@ -352,9 +427,9 @@ const Map<String, String> fr_FR = {
   'winback_title1': 'Un verset pour ta soirée',
   'winback_body1':
       '« L\'Éternel marchera lui-même devant toi, il sera avec toi, il ne te délaissera point, il ne t\'abandonnera point. » — Deutéronome 31:8',
-  'winback_title2': 'Ta semaine gratuite t\'attend',
+  'winback_title2': '🎁 1 semaine d\'accès GRATUIT — rien que pour toi',
   'winback_body2':
-      'Tu as installé FaithLock parce que quelque chose devait changer. Ton essai gratuit est toujours disponible — commençons ta transformation.',
+      'On t\'offre 7 jours d\'accès complet à FaithLock, totalement gratuit. Sans engagement. Reviens et laisse les Écritures garder ton cœur.',
   'winback_title3': 'Tu as installé FaithLock pour une raison',
   'winback_body3':
       'Cette raison n\'a pas changé. Chaque jour sans ton bouclier est un jour sans protection. Reviens et laisse les Écritures garder ton cœur.',
@@ -362,7 +437,7 @@ const Map<String, String> fr_FR = {
       '« Je déverrouillais Instagram 80 fois par jour »',
   'winback_body4':
       'Maintenant je commence chaque matin avec un verset. FaithLock n\'a pas juste bloqué des apps — il a reconstruit ma relation avec Dieu. — Marcus, 23 ans',
-  'winback_title5': 'Ceci est notre dernier message',
+  'winback_title5': 'Ta semaine gratuite t\'attend toujours',
   'winback_body5':
-      'On ne te dérangera plus. Mais sache ceci : ton bouclier est prêt quand tu le seras. La Parole de Dieu n\'expire jamais. Reviens quand tu veux.',
+      'On ne te dérangera plus. Si tu n\'en veux pas, ignore simplement ce message. Tes 7 jours d\'accès gratuit n\'expirent pas.',
 };

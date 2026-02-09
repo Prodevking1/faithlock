@@ -164,18 +164,9 @@ class LocalNotificationService {
             });
           }
 
-          // Navigate to main, then switch to Library tab
-          Get.offAllNamed(AppRoutes.main);
-
-          // Wait for navigation to complete, then switch to Library tab
-          Future.delayed(const Duration(milliseconds: 300), () {
-            try {
-              NavigationController.to.changePage(1);
-              debugPrint('✅ Navigated to Library tab from daily verse notification');
-            } catch (e) {
-              debugPrint('⚠️ Could not switch to Library tab: $e');
-            }
-          });
+          // Navigate to summary screen to show the verse
+          Get.offAllNamed(AppRoutes.onboardingSummary);
+          debugPrint('✅ Navigated to summary from daily verse notification');
         }
       }
     }

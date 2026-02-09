@@ -29,8 +29,14 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
       final prefs = PreferencesService();
       final hasCompletedOnboarding =
           await prefs.readBool('scripture_onboarding_complete') ?? false;
+      final hasSummaryComplete =
+          await prefs.readBool('onboarding_summary_complete') ?? false;
+      final hasAccessedFeatures =
+          await prefs.readBool('has_accessed_app_features') ?? false;
 
       debugPrint('📋 [InitialRoute] Onboarding completed: $hasCompletedOnboarding');
+      debugPrint('📋 [InitialRoute] Summary completed: $hasSummaryComplete');
+      debugPrint('📋 [InitialRoute] Features accessed: $hasAccessedFeatures');
 
       if (!hasCompletedOnboarding) {
         // User hasn't completed onboarding - show V2 onboarding flow
@@ -40,11 +46,30 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
         return;
       }
 
-      // User has completed onboarding - initialize controller for MainScreen
+      // User has completed onboarding but not summary - show summary screen
+      if (!hasSummaryComplete) {
+        debugPrint('🎯 [InitialRoute] Navigating to summary screen (step 11)');
+        final controller = Get.put(ScriptureOnboardingController(), permanent: true);
+        controller.currentStep.value = 11; // Jump to summary step
+        Get.off(() => const ScriptureOnboardingScreen());
+        return;
+      }
+
+      // User has completed summary but never accessed features (never paid)
+      // Keep them on summary until they pay
+      if (!hasAccessedFeatures) {
+        debugPrint('🎯 [InitialRoute] User never accessed features - returning to summary');
+        final controller = Get.put(ScriptureOnboardingController(), permanent: true);
+        controller.currentStep.value = 11; // Jump to summary step
+        Get.off(() => const ScriptureOnboardingScreen());
+        return;
+      }
+
+      // User has completed both and accessed features before - initialize controller for MainScreen
       Get.put(ScriptureOnboardingController(), permanent: true);
 
       // Check subscription status
-      debugPrint('✅ [InitialRoute] Onboarding completed - checking subscription');
+      debugPrint('✅ [InitialRoute] User previously accessed features - checking subscription');
       final paywallGuard = PaywallGuardService();
       final hasAccess = await paywallGuard.checkSubscriptionAccess(
         placementId: 'app_launch',
