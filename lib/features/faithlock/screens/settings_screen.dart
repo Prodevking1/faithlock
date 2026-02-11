@@ -231,7 +231,7 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
               onTap: controller.isScreenTimeAuthorized.value
-                  ? () => controller.selectAppsToBlock()
+                  ? () => controller.showBlockedApps()
                   : null,
             );
           }),

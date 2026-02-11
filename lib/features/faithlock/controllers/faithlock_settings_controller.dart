@@ -367,6 +367,41 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
     }
   }
 
+  /// Show the list of blocked apps with icons
+  /// If no apps are selected, opens the app picker instead
+  Future<void> showBlockedApps() async {
+    final context = Get.context;
+    if (context == null) return;
+
+    try {
+      if (!isScreenTimeAuthorized.value) {
+        FastToast.showWarning(
+          context: context,
+          title: 'Permission Required',
+          message: 'Please grant Screen Time access first',
+        );
+        return;
+      }
+
+      // If no apps selected, show the picker
+      if (selectedAppsCount.value == 0) {
+        await selectAppsToBlock();
+        return;
+      }
+
+      // Show the blocked apps list
+      final success = await _screenTimeService.showBlockedAppsList();
+      if (!success && context.mounted) {
+        // Fallback to showing the picker if list fails
+        await selectAppsToBlock();
+      }
+    } catch (e) {
+      debugPrint('❌ Error showing blocked apps: $e');
+      // Fallback to picker
+      await selectAppsToBlock();
+    }
+  }
+
   /// Setup schedules from storage (called after app selection or schedule edit)
   Future<void> _setupSchedulesFromStorage() async {
     try {

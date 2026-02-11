@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>method</key>
-	<string>development</string>
+	<string>app-store-connect</string>
 	<key>teamID</key>
-	<string>SKQDF59NKD</string>
+	<string>HZ3366WY57</string>
 	<key>uploadBitcode</key>
 	<false/>
 	<key>compileBitcode</key>
@@ -14,16 +14,16 @@
 	<true/>
 	<key>signingStyle</key>
 	<string>automatic</string>
-	<key>signingCertificate</key>
-	<string>Apple Development</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>studio.appbiz.faithlock</key>
-		<string>match Development studio.appbiz.faithlock</string>
-		<key>studio.appbiz.faithlock.DeviceActivityMonitorExtension</key>
-		<string>match Development studio.appbiz.faithlock.DeviceActivityMonitorExtension</string>
-		<key>studio.appbiz.faithlock.ShieldConfigurationExtension</key>
-		<string>match Development studio.appbiz.faithlock.ShieldConfigurationExtension</string>
+		<key>com.appbiz.faithlock</key>
+		<string>Faithlock App Store</string>
+		<key>com.appbiz.faithlock.DeviceActivityMonitorExtension</key>
+		<string>Faithlock DeviceActivityMonitor App Store</string>
+		<key>com.appbiz.faithlock.ShieldConfigurationExtension</key>
+		<string>Faithlock ShieldConfiguration App Store</string>
+		<key>com.appbiz.faithlock.ShieldActionExtension</key>
+		<string>Faithlock ShieldAction App Store</string>
 	</dict>
 </dict>
 </plist>

@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
-import 'package:faithlock/features/paywall/screens/paywall_screen.dart';
+import 'package:faithlock/features/paywall/screens/paywall_screen_v2.dart';
 import 'package:faithlock/services/analytics/posthog/config/event_templates.dart';
 import 'package:faithlock/services/analytics/posthog/posthog_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
@@ -125,7 +125,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
 
     await controller.completeSummary();
 
-    Get.to(() => PaywallScreen());
+    Get.to(() => const PaywallScreenV2());
   }
 
   @override
@@ -186,7 +186,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                     ),
                     const SizedBox(height: OnboardingTheme.space32),
                     Text(
-                      'Activating your spiritual shield...',
+                      'summaryScreen_loading'.tr,
                       style: OnboardingTheme.callout.copyWith(
                         color: OnboardingTheme.goldColor,
                         fontWeight: FontWeight.w500,
@@ -219,7 +219,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                     const SizedBox(height: OnboardingTheme.space32),
 
                     Text(
-                      'Your Spiritual Armor is Ready',
+                      'summaryScreen_title'.trParams({'name': controller.userName.value}),
                       style: OnboardingTheme.title2,
                       textAlign: TextAlign.center,
                     ),
@@ -230,32 +230,32 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                     _buildSummaryItem(
                       index: 0,
                       icon: Icons.menu_book,
-                      title: 'Scripture Shield Activated',
-                      subtitle: 'Bible verses before every unlock',
+                      title: 'summaryScreen_item1_title'.tr,
+                      subtitle: 'summaryScreen_item1_subtitle'.tr,
                     ),
-                    const SizedBox(height: OnboardingTheme.space16),
+                    const SizedBox(height: OnboardingTheme.space12),
                     _buildSummaryItem(
                       index: 1,
                       icon: Icons.schedule,
-                      title: 'Protection Schedules Set',
-                      subtitle: '3 daily lock periods configured',
+                      title: 'summaryScreen_item2_title'.tr,
+                      subtitle: 'summaryScreen_item2_subtitle'.tr,
                     ),
-                    const SizedBox(height: OnboardingTheme.space16),
+                    const SizedBox(height: OnboardingTheme.space12),
                     _buildSummaryItem(
                       index: 2,
                       icon: Icons.notifications_active,
-                      title: 'Prayer Reminders Ready',
-                      subtitle: 'Stay accountable with gentle nudges',
+                      title: 'summaryScreen_item3_title'.tr,
+                      subtitle: 'summaryScreen_item3_subtitle'.tr,
                     ),
-                    const SizedBox(height: OnboardingTheme.space16),
+                    const SizedBox(height: OnboardingTheme.space12),
                     _buildSummaryItem(
                       index: 3,
                       icon: Icons.favorite,
-                      title: 'Sacred Covenant Sealed',
-                      subtitle: 'Your commitment is recorded',
+                      title: 'summaryScreen_item4_title'.tr,
+                      subtitle: 'summaryScreen_item4_subtitle'.tr,
                     ),
 
-                    const SizedBox(height: OnboardingTheme.space32),
+                    const SizedBox(height: OnboardingTheme.space24),
 
                     // Transformation promises section
                     Container(
@@ -280,7 +280,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                       child: Column(
                         children: [
                           Text(
-                            'Your Transformation Begins',
+                            'summaryScreen_transformation_title'.tr,
                             style: OnboardingTheme.callout.copyWith(
                               color: OnboardingTheme.labelPrimary,
                               fontWeight: FontWeight.w500,
@@ -288,17 +288,13 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: OnboardingTheme.space20),
-                          _buildPromiseItem(
-                              'Reclaim 2-4 hours daily for prayer & family'),
+                          _buildPromiseItem('summaryScreen_promise1'.tr),
                           const SizedBox(height: OnboardingTheme.space12),
-                          _buildPromiseItem(
-                              'Reduce screen time by 70% in just 2 weeks'),
+                          _buildPromiseItem('summaryScreen_promise2'.tr),
                           const SizedBox(height: OnboardingTheme.space12),
-                          _buildPromiseItem(
-                              'Build a consistent daily prayer practice'),
+                          _buildPromiseItem('summaryScreen_promise3'.tr),
                           const SizedBox(height: OnboardingTheme.space12),
-                          _buildPromiseItem(
-                              'Experience true digital freedom & peace'),
+                          _buildPromiseItem('summaryScreen_promise4'.tr),
                         ],
                       ),
                     ),
@@ -313,7 +309,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                         child: Column(
                           children: [
                             Text(
-                              'Time You\'ll Reclaim',
+                              'summaryScreen_graph_title'.tr,
                               style: OnboardingTheme.callout.copyWith(
                                 color: OnboardingTheme.labelPrimary,
                                 fontWeight: FontWeight.w500,
@@ -322,7 +318,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                             ),
                             const SizedBox(height: OnboardingTheme.space8),
                             Text(
-                              'Every hour back for prayer & family',
+                              'summaryScreen_graph_subtitle'.tr,
                               style: OnboardingTheme.subhead,
                               textAlign: TextAlign.center,
                             ),
@@ -330,7 +326,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                             _buildProjectionGraph(),
                             const SizedBox(height: OnboardingTheme.space16),
                             Text(
-                              'Based on averages from 500+ users',
+                              'summaryScreen_graph_note'.tr,
                               style: OnboardingTheme.caption,
                               textAlign: TextAlign.center,
                             ),
@@ -373,7 +369,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                           ),
                           const SizedBox(height: OnboardingTheme.space12),
                           Text(
-                            '"I was enslaved to my phone for years. FaithLock gave me back 3+ hours daily - now spent in prayer, with my kids, and in God\'s Word. My life has completely changed."',
+                            'summaryScreen_testimonial'.tr,
                             style: OnboardingTheme.subhead.copyWith(
                               color: OnboardingTheme.labelPrimary,
                               fontStyle: FontStyle.italic,
@@ -382,7 +378,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                           ),
                           const SizedBox(height: OnboardingTheme.space12),
                           Text(
-                            '— Sarah M., FaithLock User',
+                            'summaryScreen_testimonial_author'.tr,
                             style: OnboardingTheme.caption.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
@@ -415,7 +411,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                           ),
                           const SizedBox(height: OnboardingTheme.space12),
                           Text(
-                            'Believers using FaithLock report:',
+                            'summaryScreen_stats_title'.tr,
                             style: OnboardingTheme.footnote.copyWith(
                               color: OnboardingTheme.labelPrimary,
                               fontWeight: FontWeight.w600,
@@ -427,21 +423,21 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildMiniStat('70%', 'Less\nScreen Time'),
+                              _buildMiniStat('summaryScreen_stat1_value'.tr, 'summaryScreen_stat1_label'.tr),
                               Container(
                                 width: 1,
                                 height: 40,
                                 color: OnboardingTheme.labelTertiary
                                     .withValues(alpha: 0.3),
                               ),
-                              _buildMiniStat('3.5h', 'Saved\nDaily'),
+                              _buildMiniStat('summaryScreen_stat2_value'.tr, 'summaryScreen_stat2_label'.tr),
                               Container(
                                 width: 1,
                                 height: 40,
                                 color: OnboardingTheme.labelTertiary
                                     .withValues(alpha: 0.3),
                               ),
-                              _buildMiniStat('92%', 'Stronger\nFaith'),
+                              _buildMiniStat('summaryScreen_stat3_value'.tr, 'summaryScreen_stat3_label'.tr),
                             ],
                           ),
                         ],
@@ -486,50 +482,52 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 16,
-                      //     vertical: 8,
-                      //   ),
-                      //   decoration: BoxDecoration(
-                      //     color:
-                      //         OnboardingTheme.goldColor.withValues(alpha: 0.15),
-                      //     borderRadius: BorderRadius.circular(20),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       Icon(
-                      //         Icons.timer,
-                      //         size: 14,
-                      //         color: OnboardingTheme.goldColor,
-                      //       ),
-                      //       const SizedBox(width: 6),
-                      //       Text(
-                      //         'Your setup expires in 24 hours',
-                      //         style: OnboardingTheme.caption.copyWith(
-                      //           color: OnboardingTheme.goldColor,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 11,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 16),
+                      // Urgency timer
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              OnboardingTheme.goldColor.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.timer,
+                              size: 14,
+                              color: OnboardingTheme.goldColor,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'summaryScreen_urgency'.tr,
+                              style: OnboardingTheme.caption.copyWith(
+                                color: OnboardingTheme.goldColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       FastButton(
-                        text: 'Unlock Your Full Potential',
+                        text: 'summaryScreen_cta'.tr,
                         onTap: _onStartJourney,
                         backgroundColor: OnboardingTheme.goldColor,
                         textColor: OnboardingTheme.backgroundColor,
                         style: FastButtonStyle.filled,
                       ),
                       const SizedBox(height: 8),
+                      // Risk reversal
                       Text(
-                        'Join believers transforming their lives today',
-                        style: OnboardingTheme.caption.copyWith(
+                        'summaryScreen_risk_reversal'.tr,
+                        style: OnboardingTheme.footnote.copyWith(
                           color: OnboardingTheme.labelSecondary,
-                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -579,7 +577,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                label: 'Screen Time\nToday',
+                label: 'summaryScreen_screenTimeToday'.tr,
                 value: '${initialHours.toStringAsFixed(1)}h',
                 color: OnboardingTheme.systemRed,
               ),
@@ -589,7 +587,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                 size: 20,
               ),
               _buildStatItem(
-                label: 'Screen Time\nWeek 2',
+                label: 'summaryScreen_screenTimeWeek2'.tr,
                 value: '${targetHours.toStringAsFixed(1)}h',
                 color: OnboardingTheme.systemGreen,
               ),
@@ -617,7 +615,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  '+${timeReclaimed.toStringAsFixed(1)}h daily for what matters',
+                  '+${timeReclaimed.toStringAsFixed(1)}h ${'summaryScreen_dailyForMatters'.tr}',
                   style: OnboardingTheme.footnote.copyWith(
                     color: OnboardingTheme.goldColor,
                     fontWeight: FontWeight.w700,
@@ -674,40 +672,34 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
         child: Row(
           children: [
             Container(
-              width: 50,
-              height: 50,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: OnboardingTheme.goldColor.withValues(alpha: 0.15),
-                border: Border.all(
-                  color: OnboardingTheme.goldColor.withValues(alpha: 0.3),
-                  width: 1.5,
-                ),
+                color: OnboardingTheme.goldColor.withValues(alpha: 0.2),
               ),
               child: Icon(
                 icon,
-                size: 24,
+                size: 18,
                 color: OnboardingTheme.goldColor,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: OnboardingTheme.body.copyWith(
+                    style: OnboardingTheme.callout.copyWith(
                       color: OnboardingTheme.labelPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: OnboardingTheme.caption.copyWith(
+                    style: OnboardingTheme.footnote.copyWith(
                       color: OnboardingTheme.labelSecondary,
-                      fontSize: 13,
                     ),
                   ),
                 ],

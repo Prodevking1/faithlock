@@ -24,7 +24,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
   const ScriptureOnboardingScreen({super.key});
 
   // Set to true to show skip button for testing
-  static const bool isTesting = true;
+  static const bool isTesting = false;
 
   @override
   Widget build(BuildContext context) {

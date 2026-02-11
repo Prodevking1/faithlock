@@ -79,17 +79,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
   Future<void> _startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    // Phase 3.1: Scripture Warning
-    await _phase31ScriptureWarning();
-
-    // Phase 3.2: Visual Timeline - SUPPRIMÉ
-    // await _phase32VisualTimeline();
-
-    // Phase 3.3: The Reckoning
-    await _phase33TheReckoning();
-
-    // Phase 3.4: Enemy Revealed
-    await _phase34EnemyRevealed();
+    // Reduced version: Only phases 5 and 6
 
     // Phase 3.5: What's Lost
     await _phase35WhatsLost();

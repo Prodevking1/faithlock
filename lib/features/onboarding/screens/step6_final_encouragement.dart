@@ -4,7 +4,6 @@ import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/fingerprint_scanner.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
-import 'package:faithlock/services/rate_app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -156,8 +155,6 @@ class _Step6FinalEncouragementState extends State<Step6FinalEncouragement> {
   Future<void> _onScanComplete() async {
     await controller.acceptCovenant(true);
     await AnimationUtils.heavyHaptic();
-
-    await RateAppService().showOnboardingPrompt(useOnboardingWrapper: true);
 
     widget.onComplete();
   }

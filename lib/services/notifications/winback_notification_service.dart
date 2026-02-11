@@ -9,11 +9,11 @@ import 'package:get/get.dart';
 /// Notification IDs: 200-204
 ///
 /// Sequence:
-/// - +1h:   The Offer (free week, strike while warm)
-/// - +24h:  The Offer Reminder (second chance)
+/// - +24h:  The Offer (free week)
+/// - +48h:  The Offer Reminder (second chance)
 /// - +3d:   The Mirror (identity + aspiration)
 /// - +5d:   The Story (testimonial + emotion)
-/// - +7d:   The Goodbye (reverse psychology, final)
+/// - +7d:   The Goodbye (offer still active, final)
 ///
 /// Daily Bible verses continue independently via DailyVerseNotificationService
 /// at the user's configured times (1-3x/day from onboarding).
@@ -51,19 +51,19 @@ class WinBackNotificationService {
 
   /// The 5-notification win-back strategy sequence
   static final List<_WinBackNotification> _sequence = [
-    // +1h — The Offer: free week, strike while warm
+    // +24h — The Offer: free week
     _WinBackNotification(
       index: 0,
-      delay: Duration(hours: 1),
+      delay: Duration(hours: 24),
       title: 'winback_title2'.tr,
       body: 'winback_body2'.tr,
       strategy: 'offer',
     ),
 
-    // +24h — The Offer Reminder: second chance
+    // +48h — The Offer Reminder: second chance
     _WinBackNotification(
       index: 1,
-      delay: Duration(hours: 24),
+      delay: Duration(hours: 48),
       title: 'winback_title2'.tr,
       body: 'winback_body2'.tr,
       strategy: 'offer_reminder',

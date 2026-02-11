@@ -341,6 +341,18 @@ class ScreenTimeService {
     }
   }
 
+  /// Show the list of blocked apps with their icons
+  /// Presents a native iOS sheet with app icons and names
+  Future<bool> showBlockedAppsList() async {
+    try {
+      final result = await _channel.invokeMethod<bool>('showBlockedAppsList');
+      return result ?? false;
+    } catch (e) {
+      debugPrint('❌ Error showing blocked apps list: $e');
+      return false;
+    }
+  }
+
   void dispose() {
     // Cleanup if needed
   }

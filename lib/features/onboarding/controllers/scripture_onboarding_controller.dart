@@ -31,7 +31,7 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keySchedules = 'onboarding_schedules';
 
   /// Total steps in this onboarding flow (override in subclasses)
-  int get totalSteps => 8;
+  int get totalSteps => 12;
 
   // Observable state
   final RxInt currentStep = RxInt(1);
@@ -123,7 +123,7 @@ class ScriptureOnboardingController extends GetxController {
       await _trackStepExit();
     }
 
-    if (currentStep.value < 9) {
+    if (currentStep.value < totalSteps) {
       currentStep.value++;
 
       // Track new step entry
@@ -135,7 +135,7 @@ class ScriptureOnboardingController extends GetxController {
 
   /// Jump to specific step (debug only)
   void jumpToStep(int step) {
-    if (step >= 1 && step <= 9) {
+    if (step >= 1 && step <= totalSteps) {
       currentStep.value = step;
     }
   }

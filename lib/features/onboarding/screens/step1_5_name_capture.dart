@@ -5,8 +5,8 @@ import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
-import 'package:faithlock/shared/widgets/controls/fast_slider.dart';
 import 'package:faithlock/shared/widgets/inputs/fast_text_input.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -35,13 +35,23 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
   bool _showMascot = false;
   bool _showNameInput = false;
   bool _showAgeInput = false;
-  double _userAge = 21.0;
+  int _userAge = 21;
+  late FixedExtentScrollController _ageScrollController;
 
   double _opacity = 1.0;
+
+  // Age range: 13 to 110
+  static const int _minAge = 13;
+  static const int _maxAge = 110;
+  List<int> get _ageItems => List.generate(_maxAge - _minAge + 1, (i) => _minAge + i);
 
   @override
   void initState() {
     super.initState();
+    // Initialize scroll controller to position at default age (21)
+    _ageScrollController = FixedExtentScrollController(
+      initialItem: _userAge - _minAge,
+    );
     _startAnimation();
   }
 
@@ -49,6 +59,7 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
   void dispose() {
     _nameController.dispose();
     _nameFocusNode.dispose();
+    _ageScrollController.dispose();
     super.dispose();
   }
 
@@ -107,13 +118,12 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
     await AnimationUtils.mediumHaptic();
   }
 
-  void _onAgeChanged(double value) {
-    AnimationUtils.mediumHaptic();
+  void _onAgeChanged(int value) {
     setState(() => _userAge = value);
   }
 
   Future<void> _proceedToNextStep() async {
-    await controller.saveUserAge(_userAge.round());
+    await controller.saveUserAge(_userAge);
     await AnimationUtils.heavyHaptic();
 
     // Transition to next step (iOS-optimized)
@@ -210,53 +220,76 @@ class _Step1_5NameCaptureState extends State<Step1_5NameCapture> {
                 ],
 
                 if (_showAgeInput) ...[
-                  const SizedBox(height: OnboardingTheme.space32),
-                  Center(
-                    child: Text(
-                      _userAge.round().toString(),
-                      style: OnboardingTheme.displayNumber.copyWith(
-                        color: OnboardingTheme.goldColor,
-                      ),
+                  const SizedBox(height: OnboardingTheme.space24),
+                  // Age picker wheel
+                  SizedBox(
+                    height: 180,
+                    child: Stack(
+                      children: [
+                        // Selection highlight
+                        Center(
+                          child: Container(
+                            height: 44,
+                            margin: const EdgeInsets.symmetric(horizontal: 40),
+                            decoration: BoxDecoration(
+                              color: OnboardingTheme.goldColor.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: OnboardingTheme.goldColor.withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Picker wheel
+                        CupertinoPicker(
+                          scrollController: _ageScrollController,
+                          itemExtent: 44,
+                          diameterRatio: 1.2,
+                          selectionOverlay: const SizedBox.shrink(),
+                          onSelectedItemChanged: (index) {
+                            _onAgeChanged(_ageItems[index]);
+                          },
+                          children: _ageItems.map((age) {
+                            final isSelected = age == _userAge;
+                            return Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Text(
+                                    age.toString(),
+                                    style: OnboardingTheme.displayNumber.copyWith(
+                                      color: isSelected
+                                          ? OnboardingTheme.goldColor
+                                          : OnboardingTheme.labelSecondary,
+                                      fontSize: isSelected ? 32 : 24,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'nameCapture_yearsOld'.tr,
+                                    style: OnboardingTheme.subhead.copyWith(
+                                      color: isSelected
+                                          ? OnboardingTheme.goldColor.withOpacity(0.7)
+                                          : OnboardingTheme.labelTertiary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: OnboardingTheme.space4),
-                  Center(
-                    child: Text(
-                      'nameCapture_yearsOld'.tr,
-                      style: OnboardingTheme.displayUnit,
-                    ),
-                  ),
                   const SizedBox(height: OnboardingTheme.space32),
-                  Center(
-                    child: FastSlider(
-                      value: _userAge,
-                      min: 13,
-                      max: 110,
-                      divisions: 110,
-                      activeColor: OnboardingTheme.goldColor,
-                      onChanged: _onAgeChanged,
-                    ),
-                  ),
-
-                  const SizedBox(height: OnboardingTheme.space32),
-                  // // iOS-style instruction
-                  // Center(
-                  //   child: Text(
-                  //     'Slide to select your age',
-                  //     style: OnboardingTheme.subhead.copyWith(
-                  //       fontWeight: FontWeight.w600,
-                  //       color: OnboardingTheme.goldColor
-                  //           .withValues(alpha: 0.7),
-                  //     ),
-                  //     textAlign: TextAlign.center,
-                  //   ),
-                  // ),
-                  // const SizedBox(height: OnboardingTheme.space24),
                   // Continue button
                   Center(
                     child: FastButton(
                       text: 'continue_btn'.tr,
-                      onTap: _userAge >= 13 ? _proceedToNextStep : null,
+                      onTap: _proceedToNextStep,
                       backgroundColor: OnboardingTheme.goldColor,
                       textColor: OnboardingTheme.backgroundColor,
                       style: FastButtonStyle.filled,

@@ -4,7 +4,7 @@ import 'package:faithlock/features/onboarding/screens/step1_5_name_capture.dart'
 import 'package:faithlock/features/onboarding/screens/step1_divine_revelation.dart';
 import 'package:faithlock/features/onboarding/screens/step6_final_encouragement.dart';
 import 'package:faithlock/features/onboarding/screens/step7_screen_time_permission.dart';
-import 'package:faithlock/features/onboarding/screens/v2_welcome_screen.dart';
+import 'package:faithlock/features/onboarding/screens/onboarding_welcome_screen.dart';
 import 'package:faithlock/features/onboarding/screens/v2_self_confrontation.dart';
 import 'package:faithlock/features/onboarding/screens/v2_goals_selection.dart';
 import 'package:faithlock/features/onboarding/screens/v2_daily_verses_setup.dart';
@@ -58,7 +58,7 @@ class _ScriptureOnboardingV2ScreenState
           Obx(() {
             switch (v2Controller.currentStep.value) {
               case 1:
-                return V2WelcomeScreen(
+                return OnBoardingWelcomeScreen(
                   onComplete: () => v2Controller.nextStep(),
                 );
 

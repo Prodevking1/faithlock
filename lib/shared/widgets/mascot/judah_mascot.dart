@@ -28,11 +28,24 @@ enum JudahState {
 
   /// Curled up, eyes closed, zzz symbols. Loading states, idle.
   sleeping,
+
+  /// With shield/protection icon. Screen Time permission screen.
+  appProtection,
+
+  /// With clock/time icon. Notification timing selection screen.
+  timeSelection,
 }
 
 extension JudahStateX on JudahState {
   /// Asset path for this state's GIF.
-  String get assetPath => 'assets/mascot/judah_${name}.gif';
+  String get assetPath {
+    // Handle camelCase to snake_case conversion
+    final snakeName = name.replaceAllMapped(
+      RegExp(r'[A-Z]'),
+      (match) => '_${match.group(0)!.toLowerCase()}',
+    );
+    return 'assets/mascot/judah_$snakeName.gif';
+  }
 }
 
 /// Predefined sizes for mascot display across the app.
@@ -165,6 +178,10 @@ class JudahMascot extends StatelessWidget {
         return '\u{1F449}'; // pointing right
       case JudahState.sleeping:
         return '\u{1F4A4}'; // zzz
+      case JudahState.appProtection:
+        return '\u{1F6E1}'; // shield
+      case JudahState.timeSelection:
+        return '\u{1F552}'; // clock
     }
   }
 }

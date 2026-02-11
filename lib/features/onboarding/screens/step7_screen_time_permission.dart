@@ -160,36 +160,6 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
     }
   }
 
-  Widget _buildBenefitItem({required IconData icon, required String text}) {
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: OnboardingTheme.goldColor,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Text(
-            text,
-            style: OnboardingTheme.body.copyWith(
-              color: OnboardingTheme.labelPrimary,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return OnboardingWrapper(
@@ -201,7 +171,7 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
             padding: const EdgeInsets.only(
               left: OnboardingTheme.horizontalPadding,
               right: OnboardingTheme.horizontalPadding,
-              top: 100, // Space for progress bar
+              top: 16,
               bottom: OnboardingTheme.verticalPadding,
             ),
             child: Column(
@@ -242,9 +212,21 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
 
                 // Phase 7.3 - Call to Action
                 if (_showButton) ...[
-                  const SizedBox(height: 40),
+                  // Judah with protection shield
+                  Center(
+                    child: Transform.scale(
+                      scale: 1.4,
+                      child: const JudahMascot(
+                        state: JudahState.appProtection,
+                        size: JudahSize.xl,
+                        showMessage: false,
+                      ),
+                    ),
+                  ),
 
-                  // Main message
+                  const SizedBox(height: 24),
+
+                  // Main title
                   Center(
                     child: Text(
                       'screenPerm_activateTitle'.tr,
@@ -256,33 +238,18 @@ class _Step7ScreenTimePermissionState extends State<Step7ScreenTimePermission> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
-                  // Icon illustratif avec animation
-                  const Center(
-                    child: JudahMascot(
-                      state: JudahState.pointing,
-                      size: JudahSize.l,
-                      showMessage: false,
+                  // Clear explanation
+                  Center(
+                    child: Text(
+                      'screenPerm_subtitle'.tr,
+                      style: OnboardingTheme.body.copyWith(
+                        color: OnboardingTheme.labelSecondary,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Benefits list
-                  _buildBenefitItem(
-                    icon: Icons.menu_book,
-                    text: 'screenPerm_benefit1'.tr,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildBenefitItem(
-                    icon: Icons.security,
-                    text: 'screenPerm_benefit2'.tr,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildBenefitItem(
-                    icon: Icons.trending_up,
-                    text: 'screenPerm_benefit3'.tr,
                   ),
 
                   const SizedBox(height: 40),

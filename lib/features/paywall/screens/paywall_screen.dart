@@ -522,55 +522,71 @@ class PaywallScreen extends StatelessWidget {
   // }
 
   Widget _buildUnlockButton(PaywallController controller) {
-    return Obx(() => SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: ElevatedButton(
-            onPressed: controller.isPurchasing.value
-                ? null
-                : () {
-                    HapticFeedback.mediumImpact();
-                    controller.startSubscription();
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: OnboardingTheme.goldColor,
-              foregroundColor: OnboardingTheme.backgroundColor,
-              disabledBackgroundColor:
-                  OnboardingTheme.goldColor.withValues(alpha: 0.6),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(OnboardingTheme.radiusMedium),
+    return Obx(() {
+      final hasFreeTrial = controller.selectedPlanIndex.value <
+              controller.packages.length &&
+          controller.packages[controller.selectedPlanIndex.value].storeProduct
+                  .introductoryPrice !=
+              null;
+
+      return Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: controller.isPurchasing.value
+                  ? null
+                  : () {
+                      HapticFeedback.mediumImpact();
+                      controller.startSubscription();
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: OnboardingTheme.goldColor,
+                foregroundColor: OnboardingTheme.backgroundColor,
+                disabledBackgroundColor:
+                    OnboardingTheme.goldColor.withValues(alpha: 0.6),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(OnboardingTheme.radiusMedium),
+                ),
               ),
-            ),
-            child: controller.isPurchasing.value
-                ? SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        OnboardingTheme.backgroundColor,
+              child: controller.isPurchasing.value
+                  ? SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          OnboardingTheme.backgroundColor,
+                        ),
+                      ),
+                    )
+                  : Text(
+                      hasFreeTrial
+                          ? 'paywall_tryForZero'.tr
+                          : 'paywall_startJourney'.tr,
+                      style: OnboardingTheme.callout.copyWith(
+                        color: OnboardingTheme.backgroundColor,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  )
-                : Text(
-                    (controller.selectedPlanIndex.value <
-                                controller.packages.length &&
-                            controller
-                                    .packages[
-                                        controller.selectedPlanIndex.value]
-                                    .storeProduct
-                                    .introductoryPrice !=
-                                null)
-                        ? 'Start Free Trial'
-                        : 'Start Your Journey',
-                    style: OnboardingTheme.callout.copyWith(
-                      color: OnboardingTheme.backgroundColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+            ),
           ),
-        ));
+          if (hasFreeTrial) ...[
+            const SizedBox(height: OnboardingTheme.space8),
+            Text(
+              'paywall_riskReversal'.tr,
+              style: OnboardingTheme.footnote.copyWith(
+                color: OnboardingTheme.labelSecondary,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ],
+      );
+    });
   }
 
   Widget _buildFooterLinks(bool isDark, PaywallController controller) {

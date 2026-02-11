@@ -101,6 +101,8 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
             handleApplyShields(result: result)
         case "removeShields":
             handleRemoveShields(result: result)
+        case "showBlockedAppsList":
+            handleShowBlockedAppsList(result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -326,6 +328,62 @@ class ScreenTimePlugin: NSObject, FlutterPlugin {
 
         print("🔓 Shields removed - apps are now accessible")
         result(true)
+    }
+
+    private func handleShowBlockedAppsList(result: @escaping FlutterResult) {
+        guard #available(iOS 16.0, *) else {
+            result(FlutterError(
+                code: "IOS_VERSION_ERROR",
+                message: "Blocked apps list requires iOS 16.0 or later",
+                details: nil
+            ))
+            return
+        }
+
+        let selection = loadSelectedApps()
+
+        // Check if there are any selected apps
+        guard !selection.applicationTokens.isEmpty ||
+              !selection.categoryTokens.isEmpty ||
+              !selection.webDomainTokens.isEmpty else {
+            result(FlutterError(
+                code: "NO_APPS_SELECTED",
+                message: "No apps selected to display",
+                details: nil
+            ))
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let rootViewController = windowScene.windows.first?.rootViewController else {
+                result(FlutterError(
+                    code: "NO_VIEW_CONTROLLER",
+                    message: "Could not find root view controller",
+                    details: nil
+                ))
+                return
+            }
+
+            // Create and present the blocked apps list view with edit callback
+            let blockedAppsView = BlockedAppsListView(selection: selection) {
+                // When edit is tapped, present the app picker
+                self.handlePresentAppPicker(result: { _ in })
+            }
+            let hostingController = BlockedAppsHostingController(rootView: blockedAppsView)
+            hostingController.modalPresentationStyle = .pageSheet
+
+            if let sheet = hostingController.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.prefersGrabberVisible = true
+                sheet.preferredCornerRadius = 20
+            }
+
+            rootViewController.present(hostingController, animated: true)
+            result(true)
+        }
     }
 
     private func loadSelectedApps() -> FamilyActivitySelection {

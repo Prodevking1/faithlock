@@ -134,7 +134,8 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
+            child: SingleChildScrollView(child: 
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 16),
@@ -151,7 +152,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                 _buildStartSessionButton(context),
                 const SizedBox(height: 16),
               ],
-            ),
+            ),),
           );
         }),
       ),
@@ -217,7 +218,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
         // Judah mascot replaces the initials avatar
         JudahMascot(
           state: _getJudahState(),
-          size: JudahSize.m,
+          size: JudahSize.s,
           showMessage: false,
         ),
         const SizedBox(width: 12),
@@ -344,7 +345,8 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                         const Text('🏆', style: TextStyle(fontSize: 12)),
                         const SizedBox(width: 4),
                         Text(
-                          'longestStreak'.trParams({'count': longestStreak.toString()}),
+                          'longestStreak'
+                              .trParams({'count': longestStreak.toString()}),
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
@@ -363,10 +365,15 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
           // Week days - compact
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ['mon'.tr, 'tue'.tr, 'wed'.tr, 'thu'.tr, 'fri'.tr, 'sat'.tr, 'sun'.tr]
-                .asMap()
-                .entries
-                .map((entry) {
+            children: [
+              'mon'.tr,
+              'tue'.tr,
+              'wed'.tr,
+              'thu'.tr,
+              'fri'.tr,
+              'sat'.tr,
+              'sun'.tr
+            ].asMap().entries.map((entry) {
               final dayIndex = entry.key;
               final dayLabel = entry.value;
               final isCompleted = dayIndex < streak.clamp(0, 7);
@@ -429,7 +436,8 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
               ),
               const SizedBox(height: 6),
               Text(
-                'progressToGoal'.trParams({'percent': (progress * 100).toInt().toString()}),
+                'progressToGoal'
+                    .trParams({'percent': (progress * 100).toInt().toString()}),
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -617,9 +625,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
   /// Badges horizontal row - compact display
   Widget _buildBadgesRow(BuildContext context) {
     final allBadges = BadgeDefinitions.allBadges;
-    final earnedIds = controller.earnedBadges
-        .map((e) => e.badgeId)
-        .toSet();
+    final earnedIds = controller.earnedBadges.map((e) => e.badgeId).toSet();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,8 +681,7 @@ class _StatsDashboardScreenState extends State<StatsDashboardScreen>
                         style: TextStyle(
                           fontSize: 7,
                           fontWeight: FontWeight.w600,
-                          color:
-                              isEarned ? Colors.grey[700] : Colors.grey[400],
+                          color: isEarned ? Colors.grey[700] : Colors.grey[400],
                           letterSpacing: 0.2,
                         ),
                         maxLines: 1,
