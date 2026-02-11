@@ -202,7 +202,7 @@ export const COMPANY = {
 // ─── SEO SITE CONFIG ────────────────────────────────────────
 export const SITE = {
   name: 'FaithLock',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://faithlock.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.getfaithlock.com',
   appStoreUrl:
     process.env.NEXT_PUBLIC_APP_STORE_URL || PLATFORM.appStoreUrl,
 } as const
