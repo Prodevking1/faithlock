@@ -39,6 +39,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.24(postcss@8.5.6)
+      contentful-management:
+        specifier: ^11.68.1
+        version: 11.69.1
       eslint:
         specifier: ^8.57.1
         version: 8.57.1
@@ -604,6 +607,10 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
+  contentful-management@11.69.1:
+    resolution: {integrity: sha512-zucDMGwXXrWzZcOa4GmSBXUMWMkp3FEG4JK32Dv8/R1Pcr8RvTKAcNei1o0YOdwiSG2jXG3HTX+fEWpBtB0Z5Q==}
+    engines: {node: '>=18'}
+
   contentful-resolve-response@1.9.5:
     resolution: {integrity: sha512-1l0iG5avoi+Hy1GVQ7ELoG9MWdbCVJDlOVnLCB0B/6YDQNuD4qAU7EejRki6+skX/Eqswq1KSjqgd51uah3YDA==}
     engines: {node: '>=4.7.2'}
@@ -988,6 +995,10 @@ packages:
   globals@13.24.0:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
     engines: {node: '>=8'}
+
+  globals@15.15.0:
+    resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
+    engines: {node: '>=18'}
 
   globalthis@1.0.4:
     resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
@@ -2413,6 +2424,16 @@ snapshots:
 
   concat-map@0.0.1: {}
 
+  contentful-management@11.69.1:
+    dependencies:
+      '@contentful/rich-text-types': 16.8.5
+      axios: 1.13.4
+      contentful-sdk-core: 9.4.2
+      fast-copy: 3.0.2
+      globals: 15.15.0
+    transitivePeerDependencies:
+      - debug
+
   contentful-resolve-response@1.9.5:
     dependencies:
       fast-copy: 3.0.2
@@ -2966,6 +2987,8 @@ snapshots:
   globals@13.24.0:
     dependencies:
       type-fest: 0.20.2
+
+  globals@15.15.0: {}
 
   globalthis@1.0.4:
     dependencies:
