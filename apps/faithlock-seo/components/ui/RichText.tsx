@@ -1,5 +1,6 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { Document } from '@contentful/rich-text-types'
+import { marked } from 'marked'
 
 interface RichTextProps {
   content: Document | string | unknown
@@ -23,12 +24,27 @@ function extractRawText(node: unknown): string {
   return text
 }
 
+/**
+ * Detect if a string contains markdown syntax.
+ */
+function isMarkdown(text: string): boolean {
+  return /^#{1,6}\s|^\*\*|^\- |\*\*.*\*\*|^\|.*\|/m.test(text)
+}
+
+/**
+ * Convert markdown string to sanitized HTML.
+ */
+function markdownToHtml(md: string): string {
+  return marked.parse(md, { async: false }) as string
+}
+
 export default function RichText({ content, className }: RichTextProps) {
   if (!content) return null
 
-  // If it's already a string containing HTML, render directly
+  // String content: could be HTML or Markdown
   if (typeof content === 'string') {
-    return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />
+    const html = isMarkdown(content) ? markdownToHtml(content) : content
+    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />
   }
 
   // If it's a Contentful Rich Text Document object
@@ -42,6 +58,11 @@ export default function RichText({ content, className }: RichTextProps) {
     const rawText = extractRawText(content)
     if (/<[a-z][\s\S]*>/i.test(rawText)) {
       return <div className={className} dangerouslySetInnerHTML={{ __html: rawText }} />
+    }
+
+    // Check for markdown inside Rich Text text nodes
+    if (isMarkdown(rawText)) {
+      return <div className={className} dangerouslySetInnerHTML={{ __html: markdownToHtml(rawText) }} />
     }
 
     // Proper Rich Text Document — render with Contentful's renderer

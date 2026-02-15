@@ -141,7 +141,7 @@ export default function ComparisonTemplate({
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-sage-700 uppercase tracking-wide mb-3">Pros</h4>
                 <ul className="space-y-2">
-                  {competitor.pros.map((pro, i) => (
+                  {(competitor.pros || []).map((pro, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-sage-500 flex-shrink-0 mt-0.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
@@ -154,7 +154,7 @@ export default function ComparisonTemplate({
               <div>
                 <h4 className="text-sm font-semibold text-red-500 uppercase tracking-wide mb-3">Cons</h4>
                 <ul className="space-y-2">
-                  {competitor.cons.map((con, i) => (
+                  {(competitor.cons || []).map((con, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-gray-500">
                       <span className="w-1.5 h-1.5 bg-gray-300 rounded-full flex-shrink-0 mt-2" />
                       {con}
@@ -195,8 +195,8 @@ export default function ComparisonTemplate({
             {[
               { value: FAITHLOCK_STATS.versesInLibrary, label: 'Bible verses in library', color: 'brand' },
               { value: '~30s', label: 'Unlock time per app', color: 'brand' },
-              { value: `${competitor.rating}\u2605`, label: `${competitor.name} rating`, color: 'gray' },
-              { value: `${competitor.downloads.toLocaleString()}+`, label: `${competitor.name} downloads`, color: 'gray' },
+              ...(competitor.rating ? [{ value: `${competitor.rating}\u2605`, label: `${competitor.name} rating`, color: 'gray' }] : []),
+              ...(competitor.downloads ? [{ value: `${competitor.downloads.toLocaleString()}+`, label: `${competitor.name} downloads`, color: 'gray' }] : []),
             ].map((stat) => (
               <div key={stat.label} className={`card p-5 text-center ${stat.color === 'brand' ? 'bg-brand-50/50 border-brand-100' : ''}`}>
                 <p className={`text-2xl font-bold mb-1 ${stat.color === 'brand' ? 'text-brand-700' : 'text-gray-600'}`}>
