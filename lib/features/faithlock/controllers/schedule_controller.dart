@@ -95,8 +95,8 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         final scheduleName = scheduleEnded.replaceAll('_', ' ');
 
         FastToast.info(
-          'Schedule "$scheduleName" has ended. Apps are now unlocked.',
-          title: 'Schedule Completed',
+          'schedule_completedMsg'.trParams({'name': scheduleName}),
+          title: 'schedule_completed'.tr,
         );
       }
     } catch (e) {
@@ -147,13 +147,11 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
     FastAlertDialog.show(
       context: context,
-      title: 'Select Apps to Block',
-      message:
-          'To make FaithLock work, you need to select which apps should be blocked during lock times.\n\n'
-          'Tap "Select Apps" below to choose the apps you want to block.',
+      title: 'schedule_selectAppsTitle'.tr,
+      message: 'schedule_selectAppsMessage'.tr,
       actions: [
         FastDialogAction(
-          text: 'Later',
+          text: 'later'.tr,
           isCancel: true,
           onPressed: () async {
             Navigator.pop(context);
@@ -162,7 +160,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
           },
         ),
         FastDialogAction(
-          text: 'Select Apps',
+          text: 'schedule_selectApps'.tr,
           isDefault: true,
           onPressed: () async {
             Navigator.pop(context);
@@ -197,7 +195,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       final granted = await _screenTimeService.requestAuthorization();
 
       if (granted) {
-        FastToast.success('Screen Time access granted');
+        FastToast.success('settings_screenTimeEnabled'.tr);
         // Refresh this controller
         await checkScreenTimeAuthorization();
         await _loadSelectedAppsCount();
@@ -206,14 +204,14 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         _syncPermissionsWithOtherControllers();
       } else {
         FastToast.warning(
-          'Please grant Screen Time access in Settings to use app blocking',
-          title: 'Authorization Denied',
+          'schedule_authDeniedMsg'.tr,
+          title: 'schedule_authDenied'.tr,
         );
       }
     } catch (e) {
       FastToast.error(
-        'Failed to request authorization: $e',
-        title: 'Error',
+        'schedule_failedAppPicker'.trParams({'error': '$e'}),
+        title: 'settings_error'.tr,
       );
     }
   }
@@ -242,8 +240,8 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
     try {
       if (!isScreenTimeAuthorized.value) {
         FastToast.warning(
-          'Please authorize Screen Time access first',
-          title: 'Authorization Required',
+          'schedule_authRequiredMsg'.tr,
+          title: 'schedule_authRequired'.tr,
         );
         return;
       }
@@ -266,19 +264,19 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
         if (enabledCount > 0) {
           FastToast.success(
-            'Your apps will be automatically blocked during scheduled times',
-            title: 'Apps Selected & Locked',
+            'schedule_appsSelectedLockedMsg'.tr,
+            title: 'schedule_appsSelectedLocked'.tr,
           );
         } else {
           FastToast.info(
-            'Apps selected. Enable at least one schedule to activate blocking.',
-            title: 'Apps Selected',
+            'schedule_appsSelectedMsg'.tr,
+            title: 'schedule_appsSelected'.tr,
           );
         }
       } else {
         FastToast.info(
-          'Select apps to enable blocking',
-          title: 'No Apps Selected',
+          'schedule_selectAppsToEnable'.tr,
+          title: 'schedule_noAppsSelected'.tr,
         );
       }
     } catch (e) {
@@ -286,8 +284,8 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       // Only show toast if we have a valid context with overlay
       try {
         FastToast.error(
-          'Failed to show app picker: $e',
-          title: 'Error',
+          'schedule_failedAppPicker'.trParams({'error': '$e'}),
+          title: 'settings_error'.tr,
         );
       } catch (toastError) {
         debugPrint('⚠️ Could not show error toast: $toastError');
@@ -353,17 +351,16 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         if (selectedAppsCount.value == 0) {
           final result = await FastAlertDialog.show(
             context: context,
-            title: 'No Apps Selected',
-            message:
-                'You need to select apps to block first. Go to Profile tab to select apps.',
+            title: 'schedule_noAppsSelectedDialog'.tr,
+            message: 'schedule_noAppsSelectedDialogMsg'.tr,
             actions: [
               FastDialogAction(
-                text: 'Cancel',
+                text: 'cancel'.tr,
                 isCancel: true,
                 onPressed: () => Navigator.pop(context, false),
               ),
               FastDialogAction(
-                text: 'Go to Profile',
+                text: 'schedule_goToProfile'.tr,
                 isDefault: true,
                 onPressed: () => Navigator.pop(context, true),
               ),
@@ -389,17 +386,16 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
           final confirmed = await FastAlertDialog.show(
             context: context,
-            title: 'Block Apps Now?',
-            message:
-                '"$scheduleName" is currently active. Your apps will be blocked immediately.',
+            title: 'schedule_blockAppsNow'.tr,
+            message: 'schedule_blockAppsNowMsg'.trParams({'name': scheduleName}),
             actions: [
               FastDialogAction(
-                text: 'Cancel',
+                text: 'cancel'.tr,
                 isCancel: true,
                 onPressed: () => Navigator.pop(context, false),
               ),
               FastDialogAction(
-                text: 'Block Now',
+                text: 'schedule_blockNow'.tr,
                 isDefault: true,
                 onPressed: () => Navigator.pop(context, true),
               ),
@@ -418,11 +414,11 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
       await _saveAndResetupSchedules();
 
-      FastToast.success('Schedule updated successfully');
+      FastToast.success('schedule_updated'.tr);
     } catch (e) {
       FastToast.error(
-        'Failed to update schedule: $e',
-        title: 'Error',
+        'schedule_failedUpdate'.trParams({'error': '$e'}),
+        title: 'settings_error'.tr,
       );
     }
   }
@@ -467,7 +463,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CupertinoButton(
-                    child: const Text('Done'),
+                    child: Text('done'.tr),
                     onPressed: () async {
                       // Create a new Map to force GetX to detect the change
                       final updatedSchedule =
@@ -487,7 +483,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
                       await _saveAndResetupSchedules();
 
-                      FastToast.success('Schedule time updated');
+                      FastToast.success('schedule_timeUpdated'.tr);
                     },
                   ),
                 ],
@@ -573,7 +569,7 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
   /// Get day names from day numbers
   String getDayNames(List<int> days) {
-    if (days.length == 7) return 'Every day';
+    if (days.length == 7) return 'schedule_everyDay'.tr;
 
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return days.map((d) => dayNames[d - 1]).join(', ');
@@ -637,16 +633,16 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
     try {
       if (!isScreenTimeAuthorized.value) {
         FastToast.warning(
-          'Please grant Screen Time access first',
-          title: 'Authorization Required',
+          'schedule_authRequiredMsg'.tr,
+          title: 'schedule_authRequired'.tr,
         );
         return;
       }
 
       if (selectedAppsCount.value == 0) {
         FastToast.warning(
-          'Please select apps first via Profile tab',
-          title: 'No Apps Selected',
+          'schedule_selectAppsToEnable'.tr,
+          title: 'schedule_noAppsSelected'.tr,
         );
         return;
       }
@@ -689,9 +685,8 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       if (ctx != null) {
         FastToast.showSuccess(
           context: ctx,
-          title: 'Test Schedule Created',
-          message:
-              'Apps NOT blocked now. Will block in 5 min when schedule starts. Check Xcode logs.',
+          title: 'schedule_testCreated'.tr,
+          message: 'schedule_testCreatedMsg'.tr,
           duration: const Duration(seconds: 6),
         );
       }
@@ -701,8 +696,8 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
       if (ctx != null) {
         FastToast.showError(
           context: ctx,
-          title: 'Test Failed',
-          message: 'Error: $e',
+          title: 'schedule_testFailed'.tr,
+          message: 'schedule_testFailedMsg'.trParams({'error': '$e'}),
           duration: const Duration(seconds: 5),
         );
       }

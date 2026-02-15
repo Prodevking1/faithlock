@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,8 +68,8 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
       if (mounted) {
         FastToast.showSuccess(
           context: context,
-          title: 'Schedules Updated',
-          message: 'Your lock schedules have been updated successfully',
+          title: 'schedule_schedulesUpdated'.tr,
+          message: 'schedule_schedulesUpdatedMsg'.tr,
         );
       }
     } catch (e) {
@@ -78,8 +77,8 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
       if (mounted) {
         FastToast.showError(
           context: context,
-          title: 'Error',
-          message: 'Failed to update schedules: $e',
+          title: 'settings_error'.tr,
+          message: 'schedule_failedUpdateSchedules'.trParams({'error': '$e'}),
         );
       }
     }
@@ -135,7 +134,7 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
         backgroundColor: OnboardingTheme.backgroundColor,
         elevation: 0,
         title: Text(
-          'Lock Schedules',
+          'schedule_lockSchedules'.tr,
           style: OnboardingTheme.title2.copyWith(
             color: OnboardingTheme.labelPrimary,
           ),
@@ -166,14 +165,14 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'No Schedules Found',
+              'schedule_noSchedulesFound'.tr,
               style: OnboardingTheme.title3.copyWith(
                 color: OnboardingTheme.labelPrimary,
               ),
             ),
             const SizedBox(height: 12),
             Text(
-              'Complete the onboarding to set up your lock schedules',
+              'schedule_completeOnboarding'.tr,
               style: OnboardingTheme.body.copyWith(
                 color: OnboardingTheme.labelSecondary,
               ),
@@ -190,7 +189,7 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
       padding: const EdgeInsets.all(20),
       children: [
         Text(
-          'Manage your app lock schedules below. Changes are applied immediately.',
+          'schedule_manageDescription'.tr,
           style: OnboardingTheme.body.copyWith(
             color: OnboardingTheme.labelSecondary,
             fontSize: 15,
@@ -333,7 +332,7 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Start',
+                          'schedule_startLabel'.tr,
                           style: OnboardingTheme.footnote.copyWith(
                             fontSize: 11,
                             color: OnboardingTheme.labelTertiary,
@@ -387,7 +386,7 @@ class _ScheduleManagementScreenState extends State<ScheduleManagementScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'End',
+                          'schedule_endLabel'.tr,
                           style: OnboardingTheme.footnote.copyWith(
                             fontSize: 11,
                             color: OnboardingTheme.labelTertiary,

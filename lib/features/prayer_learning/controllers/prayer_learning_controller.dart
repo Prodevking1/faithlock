@@ -53,11 +53,11 @@ class PrayerLearningController extends GetxController {
   final RxDouble meditationQualityScore = RxDouble(0.0); // AI validation score (0.0-1.0)
 
   // Steps in Balanced mode
-  final List<String> stepTitles = [
-    'Read & Absorb',
-    'Meditate',
-    'Remember',
-    'Complete',
+  List<String> get stepTitles => [
+    'prayer_readAbsorb'.tr,
+    'prayer_meditate'.tr,
+    'prayer_remember'.tr,
+    'prayer_complete'.tr,
   ];
 
   // Timer
@@ -299,19 +299,19 @@ class PrayerLearningController extends GetxController {
     // Basic validation first - allow very short inputs
     if (response.length < 3) {
       meditationValidationState.value = ValidationState.invalid;
-      validationFeedback.value = 'Please share a brief thought (at least 3 characters).';
+      validationFeedback.value = 'prayer_minThought'.tr;
       return;
     }
 
     // Start AI validation
     meditationValidationState.value = ValidationState.validating;
-    validationFeedback.value = 'Analyzing your reflection...';
+    validationFeedback.value = 'prayer_analyzingReflection'.tr;
 
     try {
       final verse = selectedVerse.value;
       if (verse == null) {
         meditationValidationState.value = ValidationState.invalid;
-        validationFeedback.value = 'Error: No verse selected';
+        validationFeedback.value = 'prayer_noVerseError'.tr;
         return;
       }
 
@@ -342,8 +342,8 @@ class PrayerLearningController extends GetxController {
           ? ValidationState.valid
           : ValidationState.invalid;
       validationFeedback.value = response.length >= 3
-          ? 'Thank you for your reflection! 🙏'
-          : 'Please share a brief thought.';
+          ? '${'prayer_thankYouReflection'.tr} 🙏'
+          : 'prayer_shareBriefThought'.tr;
       meditationQualityScore.value = response.length >= 3 ? 0.75 : 0.3; // Fallback score
     }
   }

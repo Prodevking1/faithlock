@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
@@ -7,15 +8,15 @@ class ProgressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Progress'),
+        title: Text('progress_title'.tr),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Your Progress',
+            Text(
+              'progress_yourProgress'.tr,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -24,27 +25,27 @@ class ProgressScreen extends StatelessWidget {
             const SizedBox(height: 20),
             _buildProgressItem(
               context,
-              title: 'Daily Goal',
+              title: 'progress_dailyGoal'.tr,
               progress: 0.7,
               color: Colors.blue,
             ),
             const SizedBox(height: 16),
             _buildProgressItem(
               context,
-              title: 'Weekly Goal',
+              title: 'progress_weeklyGoal'.tr,
               progress: 0.5,
               color: Colors.green,
             ),
             const SizedBox(height: 16),
             _buildProgressItem(
               context,
-              title: 'Monthly Goal',
+              title: 'progress_monthlyGoal'.tr,
               progress: 0.3,
               color: Colors.orange,
             ),
             const SizedBox(height: 30),
-            const Text(
-              'Statistics',
+            Text(
+              'progress_statistics'.tr,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -57,10 +58,10 @@ class ProgressScreen extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
                 children: [
-                  _buildStatCard('Tasks Completed', '24'),
-                  _buildStatCard('Pending Tasks', '12'),
-                  _buildStatCard('Success Rate', '75%'),
-                  _buildStatCard('Avg. Completion Time', '3.2h'),
+                  _buildStatCard('progress_tasksCompleted'.tr, '24'),
+                  _buildStatCard('progress_pendingTasks'.tr, '12'),
+                  _buildStatCard('progress_successRate'.tr, '75%'),
+                  _buildStatCard('progress_avgCompletionTime'.tr, '3.2h'),
                 ],
               ),
             ),

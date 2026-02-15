@@ -53,7 +53,7 @@ class LockChallengeScreen extends StatelessWidget {
 
                 // Title
                 Text(
-                  'MOMENT OF TRUTH',
+                  'challenge_momentOfTruth'.tr,
                   style: OnboardingTheme.title1.copyWith(
                     color: Colors.orange,
                     fontSize: 28,
@@ -126,7 +126,10 @@ class LockChallengeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Question ${controller.currentQuestionIndex.value + 1} of ${controller.totalQuestions}',
+            'challenge_questionProgress'.trParams({
+              'current': '${controller.currentQuestionIndex.value + 1}',
+              'total': '${controller.totalQuestions}',
+            }),
             style: OnboardingTheme.footnote.copyWith(
               color: OnboardingTheme.labelTertiary,
               fontSize: 13,
@@ -317,7 +320,7 @@ class LockChallengeScreen extends StatelessWidget {
         // Correct answer - show continue button
         return Center(
           child: FastButton(
-            text: controller.hasNextQuestion ? 'Next Question' : 'Complete',
+            text: controller.hasNextQuestion ? 'challenge_nextQuestion'.tr : 'challenge_complete'.tr,
             onTap: () => controller.nextQuestion(),
             backgroundColor: Colors.green,
             textColor: Colors.white,
@@ -328,7 +331,7 @@ class LockChallengeScreen extends StatelessWidget {
         // Incorrect answer - show retry button
         return Center(
           child: FastButton(
-            text: 'Try Again',
+            text: 'challenge_tryAgain'.tr,
             onTap: () => controller.retryQuestion(),
             backgroundColor: Colors.orange,
             textColor: Colors.white,
@@ -346,7 +349,7 @@ class LockChallengeScreen extends StatelessWidget {
           Obx(() => _buildActionButtons(controller)),
           const SizedBox(height: 24),
           Text(
-            '⚠️ The easy way out breaks your covenant with God',
+            'challenge_easyWayOut'.tr,
             style: OnboardingTheme.footnote.copyWith(
               color: OnboardingTheme.labelTertiary,
               fontSize: 12,
@@ -358,7 +361,7 @@ class LockChallengeScreen extends StatelessWidget {
           TextButton(
             onPressed: () => _showBreakCovenantDialog(controller),
             child: Text(
-              'Surrender & Break Covenant',
+              'challenge_surrenderCovenant'.tr,
               style: TextStyle(
                 color: Colors.red.withValues(alpha: 0.7),
                 fontSize: 14,
@@ -373,16 +376,15 @@ class LockChallengeScreen extends StatelessWidget {
 
   void _showBreakCovenantDialog(LockChallengeController controller) {
     Get.defaultDialog(
-      title: 'Break Covenant?',
+      title: 'challenge_breakCovenant'.tr,
       titleStyle: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Colors.red,
       ),
-      middleText:
-          'This will break your streak and record a spiritual defeat.\n\nGod saw your choice. Are you sure?',
-      textConfirm: 'Break Covenant',
-      textCancel: 'Stay Strong',
+      middleText: 'challenge_breakCovenantMessage'.tr,
+      textConfirm: 'challenge_breakCovenantConfirm'.tr,
+      textCancel: 'challenge_stayStrong'.tr,
       confirmTextColor: Colors.white,
       cancelTextColor: OnboardingTheme.goldColor,
       buttonColor: Colors.red,
@@ -412,7 +414,7 @@ class LockChallengeScreen extends StatelessWidget {
 
             // Victory message
             Text(
-              'VICTORY!',
+              'challenge_victory'.tr,
               style: OnboardingTheme.title1.copyWith(
                 color: OnboardingTheme.goldColor,
                 fontSize: 36,
@@ -424,7 +426,7 @@ class LockChallengeScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             Text(
-              'You resisted temptation.\nGod is proud of you.',
+              'challenge_victoryMessage'.tr,
               style: OnboardingTheme.body.copyWith(
                 color: OnboardingTheme.labelPrimary,
                 fontSize: 18,
@@ -437,7 +439,10 @@ class LockChallengeScreen extends StatelessWidget {
 
             // Stats
             Obx(() => Text(
-                  'Correct: ${controller.correctAnswersCount.value}/${controller.totalQuestions}',
+                  'challenge_correctCount'.trParams({
+                    'correct': '${controller.correctAnswersCount.value}',
+                    'total': '${controller.totalQuestions}',
+                  }),
                   style: OnboardingTheme.footnote.copyWith(
                     color: OnboardingTheme.labelSecondary,
                     fontSize: 15,
@@ -448,7 +453,7 @@ class LockChallengeScreen extends StatelessWidget {
 
             // Continue button
             FastButton(
-              text: 'Continue',
+              text: 'continue_btn'.tr,
               onTap: () {
                 Get.back(); // Return to previous screen
                 // TODO: Trigger temporary unlock via native code

@@ -1,6 +1,7 @@
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Life Visualization Widget - Powerful impact visualization
 /// Shows life as dots in a grid with wasted time overlay
@@ -53,10 +54,6 @@ class LifeVisualization extends StatelessWidget {
     final firstCol = firstYearIndex % columns;
     final lastRow = lastYearIndex ~/ columns;
     final lastCol = lastYearIndex % columns;
-
-    // Calculate geometric center of the bounding box
-    final centerRow = (firstRow + lastRow) / 2;
-    final centerCol = (firstCol + lastCol) / 2;
 
     // Calculate grid dimensions
     final totalGridWidth = (columns * dotSize) + ((columns - 1) * spacing);
@@ -182,19 +179,19 @@ class LifeVisualization extends StatelessWidget {
             _buildLegendItem(
               color: OnboardingTheme.systemGreen,
               label: showWasted
-                  ? 'You are here (assuming age $currentAge)'
-                  : 'Life lived',
+                  ? 'lifeViz_youAreHere'.trParams({'age': '$currentAge'})
+                  : 'lifeViz_lifeLived'.tr,
             ),
             const SizedBox(height: OnboardingTheme.space12),
             _buildLegendItem(
               color: OnboardingTheme.labelTertiary.withValues(alpha: 0.3),
-              label: 'Life remaining',
+              label: 'lifeViz_lifeRemaining'.tr,
             ),
             if (showWasted) ...[
               const SizedBox(height: OnboardingTheme.space12),
               _buildLegendItem(
                 color: OnboardingTheme.systemRed,
-                label: '$yearsWasted years spent looking down at\nyour phone',
+                label: 'lifeViz_yearsSpentPhone'.trParams({'years': '$yearsWasted'}),
               ),
             ],
           ],

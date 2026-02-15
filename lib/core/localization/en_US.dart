@@ -196,7 +196,16 @@ const Map<String, String> en_US = {
   'nameCapture_yearsOld': 'years old',
 
   // ═══════════════════════════════════════════
-  // ONBOARDING: DIVINE REVELATION (Step 2)
+  // ONBOARDING: ATTRIBUTION (Step 2.5)
+  // ═══════════════════════════════════════════
+  'attribution_header': 'By the way, how did you hear about FaithLock?',
+  'attribution_google': 'Google',
+  'attribution_friends': 'Friends / Family',
+  'attribution_appstore': 'App Store Search',
+  'attribution_other': 'Other',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING: DIVINE REVELATION (Step 3)
   // ═══════════════════════════════════════════
   'divineRev_verse': 'Redeem the time, for the days are evil.',
   'divineRev_reference': '— Ephesians 5:16',
@@ -433,4 +442,525 @@ const Map<String, String> en_US = {
   'winback_title5': 'Your free week is still waiting',
   'winback_body5':
       "We won't bother you again. If you don't want it, just ignore this message. Your 7 days of free access won't expire.",
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: SELF CONFRONTATION (Step 2)
+  // ═══════════════════════════════════════════
+  'selfConf_hoursDaily': '@hours hours every single day...',
+  'selfConf_hoursWeekly': "That's @hours hours per week.",
+  'selfConf_overOneYear': 'Over one year: @days full days.',
+  'selfConf_couldHaveSpent': '@days days you could have spent...',
+  'selfConf_inDeepPrayer': '• In deep prayer',
+  'selfConf_studyingWord': "• Studying God's Word",
+  'selfConf_servingOthers': '• Serving others',
+  'selfConf_inPresence': '• In His presence',
+  'selfConf_psalm90':
+      'Teach us to number our days,\nthat we may gain a heart of wisdom.\n— Psalm 90:12',
+  'selfConf_justifyDays':
+      'If you had to justify these @days days before God today...\n\nWhat would you tell Him?',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: ETERNAL WARFARE (Step 3)
+  // ═══════════════════════════════════════════
+  'warfare_scriptureWarning':
+      'We will give account for every careless word.\n— Matthew 12:36',
+  'warfare_reckoningIntro':
+      'If Christ returned today, how would you explain:',
+  'warfare_reckoningQ1': '- These @days days on your screen?',
+  'warfare_reckoningQ2': "- The prayers you didn't pray?",
+  'warfare_reckoningQ3': "- The people you didn't serve?",
+  'warfare_enemyRevealed':
+      'There is an enemy...\n\nAnd he wants you distracted.',
+  'warfare_scrollSteals': 'Every scroll steals from you:',
+  'warfare_lossIntimacy': '• Your intimacy with God',
+  'warfare_lossSensitivity': '• Your spiritual sensitivity',
+  'warfare_lossPurpose': '• Your purpose and calling',
+  'warfare_hope': 'But there is hope...',
+  'warfare_daysSaved':
+      'In just 2 weeks with this app,\nyou could save @days days of your life back.',
+  'warfare_fightForLife': '@name, will you fight for your life?',
+  'warfare_birth': 'Birth',
+  'warfare_you': 'You',
+  'warfare_death': 'Death',
+  'warfare_eternity': 'Eternity',
+  'warfare_freedomProjection': 'Your Freedom Projection',
+  'warfare_in2Weeks': 'In 2 weeks',
+  'warfare_daysSavedLabel': '@days days saved',
+  'warfare_in1Year': 'In 1 year',
+  'warfare_basedOn': 'Based on 80% reduction in phone usage',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: TESTIMONIALS (Step 3.5)
+  // ═══════════════════════════════════════════
+  'testimonials_header':
+      "Others felt the same pain you just saw.\n\nHere's what happened...",
+  'testimonials_joinBelievers':
+      'Join believers who transformed their lives',
+  'testimonials_bestApp': 'Best app',
+  'testimonials_faithFocus': 'Faith & Focus',
+  'testimonials_yearsOld': '@age years old',
+  'testimonials_before': 'Before',
+  'testimonials_after': 'After',
+  'testimonials_t1_before': '6h/day scrolling, 0 prayer',
+  'testimonials_t1_after': '1h30/day, daily prayer habit',
+  'testimonials_t1_result': 'My relationship with God was transformed.',
+  'testimonials_t1_duration': '2 weeks',
+  'testimonials_t2_before': 'Addicted to social media',
+  'testimonials_t2_after': 'Free and focused on eternal things',
+  'testimonials_t2_result': 'I finally feel spiritually alive again.',
+  'testimonials_t2_duration': '3 weeks',
+  'testimonials_t3_before': 'No self-control, always distracted',
+  'testimonials_t3_after': 'Disciplined prayer warrior',
+  'testimonials_t3_result':
+      'Scripture became my shield, not my phone.',
+  'testimonials_t3_duration': '1 month',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: CALL TO COVENANT (Step 4)
+  // ═══════════════════════════════════════════
+  'covenant_divineStandard':
+      "God is not calling you to moderation.\n\nHe's calling you to holiness.",
+  'covenant_scripture': 'Be holy, for I am holy.\n— 1 Peter 1:16',
+  'covenant_visionIntro': 'Imagine a life where you are:',
+  'covenant_freeFromBondage': '• Free from digital bondage',
+  'covenant_sensitiveSpirit': "• Sensitive to the Spirit's voice",
+  'covenant_eternalImpact': '• Living for eternal impact',
+  'covenant_godWants':
+      'God wants to do this and MORE in your life.\n\nBut it requires your daily "yes".',
+  'covenant_commitment':
+      'Before God, @name, I commit to guard my heart.\n\nI will use Scripture as my shield.',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: FINGERPRINT SCANNER
+  // ═══════════════════════════════════════════
+  'covenant_sacredTitle': 'SACRED COVENANT',
+  'covenant_pledgeText':
+      'I, @name, hereby solemnly commit before God to guard my heart and use His Word as my shield against digital bondage.\n\nI pledge to live with intentionality, seeking His presence above all earthly distractions.',
+  'covenant_signature': 'Signature',
+  'covenant_date': 'Date',
+  'covenant_sealed': 'SEALED',
+  'covenant_sealedBeforeGod': 'Covenant sealed before God',
+  'covenant_readyLockIn': "I'm ready. Lock me in.",
+  'covenant_scanning': 'Scanning...',
+  'covenant_holdThumb': 'Hold your thumb to seal covenant',
+
+  // ═══════════════════════════════════════════
+  // APP CORE: SCREENS & CONTROLLERS (Batch A)
+  // ═══════════════════════════════════════════
+
+  // Lock Challenge Screen
+  'challenge_momentOfTruth': 'MOMENT OF TRUTH',
+  'challenge_questionProgress': 'Question @current of @total',
+  'challenge_easyWayOut': 'The easy way out breaks your covenant with God',
+  'challenge_surrenderCovenant': 'Surrender & Break Covenant',
+  'challenge_breakCovenant': 'Break Covenant?',
+  'challenge_breakCovenantMessage':
+      'This will break your streak and record a spiritual defeat.\n\nGod saw your choice. Are you sure?',
+  'challenge_breakCovenantConfirm': 'Break Covenant',
+  'challenge_stayStrong': 'Stay Strong',
+  'challenge_victory': 'VICTORY!',
+  'challenge_victoryMessage': 'You resisted temptation.\nGod is proud of you.',
+  'challenge_correctCount': 'Correct: @correct/@total',
+  'challenge_nextQuestion': 'Next Question',
+  'challenge_complete': 'Complete',
+  'challenge_tryAgain': 'Try Again',
+
+  // Relock In Progress Screen
+  'relock_inProgress': 'Re-locking in progress...',
+  'relock_success': 'Apps successfully re-locked!',
+  'relock_appsProtected': 'Your apps are now protected',
+  'relock_error': 'Error during re-lock',
+  'relock_errorOccurred': 'An error occurred',
+  // Encouraging verses
+  'relock_verse1_text': 'I can do all things through Christ who strengthens me',
+  'relock_verse1_ref': 'Philippians 4:13',
+  'relock_verse2_text': 'The Lord is my strength and my shield',
+  'relock_verse2_ref': 'Psalm 28:7',
+  'relock_verse3_text': 'Be strong and courageous. Do not be afraid',
+  'relock_verse3_ref': 'Joshua 1:9',
+  'relock_verse4_text':
+      'God is our refuge and strength, an ever-present help in trouble',
+  'relock_verse4_ref': 'Psalm 46:1',
+  'relock_verse5_text': 'Resist the devil, and he will flee from you',
+  'relock_verse5_ref': 'James 4:7',
+  'relock_verse6_text':
+      'No temptation has overtaken you except what is common to mankind',
+  'relock_verse6_ref': '1 Corinthians 10:13',
+  'relock_verse7_text':
+      'The Lord will fight for you; you need only to be still',
+  'relock_verse7_ref': 'Exodus 14:14',
+  'relock_verse8_text':
+      'Greater is He who is in you than he who is in the world',
+  'relock_verse8_ref': '1 John 4:4',
+  'relock_verse9_text':
+      'In all these things we are more than conquerors through Him',
+  'relock_verse9_ref': 'Romans 8:37',
+  'relock_verse10_text':
+      'You will keep in perfect peace those whose minds are steadfast',
+  'relock_verse10_ref': 'Isaiah 26:3',
+
+  // Badge Definitions
+  'badge_streakStarter_name': 'Streak Starter',
+  'badge_streakStarter_desc': '3 days of prayer in a row',
+  'badge_streakWarrior_name': 'Streak Warrior',
+  'badge_streakWarrior_desc': '7-day prayer streak',
+  'badge_streakDevoted_name': 'Devoted',
+  'badge_streakDevoted_desc': '14-day prayer streak',
+  'badge_streakLegendary_name': 'Legendary',
+  'badge_streakLegendary_desc': '30-day prayer streak',
+  'badge_verseExplorer_name': 'Verse Explorer',
+  'badge_verseExplorer_desc': 'Read 10 verses',
+  'badge_verseScholar_name': 'Verse Scholar',
+  'badge_verseScholar_desc': 'Read 50 verses',
+  'badge_verseMaster_name': 'Verse Master',
+  'badge_verseMaster_desc': 'Read 100 verses',
+  'badge_firstPrayer_name': 'First Prayer',
+  'badge_firstPrayer_desc': 'Complete your first prayer session',
+  'badge_perfectScore_name': 'Perfect Score',
+  'badge_perfectScore_desc': 'Get 100% on a prayer session',
+  'badge_nightOwl_name': 'Night Owl',
+  'badge_nightOwl_desc': 'Pray between 10 PM and 5 AM',
+  'badge_earlyBird_name': 'Early Bird',
+  'badge_earlyBird_desc': 'Pray between 5 AM and 7 AM',
+  'badge_frozenSolid_name': 'Frozen Solid',
+  'badge_frozenSolid_desc': 'Use a streak freeze for the first time',
+
+  // FaithLock Settings Controller
+  'settings_permissionGranted': 'Permission Granted',
+  'settings_screenTimeEnabled': 'Screen Time access has been enabled',
+  'settings_permissionDenied': 'Permission Denied',
+  'settings_enableScreenTime': 'Please enable Screen Time access in iOS Settings',
+  'settings_error': 'Error',
+  'settings_failedScreenTime': 'Failed to request Screen Time permission: @error',
+  'settings_notificationsEnabled': 'Notifications Enabled',
+  'settings_notificationsEnabledMsg':
+      'You\'ll receive reminders to re-lock apps and pray',
+  'settings_notificationsDisabled': 'Notifications Disabled',
+  'settings_notificationsDisabledMsg':
+      'Tap to open Settings and enable notifications',
+  'settings_failedNotifications': 'Failed to request notification permission',
+  'settings_couldNotOpenSettings':
+      'Could not open Settings. Please enable notifications manually.',
+  'settings_couldNotOpenSettingsShort': 'Could not open Settings',
+  'settings_lockEnabled': 'Lock System Enabled',
+  'settings_lockEnabledMsg': 'Schedules will now activate automatically',
+  'settings_lockDisabled': 'Lock System Disabled',
+  'settings_lockDisabledMsg': 'All schedules are temporarily disabled',
+  'settings_failedToggleLock': 'Failed to toggle lock system: @error',
+  'settings_emergencyBypassInfo':
+      'If you need to unlock your device during an active lock period:\n\n'
+      '1. Answer the Bible verse quiz correctly\n'
+      '2. Use the "Emergency Bypass" option (breaks your streak)\n'
+      '3. Force close and restart the app (in emergency only)\n\n'
+      'Remember: The goal is to build spiritual discipline!',
+  'settings_gotIt': 'Got it',
+  'settings_permissionRequired': 'Permission Required',
+  'settings_grantScreenTimeFirst': 'Please grant Screen Time access first',
+  'settings_appsSelectedLocked': 'Apps Selected & Locked',
+  'settings_appsSelectedLockedMsg':
+      'Your apps will be automatically blocked during scheduled times',
+  'settings_noAppsSelectedTitle': 'No Apps Selected',
+  'settings_selectAppsToEnable': 'Select apps to enable blocking',
+  'settings_failedAppPicker': 'Failed to show app picker: @error',
+  'settings_aboutDescription':
+      'FaithLock helps you build spiritual discipline by combining '
+      'Bible verse memorization with screen time management.\n\n'
+      'Unlock your device by correctly answering questions about '
+      'Bible verses. Build streaks, track your progress, and grow '
+      'in faith while reducing digital distractions.\n\n'
+      'Version 1.0.0',
+  'settings_close': 'Close',
+  'settings_comingSoon': 'Coming Soon',
+  'settings_privacyComingSoon': 'Privacy policy will be available soon',
+  'settings_couldNotOpenPrivacy': 'Could not open privacy policy',
+  'settings_emailSupport': 'Email Support',
+  'settings_contactUs': 'Contact Us',
+  'settings_contactEmail': 'Contact us at: support@faithlock.app',
+  'settings_email': 'Email: support@faithlock.app',
+
+  // Schedule Controller
+  'schedule_completed': 'Schedule Completed',
+  'schedule_completedMsg':
+      'Schedule "@name" has ended. Apps are now unlocked.',
+  'schedule_selectAppsTitle': 'Select Apps to Block',
+  'schedule_selectAppsMessage':
+      'To make FaithLock work, you need to select which apps should be blocked during lock times.\n\n'
+      'Tap "Select Apps" below to choose the apps you want to block.',
+  'schedule_selectApps': 'Select Apps',
+  'schedule_authDenied': 'Authorization Denied',
+  'schedule_authDeniedMsg':
+      'Please grant Screen Time access in Settings to use app blocking',
+  'schedule_authRequired': 'Authorization Required',
+  'schedule_authRequiredMsg': 'Please authorize Screen Time access first',
+  'schedule_appsSelectedLocked': 'Apps Selected & Locked',
+  'schedule_appsSelectedLockedMsg':
+      'Your apps will be automatically blocked during scheduled times',
+  'schedule_appsSelected': 'Apps Selected',
+  'schedule_appsSelectedMsg':
+      'Apps selected. Enable at least one schedule to activate blocking.',
+  'schedule_noAppsSelected': 'No Apps Selected',
+  'schedule_selectAppsToEnable': 'Select apps to enable blocking',
+  'schedule_failedAppPicker': 'Failed to show app picker: @error',
+  'schedule_noAppsSelectedDialog': 'No Apps Selected',
+  'schedule_noAppsSelectedDialogMsg':
+      'You need to select apps to block first. Go to Profile tab to select apps.',
+  'schedule_goToProfile': 'Go to Profile',
+  'schedule_blockAppsNow': 'Block Apps Now?',
+  'schedule_blockAppsNowMsg':
+      '"@name" is currently active. Your apps will be blocked immediately.',
+  'schedule_blockNow': 'Block Now',
+  'schedule_updated': 'Schedule updated successfully',
+  'schedule_failedUpdate': 'Failed to update schedule: @error',
+  'schedule_timeUpdated': 'Schedule time updated',
+  'schedule_testCreated': 'Test Schedule Created',
+  'schedule_testCreatedMsg':
+      'Apps NOT blocked now. Will block in 5 min when schedule starts. Check Xcode logs.',
+  'schedule_testFailed': 'Test Failed',
+  'schedule_testFailedMsg': 'Error: @error',
+  'schedule_everyDay': 'Every day',
+
+  // Unlock Timer Service
+  'timer_timesUp': 'Time\'s Up',
+  'timer_openToRelock': 'Open FaithLock to re-lock your apps',
+  'timer_reminderTitle': 'Reminder',
+  'timer_dontForget': 'Don\'t forget to re-lock your apps in FaithLock',
+
+  // Gamification Dialog Service
+  'gamification_streakSaved': 'Streak Saved!',
+  'gamification_streakSavedMsg':
+      'Close one! Your @count-day streak was protected by a streak freeze.\n\n@remaining freeze@suffix remaining this week.',
+  'gamification_awesome': 'Awesome!',
+  'gamification_streakReset': 'Streak Reset',
+  'gamification_streakLostMsg':
+      'Your @count-day streak has ended.\n\nLet\'s start fresh together!',
+  'gamification_streakLostNewMsg': 'Let\'s build a new streak together!',
+  'gamification_letsGo': 'Let\'s Go!',
+  'gamification_achievementUnlocked': 'Achievement unlocked!\n@description',
+
+  // Schedule Screen
+  'schedule_noSchedules': 'No schedules found',
+  'schedule_completeOnboarding':
+      'Complete the onboarding to set up your lock schedules',
+  'schedule_start': 'START',
+  'schedule_end': 'END',
+  'schedule_activeBlocked': 'Active now - Apps are blocked',
+  'schedule_activePeriod': 'Active period - Select apps to start blocking',
+
+  // Schedule Management Screen
+  'schedule_lockSchedules': 'Lock Schedules',
+  'schedule_noSchedulesFound': 'No Schedules Found',
+  'schedule_manageDescription':
+      'Manage your app lock schedules below. Changes are applied immediately.',
+  'schedule_schedulesUpdated': 'Schedules Updated',
+  'schedule_schedulesUpdatedMsg':
+      'Your lock schedules have been updated successfully',
+  'schedule_failedUpdateSchedules': 'Failed to update schedules: @error',
+  'schedule_startLabel': 'Start',
+  'schedule_endLabel': 'End',
+
+  // Permissions Onboarding Screen
+  'permissions_enableScreenTime': 'Enable Screen Time',
+  'permissions_description':
+      'FaithLock needs Screen Time access to help you stay focused on your spiritual growth by managing app usage during scheduled times.',
+  'permissions_successMsg': 'Screen Time access enabled successfully!',
+  'permissions_deniedMsg': 'Permission denied. Enable it in Settings.',
+  'permissions_failedMsg': 'Failed to request permission',
+
+  // ═══════════════════════════════════════════
+  // APP CORE: UI & REMAINING SCREENS (Batch B)
+  // ═══════════════════════════════════════════
+
+  // Unlock Duration Dialog
+  'unlock_unlockApps': 'Unlock apps',
+  'unlock_forHowLong': 'For how long?',
+  'unlock_1min': '1 minute',
+  'unlock_quickTask': 'Quick task',
+  'unlock_5min': '5 minutes',
+  'unlock_shortBreak': 'Short break',
+  'unlock_10min': '10 minutes',
+  'unlock_focusedWork': 'Focused work',
+  'unlock_30min': '30 minutes',
+  'unlock_focusSession': 'Focus session',
+  'unlock_restOfDay': 'For the rest of the day',
+  'unlock_untilMidnight': 'Until midnight',
+  'unlock_customDuration': 'Custom duration',
+  'unlock_chooseSpecific': 'Choose a specific duration',
+  'unlock_customTitle': 'Custom Duration',
+  'unlock_minuteCount': '@count minute@suffix',
+
+  // Notification Permission (Step 9)
+  'notifPerm_intro':
+      'One more thing, @name... to help you stay focused...',
+  'notifPerm_explanation':
+      'I need to send you reminders when it\'s time to re-lock your apps and pray.\n\nThese gentle nudges will keep you on track.',
+  'notifPerm_enableTitle': 'Enable Prayer Reminders',
+  'notifPerm_benefit1': 'Timely reminders to re-lock your apps',
+  'notifPerm_benefit2': 'Prayer time notifications',
+  'notifPerm_benefit3': 'Stay accountable to your spiritual goals',
+  'notifPerm_noSpam': 'We\'ll only send helpful reminders, not spam',
+  'notifPerm_requesting': 'Requesting...',
+  'notifPerm_enableBtn': 'Enable Notifications',
+  'notifPerm_skipTitle': 'Skip Reminders?',
+  'notifPerm_skipMessage':
+      'Without notifications, you won\'t receive reminders to re-lock your apps and pray.\n\nYou can enable this later in Settings.',
+  'notifPerm_skipForNow': 'Skip for Now',
+  'notifPerm_enableReminders': 'Enable Reminders',
+
+  // Scripture Onboarding Navigation
+  'onboarding_prev': 'Prev',
+  'onboarding_next': 'Next',
+  'onboarding_finish': 'Finish',
+
+  // Error Handler
+  'error_connectionTitle': 'Connection Error',
+  'error_connectionMessage': 'Please check your internet connection',
+
+  // Startup Check Service
+  'startup_enableScreenTime': 'Enable Screen Time',
+  'startup_screenTimeMessage':
+      'FaithLock needs Screen Time permissions to protect your apps.\n\n'
+      'This allows the app to:\n'
+      '\u2022 Block distracting apps\n'
+      '\u2022 Unlock apps temporarily after prayer\n'
+      '\u2022 Help you stay focused on God\n\n'
+      'Tap "Enable" to Continue.',
+  'startup_enable': 'Enable',
+  'startup_selectAppsTitle': 'Select Apps to Block',
+  'startup_selectAppsMessage':
+      'Choose which apps to protect with FaithLock.\n\n'
+      'You can select social media, games, or any distracting apps.\n\n'
+      'These apps will be blocked until you complete your daily prayer.',
+
+  // Rate App Service
+  'rate_readyToHelp': 'Ready to help others?',
+  'rate_excitedMessage':
+      'If you\'re excited about your spiritual journey with FaithLock, help others discover it too!',
+  'rate_amazingTitle': 'Amazing!',
+  'rate_firstPrayerMessage':
+      'You just completed your first prayer unlock! If FaithLock is helping you, would you share your story?',
+
+  // Navigation Labels
+  'nav_stats': 'Stats',
+  'nav_library': 'Library',
+  'nav_profile': 'Profile',
+
+  // Progress Screen
+  'progress_title': 'Progress',
+  'progress_yourProgress': 'Your Progress',
+  'progress_dailyGoal': 'Daily Goal',
+  'progress_weeklyGoal': 'Weekly Goal',
+  'progress_monthlyGoal': 'Monthly Goal',
+  'progress_statistics': 'Statistics',
+  'progress_tasksCompleted': 'Tasks Completed',
+  'progress_pendingTasks': 'Pending Tasks',
+  'progress_successRate': 'Success Rate',
+  'progress_avgCompletionTime': 'Avg. Completion Time',
+
+  // Prayer Learning Screen
+  'prayer_readSlowly': 'Read this verse slowly and thoughtfully',
+  'prayer_readTip': 'Read it 3 times. Let each word sink into your heart.',
+  'prayer_takeYourTime': 'Take your time...',
+  'prayer_skipTimer': 'Skip timer',
+  'prayer_whatMeansToYou': 'What does this verse mean to you?',
+  'prayer_reflectDeeply':
+      'Reflect deeply. How can you apply this truth in your life today?',
+  'prayer_writeThoughts': 'Write your thoughts...',
+  'prayer_characters': '@count characters',
+  'prayer_validating': 'Validating...',
+  'prayer_validate': 'Validate',
+  'prayer_completeMissing': 'Complete the missing word',
+  'prayer_yourAnswer': 'Your answer:',
+  'prayer_typeMissing': 'Type the missing word...',
+  'prayer_needHint': 'Need a hint?',
+  'prayer_wellDone': 'Well Done!',
+  'prayer_completedMessage':
+      'You\'ve completed your prayer time.\nGod is proud of you.',
+  'prayer_learningScore': 'Learning Score',
+  'prayer_chooseUnlockDuration':
+      'Choose how long you\'d like\nto unlock your apps',
+  'prayer_chooseUnlockBtn': 'Choose Unlock Duration',
+  'prayer_submit': 'Submit',
+  'prayer_skipAnyway': 'Skip Anyway',
+  'prayer_closePrayerSession': 'Close Prayer Session?',
+  'prayer_progressPercent':
+      'You\'re only @percent% through...\n(Step @current of @total)',
+  'prayer_streakReset': 'Closing now will RESET your streak!',
+  'prayer_continuePraying': 'Continue Praying',
+  'prayer_giveUpStreak': 'Give Up Streak',
+  'prayer_dayCount': '@count Day@suffix',
+
+  // Prayer Learning Controller
+  'prayer_minThought':
+      'Please share a brief thought (at least 3 characters).',
+  'prayer_analyzingReflection': 'Analyzing your reflection...',
+  'prayer_noVerseError': 'Error: No verse selected',
+  'prayer_thankYouReflection': 'Thank you for your reflection!',
+  'prayer_shareBriefThought': 'Please share a brief thought.',
+  'prayer_readAbsorb': 'Read & Absorb',
+  'prayer_meditate': 'Meditate',
+  'prayer_remember': 'Remember',
+  'prayer_complete': 'Complete',
+
+  // Life Visualization
+  'lifeViz_youAreHere': 'You are here (assuming age @age)',
+  'lifeViz_lifeLived': 'Life lived',
+  'lifeViz_lifeRemaining': 'Life remaining',
+  'lifeViz_yearsSpentPhone':
+      '@years years spent looking down at\nyour phone',
+
+  // Paywall Controller
+  'paywall_purchaseFailed': 'Purchase Failed',
+  'paywall_noPurchasesFound': 'No Purchases Found',
+  'paywall_noPurchasesMessage':
+      'No active subscriptions found to restore.',
+  'paywall_restoreFailed': 'Restore Failed',
+  'paywall_restoreFailedMessage':
+      'Could not restore purchases. Please try again.',
+  'paywall_invalidCode': 'Invalid Code',
+  'paywall_enterValidPromo': 'Please enter a valid promo code.',
+  'paywall_promoApplied': 'Promo Code Applied!',
+  'paywall_promoAppliedMessage':
+      'Your discount has been applied successfully.',
+  'paywall_invalidPromo': 'Invalid Promo Code',
+  'paywall_invalidPromoMessage':
+      'The promo code you entered is not valid.',
+  'paywall_selectPlan': 'Please select a subscription plan',
+  'paywall_noOptions': 'No subscription options available',
+  'paywall_failedLoad':
+      'Failed to load subscription options',
+  'paywall_startFreeTrial': 'Start Free Trial',
+
+  // Subscription Expired Screen
+  'expired_trialEnded': 'Your Free Trial Has Ended',
+  'expired_subscriptionExpired': 'Your Subscription Has Expired',
+  'expired_trialMessage':
+      'We hope you enjoyed your trial period and experienced the power of FaithLock.\n\nYour spiritual journey doesn\'t have to end here.',
+  'expired_subscriptionMessage':
+      'Your subscription has expired, but your spiritual growth journey can continue.\n\nRenew now to keep building stronger faith habits.',
+  'expired_continueJourney': 'Continue Your Journey',
+  'expired_benefit1': 'App blocking with Scripture meditation',
+  'expired_benefit2': 'Unlimited custom schedules',
+  'expired_benefit3': 'Prayer reminders & accountability',
+  'expired_benefit4': 'Advanced stats & progress tracking',
+  'expired_usersReport': '92% of users report stronger faith',
+  'expired_renewBtn': 'Renew Subscription',
+  'expired_needHelp': 'Need help? Contact Support',
+  'expired_errorTitle': 'Error',
+  'expired_emailError':
+      'Could not open email client. Please email us at @email',
+
+  // Rating Request Screen
+  'rating_shareExperience': 'Share Your Experience',
+  'rating_helpDiscover': 'Help others discover FaithLock',
+  'rating_supportMission': 'Support our mission to spread faith',
+  'rating_encourageTeam': 'Encourage our small team',
+  'rating_honestReview': 'Your honest review helps us improve',
+  'rating_rateBtn': 'Rate FaithLock',
+  'rating_opening': 'Opening...',
+  'rating_notNow': 'Not now',
+
+  // Meditation Validator Service
+  'meditation_thankYouReflection': 'Thank you for your reflection!',
+  'meditation_shareBriefThought':
+      'Please share a brief thought about the verse.',
 };

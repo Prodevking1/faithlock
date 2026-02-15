@@ -1,6 +1,8 @@
 import 'package:faithlock/features/faithlock/models/badge_model.dart';
+import 'package:faithlock/features/faithlock/models/badge_definitions.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 /// Shows mascot-powered gamification dialogs
 class GamificationDialogService {
@@ -23,21 +25,24 @@ class GamificationDialogService {
               showMessage: false,
             ),
             const SizedBox(height: 8),
-            const Text('Streak Saved!'),
+            Text('gamification_streakSaved'.tr),
           ],
         ),
         content: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Text(
-            'Close one! Your $currentStreak-day streak was protected by a streak freeze.\n\n'
-            '$freezesRemaining freeze${freezesRemaining == 1 ? '' : 's'} remaining this week.',
+            'gamification_streakSavedMsg'.trParams({
+              'count': '$currentStreak',
+              'remaining': '$freezesRemaining',
+              'suffix': freezesRemaining == 1 ? '' : 's',
+            }),
           ),
         ),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Awesome!'),
+            child: Text('gamification_awesome'.tr),
           ),
         ],
       ),
@@ -60,23 +65,24 @@ class GamificationDialogService {
               showMessage: false,
             ),
             const SizedBox(height: 8),
-            const Text('Streak Reset'),
+            Text('gamification_streakReset'.tr),
           ],
         ),
         content: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Text(
             lostStreak > 1
-                ? 'Your $lostStreak-day streak has ended.\n\n'
-                    "Let's start fresh together!"
-                : "Let's build a new streak together!",
+                ? 'gamification_streakLostMsg'.trParams({
+                    'count': '$lostStreak',
+                  })
+                : 'gamification_streakLostNewMsg'.tr,
           ),
         ),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Let's Go!"),
+            child: Text('gamification_letsGo'.tr),
           ),
         ],
       ),
@@ -104,20 +110,22 @@ class GamificationDialogService {
               showMessage: false,
             ),
             const SizedBox(height: 8),
-            Text('${badge.emoji} ${badge.name}'),
+            Text('${badge.emoji} ${badge.translatedName}'),
           ],
         ),
         content: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Text(
-            'Achievement unlocked!\n${badge.description}',
+            'gamification_achievementUnlocked'.trParams({
+              'description': badge.translatedDescription,
+            }),
           ),
         ),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Awesome!'),
+            child: Text('gamification_awesome'.tr),
           ),
         ],
       ),

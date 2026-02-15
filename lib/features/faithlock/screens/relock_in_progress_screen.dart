@@ -7,48 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Encouraging Bible verses for re-lock success
-const List<Map<String, String>> encouragingVerses = [
-  {
-    'text': 'I can do all things through Christ who strengthens me',
-    'reference': 'Philippians 4:13',
-  },
-  {
-    'text': 'The Lord is my strength and my shield',
-    'reference': 'Psalm 28:7',
-  },
-  {
-    'text': 'Be strong and courageous. Do not be afraid',
-    'reference': 'Joshua 1:9',
-  },
-  {
-    'text': 'God is our refuge and strength, an ever-present help in trouble',
-    'reference': 'Psalm 46:1',
-  },
-  {
-    'text': 'Resist the devil, and he will flee from you',
-    'reference': 'James 4:7',
-  },
-  {
-    'text': 'No temptation has overtaken you except what is common to mankind',
-    'reference': '1 Corinthians 10:13',
-  },
-  {
-    'text': 'The Lord will fight for you; you need only to be still',
-    'reference': 'Exodus 14:14',
-  },
-  {
-    'text': 'Greater is He who is in you than he who is in the world',
-    'reference': '1 John 4:4',
-  },
-  {
-    'text': 'In all these things we are more than conquerors through Him',
-    'reference': 'Romans 8:37',
-  },
-  {
-    'text': 'You will keep in perfect peace those whose minds are steadfast',
-    'reference': 'Isaiah 26:3',
-  },
+/// Encouraging Bible verses for re-lock success (translated via GetX)
+List<Map<String, String>> get encouragingVerses => [
+  {'text': 'relock_verse1_text'.tr, 'reference': 'relock_verse1_ref'.tr},
+  {'text': 'relock_verse2_text'.tr, 'reference': 'relock_verse2_ref'.tr},
+  {'text': 'relock_verse3_text'.tr, 'reference': 'relock_verse3_ref'.tr},
+  {'text': 'relock_verse4_text'.tr, 'reference': 'relock_verse4_ref'.tr},
+  {'text': 'relock_verse5_text'.tr, 'reference': 'relock_verse5_ref'.tr},
+  {'text': 'relock_verse6_text'.tr, 'reference': 'relock_verse6_ref'.tr},
+  {'text': 'relock_verse7_text'.tr, 'reference': 'relock_verse7_ref'.tr},
+  {'text': 'relock_verse8_text'.tr, 'reference': 'relock_verse8_ref'.tr},
+  {'text': 'relock_verse9_text'.tr, 'reference': 'relock_verse9_ref'.tr},
+  {'text': 'relock_verse10_text'.tr, 'reference': 'relock_verse10_ref'.tr},
 ];
 
 /// Screen displayed when re-locking apps after unlock timer expires
@@ -70,7 +40,7 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
 
   bool _isRelocking = true;
   bool _relockSuccess = false;
-  String _statusMessage = 'Re-locking in progress...';
+  String _statusMessage = '';
 
   // Random encouraging verse
   late Map<String, String> _selectedVerse;
@@ -78,6 +48,9 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
   @override
   void initState() {
     super.initState();
+
+    // Initialize status message with translation
+    _statusMessage = 'relock_inProgress'.tr;
 
     // Select a random verse
     final random = Random();
@@ -126,7 +99,7 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
       setState(() {
         _isRelocking = false;
         _relockSuccess = true;
-        _statusMessage = 'Apps successfully re-locked!';
+        _statusMessage = 'relock_success'.tr;
       });
 
       // Wait for user to read the verse before navigating back
@@ -142,7 +115,7 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
       setState(() {
         _isRelocking = false;
         _relockSuccess = false;
-        _statusMessage = 'Error during re-lock';
+        _statusMessage = 'relock_error'.tr;
       });
     }
   }
@@ -208,7 +181,7 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
                   FadeTransition(
                     opacity: _opacityAnimation,
                     child: Text(
-                      'Your apps are now protected',
+                      'relock_appsProtected'.tr,
                       style: TextStyle(
                         fontSize: 16,
                         color: FastColors.secondaryText(context),
@@ -264,7 +237,7 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
                   FadeTransition(
                     opacity: _opacityAnimation,
                     child: Text(
-                      'An error occurred',
+                      'relock_errorOccurred'.tr,
                       style: TextStyle(
                         fontSize: 16,
                         color: FastColors.secondaryText(context),
@@ -277,11 +250,11 @@ class _RelockInProgressScreenState extends State<RelockInProgressScreen>
                     onPressed: () {
                       setState(() {
                         _isRelocking = true;
-                        _statusMessage = 'Re-locking in progress...';
+                        _statusMessage = 'relock_inProgress'.tr;
                       });
                       _performRelock();
                     },
-                    child: const Text('Retry'),
+                    child: Text('retry'.tr),
                   ),
                 ],
               ],

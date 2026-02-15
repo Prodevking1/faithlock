@@ -199,7 +199,16 @@ const Map<String, String> fr_FR = {
   'nameCapture_yearsOld': 'ans',
 
   // ═══════════════════════════════════════════
-  // ONBOARDING: DIVINE REVELATION (Step 2)
+  // ONBOARDING: ATTRIBUTION (Step 2.5)
+  // ═══════════════════════════════════════════
+  'attribution_header': 'Au fait, comment as-tu connu FaithLock ?',
+  'attribution_google': 'Google',
+  'attribution_friends': 'Amis / Famille',
+  'attribution_appstore': 'Recherche App Store',
+  'attribution_other': 'Autre',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING: DIVINE REVELATION (Step 3)
   // ═══════════════════════════════════════════
   'divineRev_verse':
       'Rachetez le temps, car les jours sont mauvais.',
@@ -440,4 +449,554 @@ const Map<String, String> fr_FR = {
   'winback_title5': 'Ta semaine gratuite t\'attend toujours',
   'winback_body5':
       'On ne te dérangera plus. Si tu n\'en veux pas, ignore simplement ce message. Tes 7 jours d\'accès gratuit n\'expirent pas.',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: SELF CONFRONTATION (Step 2)
+  // ═══════════════════════════════════════════
+  'selfConf_hoursDaily': '@hours heures chaque jour...',
+  'selfConf_hoursWeekly': 'Ça fait @hours heures par semaine.',
+  'selfConf_overOneYear': 'Sur une année : @days jours entiers.',
+  'selfConf_couldHaveSpent':
+      '@days jours que tu aurais pu passer à...',
+  'selfConf_inDeepPrayer': '• En prière profonde',
+  'selfConf_studyingWord': '• Étudier la Parole de Dieu',
+  'selfConf_servingOthers': '• Servir les autres',
+  'selfConf_inPresence': '• En Sa présence',
+  'selfConf_psalm90':
+      'Enseigne-nous à bien compter nos jours,\nafin que nous appliquions notre cœur à la sagesse.\n— Psaume 90:12',
+  'selfConf_justifyDays':
+      'Si tu devais justifier ces @days jours devant Dieu aujourd\'hui...\n\nQue Lui dirais-tu ?',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: ETERNAL WARFARE (Step 3)
+  // ═══════════════════════════════════════════
+  'warfare_scriptureWarning':
+      'Nous rendrons compte de toute parole vaine.\n— Matthieu 12:36',
+  'warfare_reckoningIntro':
+      'Si Christ revenait aujourd\'hui, comment expliquerais-tu :',
+  'warfare_reckoningQ1': '- Ces @days jours sur ton écran ?',
+  'warfare_reckoningQ2': '- Les prières que tu n\'as pas faites ?',
+  'warfare_reckoningQ3': '- Les gens que tu n\'as pas servis ?',
+  'warfare_enemyRevealed':
+      'Il y a un ennemi...\n\nEt il veut te distraire.',
+  'warfare_scrollSteals': 'Chaque scroll te vole :',
+  'warfare_lossIntimacy': '• Ton intimité avec Dieu',
+  'warfare_lossSensitivity': '• Ta sensibilité spirituelle',
+  'warfare_lossPurpose': '• Ton but et ton appel',
+  'warfare_hope': 'Mais il y a de l\'espoir...',
+  'warfare_daysSaved':
+      'En seulement 2 semaines avec cette app,\ntu pourrais récupérer @days jours de ta vie.',
+  'warfare_fightForLife': '@name, vas-tu te battre pour ta vie ?',
+  'warfare_birth': 'Naissance',
+  'warfare_you': 'Toi',
+  'warfare_death': 'Mort',
+  'warfare_eternity': 'Éternité',
+  'warfare_freedomProjection': 'Ta Projection de Liberté',
+  'warfare_in2Weeks': 'En 2 semaines',
+  'warfare_daysSavedLabel': '@days jours gagnés',
+  'warfare_in1Year': 'En 1 an',
+  'warfare_basedOn':
+      'Basé sur une réduction de 80% de l\'usage du téléphone',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: TESTIMONIALS (Step 3.5)
+  // ═══════════════════════════════════════════
+  'testimonials_header':
+      'D\'autres ont ressenti la même douleur que toi.\n\nVoici ce qui s\'est passé...',
+  'testimonials_joinBelievers':
+      'Rejoins les croyants qui ont transformé leur vie',
+  'testimonials_bestApp': 'Meilleure app',
+  'testimonials_faithFocus': 'Foi & Focus',
+  'testimonials_yearsOld': '@age ans',
+  'testimonials_before': 'Avant',
+  'testimonials_after': 'Après',
+  'testimonials_t1_before': '6h/jour à scroller, 0 prière',
+  'testimonials_t1_after':
+      '1h30/jour, habitude de prière quotidienne',
+  'testimonials_t1_result':
+      'Ma relation avec Dieu a été transformée.',
+  'testimonials_t1_duration': '2 semaines',
+  'testimonials_t2_before': 'Accro aux réseaux sociaux',
+  'testimonials_t2_after':
+      'Libre et concentré sur l\'éternel',
+  'testimonials_t2_result':
+      'Je me sens enfin spirituellement vivant.',
+  'testimonials_t2_duration': '3 semaines',
+  'testimonials_t3_before':
+      'Aucun self-control, toujours distrait',
+  'testimonials_t3_after': 'Guerrier de prière discipliné',
+  'testimonials_t3_result':
+      'Les Écritures sont devenues mon bouclier, pas mon téléphone.',
+  'testimonials_t3_duration': '1 mois',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: CALL TO COVENANT (Step 4)
+  // ═══════════════════════════════════════════
+  'covenant_divineStandard':
+      'Dieu ne t\'appelle pas à la modération.\n\nIl t\'appelle à la sainteté.',
+  'covenant_scripture':
+      'Soyez saints, car je suis saint.\n— 1 Pierre 1:16',
+  'covenant_visionIntro': 'Imagine une vie où tu es :',
+  'covenant_freeFromBondage': '• Libre de l\'esclavage numérique',
+  'covenant_sensitiveSpirit':
+      '• Sensible à la voix de l\'Esprit',
+  'covenant_eternalImpact': '• Vivant pour un impact éternel',
+  'covenant_godWants':
+      'Dieu veut faire ça et PLUS dans ta vie.\n\nMais cela nécessite ton "oui" quotidien.',
+  'covenant_commitment':
+      'Devant Dieu, @name, je m\'engage à garder mon cœur.\n\nJ\'utiliserai les Écritures comme bouclier.',
+
+  // ═══════════════════════════════════════════
+  // ONBOARDING V1: FINGERPRINT SCANNER
+  // ═══════════════════════════════════════════
+  'covenant_sacredTitle': 'ALLIANCE SACRÉE',
+  'covenant_pledgeText':
+      'Je, @name, m\'engage solennellement devant Dieu à garder mon cœur et à utiliser Sa Parole comme bouclier contre l\'esclavage numérique.\n\nJe m\'engage à vivre avec intentionnalité, recherchant Sa présence au-dessus de toute distraction terrestre.',
+  'covenant_signature': 'Signature',
+  'covenant_date': 'Date',
+  'covenant_sealed': 'SCELLÉ',
+  'covenant_sealedBeforeGod': 'Alliance scellée devant Dieu',
+  'covenant_readyLockIn': 'Je suis prêt. Verrouille-moi.',
+  'covenant_scanning': 'Scan en cours...',
+  'covenant_holdThumb':
+      'Maintiens ton pouce pour sceller l\'alliance',
+
+  // ═══════════════════════════════════════════
+  // APP CORE: SCREENS & CONTROLLERS (Batch A)
+  // ═══════════════════════════════════════════
+
+  // Lock Challenge Screen
+  'challenge_momentOfTruth': 'MOMENT DE VÉRITÉ',
+  'challenge_questionProgress': 'Question @current sur @total',
+  'challenge_easyWayOut': 'La facilité brise ton alliance avec Dieu',
+  'challenge_surrenderCovenant': 'Abandonner et briser l\'alliance',
+  'challenge_breakCovenant': 'Briser l\'alliance ?',
+  'challenge_breakCovenantMessage':
+      'Cela brisera ta série et enregistrera une défaite spirituelle.\n\nDieu a vu ton choix. Es-tu sûr ?',
+  'challenge_breakCovenantConfirm': 'Briser l\'alliance',
+  'challenge_stayStrong': 'Rester fort',
+  'challenge_victory': 'VICTOIRE !',
+  'challenge_victoryMessage': 'Tu as résisté à la tentation.\nDieu est fier de toi.',
+  'challenge_correctCount': 'Correct : @correct/@total',
+  'challenge_nextQuestion': 'Question suivante',
+  'challenge_complete': 'Terminer',
+  'challenge_tryAgain': 'Réessayer',
+
+  // Relock In Progress Screen
+  'relock_inProgress': 'Reverrouillage en cours...',
+  'relock_success': 'Apps reverrouillées avec succès !',
+  'relock_appsProtected': 'Tes apps sont maintenant protégées',
+  'relock_error': 'Erreur lors du reverrouillage',
+  'relock_errorOccurred': 'Une erreur est survenue',
+  // Encouraging verses (French Bible translations)
+  'relock_verse1_text': 'Je puis tout par celui qui me fortifie',
+  'relock_verse1_ref': 'Philippiens 4:13',
+  'relock_verse2_text': 'L\'Éternel est ma force et mon bouclier',
+  'relock_verse2_ref': 'Psaume 28:7',
+  'relock_verse3_text': 'Fortifie-toi et prends courage. N\'aie pas peur',
+  'relock_verse3_ref': 'Josué 1:9',
+  'relock_verse4_text':
+      'Dieu est notre refuge et notre force, un secours toujours présent dans la détresse',
+  'relock_verse4_ref': 'Psaume 46:1',
+  'relock_verse5_text': 'Résistez au diable, et il fuira loin de vous',
+  'relock_verse5_ref': 'Jacques 4:7',
+  'relock_verse6_text':
+      'Aucune tentation ne vous est survenue qui n\'ait été humaine',
+  'relock_verse6_ref': '1 Corinthiens 10:13',
+  'relock_verse7_text':
+      'L\'Éternel combattra pour vous ; et vous, gardez le silence',
+  'relock_verse7_ref': 'Exode 14:14',
+  'relock_verse8_text':
+      'Celui qui est en vous est plus grand que celui qui est dans le monde',
+  'relock_verse8_ref': '1 Jean 4:4',
+  'relock_verse9_text':
+      'Dans toutes ces choses, nous sommes plus que vainqueurs par celui qui nous a aimés',
+  'relock_verse9_ref': 'Romains 8:37',
+  'relock_verse10_text':
+      'Tu garderas dans une paix parfaite celui dont l\'esprit est ferme',
+  'relock_verse10_ref': 'Ésaïe 26:3',
+
+  // Badge Definitions
+  'badge_streakStarter_name': 'Début de série',
+  'badge_streakStarter_desc': '3 jours de prière consécutifs',
+  'badge_streakWarrior_name': 'Guerrier de série',
+  'badge_streakWarrior_desc': 'Série de prière de 7 jours',
+  'badge_streakDevoted_name': 'Dévoué',
+  'badge_streakDevoted_desc': 'Série de prière de 14 jours',
+  'badge_streakLegendary_name': 'Légendaire',
+  'badge_streakLegendary_desc': 'Série de prière de 30 jours',
+  'badge_verseExplorer_name': 'Explorateur de versets',
+  'badge_verseExplorer_desc': '10 versets lus',
+  'badge_verseScholar_name': 'Érudit biblique',
+  'badge_verseScholar_desc': '50 versets lus',
+  'badge_verseMaster_name': 'Maître des versets',
+  'badge_verseMaster_desc': '100 versets lus',
+  'badge_firstPrayer_name': 'Première prière',
+  'badge_firstPrayer_desc': 'Termine ta première session de prière',
+  'badge_perfectScore_name': 'Score parfait',
+  'badge_perfectScore_desc': 'Obtiens 100% à une session de prière',
+  'badge_nightOwl_name': 'Oiseau de nuit',
+  'badge_nightOwl_desc': 'Prie entre 22h et 5h',
+  'badge_earlyBird_name': 'Lève-tôt',
+  'badge_earlyBird_desc': 'Prie entre 5h et 7h',
+  'badge_frozenSolid_name': 'Gelé net',
+  'badge_frozenSolid_desc': 'Utilise un gel de série pour la première fois',
+
+  // FaithLock Settings Controller
+  'settings_permissionGranted': 'Autorisation accordée',
+  'settings_screenTimeEnabled': 'L\'accès au Temps d\'écran a été activé',
+  'settings_permissionDenied': 'Autorisation refusée',
+  'settings_enableScreenTime':
+      'Active l\'accès au Temps d\'écran dans les Réglages iOS',
+  'settings_error': 'Erreur',
+  'settings_failedScreenTime':
+      'Échec de la demande d\'autorisation Temps d\'écran : @error',
+  'settings_notificationsEnabled': 'Notifications activées',
+  'settings_notificationsEnabledMsg':
+      'Tu recevras des rappels pour reverrouiller tes apps et prier',
+  'settings_notificationsDisabled': 'Notifications désactivées',
+  'settings_notificationsDisabledMsg':
+      'Appuie pour ouvrir les Réglages et activer les notifications',
+  'settings_failedNotifications':
+      'Échec de la demande d\'autorisation de notification',
+  'settings_couldNotOpenSettings':
+      'Impossible d\'ouvrir les Réglages. Active les notifications manuellement.',
+  'settings_couldNotOpenSettingsShort': 'Impossible d\'ouvrir les Réglages',
+  'settings_lockEnabled': 'Système de verrouillage activé',
+  'settings_lockEnabledMsg':
+      'Les programmes s\'activeront automatiquement',
+  'settings_lockDisabled': 'Système de verrouillage désactivé',
+  'settings_lockDisabledMsg':
+      'Tous les programmes sont temporairement désactivés',
+  'settings_failedToggleLock':
+      'Échec du changement du système de verrouillage : @error',
+  'settings_emergencyBypassInfo':
+      'Si tu as besoin de déverrouiller ton appareil pendant un verrouillage actif :\n\n'
+      '1. Réponds correctement au quiz biblique\n'
+      '2. Utilise l\'option « Déverrouillage d\'urgence » (brise ta série)\n'
+      '3. Force la fermeture et redémarre l\'app (en cas d\'urgence uniquement)\n\n'
+      'Rappelle-toi : le but est de bâtir une discipline spirituelle !',
+  'settings_gotIt': 'Compris',
+  'settings_permissionRequired': 'Autorisation requise',
+  'settings_grantScreenTimeFirst':
+      'Accorde d\'abord l\'accès au Temps d\'écran',
+  'settings_appsSelectedLocked': 'Apps sélectionnées et verrouillées',
+  'settings_appsSelectedLockedMsg':
+      'Tes apps seront automatiquement bloquées pendant les horaires programmés',
+  'settings_noAppsSelectedTitle': 'Aucune app sélectionnée',
+  'settings_selectAppsToEnable': 'Sélectionne des apps pour activer le blocage',
+  'settings_failedAppPicker':
+      'Impossible d\'afficher le sélecteur d\'apps : @error',
+  'settings_aboutDescription':
+      'FaithLock t\'aide à bâtir une discipline spirituelle en combinant '
+      'la mémorisation de versets bibliques avec la gestion du temps d\'écran.\n\n'
+      'Déverrouille ton appareil en répondant correctement aux questions sur '
+      'les versets bibliques. Construis des séries, suis tes progrès et grandis '
+      'dans la foi tout en réduisant les distractions numériques.\n\n'
+      'Version 1.0.0',
+  'settings_close': 'Fermer',
+  'settings_comingSoon': 'Bientôt disponible',
+  'settings_privacyComingSoon':
+      'La politique de confidentialité sera bientôt disponible',
+  'settings_couldNotOpenPrivacy':
+      'Impossible d\'ouvrir la politique de confidentialité',
+  'settings_emailSupport': 'Support par e-mail',
+  'settings_contactUs': 'Nous contacter',
+  'settings_contactEmail': 'Contacte-nous à : support@faithlock.app',
+  'settings_email': 'E-mail : support@faithlock.app',
+
+  // Schedule Controller
+  'schedule_completed': 'Programme terminé',
+  'schedule_completedMsg':
+      'Le programme « @name » est terminé. Les apps sont déverrouillées.',
+  'schedule_selectAppsTitle': 'Choisir les apps à bloquer',
+  'schedule_selectAppsMessage':
+      'Pour que FaithLock fonctionne, tu dois sélectionner les apps à bloquer pendant les verrouillages.\n\n'
+      'Appuie sur « Choisir les apps » ci-dessous pour sélectionner les apps à bloquer.',
+  'schedule_selectApps': 'Choisir les apps',
+  'schedule_authDenied': 'Autorisation refusée',
+  'schedule_authDeniedMsg':
+      'Accorde l\'accès au Temps d\'écran dans les Réglages pour utiliser le blocage d\'apps',
+  'schedule_authRequired': 'Autorisation requise',
+  'schedule_authRequiredMsg':
+      'Autorise d\'abord l\'accès au Temps d\'écran',
+  'schedule_appsSelectedLocked': 'Apps sélectionnées et verrouillées',
+  'schedule_appsSelectedLockedMsg':
+      'Tes apps seront automatiquement bloquées pendant les horaires programmés',
+  'schedule_appsSelected': 'Apps sélectionnées',
+  'schedule_appsSelectedMsg':
+      'Apps sélectionnées. Active au moins un programme pour activer le blocage.',
+  'schedule_noAppsSelected': 'Aucune app sélectionnée',
+  'schedule_selectAppsToEnable':
+      'Sélectionne des apps pour activer le blocage',
+  'schedule_failedAppPicker':
+      'Impossible d\'afficher le sélecteur d\'apps : @error',
+  'schedule_noAppsSelectedDialog': 'Aucune app sélectionnée',
+  'schedule_noAppsSelectedDialogMsg':
+      'Tu dois d\'abord sélectionner des apps à bloquer. Va dans l\'onglet Profil pour sélectionner les apps.',
+  'schedule_goToProfile': 'Aller au profil',
+  'schedule_blockAppsNow': 'Bloquer les apps maintenant ?',
+  'schedule_blockAppsNowMsg':
+      '« @name » est actuellement actif. Tes apps seront bloquées immédiatement.',
+  'schedule_blockNow': 'Bloquer maintenant',
+  'schedule_updated': 'Programme mis à jour avec succès',
+  'schedule_failedUpdate': 'Échec de la mise à jour du programme : @error',
+  'schedule_timeUpdated': 'Horaire du programme mis à jour',
+  'schedule_testCreated': 'Programme test créé',
+  'schedule_testCreatedMsg':
+      'Apps NON bloquées maintenant. Blocage dans 5 min au démarrage du programme. Vérifie les logs Xcode.',
+  'schedule_testFailed': 'Échec du test',
+  'schedule_testFailedMsg': 'Erreur : @error',
+  'schedule_everyDay': 'Tous les jours',
+
+  // Unlock Timer Service
+  'timer_timesUp': 'Temps écoulé',
+  'timer_openToRelock': 'Ouvre FaithLock pour reverrouiller tes apps',
+  'timer_reminderTitle': 'Rappel',
+  'timer_dontForget':
+      'N\'oublie pas de reverrouiller tes apps dans FaithLock',
+
+  // Gamification Dialog Service
+  'gamification_streakSaved': 'Série sauvée !',
+  'gamification_streakSavedMsg':
+      'C\'était juste ! Ta série de @count jours a été protégée par un gel de série.\n\n@remaining gel@suffix restant(s) cette semaine.',
+  'gamification_awesome': 'Super !',
+  'gamification_streakReset': 'Série réinitialisée',
+  'gamification_streakLostMsg':
+      'Ta série de @count jours est terminée.\n\nRecommençons ensemble !',
+  'gamification_streakLostNewMsg': 'Construisons une nouvelle série ensemble !',
+  'gamification_letsGo': 'C\'est parti !',
+  'gamification_achievementUnlocked': 'Réussite débloquée !\n@description',
+
+  // Schedule Screen
+  'schedule_noSchedules': 'Aucun programme trouvé',
+  'schedule_completeOnboarding':
+      'Termine l\'introduction pour configurer tes programmes de verrouillage',
+  'schedule_start': 'DÉBUT',
+  'schedule_end': 'FIN',
+  'schedule_activeBlocked': 'Actif - Apps bloquées',
+  'schedule_activePeriod':
+      'Période active - Sélectionne des apps pour commencer le blocage',
+
+  // Schedule Management Screen
+  'schedule_lockSchedules': 'Programmes de verrouillage',
+  'schedule_noSchedulesFound': 'Aucun programme trouvé',
+  'schedule_manageDescription':
+      'Gère tes programmes de verrouillage ci-dessous. Les modifications sont appliquées immédiatement.',
+  'schedule_schedulesUpdated': 'Programmes mis à jour',
+  'schedule_schedulesUpdatedMsg':
+      'Tes programmes de verrouillage ont été mis à jour avec succès',
+  'schedule_failedUpdateSchedules':
+      'Échec de la mise à jour des programmes : @error',
+  'schedule_startLabel': 'Début',
+  'schedule_endLabel': 'Fin',
+
+  // Permissions Onboarding Screen
+  'permissions_enableScreenTime': 'Activer le Temps d\'écran',
+  'permissions_description':
+      'FaithLock a besoin de l\'accès au Temps d\'écran pour t\'aider à rester concentré sur ta croissance spirituelle en gérant l\'utilisation des apps pendant les horaires programmés.',
+  'permissions_successMsg':
+      'Accès au Temps d\'écran activé avec succès !',
+  'permissions_deniedMsg':
+      'Autorisation refusée. Active-la dans les Réglages.',
+  'permissions_failedMsg': 'Échec de la demande d\'autorisation',
+
+  // ═══════════════════════════════════════════
+  // APP CORE: UI & REMAINING SCREENS (Batch B)
+  // ═══════════════════════════════════════════
+
+  // Unlock Duration Dialog
+  'unlock_unlockApps': 'Déverrouiller les apps',
+  'unlock_forHowLong': 'Pour combien de temps ?',
+  'unlock_1min': '1 minute',
+  'unlock_quickTask': 'Tâche rapide',
+  'unlock_5min': '5 minutes',
+  'unlock_shortBreak': 'Courte pause',
+  'unlock_10min': '10 minutes',
+  'unlock_focusedWork': 'Travail concentré',
+  'unlock_30min': '30 minutes',
+  'unlock_focusSession': 'Session de concentration',
+  'unlock_restOfDay': 'Pour le reste de la journée',
+  'unlock_untilMidnight': 'Jusqu\'à minuit',
+  'unlock_customDuration': 'Durée personnalisée',
+  'unlock_chooseSpecific': 'Choisir une durée précise',
+  'unlock_customTitle': 'Durée personnalisée',
+  'unlock_minuteCount': '@count minute@suffix',
+
+  // Notification Permission (Step 9)
+  'notifPerm_intro':
+      'Encore une chose, @name... pour t\'aider à rester concentré...',
+  'notifPerm_explanation':
+      'J\'ai besoin de t\'envoyer des rappels quand il est temps de reverrouiller tes apps et de prier.\n\nCes petits rappels t\'aideront à rester sur la bonne voie.',
+  'notifPerm_enableTitle': 'Activer les rappels de prière',
+  'notifPerm_benefit1': 'Rappels pour reverrouiller tes apps',
+  'notifPerm_benefit2': 'Notifications de temps de prière',
+  'notifPerm_benefit3': 'Reste fidèle à tes objectifs spirituels',
+  'notifPerm_noSpam': 'On n\'enverra que des rappels utiles, pas de spam',
+  'notifPerm_requesting': 'Demande en cours...',
+  'notifPerm_enableBtn': 'Activer les notifications',
+  'notifPerm_skipTitle': 'Passer les rappels ?',
+  'notifPerm_skipMessage':
+      'Sans les notifications, tu ne recevras pas de rappels pour reverrouiller tes apps et prier.\n\nTu pourras les activer plus tard dans les Réglages.',
+  'notifPerm_skipForNow': 'Passer pour l\'instant',
+  'notifPerm_enableReminders': 'Activer les rappels',
+
+  // Scripture Onboarding Navigation
+  'onboarding_prev': 'Préc',
+  'onboarding_next': 'Suivant',
+  'onboarding_finish': 'Terminer',
+
+  // Error Handler
+  'error_connectionTitle': 'Erreur de connexion',
+  'error_connectionMessage': 'Vérifie ta connexion internet',
+
+  // Startup Check Service
+  'startup_enableScreenTime': 'Activer le Temps d\'écran',
+  'startup_screenTimeMessage':
+      'FaithLock a besoin des autorisations Temps d\'écran pour protéger tes apps.\n\n'
+      'Cela permet à l\'app de :\n'
+      '\u2022 Bloquer les apps distrayantes\n'
+      '\u2022 Déverrouiller les apps temporairement après la prière\n'
+      '\u2022 T\'aider à rester concentré sur Dieu\n\n'
+      'Appuie sur « Activer » pour continuer.',
+  'startup_enable': 'Activer',
+  'startup_selectAppsTitle': 'Choisir les apps à bloquer',
+  'startup_selectAppsMessage':
+      'Choisis quelles apps protéger avec FaithLock.\n\n'
+      'Tu peux sélectionner les réseaux sociaux, jeux ou toute app distrayante.\n\n'
+      'Ces apps seront bloquées jusqu\'à ce que tu termines ta prière quotidienne.',
+
+  // Rate App Service
+  'rate_readyToHelp': 'Prêt à aider les autres ?',
+  'rate_excitedMessage':
+      'Si ton parcours spirituel avec FaithLock t\'enthousiasme, aide les autres à le découvrir aussi !',
+  'rate_amazingTitle': 'Incroyable !',
+  'rate_firstPrayerMessage':
+      'Tu viens de terminer ton premier déverrouillage par la prière ! Si FaithLock t\'aide, partagerais-tu ton expérience ?',
+
+  // Navigation Labels
+  'nav_stats': 'Stats',
+  'nav_library': 'Bibliothèque',
+  'nav_profile': 'Profil',
+
+  // Progress Screen
+  'progress_title': 'Progrès',
+  'progress_yourProgress': 'Tes progrès',
+  'progress_dailyGoal': 'Objectif quotidien',
+  'progress_weeklyGoal': 'Objectif hebdomadaire',
+  'progress_monthlyGoal': 'Objectif mensuel',
+  'progress_statistics': 'Statistiques',
+  'progress_tasksCompleted': 'Tâches complétées',
+  'progress_pendingTasks': 'Tâches en attente',
+  'progress_successRate': 'Taux de réussite',
+  'progress_avgCompletionTime': 'Temps moyen',
+
+  // Prayer Learning Screen
+  'prayer_readSlowly': 'Lis ce verset lentement et attentivement',
+  'prayer_readTip':
+      'Lis-le 3 fois. Laisse chaque mot s\'imprégner dans ton cœur.',
+  'prayer_takeYourTime': 'Prends ton temps...',
+  'prayer_skipTimer': 'Passer le minuteur',
+  'prayer_whatMeansToYou': 'Que signifie ce verset pour toi ?',
+  'prayer_reflectDeeply':
+      'Réfléchis en profondeur. Comment appliquer cette vérité dans ta vie aujourd\'hui ?',
+  'prayer_writeThoughts': 'Écris tes pensées...',
+  'prayer_characters': '@count caractères',
+  'prayer_validating': 'Validation...',
+  'prayer_validate': 'Valider',
+  'prayer_completeMissing': 'Complète le mot manquant',
+  'prayer_yourAnswer': 'Ta réponse :',
+  'prayer_typeMissing': 'Tape le mot manquant...',
+  'prayer_needHint': 'Besoin d\'un indice ?',
+  'prayer_wellDone': 'Bravo !',
+  'prayer_completedMessage':
+      'Tu as terminé ton temps de prière.\nDieu est fier de toi.',
+  'prayer_learningScore': 'Score d\'apprentissage',
+  'prayer_chooseUnlockDuration':
+      'Choisis combien de temps\ndéverrouiller tes apps',
+  'prayer_chooseUnlockBtn': 'Choisir la durée',
+  'prayer_submit': 'Valider',
+  'prayer_skipAnyway': 'Passer quand même',
+  'prayer_closePrayerSession': 'Quitter la session de prière ?',
+  'prayer_progressPercent':
+      'Tu n\'en es qu\'à @percent%...\n(Étape @current sur @total)',
+  'prayer_streakReset': 'Quitter maintenant RÉINITIALISERA ta série !',
+  'prayer_continuePraying': 'Continuer la prière',
+  'prayer_giveUpStreak': 'Abandonner la série',
+  'prayer_dayCount': '@count jour@suffix',
+
+  // Prayer Learning Controller
+  'prayer_minThought':
+      'Partage une brève pensée (au moins 3 caractères).',
+  'prayer_analyzingReflection': 'Analyse de ta réflexion...',
+  'prayer_noVerseError': 'Erreur : aucun verset sélectionné',
+  'prayer_thankYouReflection': 'Merci pour ta réflexion !',
+  'prayer_shareBriefThought': 'Partage une brève pensée.',
+  'prayer_readAbsorb': 'Lire et absorber',
+  'prayer_meditate': 'Méditer',
+  'prayer_remember': 'Mémoriser',
+  'prayer_complete': 'Terminé',
+
+  // Life Visualization
+  'lifeViz_youAreHere': 'Tu es ici (en supposant l\'âge de @age ans)',
+  'lifeViz_lifeLived': 'Vie vécue',
+  'lifeViz_lifeRemaining': 'Vie restante',
+  'lifeViz_yearsSpentPhone':
+      '@years ans passés à regarder\nton téléphone',
+
+  // Paywall Controller
+  'paywall_purchaseFailed': 'Échec de l\'achat',
+  'paywall_noPurchasesFound': 'Aucun achat trouvé',
+  'paywall_noPurchasesMessage':
+      'Aucun abonnement actif trouvé à restaurer.',
+  'paywall_restoreFailed': 'Échec de la restauration',
+  'paywall_restoreFailedMessage':
+      'Impossible de restaurer les achats. Réessaie.',
+  'paywall_invalidCode': 'Code invalide',
+  'paywall_enterValidPromo': 'Entre un code promo valide.',
+  'paywall_promoApplied': 'Code promo appliqué !',
+  'paywall_promoAppliedMessage':
+      'Ta réduction a été appliquée avec succès.',
+  'paywall_invalidPromo': 'Code promo invalide',
+  'paywall_invalidPromoMessage':
+      'Le code promo que tu as entré n\'est pas valide.',
+  'paywall_selectPlan': 'Sélectionne un plan d\'abonnement',
+  'paywall_noOptions': 'Aucune option d\'abonnement disponible',
+  'paywall_failedLoad':
+      'Échec du chargement des options d\'abonnement',
+  'paywall_startFreeTrial': 'Commencer l\'essai gratuit',
+
+  // Subscription Expired Screen
+  'expired_trialEnded': 'Ton essai gratuit est terminé',
+  'expired_subscriptionExpired': 'Ton abonnement a expiré',
+  'expired_trialMessage':
+      'Nous espérons que tu as apprécié ta période d\'essai et découvert la puissance de FaithLock.\n\nTon parcours spirituel ne doit pas s\'arrêter ici.',
+  'expired_subscriptionMessage':
+      'Ton abonnement a expiré, mais ton parcours de croissance spirituelle peut continuer.\n\nRenouvelle maintenant pour continuer à construire des habitudes de foi solides.',
+  'expired_continueJourney': 'Continue ton parcours',
+  'expired_benefit1': 'Blocage d\'apps avec méditation biblique',
+  'expired_benefit2': 'Programmes personnalisés illimités',
+  'expired_benefit3': 'Rappels de prière et responsabilité',
+  'expired_benefit4': 'Stats avancées et suivi des progrès',
+  'expired_usersReport': '92% des utilisateurs rapportent une foi plus forte',
+  'expired_renewBtn': 'Renouveler l\'abonnement',
+  'expired_needHelp': 'Besoin d\'aide ? Contacter le support',
+  'expired_errorTitle': 'Erreur',
+  'expired_emailError':
+      'Impossible d\'ouvrir le client e-mail. Écris-nous à @email',
+
+  // Rating Request Screen
+  'rating_shareExperience': 'Partage ton expérience',
+  'rating_helpDiscover': 'Aide les autres à découvrir FaithLock',
+  'rating_supportMission': 'Soutiens notre mission de foi',
+  'rating_encourageTeam': 'Encourage notre petite équipe',
+  'rating_honestReview': 'Ton avis honnête nous aide à nous améliorer',
+  'rating_rateBtn': 'Noter FaithLock',
+  'rating_opening': 'Ouverture...',
+  'rating_notNow': 'Pas maintenant',
+
+  // Meditation Validator Service
+  'meditation_thankYouReflection': 'Merci pour ta réflexion !',
+  'meditation_shareBriefThought':
+      'Partage une brève pensée sur le verset.',
 };

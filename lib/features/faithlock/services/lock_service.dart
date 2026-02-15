@@ -2,7 +2,6 @@ import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
-import 'package:flutter/material.dart';
 
 class LockService {
   final FaithLockDatabaseService _db = FaithLockDatabaseService();

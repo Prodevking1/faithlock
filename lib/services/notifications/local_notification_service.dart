@@ -3,7 +3,6 @@ import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/app_group_storage.dart';
 import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/export.dart';
-import 'package:faithlock/navigation/controllers/navigation_controller.dart';
 import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:flutter/material.dart';

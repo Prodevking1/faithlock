@@ -73,7 +73,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // Type first line (iOS-optimized timing)
     await AnimationUtils.typeText(
-      fullText: 'Your phone has become a modern-day idol.',
+      fullText: 'selfConf_idol'.tr,
       onUpdate: (text) => setState(() => _introText1 = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntro1Cursor = visible),
@@ -83,7 +83,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // Type second line
     await AnimationUtils.typeText(
-      fullText: '$userName, let\'s be honest before God...',
+      fullText: 'selfConf_honest'.trParams({'name': userName}),
       onUpdate: (text) => setState(() => _introText2 = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntro2Cursor = visible),
@@ -128,7 +128,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // Type question
     await AnimationUtils.typeText(
-      fullText: 'Now, let\'s be honest about your spiritual life...',
+      fullText: 'selfConf_prayerIntro'.tr,
       onUpdate: (text) => setState(() => _introText1 = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntro1Cursor = visible),
@@ -175,7 +175,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     await AnimationUtils.typeText(
       fullText:
-          'You spend ${phoneHoursPerYear.toInt()} hours/year on your phone...\n\nvs ${prayerHoursPerYear.toInt()} hours/year in prayer.\n\nThat\'s ${ratio}x more time scrolling than talking to God.',
+          'selfConf_comparison'.trParams({'phoneHours': '${phoneHoursPerYear.toInt()}', 'prayerHours': '${prayerHoursPerYear.toInt()}', 'ratio': '${ratio}x'}),
       onUpdate: (text) => setState(() => _comparisonText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showComparisonCursor = visible),
@@ -215,12 +215,12 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
   // Get message based on hours (severity text)
   String _getSeverityMessage() {
-    if (_hoursPerDay == 0) return 'Select your honest answer...';
-    if (_hoursPerDay < 2) return 'Minimal usage - Stay vigilant';
-    if (_hoursPerDay < 4) return 'Caution - Time slipping away';
-    if (_hoursPerDay < 6) return 'Warning - Your soul is at risk';
-    if (_hoursPerDay < 10) return 'CRITICAL - An idol has formed';
-    return 'ENSLAVED - Complete bondage to the screen';
+    if (_hoursPerDay == 0) return 'selfConf_selectHonest'.tr;
+    if (_hoursPerDay < 2) return 'selfConf_severity1'.tr;
+    if (_hoursPerDay < 4) return 'selfConf_severity2'.tr;
+    if (_hoursPerDay < 6) return 'selfConf_severity3'.tr;
+    if (_hoursPerDay < 10) return 'selfConf_severity4'.tr;
+    return 'selfConf_severity5'.tr;
   }
 
   // Get iOS-style color based on prayer frequency
@@ -234,12 +234,12 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
   // Get message based on prayer frequency
   String _getPrayerMessage() {
-    if (_prayerTimesPerWeek == 0) return 'Be honest before God...';
-    if (_prayerTimesPerWeek < 4) return 'Your prayer life needs revival';
-    if (_prayerTimesPerWeek < 7) return 'Almost daily - building a foundation';
-    if (_prayerTimesPerWeek < 14) return '1-2x daily - growing in intimacy';
-    if (_prayerTimesPerWeek < 21) return '2-3x daily - strong prayer warrior';
-    return '3x daily - Paul-level devotion';
+    if (_prayerTimesPerWeek == 0) return 'selfConf_prayerHonest'.tr;
+    if (_prayerTimesPerWeek < 4) return 'selfConf_prayer1'.tr;
+    if (_prayerTimesPerWeek < 7) return 'selfConf_prayer2'.tr;
+    if (_prayerTimesPerWeek < 14) return 'selfConf_prayer3'.tr;
+    if (_prayerTimesPerWeek < 21) return 'selfConf_prayer4'.tr;
+    return 'selfConf_prayer5'.tr;
   }
 
   Future<void> _phase23ProgressiveRevelation() async {
@@ -258,7 +258,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // 2.3.1 - Daily acknowledgment (iOS-optimized timing)
     await AnimationUtils.typeText(
-      fullText: '${formatHoursValue(hoursPerDay)} hours every single day...',
+      fullText: 'selfConf_hoursDaily'.trParams({'hours': formatHoursValue(hoursPerDay)}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -269,7 +269,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
     // 2.3.2 - Weekly multiplication
     setState(() => _revelationText = '');
     await AnimationUtils.typeText(
-      fullText: 'That\'s ${formatHoursValue(hoursPerWeekValue)} hours per week.',
+      fullText: 'selfConf_hoursWeekly'.trParams({'hours': formatHoursValue(hoursPerWeekValue)}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -280,7 +280,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
     // 2.3.3 - Annual conversion (THE PUNCH)
     setState(() => _revelationText = '');
     await AnimationUtils.typeText(
-      fullText: 'Over one year: $fullDays full days.',
+      fullText: 'selfConf_overOneYear'.trParams({'days': '$fullDays'}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -294,7 +294,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
     // 2.3.5 - Spiritual Amplification
     setState(() => _revelationText = '');
     await AnimationUtils.typeText(
-      fullText: '$fullDays days you could have spent...',
+      fullText: 'selfConf_couldHaveSpent'.trParams({'days': '$fullDays'}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -305,10 +305,10 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // Add list items one by one
     final items = [
-      '• In deep prayer',
-      '• Studying God\'s Word',
-      '• Serving others',
-      '• In His presence',
+      'selfConf_inDeepPrayer'.tr,
+      'selfConf_studyingWord'.tr,
+      'selfConf_servingOthers'.tr,
+      'selfConf_inPresence'.tr,
     ];
 
     for (final item in items) {
@@ -328,7 +328,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     await AnimationUtils.typeText(
       fullText:
-          'Teach us to number our days,\nthat we may gain a heart of wisdom.\n— Psalm 90:12',
+          'selfConf_psalm90'.tr,
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -340,7 +340,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
     setState(() => _revelationText = '');
     await AnimationUtils.typeText(
       fullText:
-          'If you had to justify these $fullDays days before God today...\n\nWhat would you tell Him?',
+          'selfConf_justifyDays'.trParams({'days': '$fullDays'}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -353,7 +353,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
     await AnimationUtils.pause(durationMs: AnimationUtils.pauseMedium);
 
     await AnimationUtils.typeText(
-      fullText: 'This is your life, ${controller.userName.value}.',
+      fullText: 'selfConf_thisIsYourLife'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -372,7 +372,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
 
     // 2.3.9 - Reveal wasted years
     await AnimationUtils.typeText(
-      fullText: 'The red dots?\n\nThose are the years you\'ll lose...',
+      fullText: 'selfConf_redDots'.tr,
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -447,7 +447,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                     // Phase 2.2 - Input Collection
                     if (_showInput) ...[
                       Text(
-                        'How many hours do you spend on your phone each day?',
+                        'selfConf_phoneQuestion'.tr,
                         style: OnboardingTheme.title3,
                         textAlign: TextAlign.center,
                       ),
@@ -464,7 +464,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                       const SizedBox(height: OnboardingTheme.space4),
                       Center(
                         child: Text(
-                          'hours/day',
+                          'selfConf_hoursPerDay'.tr,
                           style: OnboardingTheme.displayUnit,
                         ),
                       ),
@@ -496,7 +496,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                       // Continue button
                       Center(
                         child: FastButton(
-                          text: 'Continue',
+                          text: 'continue_btn'.tr,
                           onTap: _hoursPerDay > 0 ? _proceedToPrayerInput : null,
                           backgroundColor: OnboardingTheme.goldColor,
                           textColor: OnboardingTheme.backgroundColor,
@@ -508,7 +508,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                     // Phase 2.2B - Prayer Frequency Input
                     if (_showPrayerInput) ...[
                       Text(
-                        'How many times do you pray each week?',
+                        'selfConf_prayerQuestion'.tr,
                         style: OnboardingTheme.title3,
                         textAlign: TextAlign.center,
                       ),
@@ -525,7 +525,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                       const SizedBox(height: OnboardingTheme.space4),
                       Center(
                         child: Text(
-                          'times/week',
+                          'selfConf_timesPerWeek'.tr,
                           style: OnboardingTheme.displayUnit,
                         ),
                       ),
@@ -557,7 +557,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                       // Continue button
                       Center(
                         child: FastButton(
-                          text: 'Continue',
+                          text: 'continue_btn'.tr,
                           onTap: _prayerTimesPerWeek > 0 ? _proceedToComparison : null,
                           backgroundColor: OnboardingTheme.goldColor,
                           textColor: OnboardingTheme.backgroundColor,
@@ -589,7 +589,7 @@ class _Step2SelfConfrontationState extends State<Step2SelfConfrontation> {
                     if (_revelationText.isNotEmpty) ...[
                       RichText(
                         text: TextSpan(
-                          style: _revelationText.contains('Psalm')
+                          style: _revelationText.contains('90:12')
                               ? OnboardingTheme.body
                                   .copyWith(color: OnboardingTheme.goldColor)
                               : OnboardingTheme.title3,

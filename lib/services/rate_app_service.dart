@@ -41,9 +41,8 @@ class RateAppService {
 
     await Get.to(
       () => RatingRequestScreen(
-        title: 'Ready to help others? 💛',
-        message:
-            'If you\'re excited about your spiritual journey with FaithLock, help others discover it too!',
+        title: '${'rate_readyToHelp'.tr} 💛',
+        message: 'rate_excitedMessage'.tr,
         useOnboardingWrapper: useOnboardingWrapper,
         onRate: () async {
           if (_analytics.isReady) {
@@ -86,9 +85,8 @@ class RateAppService {
 
     await Get.to(
       () => RatingRequestScreen(
-        title: 'Amazing! 🙏✨',
-        message:
-            'You just completed your first prayer unlock! If FaithLock is helping you, would you share your story?',
+        title: '${'rate_amazingTitle'.tr} 🙏✨',
+        message: 'rate_firstPrayerMessage'.tr,
         onRate: () async {
           if (_analytics.isReady) {
             await _analytics.events.track(

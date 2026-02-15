@@ -57,7 +57,6 @@ import 'package:get/get.dart';
 
 import '../../../core/constants/export.dart';
 import '../../../core/utils/validators/form_validator.dart';
-import 'fast_text_input.dart';
 
 class FastEmailInput extends StatelessWidget {
   final String? hintText;

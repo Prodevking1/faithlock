@@ -40,14 +40,14 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
 
   // Phase 4.4 - 30-Day Goals Selection
   bool _showGoalsSelection = false;
-  final List<String> _availableGoals = [
-    'Restore my prayer life',
-    'Break phone addiction',
-    'Heal relationships',
-    'Find my purpose',
-    'Overcome fear/anxiety',
-    'Build discipline',
-    'Grow in holiness',
+  List<String> get _availableGoals => [
+    'goals_restorePrayer'.tr,
+    'goals_breakAddiction'.tr,
+    'goals_healRelationships'.tr,
+    'goals_findPurpose'.tr,
+    'goals_overcomeFear'.tr,
+    'goals_buildDiscipline'.tr,
+    'goals_growHoliness'.tr,
   ];
   final Set<String> _selectedGoals = {};
 
@@ -81,7 +81,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
 
   Future<void> _phase41DivineStandard() async {
     await AnimationUtils.typeText(
-      fullText: 'God is not calling you to moderation.\n\nHe\'s calling you to holiness.',
+      fullText: 'covenant_divineStandard'.tr,
       onUpdate: (text) => setState(() => _standardText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showStandardCursor = visible),
@@ -98,7 +98,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     });
 
     await AnimationUtils.typeText(
-      fullText: 'Be holy, for I am holy.\n— 1 Peter 1:16',
+      fullText: 'covenant_scripture'.tr,
       onUpdate: (text) => setState(() => _scriptureText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showScriptureCursor = visible),
@@ -115,7 +115,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     });
 
     await AnimationUtils.typeText(
-      fullText: 'Imagine a life where you are:',
+      fullText: 'covenant_visionIntro'.tr,
       onUpdate: (text) => setState(() => _visionIntroText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showVisionIntroCursor = visible),
@@ -127,9 +127,9 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     setState(() => _showVisionList = true);
 
     final visions = [
-      '• Free from digital bondage',
-      '• Sensitive to the Spirit\'s voice',
-      '• Living for eternal impact',
+      'covenant_freeFromBondage'.tr,
+      'covenant_sensitiveSpirit'.tr,
+      'covenant_eternalImpact'.tr,
     ];
 
     for (final vision in visions) {
@@ -184,8 +184,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
 
   Future<void> _phase45TheCovenant() async {
     await AnimationUtils.typeText(
-      fullText:
-          'God wants to do this and MORE in your life.\n\nBut it requires your daily "yes".',
+      fullText: 'covenant_godWants'.tr,
       onUpdate: (text) => setState(() => _covenantText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showCovenantCursor = visible),
@@ -197,8 +196,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
     setState(() => _covenantText = '');
 
     await AnimationUtils.typeText(
-      fullText:
-          'Before God, ${controller.userName.value}, I commit to guard my heart.\n\nI will use Scripture as my shield.',
+      fullText: 'covenant_commitment'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _covenantText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showCovenantCursor = visible),
@@ -301,14 +299,14 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
                       if (_showGoalsSelection) ...[
                         const SizedBox(height: 20),
                         Text(
-                          'What do you want God to do in your life in the next 2 weeks?',
+                          'goals_title'.tr,
                           style: OnboardingTheme.callout.copyWith(
                             color: OnboardingTheme.labelPrimary,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Select 1-3 goals:',
+                          'goals_subtitle'.tr,
                           style: OnboardingTheme.subhead.copyWith(
                             color: OnboardingTheme.goldColor,
                           ),
@@ -318,7 +316,7 @@ class _Step4CallToCovenantState extends State<Step4CallToCovenant> {
                         const SizedBox(height: 32),
                         Center(
                           child: FastButton(
-                            text: 'Continue',
+                            text: 'continue_btn'.tr,
                             onTap: _selectedGoals.isNotEmpty ? _proceedToCovenant : null,
                             backgroundColor: OnboardingTheme.goldColor,
                             textColor: OnboardingTheme.backgroundColor,

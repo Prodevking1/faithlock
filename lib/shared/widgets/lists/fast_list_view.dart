@@ -157,7 +157,6 @@ class _FastListViewOptimizedState extends State<FastListView>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late IOSListPerformanceController _performanceController;
   late AnimationController _scrollAnimationController;
-  late Animation<double> _scrollAnimation;
 
   @override
   bool get wantKeepAlive => widget.maintainScrollPosition;
@@ -185,11 +184,6 @@ class _FastListViewOptimizedState extends State<FastListView>
       _scrollAnimationController = AnimationController(
         duration: const Duration(milliseconds: 300),
         vsync: this,
-      );
-
-      _scrollAnimation = CurvedAnimation(
-        parent: _scrollAnimationController,
-        curve: Curves.easeInOutCubic, // iOS-like curve
       );
     }
   }

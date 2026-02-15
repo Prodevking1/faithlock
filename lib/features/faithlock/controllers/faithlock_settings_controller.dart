@@ -117,8 +117,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (granted) {
         FastToast.showSuccess(
           context: context,
-          title: 'Permission Granted',
-          message: 'Screen Time access has been enabled',
+          title: 'settings_permissionGranted'.tr,
+          message: 'settings_screenTimeEnabled'.tr,
         );
         // Refresh this controller
         await checkScreenTimePermission();
@@ -129,16 +129,16 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       } else {
         FastToast.showWarning(
           context: context,
-          title: 'Permission Denied',
-          message: 'Please enable Screen Time access in iOS Settings',
+          title: 'settings_permissionDenied'.tr,
+          message: 'settings_enableScreenTime'.tr,
           duration: const Duration(seconds: 4),
         );
       }
     } catch (e) {
       FastToast.showError(
         context: context,
-        title: 'Error',
-        message: 'Failed to request Screen Time permission: $e',
+        title: 'settings_error'.tr,
+        message: 'settings_failedScreenTime'.trParams({'error': '$e'}),
       );
     }
   }
@@ -211,15 +211,15 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (granted) {
         FastToast.showSuccess(
           context: context,
-          title: 'Notifications Enabled',
-          message: 'You\'ll receive reminders to re-lock apps and pray',
+          title: 'settings_notificationsEnabled'.tr,
+          message: 'settings_notificationsEnabledMsg'.tr,
         );
       } else {
         // Permission denied - offer to open settings
         FastToast.showWarning(
           context: context,
-          title: 'Notifications Disabled',
-          message: 'Tap to open Settings and enable notifications',
+          title: 'settings_notificationsDisabled'.tr,
+          message: 'settings_notificationsDisabledMsg'.tr,
           duration: const Duration(seconds: 4),
         );
 
@@ -231,8 +231,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       debugPrint('❌ Error requesting notification permission: $e');
       FastToast.showError(
         context: context,
-        title: 'Error',
-        message: 'Failed to request notification permission',
+        title: 'settings_error'.tr,
+        message: 'settings_failedNotifications'.tr,
       );
     }
   }
@@ -245,8 +245,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (!opened) {
         FastToast.showError(
           context: context,
-          title: 'Error',
-          message: 'Could not open Settings. Please enable notifications manually.',
+          title: 'settings_error'.tr,
+          message: 'settings_couldNotOpenSettings'.tr,
         );
       } else {
         debugPrint('✅ Opened app settings for notifications');
@@ -255,8 +255,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       debugPrint('❌ Error opening settings: $e');
       FastToast.showError(
         context: context,
-        title: 'Error',
-        message: 'Could not open Settings',
+        title: 'settings_error'.tr,
+        message: 'settings_couldNotOpenSettingsShort'.tr,
       );
     }
   }
@@ -272,16 +272,16 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
 
       FastToast.showSuccess(
         context: context,
-        title: enabled ? 'Lock System Enabled' : 'Lock System Disabled',
+        title: enabled ? 'settings_lockEnabled'.tr : 'settings_lockDisabled'.tr,
         message: enabled
-            ? 'Schedules will now activate automatically'
-            : 'All schedules are temporarily disabled',
+            ? 'settings_lockEnabledMsg'.tr
+            : 'settings_lockDisabledMsg'.tr,
       );
     } catch (e) {
       FastToast.showError(
         context: context,
-        title: 'Error',
-        message: 'Failed to toggle lock system: $e',
+        title: 'settings_error'.tr,
+        message: 'settings_failedToggleLock'.trParams({'error': '$e'}),
       );
     }
   }
@@ -293,16 +293,11 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
 
     FastAlertDialog.show(
       context: context,
-      title: 'Emergency Bypass',
-      message:
-          'If you need to unlock your device during an active lock period:\n\n'
-          '1. Answer the Bible verse quiz correctly\n'
-          '2. Use the "Emergency Bypass" option (breaks your streak)\n'
-          '3. Force close and restart the app (in emergency only)\n\n'
-          'Remember: The goal is to build spiritual discipline!',
+      title: 'emergencyBypass'.tr,
+      message: 'settings_emergencyBypassInfo'.tr,
       actions: [
         FastDialogAction(
-          text: 'Got it',
+          text: 'settings_gotIt'.tr,
           isDefault: true,
           onPressed: () => Navigator.pop(context),
         ),
@@ -318,8 +313,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (!isScreenTimeAuthorized.value) {
         FastToast.showWarning(
           context: context,
-          title: 'Permission Required',
-          message: 'Please grant Screen Time access first',
+          title: 'settings_permissionRequired'.tr,
+          message: 'settings_grantScreenTimeFirst'.tr,
         );
         return;
       }
@@ -342,16 +337,16 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
           if (context.mounted) {
             FastToast.showSuccess(
               context: context,
-              title: 'Apps Selected & Locked',
-              message: 'Your apps will be automatically blocked during scheduled times',
+              title: 'settings_appsSelectedLocked'.tr,
+              message: 'settings_appsSelectedLockedMsg'.tr,
             );
           }
         } else {
           if (context.mounted) {
             FastToast.showInfo(
               context: context,
-              title: 'No Apps Selected',
-              message: 'Select apps to enable blocking',
+              title: 'settings_noAppsSelectedTitle'.tr,
+              message: 'settings_selectAppsToEnable'.tr,
             );
           }
         }
@@ -360,8 +355,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (context.mounted) {
         FastToast.showError(
           context: context,
-          title: 'Error',
-          message: 'Failed to show app picker: $e',
+          title: 'settings_error'.tr,
+          message: 'settings_failedAppPicker'.trParams({'error': '$e'}),
         );
       }
     }
@@ -377,8 +372,8 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (!isScreenTimeAuthorized.value) {
         FastToast.showWarning(
           context: context,
-          title: 'Permission Required',
-          message: 'Please grant Screen Time access first',
+          title: 'settings_permissionRequired'.tr,
+          message: 'settings_grantScreenTimeFirst'.tr,
         );
         return;
       }
@@ -431,18 +426,13 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
   /// Show about info
   void showAboutInfo() {
     Get.defaultDialog(
-      title: 'About FaithLock',
+      title: 'aboutFaithLock'.tr,
       titleStyle: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
-      middleText: 'FaithLock helps you build spiritual discipline by combining '
-          'Bible verse memorization with screen time management.\n\n'
-          'Unlock your device by correctly answering questions about '
-          'Bible verses. Build streaks, track your progress, and grow '
-          'in faith while reducing digital distractions.\n\n'
-          'Version 1.0.0',
-      textConfirm: 'Close',
+      middleText: 'settings_aboutDescription'.tr,
+      textConfirm: 'settings_close'.tr,
       confirmTextColor: Get.theme.colorScheme.primary,
       onConfirm: () => Get.back(),
     );
@@ -457,15 +447,15 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
         await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
         Get.snackbar(
-          'Coming Soon',
-          'Privacy policy will be available soon',
+          'settings_comingSoon'.tr,
+          'settings_privacyComingSoon'.tr,
           snackPosition: SnackPosition.BOTTOM,
         );
       }
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Could not open privacy policy',
+        'settings_error'.tr,
+        'settings_couldNotOpenPrivacy'.tr,
         snackPosition: SnackPosition.BOTTOM,
       );
     }
@@ -481,16 +471,16 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
         await launchUrl(url);
       } else {
         Get.snackbar(
-          'Email Support',
-          'Contact us at: support@faithlock.app',
+          'settings_emailSupport'.tr,
+          'settings_contactEmail'.tr,
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 5),
         );
       }
     } catch (e) {
       Get.snackbar(
-        'Contact Us',
-        'Email: support@faithlock.app',
+        'settings_contactUs'.tr,
+        'settings_email'.tr,
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 5),
       );

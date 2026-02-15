@@ -135,8 +135,9 @@ export const APP_METRICS = {
   downloads: null as number | null, // Don't display until meaningful
 
   // Things we CAN verify from the app itself
-  versesInLibrary: 365, // actual number of verses in the app - UPDATE this
-  bibleTranslation: 'KJV',
+  versesInLibrary: 31102, // Complete Bible - all verses available
+  bibleTranslation: 'BSB',
+  versesLabel: 'Complete Bible library (BSB)', // For display purposes
 } as const
 
 // ─── COPY & FRAMING ────────────────────────────────────────

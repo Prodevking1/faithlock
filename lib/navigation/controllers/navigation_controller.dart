@@ -24,21 +24,21 @@ class NavigationController extends GetxController {
   void _initializeNavigationItems() {
     _navigationItems.value = [
       BottomNavItem(
-        label: 'Stats',
+        label: 'nav_stats'.tr,
         icon: CupertinoIcons.chart_bar,
         activeIcon: CupertinoIcons.chart_bar_fill,
         route: '/stats',
         page: StatsDashboardScreen(),
       ),
       BottomNavItem(
-        label: 'Library',
+        label: 'nav_library'.tr,
         icon: CupertinoIcons.book,
         activeIcon: CupertinoIcons.book_fill,
         route: '/library',
         page: const VerseLibraryScreen(),
       ),
       BottomNavItem(
-        label: 'Profile',
+        label: 'nav_profile'.tr,
         icon: CupertinoIcons.person,
         activeIcon: CupertinoIcons.person_fill,
         route: '/profile',

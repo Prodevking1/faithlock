@@ -26,8 +26,9 @@ export const FAITHLOCK_STATS = {
   // Industry stat, NOT a FaithLock claim
   phoneChecksPerDay: String(INDUSTRY_STATS.phoneChecksPerDay.value),
 
-  // Real app data
-  versesInLibrary: `${APP_METRICS.versesInLibrary}+`,
+  // Real app data - Complete Bible
+  versesInLibrary: 'Complete Bible',
+  versesCount: '31K+', // For numeric displays (BSB translation)
   unlockTime: FEATURES.bibleVerseUnlock.unlockTime,
   platforms: [...PLATFORM.available],
 

@@ -35,30 +35,30 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
   double _opacity = 1.0;
 
   // Testimonials data
-  final List<Map<String, String>> _testimonials = [
+  List<Map<String, String>> get _testimonials => [
     {
       'name': 'David M.',
       'age': '24',
-      'before': '6h/day scrolling, 0 prayer',
-      'after': '1h30/day, daily prayer habit',
-      'result': 'My relationship with God was transformed.',
-      'duration': '2 weeks',
+      'before': 'testimonials_t1_before'.tr,
+      'after': 'testimonials_t1_after'.tr,
+      'result': 'testimonials_t1_result'.tr,
+      'duration': 'testimonials_t1_duration'.tr,
     },
     {
       'name': 'Sarah K.',
       'age': '29',
-      'before': 'Addicted to social media',
-      'after': 'Free and focused on eternal things',
-      'result': 'I finally feel spiritually alive again.',
-      'duration': '3 weeks',
+      'before': 'testimonials_t2_before'.tr,
+      'after': 'testimonials_t2_after'.tr,
+      'result': 'testimonials_t2_result'.tr,
+      'duration': 'testimonials_t2_duration'.tr,
     },
     {
       'name': 'Marcus T.',
       'age': '32',
-      'before': 'No self-control, always distracted',
-      'after': 'Disciplined prayer warrior',
-      'result': 'Scripture became my shield, not my phone.',
-      'duration': '1 month',
+      'before': 'testimonials_t3_before'.tr,
+      'after': 'testimonials_t3_after'.tr,
+      'result': 'testimonials_t3_result'.tr,
+      'duration': 'testimonials_t3_duration'.tr,
     },
   ];
 
@@ -72,8 +72,7 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     await AnimationUtils.typeText(
-      fullText:
-          'Others felt the same pain you just saw.\n\nHere\'s what happened...',
+      fullText: 'testimonials_header'.tr,
       onUpdate: (text) => setState(() => _headerText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showHeaderCursor = visible),
@@ -160,7 +159,7 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
 
                       if (_showBadges) ...[
                         Text(
-                          'Join believers who transformed their lives',
+                          'testimonials_joinBelievers'.tr,
                           textAlign: TextAlign.center,
                           style: OnboardingTheme.callout.copyWith(
                             color: OnboardingTheme.goldColor,
@@ -227,7 +226,7 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
                     opacity: 1.0,
                     duration: const Duration(milliseconds: 600),
                     child: FastButton(
-                      text: 'Continue',
+                      text: 'continue_btn'.tr,
                       onTap: _onContinue,
                       backgroundColor: OnboardingTheme.goldColor,
                       textColor: OnboardingTheme.backgroundColor,
@@ -246,8 +245,8 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
     return Center(
       child: _buildBadge(
         icon: '🏆',
-        text: 'Best app',
-        subtitle: 'Faith & Focus',
+        text: 'testimonials_bestApp'.tr,
+        subtitle: 'testimonials_faithFocus'.tr,
       ),
     );
   }
@@ -371,7 +370,7 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
                       ),
                     ),
                     Text(
-                      '${testimonial['age']} years old',
+                      'testimonials_yearsOld'.trParams({'age': testimonial['age']!}),
                       style: OnboardingTheme.caption.copyWith(
                         color: OnboardingTheme.labelSecondary,
                         fontSize: 12,
@@ -406,12 +405,12 @@ class _Step35TestimonialsState extends State<Step35Testimonials> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildBeforeAfter(
-                label: 'Before',
+                label: 'testimonials_before'.tr,
                 text: testimonial['before']!,
                 color: OnboardingTheme.systemRed,
               ),
               _buildBeforeAfter(
-                label: 'After',
+                label: 'testimonials_after'.tr,
                 text: testimonial['after']!,
                 color: OnboardingTheme.systemGreen,
               ),

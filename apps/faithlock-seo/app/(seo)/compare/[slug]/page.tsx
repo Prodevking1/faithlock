@@ -8,9 +8,12 @@ import SchemaMarkup from '@/components/seo/SchemaMarkup'
 
 export async function generateStaticParams() {
   const competitors = await getAllCompetitors()
-  return competitors.map((c) => ({
-    slug: `faithlock-vs-${c.fields.slug}`,
-  }))
+  return competitors.map((c) => {
+    const slug = c.fields.slug as string
+    return {
+      slug: slug.startsWith('faithlock-vs-') ? slug : `faithlock-vs-${slug}`,
+    }
+  })
 }
 
 export async function generateMetadata({
@@ -103,17 +106,21 @@ export default async function ComparisonPage({
         '@type': 'SoftwareApplication',
         name: fields.name,
         applicationCategory: 'HealthApplication',
-        operatingSystem: fields.platforms.join(', '),
+        operatingSystem: fields.platforms?.join(', ') || 'iOS',
         offers: {
           '@type': 'Offer',
-          price: fields.price,
+          price: fields.price || '0',
           priceCurrency: 'USD',
         },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: fields.rating.toString(),
-          reviewCount: Math.floor(fields.downloads / 10).toString(),
-        },
+        ...(fields.rating && fields.downloads
+          ? {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: fields.rating.toString(),
+                reviewCount: Math.floor(fields.downloads / 10).toString(),
+              },
+            }
+          : {}),
       },
     ],
   }

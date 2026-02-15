@@ -83,7 +83,7 @@ class PrayerLearningScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Close Prayer Session?',
+              'prayer_closePrayerSession'.tr,
               style: TextStyle(
                 fontFamily: OnboardingTheme.fontFamily,
                 fontSize: 18,
@@ -97,7 +97,11 @@ class PrayerLearningScreen extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'You\'re only ${progressPercent}% through...\n(Step $currentStepNum of $totalSteps)',
+                'prayer_progressPercent'.trParams({
+                  'percent': '$progressPercent',
+                  'current': '$currentStepNum',
+                  'total': '$totalSteps',
+                }),
                 style: TextStyle(
                   fontFamily: OnboardingTheme.fontFamily,
                   fontSize: 14,
@@ -123,7 +127,10 @@ class PrayerLearningScreen extends StatelessWidget {
                       const Text('🔥', style: TextStyle(fontSize: 24)),
                       const SizedBox(width: 8),
                       Text(
-                        '$streak Day${streak > 1 ? 's' : ''}',
+                        'prayer_dayCount'.trParams({
+                          'count': '$streak',
+                          'suffix': streak > 1 ? 's' : '',
+                        }),
                         style: TextStyle(
                           fontFamily: OnboardingTheme.fontFamily,
                           fontSize: 20,
@@ -136,7 +143,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Closing now will RESET your streak!',
+                  'prayer_streakReset'.tr,
                   style: TextStyle(
                     fontFamily: OnboardingTheme.fontFamily,
                     fontSize: 13,
@@ -153,7 +160,7 @@ class PrayerLearningScreen extends StatelessWidget {
           CupertinoDialogAction(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              'Continue Praying',
+              'prayer_continuePraying'.tr,
               style: TextStyle(
                 fontFamily: OnboardingTheme.fontFamily,
                 fontWeight: FontWeight.bold,
@@ -165,7 +172,7 @@ class PrayerLearningScreen extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              'Give Up Streak',
+              'prayer_giveUpStreak'.tr,
               style: TextStyle(
                 fontFamily: OnboardingTheme.fontFamily,
                 fontWeight: FontWeight.w600,
@@ -242,7 +249,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
             // Instruction
             FastText(
-              'Read this verse slowly and thoughtfully',
+              'prayer_readSlowly'.tr,
               style: FastTextStyleType.title2,
               color: OnboardingTheme.labelPrimary,
               textAlign: TextAlign.center,
@@ -303,7 +310,7 @@ class PrayerLearningScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: FastText(
-                      'Read it 3 times. Let each word sink into your heart.',
+                      'prayer_readTip'.tr,
                       style: FastTextStyleType.callout,
                       color: OnboardingTheme.labelSecondary,
                     ),
@@ -349,7 +356,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 children: [
                   if (isRunning) ...[
                     FastText(
-                      'Take your time...',
+                      'prayer_takeYourTime'.tr,
                       style: FastTextStyleType.title3,
                       color: OnboardingTheme.labelSecondary,
                     ),
@@ -374,7 +381,7 @@ class PrayerLearningScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       onPressed: controller.skipTimer,
                       child: FastText(
-                        'Skip timer',
+                        'prayer_skipTimer'.tr,
                         style: FastTextStyleType.footnote,
                         color: OnboardingTheme.labelTertiary,
                       ),
@@ -389,7 +396,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
           // Meditation prompt
           FastText(
-            'What does this verse mean to you?',
+            'prayer_whatMeansToYou'.tr,
             style: FastTextStyleType.title2,
             color: OnboardingTheme.labelPrimary,
           ),
@@ -397,7 +404,7 @@ class PrayerLearningScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           FastText(
-            'Reflect deeply. How can you apply this truth in your life today?',
+            'prayer_reflectDeeply'.tr,
             style: FastTextStyleType.callout,
             color: OnboardingTheme.labelSecondary,
           ),
@@ -407,7 +414,7 @@ class PrayerLearningScreen extends StatelessWidget {
           // Input field
           FastTextInput(
             controller: controller.meditationTextController,
-            hintText: 'Write your thoughts...',
+            hintText: 'prayer_writeThoughts'.tr,
             maxLines: 5,
             textStyle: TextStyle(
               color: OnboardingTheme.labelPrimary,
@@ -425,7 +432,7 @@ class PrayerLearningScreen extends StatelessWidget {
           Obx(() {
             final length = controller.meditationInput.value.length;
             return FastText(
-              '$length characters',
+              'prayer_characters'.trParams({'count': '$length'}),
               style: FastTextStyleType.footnote,
               color: OnboardingTheme.labelTertiary,
               textAlign: TextAlign.right,
@@ -446,8 +453,8 @@ class PrayerLearningScreen extends StatelessWidget {
 
             return FastButton(
               text: validationState == ValidationState.validating
-                  ? 'Validating...'
-                  : 'Validate',
+                  ? 'prayer_validating'.tr
+                  : 'prayer_validate'.tr,
               onTap: hasInput && validationState != ValidationState.validating
                   ? controller.validateMeditationResponse
                   : null,
@@ -535,7 +542,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
           // Instruction
           FastText(
-            'Complete the missing word',
+            'prayer_completeMissing'.tr,
             style: FastTextStyleType.title2,
             color: OnboardingTheme.labelPrimary,
             textAlign: TextAlign.center,
@@ -576,7 +583,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
           // Input for answer
           FastText(
-            'Your answer:',
+            'prayer_yourAnswer'.tr,
             style: FastTextStyleType.callout,
             color: OnboardingTheme.labelSecondary,
           ),
@@ -585,7 +592,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
           FastTextInput(
             controller: controller.recitationTextController,
-            hintText: 'Type the missing word...',
+            hintText: 'prayer_typeMissing'.tr,
             textStyle: TextStyle(
               color: OnboardingTheme.labelPrimary,
               fontSize: 18,
@@ -632,7 +639,7 @@ class PrayerLearningScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               onPressed: controller.toggleHint,
               child: FastText(
-                'Need a hint?',
+                'prayer_needHint'.tr,
                 style: FastTextStyleType.callout,
                 color: OnboardingTheme.labelTertiary,
               ),
@@ -664,7 +671,7 @@ class PrayerLearningScreen extends StatelessWidget {
 
                 // Victory message
                 FastText(
-                  'Well Done!',
+                  'prayer_wellDone'.tr,
                   style: FastTextStyleType.largeTitle,
                   color: OnboardingTheme.goldColor,
                 ),
@@ -672,7 +679,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 FastText(
-                  'You\'ve completed your prayer time.\nGod is proud of you.',
+                  'prayer_completedMessage'.tr,
                   style: FastTextStyleType.body,
                   color: OnboardingTheme.labelPrimary,
                   textAlign: TextAlign.center,
@@ -697,7 +704,7 @@ class PrayerLearningScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       FastText(
-                        'Learning Score',
+                        'prayer_learningScore'.tr,
                         style: FastTextStyleType.footnote,
                         color: OnboardingTheme.labelSecondary,
                       ),
@@ -714,7 +721,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 const SizedBox(height: 32),
 
                 FastText(
-                  '🔓 Choose how long you\'d like\nto unlock your apps',
+                  '🔓 ${'prayer_chooseUnlockDuration'.tr}',
                   style: FastTextStyleType.callout,
                   color: OnboardingTheme.labelSecondary,
                   textAlign: TextAlign.center,
@@ -751,7 +758,7 @@ class PrayerLearningScreen extends StatelessWidget {
             children: [
               if (isLastStep)
                 FastButton(
-                  text: 'Choose Unlock Duration',
+                  text: 'prayer_chooseUnlockBtn'.tr,
                   onTap: () async {
                     // Show dialog to select unlock duration
                     final duration =
@@ -775,7 +782,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 // Show Next button if validated OR not on meditation step
                 if (canProceed || controller.currentStep.value != 1)
                   FastButton(
-                    text: controller.currentStep.value == 2 ? 'Submit' : 'Next',
+                    text: controller.currentStep.value == 2 ? 'prayer_submit'.tr : 'onboarding_next'.tr,
                     onTap: canProceed ? controller.nextStep : null,
                     backgroundColor: OnboardingTheme.goldColor,
                     textColor: OnboardingTheme.backgroundColor,
@@ -788,7 +795,7 @@ class PrayerLearningScreen extends StatelessWidget {
                 // Show Skip Anyway if meditation is invalid/not validated
                 if (controller.canSkipMeditation)
                   FastButton(
-                    text: 'Skip Anyway',
+                    text: 'prayer_skipAnyway'.tr,
                     onTap: controller.nextStep,
                     backgroundColor: OnboardingTheme.cardBackground,
                     textColor: OnboardingTheme.labelSecondary,

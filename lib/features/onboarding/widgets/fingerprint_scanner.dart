@@ -5,6 +5,7 @@ import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Fingerprint scanner widget with animated scanning effect
 class FingerprintScanner extends StatefulWidget {
@@ -64,19 +65,17 @@ class _FingerprintScannerState extends State<FingerprintScanner>
 
   String _getCurrentDate() {
     final now = DateTime.now();
+    final locale = Get.locale?.languageCode ?? 'en';
+    if (locale == 'fr') {
+      final months = [
+        'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+        'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+      ];
+      return '${now.day} ${months[now.month - 1]} ${now.year}';
+    }
     final months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
     ];
     return '${months[now.month - 1]} ${now.day}, ${now.year}';
   }
@@ -173,7 +172,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                                   ),
                                 ),
                                 Text(
-                                  'SACRED COVENANT',
+                                  'covenant_sacredTitle'.tr,
                                   style: TextStyle(
                                     fontFamily: 'Georgia',
                                     fontSize: 22,
@@ -198,7 +197,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
 
                           // Texte du contrat - Style manuscrit
                           Text(
-                            'I, ${widget.userName}, hereby solemnly commit before God to guard my heart and use His Word as my shield against digital bondage.\n\nI pledge to live with intentionality, seeking His presence above all earthly distractions.',
+                            'covenant_pledgeText'.trParams({'name': widget.userName}),
                             style: TextStyle(
                               fontFamily: 'Georgia',
                               fontSize: 14,
@@ -268,7 +267,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          'Signature',
+                                          'covenant_signature'.tr,
                                           style: TextStyle(
                                             fontFamily: 'Georgia',
                                             fontSize: 10,
@@ -295,7 +294,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          'Date',
+                                          'covenant_date'.tr,
                                           style: TextStyle(
                                             fontFamily: 'Georgia',
                                             fontSize: 10,
@@ -368,7 +367,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
-                                          'SEALED',
+                                          'covenant_sealed'.tr,
                                           style: TextStyle(
                                             fontFamily: 'Georgia',
                                             fontSize: 8,
@@ -390,7 +389,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                           // Instructions
                           Center(
                             child: Text(
-                              'Covenant sealed before God',
+                              'covenant_sealedBeforeGod'.tr,
                               style: OnboardingTheme.body.copyWith(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -406,7 +405,7 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                             const SizedBox(height: 24),
                             Center(
                               child: FastButton(
-                                text: 'I\'m ready. Lock me in.',
+                                text: 'covenant_readyLockIn'.tr,
                                 onTap: widget.onComplete,
                                 backgroundColor: OnboardingTheme.goldColor,
                                 textColor: OnboardingTheme.backgroundColor,
@@ -516,8 +515,8 @@ class _FingerprintScannerState extends State<FingerprintScanner>
                             duration: const Duration(milliseconds: 300),
                             child: Text(
                               _isScanning
-                                  ? 'Scanning...'
-                                  : 'Hold your thumb to seal covenant',
+                                  ? 'covenant_scanning'.tr
+                                  : 'covenant_holdThumb'.tr,
                               key: ValueKey<String>(
                                   _isScanning ? 'scanning' : 'waiting'),
                               style: OnboardingTheme.body.copyWith(

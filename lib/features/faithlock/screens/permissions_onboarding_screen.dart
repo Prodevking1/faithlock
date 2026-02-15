@@ -42,14 +42,14 @@ class _PermissionsOnboardingScreenState
         if (isAuthorized) {
           FastToast.showSuccess(
             context: context,
-            message: "Screen Time access enabled successfully!",
+            message: 'permissions_successMsg'.tr,
           );
           await Future.delayed(const Duration(milliseconds: 500));
           Get.offAll(() => MainScreen());
         } else {
           FastToast.showError(
             context: context,
-            message: "Permission denied. Enable it in Settings.",
+            message: 'permissions_deniedMsg'.tr,
           );
         }
       }
@@ -60,7 +60,7 @@ class _PermissionsOnboardingScreenState
         });
         FastToast.showError(
           context: context,
-          message: "Failed to request permission",
+          message: 'permissions_failedMsg'.tr,
         );
       }
     }
@@ -100,7 +100,7 @@ class _PermissionsOnboardingScreenState
 
               // Title
               Text(
-                'Enable Screen Time',
+                'permissions_enableScreenTime'.tr,
                 style: TextStyle(
                   color: FastColors.primaryText(context),
                   fontSize: 28,
@@ -114,7 +114,7 @@ class _PermissionsOnboardingScreenState
 
               // Description
               Text(
-                'FaithLock needs Screen Time access to help you stay focused on your spiritual growth by managing app usage during scheduled times.',
+                'permissions_description'.tr,
                 style: TextStyle(
                   color: FastColors.secondaryText(context),
                   fontSize: 17,

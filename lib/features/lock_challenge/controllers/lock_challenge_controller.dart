@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/lock_challenge/models/verse_question.dart';
+import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:get/get.dart';
 
@@ -149,12 +150,19 @@ class LockChallengeController extends GetxController {
     // Save stats
     await _saveSuccessStats();
 
+    // Track TikTok challenge completion
+    try {
+      TikTokService.instance.trackCompleteTutorial();
+    } catch (e) {
+      print('TikTok trackCompleteTutorial failed: $e');
+    }
+
     // Trigger temporary unlock (5 minutes)
     try {
       final screenTimeService = Get.find<ScreenTimeService>();
       await screenTimeService.temporaryUnlock(durationMinutes: 5);
     } catch (e) {
-      print('⚠️ Failed to trigger temporary unlock: $e');
+      print('Failed to trigger temporary unlock: $e');
     }
   }
 

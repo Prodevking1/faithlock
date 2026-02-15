@@ -318,28 +318,6 @@ class _FastCenteredViewState extends State<FastCenteredView> {
     // Regular iPhone: use full width
     return null;
   }
-
-  /// Get iOS system margin based on device type
-  static double getIOSSystemMargin(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double screenWidth = mediaQuery.size.width;
-    final double screenHeight = mediaQuery.size.height;
-    final bool isIPad = _isIPadStatic(screenWidth, screenHeight);
-    return isIPad ? 16.0 : 20.0;
-  }
-
-  /// Check if current device is iPad (static version)
-  static bool isIPad(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    return _isIPadStatic(mediaQuery.size.width, mediaQuery.size.height);
-  }
-
-  /// Static iPad detection helper
-  static bool _isIPadStatic(double width, double height) {
-    final double minDimension = width < height ? width : height;
-    final double maxDimension = width > height ? width : height;
-    return minDimension >= 768 || maxDimension >= 1024;
-  }
 }
 
 /// Backward compatibility alias

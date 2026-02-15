@@ -319,7 +319,7 @@ export default function LandingPage() {
                 Build the habit<br />today.
               </h2>
               <p className="text-indigo-100 text-base mb-8 max-w-sm mx-auto md:mx-0">
-                Join thousands of Christians using technology to fuel their faith.
+                Join Christians using technology to fuel their faith.
               </p>
 
               <a

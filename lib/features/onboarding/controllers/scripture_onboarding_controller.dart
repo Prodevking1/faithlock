@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,10 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keyIntensityLevel = 'scripture_intensity_level';
   static const String _keySacredCovenantAccepted = 'sacred_covenant_accepted';
   static const String _keySchedules = 'onboarding_schedules';
+  static const String _keyAttribution = 'user_attribution_source';
 
   /// Total steps in this onboarding flow (override in subclasses)
-  int get totalSteps => 12;
+  int get totalSteps => 13;
 
   // Observable state
   final RxInt currentStep = RxInt(1);
@@ -155,6 +157,17 @@ class ScriptureOnboardingController extends GetxController {
     // Track user property
     if (_analytics.isReady) {
       await _analytics.onboarding.setUserProperties({'user_name': name});
+    }
+  }
+
+  /// Save attribution source from Step 1.75
+  Future<void> saveAttribution(String source) async {
+    await _storage.writeString(_keyAttribution, source);
+
+    if (_analytics.isReady) {
+      await _analytics.onboarding.setUserProperties({
+        'attribution_source': source,
+      });
     }
   }
 
@@ -372,6 +385,13 @@ class ScriptureOnboardingController extends GetxController {
     if (_analytics.isReady) {
       await _analytics.onboarding.trackOnboardingComplete();
     }
+
+    // Track TikTok registration event
+    try {
+      TikTokService.instance.trackCompleteRegistration();
+    } catch (e) {
+      debugPrint('TikTok trackCompleteRegistration failed: $e');
+    }
   }
 
   /// Complete summary screen
@@ -474,23 +494,31 @@ class ScriptureOnboardingController extends GetxController {
   String _getStepName(int step) {
     switch (step) {
       case 1:
-        return 'Name Capture';
+        return 'Welcome';
       case 2:
-        return 'Divine Revelation';
+        return 'Name Capture';
       case 3:
-        return 'Self Confrontation';
+        return 'Attribution';
       case 4:
-        return 'Testimonials';
+        return 'Divine Revelation';
       case 5:
-        return 'Call to Covenant';
+        return 'Self Confrontation';
       case 6:
-        return 'Final Encouragement';
+        return 'Eternal Warfare';
       case 7:
-        return 'Screen Time Permission';
+        return 'Testimonials';
       case 8:
-        return 'Notification Permission';
+        return 'Call to Covenant';
       case 9:
-        return 'Mascot Transition';
+        return 'Final Encouragement';
+      case 10:
+        return 'Screen Time Permission';
+      case 11:
+        return 'Notification Permission';
+      case 12:
+        return 'Summary';
+      case 13:
+        return 'Free For You';
       default:
         return 'Unknown Step';
     }
@@ -527,18 +555,18 @@ class ScriptureOnboardingController extends GetxController {
   /// Get metadata for each step based on user choices
   Map<String, dynamic>? _getStepMetadata(int step) {
     switch (step) {
-      case 1:
+      case 2:
         return {
           if (userName.value.isNotEmpty) 'user_name_provided': true,
           if (userAge.value > 0) 'user_age': userAge.value,
         };
 
-      case 2:
+      case 3:
         return {
-          'viewed_divine_revelation': true,
+          'attribution_provided': true,
         };
 
-      case 3:
+      case 5:
         return {
           'hours_per_day': hoursPerDay.value,
           'hours_category': _categorizeHours(hoursPerDay.value),
@@ -547,27 +575,17 @@ class ScriptureOnboardingController extends GetxController {
               _categorizePrayerFrequency(prayerTimesPerWeek.value),
         };
 
-      case 4:
-        return {
-          'viewed_testimonials': true,
-        };
-
-      case 5:
+      case 8:
         return {
           'covenant_accepted': covenantAccepted.value,
         };
 
-      case 6:
-        return {
-          'viewed_final_encouragement': true,
-        };
-
-      case 7:
+      case 10:
         return {
           'screen_time_permission_requested': true,
         };
 
-      case 8:
+      case 11:
         return {
           'notification_permission_requested': true,
         };

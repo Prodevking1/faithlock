@@ -67,16 +67,16 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
 
   String _getTitle() {
     if (widget.wasTrialUser) {
-      return 'Your Free Trial Has Ended';
+      return 'expired_trialEnded'.tr;
     }
-    return 'Your Subscription Has Expired';
+    return 'expired_subscriptionExpired'.tr;
   }
 
   String _getMessage() {
     if (widget.wasTrialUser) {
-      return 'We hope you enjoyed your trial period and experienced the power of FaithLock.\n\nYour spiritual journey doesn\'t have to end here.';
+      return 'expired_trialMessage'.tr;
     }
-    return 'Your subscription has expired, but your spiritual growth journey can continue.\n\nRenew now to keep building stronger faith habits.';
+    return 'expired_subscriptionMessage'.tr;
   }
 
   void _onRenewNow() async {
@@ -106,8 +106,8 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
         await launchUrl(emailUri);
       } else {
         FastToast.error(
-          'Could not open email client. Please email us at $email',
-          title: 'Error',
+          'expired_emailError'.trParams({'email': email}),
+          title: 'expired_errorTitle'.tr,
         );
       }
     } catch (e) {
@@ -195,7 +195,7 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
                   child: Column(
                     children: [
                       Text(
-                        'Continue Your Journey',
+                        'expired_continueJourney'.tr,
                         style: OnboardingTheme.callout.copyWith(
                           color: OnboardingTheme.labelPrimary,
                           fontWeight: FontWeight.w600,
@@ -204,22 +204,22 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
                       const SizedBox(height: OnboardingTheme.space20),
                       _buildBenefit(
                         icon: Icons.shield,
-                        text: 'App blocking with Scripture meditation',
+                        text: 'expired_benefit1'.tr,
                       ),
                       const SizedBox(height: OnboardingTheme.space16),
                       _buildBenefit(
                         icon: Icons.schedule,
-                        text: 'Unlimited custom schedules',
+                        text: 'expired_benefit2'.tr,
                       ),
                       const SizedBox(height: OnboardingTheme.space16),
                       _buildBenefit(
                         icon: Icons.church,
-                        text: 'Prayer reminders & accountability',
+                        text: 'expired_benefit3'.tr,
                       ),
                       const SizedBox(height: OnboardingTheme.space16),
                       _buildBenefit(
                         icon: Icons.trending_up,
-                        text: 'Advanced stats & progress tracking',
+                        text: 'expired_benefit4'.tr,
                       ),
                     ],
                   ),
@@ -254,7 +254,7 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
                       const SizedBox(width: OnboardingTheme.space8),
                       Flexible(
                         child: Text(
-                          '92% of users report stronger faith',
+                          'expired_usersReport'.tr,
                           style: OnboardingTheme.footnote.copyWith(
                             color: OnboardingTheme.systemGreen,
                             fontWeight: FontWeight.w600,
@@ -270,7 +270,7 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
 
                 // Renew button
                 FastButton(
-                  text: 'Renew Subscription',
+                  text: 'expired_renewBtn'.tr,
                   onTap: _onRenewNow,
                   backgroundColor: OnboardingTheme.goldColor,
                   textColor: OnboardingTheme.backgroundColor,
@@ -283,7 +283,7 @@ class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen>
                 TextButton(
                   onPressed: _onContactSupport,
                   child: Text(
-                    'Need help? Contact Support',
+                    'expired_needHelp'.tr,
                     style: OnboardingTheme.footnote.copyWith(
                       color: OnboardingTheme.labelTertiary,
                     ),

@@ -144,9 +144,9 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">At a Glance</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { value: FAITHLOCK_STATS.versesInLibrary, label: 'Bible verses in library', color: 'brand' },
+              { value: FAITHLOCK_STATS.versesInLibrary, label: 'Scripture library', color: 'brand' },
               { value: '~30s', label: 'To unlock with Scripture', color: 'brand' },
-              { value: 'KJV', label: 'Bible translation', color: 'warm' },
+              { value: 'BSB', label: 'Bible translation', color: 'warm' },
             ].map((stat) => (
               <div key={stat.label} className="card p-6 text-center">
                 <p className={`text-3xl md:text-4xl font-bold mb-1 ${stat.color === 'warm' ? 'text-warm-500' : 'text-brand-600'}`}>
@@ -164,8 +164,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
             Experience {feature.name} today
           </h2>
           <p className="text-lg mb-8 text-white/80">
-            Join thousands of Christians transforming phone addiction into
-            spiritual growth.
+            Join Christians replacing scrolling with Scripture.
           </p>
           <CTAButton
             text="Try FaithLock Free"
@@ -180,11 +179,11 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
         <section>
           <h2 className="text-xl font-bold mb-6 text-gray-900">Other Features</h2>
           <div className="grid sm:grid-cols-3 gap-4">
-            <a href="/features/bible-quiz-unlock-phone" className="card-interactive p-5">
-              <h3 className="font-semibold text-gray-900 text-sm">Bible Quiz to Unlock</h3>
-              <p className="text-xs text-gray-500 mt-1">Answer Scripture correctly before accessing apps</p>
+            <a href="/learn/bible-quiz-unlock-phone" className="card-interactive p-5">
+              <h3 className="font-semibold text-gray-900 text-sm">Bible Verse Unlock</h3>
+              <p className="text-xs text-gray-500 mt-1">Read Scripture to access your blocked apps</p>
             </a>
-            <a href="/features/30-day-covenant-tracking" className="card-interactive p-5">
+            <a href="/learn/30-day-covenant-tracking" className="card-interactive p-5">
               <h3 className="font-semibold text-gray-900 text-sm">30-Day Covenant</h3>
               <p className="text-xs text-gray-500 mt-1">Sacred commitment with accountability</p>
             </a>

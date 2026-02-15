@@ -45,7 +45,7 @@ export default async function FeaturesPage() {
             {[
               { value: FAITHLOCK_STATS.versesInLibrary, label: 'Bible verses in library', color: 'brand' },
               { value: '~30s', label: 'To unlock with Scripture', color: 'brand' },
-              { value: 'KJV', label: 'Bible translation', color: 'warm' },
+              { value: 'BSB', label: 'Bible translation', color: 'warm' },
             ].map((stat) => (
               <div key={stat.label} className="card p-5 text-center">
                 <p className={`text-2xl md:text-3xl font-bold mb-1 ${stat.color === 'warm' ? 'text-warm-500' : 'text-brand-600'}`}>

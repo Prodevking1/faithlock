@@ -53,11 +53,6 @@ class AutoNavigationService {
     return await AppGroupStorage.shouldNavigateToPrayer();
   }
 
-  /// Clear the prayer flag
-  Future<void> _clearPrayerFlag() async {
-    await AppGroupStorage.clearPrayerFlag();
-  }
-
   Future<bool> _hasConfiguredSchedules() async {
     try {
       final schedulesJson = await _storage.readString(_keyOnboardingSchedules);

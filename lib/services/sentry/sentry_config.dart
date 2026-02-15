@@ -1,4 +1,3 @@
-import 'package:faithlock/config/env.dart';
 import 'package:faithlock/config/logger.dart';
 import 'package:faithlock/services/sentry/sentry_service.dart';
 import 'package:get/get.dart';

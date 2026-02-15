@@ -79,7 +79,7 @@ class _Step9NotificationPermissionState
   Future<void> _phase91Introduction() async {
     await AnimationUtils.typeText(
       fullText:
-          'One more thing, ${controller.userName.value}... to help you stay focused...',
+          'notifPerm_intro'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _introText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showIntroCursor = visible),
@@ -97,7 +97,7 @@ class _Step9NotificationPermissionState
 
     await AnimationUtils.typeText(
       fullText:
-          'I need to send you reminders when it\'s time to re-lock your apps and pray.\n\nThese gentle nudges will keep you on track.',
+          'notifPerm_explanation'.tr,
       onUpdate: (text) => setState(() => _explanationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showExplanationCursor = visible),
@@ -265,11 +265,10 @@ class _Step9NotificationPermissionState
 
     // Show confirmation dialog with high friction using FastConfirmationDialog
     final shouldSkip = await FastConfirmationDialog.show(
-      title: 'Skip Reminders?',
-      message:
-          'Without notifications, you won\'t receive reminders to re-lock your apps and pray.\n\nYou can enable this later in Settings.',
-      confirmText: 'Skip for Now',
-      cancelText: 'Enable Reminders',
+      title: 'notifPerm_skipTitle'.tr,
+      message: 'notifPerm_skipMessage'.tr,
+      confirmText: 'notifPerm_skipForNow'.tr,
+      cancelText: 'notifPerm_enableReminders'.tr,
       isDestructiveConfirm: false,
     );
 
@@ -475,7 +474,7 @@ class _Step9NotificationPermissionState
           // Main message
           Center(
             child: Text(
-              'Enable Prayer Reminders',
+              'notifPerm_enableTitle'.tr,
               style: OnboardingTheme.title2.copyWith(
                 color: OnboardingTheme.labelPrimary,
                 fontWeight: FontWeight.w600,
@@ -489,17 +488,17 @@ class _Step9NotificationPermissionState
           // Benefits list
           _buildBenefitItem(
             icon: Icons.alarm,
-            text: 'Timely reminders to re-lock your apps',
+            text: 'notifPerm_benefit1'.tr,
           ),
           const SizedBox(height: 16),
           _buildBenefitItem(
             icon: Icons.church,
-            text: 'Prayer time notifications',
+            text: 'notifPerm_benefit2'.tr,
           ),
           const SizedBox(height: 16),
           _buildBenefitItem(
             icon: Icons.psychology,
-            text: 'Stay accountable to your spiritual goals',
+            text: 'notifPerm_benefit3'.tr,
           ),
 
           const SizedBox(height: 32),
@@ -528,7 +527,7 @@ class _Step9NotificationPermissionState
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'We\'ll only send helpful reminders, not spam',
+                    'notifPerm_noSpam'.tr,
                     style: OnboardingTheme.footnote.copyWith(
                       color: OnboardingTheme.goldColor,
                       fontWeight: FontWeight.w600,
@@ -545,8 +544,8 @@ class _Step9NotificationPermissionState
           Center(
             child: FastButton(
               text: _isRequestingPermission
-                  ? 'Requesting...'
-                  : 'Enable Notifications',
+                  ? 'notifPerm_requesting'.tr
+                  : 'notifPerm_enableBtn'.tr,
               onTap: _isRequestingPermission ? null : _onEnableNotifications,
               backgroundColor: OnboardingTheme.goldColor,
               textColor: OnboardingTheme.backgroundColor,

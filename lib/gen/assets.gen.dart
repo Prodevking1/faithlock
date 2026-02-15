@@ -83,12 +83,80 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [appIcon];
 }
 
+class $AssetsMascotGen {
+  const $AssetsMascotGen();
+
+  /// File path: assets/mascot/judah_app_protection.gif
+  AssetGenImage get judahAppProtection =>
+      const AssetGenImage('assets/mascot/judah_app_protection.gif');
+
+  /// File path: assets/mascot/judah_app_protectionn.gif
+  AssetGenImage get judahAppProtectionn =>
+      const AssetGenImage('assets/mascot/judah_app_protectionn.gif');
+
+  /// File path: assets/mascot/judah_encouraging.gif
+  AssetGenImage get judahEncouraging =>
+      const AssetGenImage('assets/mascot/judah_encouraging.gif');
+
+  /// File path: assets/mascot/judah_happy.gif
+  AssetGenImage get judahHappy =>
+      const AssetGenImage('assets/mascot/judah_happy.gif');
+
+  /// File path: assets/mascot/judah_neutral.gif
+  AssetGenImage get judahNeutral =>
+      const AssetGenImage('assets/mascot/judah_neutral.gif');
+
+  /// File path: assets/mascot/judah_pointing.gif
+  AssetGenImage get judahPointing =>
+      const AssetGenImage('assets/mascot/judah_pointing.gif');
+
+  /// File path: assets/mascot/judah_praying.gif
+  AssetGenImage get judahPraying =>
+      const AssetGenImage('assets/mascot/judah_praying.gif');
+
+  /// File path: assets/mascot/judah_proud.gif
+  AssetGenImage get judahProud =>
+      const AssetGenImage('assets/mascot/judah_proud.gif');
+
+  /// File path: assets/mascot/judah_sad.gif
+  AssetGenImage get judahSad =>
+      const AssetGenImage('assets/mascot/judah_sad.gif');
+
+  /// File path: assets/mascot/judah_sleeping.gif
+  AssetGenImage get judahSleeping =>
+      const AssetGenImage('assets/mascot/judah_sleeping.gif');
+
+  /// File path: assets/mascot/judah_time_selection.gif
+  AssetGenImage get judahTimeSelection =>
+      const AssetGenImage('assets/mascot/judah_time_selection.gif');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        judahAppProtection,
+        judahAppProtectionn,
+        judahEncouraging,
+        judahHappy,
+        judahNeutral,
+        judahPointing,
+        judahPraying,
+        judahProud,
+        judahSad,
+        judahSleeping,
+        judahTimeSelection
+      ];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsDatabasesGen databases = $AssetsDatabasesGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsMascotGen mascot = $AssetsMascotGen();
+  static const String shorebird = 'shorebird.yaml';
+
+  /// List of all assets
+  static List<String> get values => [shorebird];
 }
 
 class AssetGenImage {

@@ -2,7 +2,6 @@
 
 // Models
 export 'models/interactive_action_model.dart';
-export 'models/interactive_onboarding_content.dart';
 export 'models/onboarding_content.dart';
 export 'models/onboarding_step_model.dart';
 

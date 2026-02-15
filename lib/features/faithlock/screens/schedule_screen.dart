@@ -74,7 +74,7 @@ class ScheduleScreen extends StatelessWidget {
                   ),
                   FastSpacing.h24,
                   FastButton(
-                    text: 'Retry',
+                    text: 'retry'.tr,
                     onTap: controller.loadSchedules,
                   ),
                 ],
@@ -97,7 +97,7 @@ class ScheduleScreen extends StatelessWidget {
                           ),
                           FastSpacing.h24,
                           Text(
-                            'No schedules found',
+                            'schedule_noSchedules'.tr,
                             style: TextStyle(
                               color: FastColors.primaryText(context),
                               fontSize: 24,
@@ -106,7 +106,7 @@ class ScheduleScreen extends StatelessWidget {
                           ),
                           FastSpacing.h16,
                           Text(
-                            'Complete the onboarding to set up your lock schedules',
+                            'schedule_completeOnboarding'.tr,
                             style: TextStyle(
                               color: FastColors.secondaryText(context),
                               fontSize: 16,
@@ -234,7 +234,7 @@ class ScheduleScreen extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'START',
+                                              'schedule_start'.tr,
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w600,
@@ -301,7 +301,7 @@ class ScheduleScreen extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'END',
+                                              'schedule_end'.tr,
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w600,
@@ -369,8 +369,8 @@ class ScheduleScreen extends StatelessWidget {
                                                               .selectedAppsCount
                                                               .value >
                                                           0
-                                                  ? 'Active now - Apps are blocked'
-                                                  : 'Active period - Select apps to start blocking',
+                                                  ? 'schedule_activeBlocked'.tr
+                                                  : 'schedule_activePeriod'.tr,
                                               style: TextStyle(
                                                 color: controller
                                                             .isScreenTimeAuthorized

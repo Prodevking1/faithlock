@@ -1,5 +1,6 @@
 import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
@@ -122,7 +123,7 @@ class PaywallController extends GetxController
       final offering = await _revenueCat.getCurrentOffering();
 
       if (offering == null) {
-        lastError.value = 'No subscription options available';
+        lastError.value = 'paywall_noOptions'.tr;
         return;
       }
 
@@ -181,7 +182,7 @@ class PaywallController extends GetxController
         );
       }
     } catch (e) {
-      lastError.value = 'Failed to load subscription options: $e';
+      lastError.value = '${'paywall_failedLoad'.tr}: $e';
       debugPrint('❌ Error loading offerings: $e');
     } finally {
       isLoading.value = false;
@@ -204,7 +205,7 @@ class PaywallController extends GetxController
 
   /// Get CTA button text based on selected plan
   String get ctaButtonText {
-    return hasFreeTrial ? 'Start Free Trial' : 'Start Your Journey';
+    return hasFreeTrial ? 'paywall_startFreeTrial'.tr : 'paywall_startJourney'.tr;
   }
 
   void selectPlan(int index) async {
@@ -402,7 +403,7 @@ class PaywallController extends GetxController
   /// Start subscription with selected plan
   Future<void> startSubscription() async {
     if (selectedPlanIndex.value >= packages.length) {
-      lastError.value = 'Please select a subscription plan';
+      lastError.value = 'paywall_selectPlan'.tr;
       return;
     }
 
@@ -459,6 +460,19 @@ class PaywallController extends GetxController
           );
         }
 
+        // Track TikTok purchase/trial events
+        try {
+          if (product.introductoryPrice != null) {
+            TikTokService.instance.trackStartTrial();
+          }
+          TikTokService.instance.trackPurchase(
+            value: product.price,
+            currency: product.currencyCode,
+          );
+        } catch (e) {
+          debugPrint('TikTok purchase tracking failed: $e');
+        }
+
         // Schedule trial reminder if enabled
         if (trialReminderEnabled.value) {
           await _scheduleTrialReminder();
@@ -496,7 +510,7 @@ class PaywallController extends GetxController
       HapticFeedback.lightImpact();
       FastToast.error(
         e.toString(),
-        title: 'Purchase Failed',
+        title: 'paywall_purchaseFailed'.tr,
       );
     } finally {
       isPurchasing.value = false;
@@ -531,8 +545,8 @@ class PaywallController extends GetxController
         await _handleSuccessfulSubscription();
       } else if (result.success && !result.hasActiveSubscriptions) {
         FastToast.warning(
-          'No active subscriptions found to restore.',
-          title: 'No Purchases Found',
+          'paywall_noPurchasesMessage'.tr,
+          title: 'paywall_noPurchasesFound'.tr,
         );
       } else {
         throw Exception(result.error ?? 'Restore failed');
@@ -541,8 +555,8 @@ class PaywallController extends GetxController
       lastError.value = e.toString();
 
       FastToast.error(
-        'Could not restore purchases. Please try again.',
-        title: 'Restore Failed',
+        'paywall_restoreFailedMessage'.tr,
+        title: 'paywall_restoreFailed'.tr,
       );
     } finally {
       isPurchasing.value = false;
@@ -553,8 +567,8 @@ class PaywallController extends GetxController
   Future<void> applyPromoCode() async {
     if (promoCode.value.trim().isEmpty) {
       FastToast.warning(
-        'Please enter a valid promo code.',
-        title: 'Invalid Code',
+        'paywall_enterValidPromo'.tr,
+        title: 'paywall_invalidCode'.tr,
       );
       return;
     }
@@ -567,8 +581,8 @@ class PaywallController extends GetxController
       if (result.success) {
         HapticFeedback.mediumImpact();
         FastToast.success(
-          'Your discount has been applied successfully.',
-          title: 'Promo Code Applied!',
+          'paywall_promoAppliedMessage'.tr,
+          title: 'paywall_promoApplied'.tr,
         );
 
         // Save promo code applied state
@@ -582,8 +596,8 @@ class PaywallController extends GetxController
       }
     } catch (e) {
       FastToast.error(
-        'The promo code you entered is not valid.',
-        title: 'Invalid Promo Code',
+        'paywall_invalidPromoMessage'.tr,
+        title: 'paywall_invalidPromo'.tr,
       );
     } finally {
       isPurchasing.value = false;

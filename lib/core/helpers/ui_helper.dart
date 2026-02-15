@@ -177,7 +177,7 @@ class UIHelper {
           title: title != null ? Text(title) : null,
           actions: children,
           cancelButton: CupertinoActionSheetAction(
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -200,7 +200,7 @@ class UIHelper {
                   ),
                 ...children,
                 TextButton(
-                  child: const Text('CANCEL'),
+                  child: Text('cancel'.tr.toUpperCase()),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -223,7 +223,7 @@ class UIHelper {
           title: title != null ? Text(title) : null,
           actions: actions,
           cancelButton: CupertinoActionSheetAction(
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -241,7 +241,7 @@ class UIHelper {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('CANCEL'),
+                child: Text('cancel'.tr.toUpperCase()),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -269,7 +269,7 @@ class UIHelper {
                   ))
               .toList(),
           cancelButton: CupertinoActionSheetAction(
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
             onPressed: () {
               Navigator.of(context).pop();
               onCancel?.call();
@@ -295,7 +295,7 @@ class UIHelper {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: Text('cancel'.tr),
                 onPressed: () {
                   Navigator.of(context).pop();
                   onCancel?.call();

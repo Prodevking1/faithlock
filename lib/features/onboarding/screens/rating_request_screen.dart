@@ -5,6 +5,7 @@ import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_plain_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Rating Request Screen - Matches permission screen design
 class RatingRequestScreen extends StatefulWidget {
@@ -189,7 +190,7 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                   const SizedBox(height: 40),
                   Center(
                     child: Text(
-                      'Share Your Experience',
+                      'rating_shareExperience'.tr,
                       style: OnboardingTheme.title2.copyWith(
                         color: OnboardingTheme.labelPrimary,
                         fontWeight: FontWeight.w600,
@@ -228,17 +229,17 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                   const SizedBox(height: 32),
                   _buildBenefitItem(
                     icon: Icons.people,
-                    text: 'Help others discover FaithLock',
+                    text: 'rating_helpDiscover'.tr,
                   ),
                   const SizedBox(height: 16),
                   _buildBenefitItem(
                     icon: Icons.volunteer_activism,
-                    text: 'Support our mission to spread faith',
+                    text: 'rating_supportMission'.tr,
                   ),
                   const SizedBox(height: 16),
                   _buildBenefitItem(
                     icon: Icons.auto_awesome,
-                    text: 'Encourage our small team',
+                    text: 'rating_encourageTeam'.tr,
                   ),
                   const SizedBox(height: 32),
                   Container(
@@ -264,7 +265,7 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Your honest review helps us improve',
+                            'rating_honestReview'.tr,
                             style: OnboardingTheme.footnote.copyWith(
                               color: OnboardingTheme.goldColor,
                               fontWeight: FontWeight.w600,
@@ -277,7 +278,7 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                   const SizedBox(height: 40),
                   Center(
                     child: FastButton(
-                      text: _isProcessing ? 'Opening...' : 'Rate FaithLock',
+                      text: _isProcessing ? 'rating_opening'.tr : 'rating_rateBtn'.tr,
                       onTap: _isProcessing ? null : _onRate,
                       backgroundColor: OnboardingTheme.goldColor,
                       textColor: OnboardingTheme.backgroundColor,
@@ -288,7 +289,7 @@ class _RatingRequestScreenState extends State<RatingRequestScreen> {
                   const SizedBox(height: 16),
                   Center(
                     child: FastPlainButton(
-                      text: 'Not now',
+                      text: 'rating_notNow'.tr,
                       onTap: _onSkip,
                       textColor: OnboardingTheme.labelTertiary,
                     ),

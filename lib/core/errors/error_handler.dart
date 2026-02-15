@@ -85,8 +85,8 @@ class ErrorHandler {
         if (Get.context != null) {
           Get.showSnackbar(
             GetSnackBar(
-              title: 'Connection Error',
-              message: 'Please check your internet connection',
+              title: 'error_connectionTitle'.tr,
+              message: 'error_connectionMessage'.tr,
               icon: const Icon(Icons.wifi_off, color: Colors.white),
               duration: const Duration(seconds: 3),
               backgroundColor: Colors.orange,

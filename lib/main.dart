@@ -7,13 +7,13 @@ import 'package:faithlock/features/faithlock/services/faithlock_database_service
 import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/features/onboarding/screens/initial_route_screen.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
+import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/auto_navigation_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/notifications/notification_navigation_service.dart';
 import 'package:faithlock/services/notifications/daily_verse_notification_service.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
-import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/revenuecat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,9 +38,24 @@ void main() async {
 
   debugPrint('✅ Critical services initialized');
 
+  // Load saved locale before running app
+  Locale? savedLocale;
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final savedLang = prefs.getString('app_language');
+    if (savedLang == 'fr') {
+      savedLocale = const Locale('fr', 'FR');
+    } else if (savedLang == 'en') {
+      savedLocale = const Locale('en', 'US');
+    }
+    debugPrint('✅ Saved locale loaded: $savedLang');
+  } catch (e) {
+    debugPrint('⚠️ Error loading saved locale: $e');
+  }
+
   _initializeNonCriticalServices();
 
-  runApp(const App());
+  runApp(App(savedLocale: savedLocale));
 }
 
 Future<void> _initializeDatabase() async {
@@ -57,18 +73,6 @@ Future<void> _initializeDatabase() async {
     debugPrint('Stack trace: $stackTrace');
     // Don't rethrow - allow app to continue without database
     // The app can handle missing data gracefully
-  }
-}
-
-Future<bool> _shouldShowOnboarding() async {
-  try {
-    final prefs = PreferencesService();
-    final hasCompletedOnboarding =
-        await prefs.readBool('scripture_onboarding_complete') ?? false;
-    return !hasCompletedOnboarding;
-  } catch (e) {
-    debugPrint('⚠️ Error checking onboarding status: $e');
-    return true;
   }
 }
 
@@ -107,6 +111,20 @@ void _initializeNonCriticalServices() {
       debugPrint('✅ PostHog initialized');
     } catch (e) {
       debugPrint('⚠️ PostHog initialization failed: $e');
+    }
+
+    try {
+      final TikTokService tiktok = TikTokService.instance;
+      await tiktok.init(
+        iosAppId: Env.tiktokIosAppId,
+        tiktokIosId: Env.tiktokIosId,
+        androidAppId: Env.tiktokAndroidAppId,
+        tiktokAndroidId: Env.tiktokAndroidId,
+        enableDebug: kDebugMode,
+      );
+      debugPrint('✅ TikTok Events SDK initialized');
+    } catch (e) {
+      debugPrint('⚠️ TikTok Events SDK initialization failed: $e');
     }
 
     try {
@@ -172,7 +190,9 @@ void _initializeNonCriticalServices() {
 // See: lib/features/onboarding/ for permission flow
 
 class App extends StatefulWidget {
-  const App({super.key});
+  final Locale? savedLocale;
+
+  const App({super.key, this.savedLocale});
 
   @override
   State<App> createState() => _AppState();
@@ -221,7 +241,7 @@ class _AppState extends State<App> {
         DefaultCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppConfig.supportedLocales,
-      locale: Get.deviceLocale ?? AppConfig.defaultLocale,
+      locale: widget.savedLocale ?? Get.deviceLocale ?? AppConfig.defaultLocale,
       fallbackLocale: AppConfig.defaultLocale,
     );
   }

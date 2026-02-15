@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:faithlock/config/env.dart';
 import 'package:faithlock/services/ai/apple_intelligence_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 /// Validation result
@@ -257,8 +258,8 @@ If INVALID:
     return ValidationResult(
       isValid: isValid,
       feedback: isValid
-          ? 'Thank you for your reflection! 🙏'
-          : 'Please share a brief thought about the verse.',
+          ? '${'meditation_thankYouReflection'.tr} 🙏'
+          : 'meditation_shareBriefThought'.tr,
       score: isValid ? 0.75 : 0.0, // Generous score for fallback
       source: 'fallback',
     );

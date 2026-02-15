@@ -3,6 +3,7 @@ import 'package:faithlock/services/app_launch_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Service to perform startup checks when app launches
 class StartupCheckService {
@@ -73,23 +74,17 @@ class StartupCheckService {
     // Show explanatory dialog
     await FastAlertDialog.show(
       context: context,
-      title: '🛡️ Enable Screen Time',
-      message:
-          'FaithLock needs Screen Time permissions to protect your apps.\n\n'
-          'This allows the app to:\n'
-          '• Block distracting apps\n'
-          '• Unlock apps temporarily after prayer\n'
-          '• Help you stay focused on God\n\n'
-          'Tap "Enable" to Continue.',
+      title: 'startup_enableScreenTime'.tr,
+      message: 'startup_screenTimeMessage'.tr,
       actions: [
         if (hasAskedBefore)
           FastDialogAction(
-            text: 'Later',
+            text: 'later'.tr,
             isCancel: true,
             onPressed: () => Navigator.pop(context, false),
           ),
         FastDialogAction(
-          text: 'Enable',
+          text: 'startup_enable'.tr,
           isDefault: true,
           onPressed: () => Navigator.pop(context, true),
         ),
@@ -124,19 +119,17 @@ class StartupCheckService {
 
     await FastAlertDialog.show(
       context: context,
-      title: '📱 Select Apps to Block',
-      message: 'Choose which apps to protect with FaithLock.\n\n'
-          'You can select social media, games, or any distracting apps.\n\n'
-          'These apps will be blocked until you complete your daily prayer.',
+      title: 'startup_selectAppsTitle'.tr,
+      message: 'startup_selectAppsMessage'.tr,
       actions: [
         if (hasAskedBefore)
           FastDialogAction(
-            text: 'Later',
+            text: 'later'.tr,
             isCancel: true,
             onPressed: () => Navigator.pop(context),
           ),
         FastDialogAction(
-          text: 'Select Apps',
+          text: 'selectApps'.tr,
           isDefault: true,
           onPressed: () async {
             Navigator.pop(context);

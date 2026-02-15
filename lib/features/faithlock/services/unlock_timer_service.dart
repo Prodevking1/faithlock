@@ -4,6 +4,7 @@ import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/services/notifications/local_notification_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Service managing temporary unlock timer after prayer
 /// Handles re-blocking when timer expires (in-app or via notification)
@@ -92,8 +93,8 @@ class UnlockTimerService with WidgetsBindingObserver {
 
       await _notificationService.scheduleNotification(
         id: 100,
-        title: '⏰ Time\'s Up',
-        body: 'Open FaithLock to re-lock your apps',
+        title: 'timer_timesUp'.tr,
+        body: 'timer_openToRelock'.tr,
         scheduledDate: scheduledTime,
         payload: 'relock_required',
       );
@@ -168,8 +169,8 @@ class UnlockTimerService with WidgetsBindingObserver {
 
         await _notificationService.scheduleNotification(
           id: 101 + i, // IDs 101-124
-          title: '🔔 Reminder',
-          body: 'Don\'t forget to re-lock your apps in FaithLock',
+          title: 'timer_reminderTitle'.tr,
+          body: 'timer_dontForget'.tr,
           scheduledDate: scheduledTime,
           payload: 'relock_reminder',
         );

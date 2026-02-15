@@ -4,6 +4,7 @@ import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:faithlock/shared/widgets/typography/fast_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Dialog to select unlock duration after prayer
 class UnlockDurationDialog {
@@ -58,11 +59,11 @@ class _UnlockDurationSheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FastText.title1(
-                            'Unlock apps',
+                            'unlock_unlockApps'.tr,
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'For how long?',
+                            'unlock_forHowLong'.tr,
                             style: TextStyle(
                               fontSize: 14,
                               color: FastColors.secondaryText(context),
@@ -74,7 +75,7 @@ class _UnlockDurationSheet extends StatelessWidget {
                     CupertinoButton(
                       padding: EdgeInsets.zero,
                       child: Text(
-                        'Cancel',
+                        'cancel'.tr,
                         style: TextStyle(
                           color: FastColors.secondaryText(context),
                         ),
@@ -93,36 +94,36 @@ class _UnlockDurationSheet extends StatelessWidget {
                     _buildDurationTile(
                       context: context,
                       icon: '⚡',
-                      title: '1 minute',
-                      subtitle: 'Quick task',
+                      title: 'unlock_1min'.tr,
+                      subtitle: 'unlock_quickTask'.tr,
                       duration: const Duration(minutes: 1),
                     ),
                     _buildDurationTile(
                       context: context,
                       icon: '⏱️',
-                      title: '5 minutes',
-                      subtitle: 'Short break',
+                      title: 'unlock_5min'.tr,
+                      subtitle: 'unlock_shortBreak'.tr,
                       duration: const Duration(minutes: 5),
                     ),
                     _buildDurationTile(
                       context: context,
                       icon: '⏲️',
-                      title: '10 minutes',
-                      subtitle: 'Focused work',
+                      title: 'unlock_10min'.tr,
+                      subtitle: 'unlock_focusedWork'.tr,
                       duration: const Duration(minutes: 10),
                     ),
                     _buildDurationTile(
                       context: context,
                       icon: '⏰',
-                      title: '30 minutes',
-                      subtitle: 'Focus session',
+                      title: 'unlock_30min'.tr,
+                      subtitle: 'unlock_focusSession'.tr,
                       duration: const Duration(minutes: 30),
                     ),
                     _buildDurationTile(
                       context: context,
                       icon: '🌙',
-                      title: 'For the rest of the day',
-                      subtitle: 'Until midnight',
+                      title: 'unlock_restOfDay'.tr,
+                      subtitle: 'unlock_untilMidnight'.tr,
                       duration: _getDurationUntilMidnight(),
                     ),
                     _buildCustomDurationTile(context),
@@ -236,7 +237,7 @@ class _UnlockDurationSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Custom duration',
+                    'unlock_customDuration'.tr,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
@@ -245,7 +246,7 @@ class _UnlockDurationSheet extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Choose a specific duration',
+                    'unlock_chooseSpecific'.tr,
                     style: TextStyle(
                       fontSize: 14,
                       color: FastColors.secondaryText(context),
@@ -286,18 +287,18 @@ class _UnlockDurationSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CupertinoButton(
-                    child: const Text('Cancel'),
+                    child: Text('cancel'.tr),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  const Text(
-                    'Custom Duration',
-                    style: TextStyle(
+                  Text(
+                    'unlock_customTitle'.tr,
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   CupertinoButton(
-                    child: const Text('OK'),
+                    child: Text('ok'.tr),
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.pop(

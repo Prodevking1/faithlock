@@ -2,6 +2,7 @@ import 'package:faithlock/app_routes.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.dart';
 import 'package:faithlock/features/onboarding/screens/step1_5_name_capture.dart';
+import 'package:faithlock/features/onboarding/screens/step1_75_attribution.dart';
 import 'package:faithlock/features/onboarding/screens/step1_divine_revelation.dart';
 import 'package:faithlock/features/onboarding/screens/step2_self_confrontation.dart';
 import 'package:faithlock/features/onboarding/screens/step3_eternal_warfare.dart';
@@ -46,47 +47,52 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                 );
 
               case 3:
-                return Step1DivineRevelation(
+                return Step175Attribution(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 4:
-                return Step2SelfConfrontation(
+                return Step1DivineRevelation(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 5:
-                return Step3EternalWarfare(
+                return Step2SelfConfrontation(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 6:
-                return Step35Testimonials(
+                return Step3EternalWarfare(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 7:
-                return Step4CallToCovenant(
+                return Step35Testimonials(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 8:
-                return Step6FinalEncouragement(
+                return Step4CallToCovenant(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 9:
-                return Step7ScreenTimePermission(
+                return Step6FinalEncouragement(
                   onComplete: () => controller.nextStep(),
                 );
 
               case 10:
-                return const Step9NotificationPermission();
+                return Step7ScreenTimePermission(
+                  onComplete: () => controller.nextStep(),
+                );
 
               case 11:
-                return const OnboardingSummaryScreen();
+                return const Step9NotificationPermission();
 
               case 12:
+                return const OnboardingSummaryScreen();
+
+              case 13:
                 return const V2FreeForYou();
 
               default:
@@ -249,7 +255,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _buildDebugActionButton(
-                        label: 'Prev',
+                        label: 'onboarding_prev'.tr,
                         icon: Icons.arrow_back,
                         onPressed: () => controller.previousStep(),
                       ),
@@ -257,7 +263,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: _buildDebugActionButton(
-                        label: 'Next',
+                        label: 'onboarding_next'.tr,
                         icon: Icons.arrow_forward,
                         onPressed: () => controller.nextStep(),
                       ),
@@ -265,7 +271,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: _buildDebugActionButton(
-                        label: 'Finish',
+                        label: 'onboarding_finish'.tr,
                         icon: Icons.check,
                         onPressed: () async {
                           await controller.completeOnboarding();

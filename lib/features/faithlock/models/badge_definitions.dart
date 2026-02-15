@@ -1,4 +1,49 @@
 import 'package:faithlock/features/faithlock/models/badge_model.dart';
+import 'package:get/get.dart';
+
+/// Translation key mapping for badge names and descriptions
+class _BadgeTranslationKeys {
+  static const Map<BadgeId, String> nameKeys = {
+    BadgeId.streakStarter: 'badge_streakStarter_name',
+    BadgeId.streakWarrior: 'badge_streakWarrior_name',
+    BadgeId.streakDevoted: 'badge_streakDevoted_name',
+    BadgeId.streakLegendary: 'badge_streakLegendary_name',
+    BadgeId.verseExplorer: 'badge_verseExplorer_name',
+    BadgeId.verseScholar: 'badge_verseScholar_name',
+    BadgeId.verseMaster: 'badge_verseMaster_name',
+    BadgeId.firstPrayer: 'badge_firstPrayer_name',
+    BadgeId.perfectScore: 'badge_perfectScore_name',
+    BadgeId.nightOwl: 'badge_nightOwl_name',
+    BadgeId.earlyBird: 'badge_earlyBird_name',
+    BadgeId.frozenSolid: 'badge_frozenSolid_name',
+  };
+
+  static const Map<BadgeId, String> descKeys = {
+    BadgeId.streakStarter: 'badge_streakStarter_desc',
+    BadgeId.streakWarrior: 'badge_streakWarrior_desc',
+    BadgeId.streakDevoted: 'badge_streakDevoted_desc',
+    BadgeId.streakLegendary: 'badge_streakLegendary_desc',
+    BadgeId.verseExplorer: 'badge_verseExplorer_desc',
+    BadgeId.verseScholar: 'badge_verseScholar_desc',
+    BadgeId.verseMaster: 'badge_verseMaster_desc',
+    BadgeId.firstPrayer: 'badge_firstPrayer_desc',
+    BadgeId.perfectScore: 'badge_perfectScore_desc',
+    BadgeId.nightOwl: 'badge_nightOwl_desc',
+    BadgeId.earlyBird: 'badge_earlyBird_desc',
+    BadgeId.frozenSolid: 'badge_frozenSolid_desc',
+  };
+}
+
+/// Extension to get translated badge name and description
+extension BadgeTranslation on Badge {
+  /// Get translated badge name
+  String get translatedName =>
+      (_BadgeTranslationKeys.nameKeys[id] ?? name).tr;
+
+  /// Get translated badge description
+  String get translatedDescription =>
+      (_BadgeTranslationKeys.descKeys[id] ?? description).tr;
+}
 
 /// Static registry of all available badges
 class BadgeDefinitions {

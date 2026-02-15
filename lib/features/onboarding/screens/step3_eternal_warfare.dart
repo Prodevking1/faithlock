@@ -100,7 +100,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
   Future<void> _phase31ScriptureWarning() async {
     await AnimationUtils.typeText(
       fullText:
-          'We will give account for every careless word.\n— Matthew 12:36',
+          'warfare_scriptureWarning'.tr,
       onUpdate: (text) => setState(() => _scriptureText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showScriptureCursor = visible),
@@ -131,7 +131,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     final fullDays = stats['fullDays'];
 
     await AnimationUtils.typeText(
-      fullText: 'If Christ returned today, how would you explain:',
+      fullText: 'warfare_reckoningIntro'.tr,
       onUpdate: (text) => setState(() => _reckoningText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showReckoningCursor = visible),
@@ -143,9 +143,9 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     setState(() => _showQuestions = true);
 
     final questions = [
-      '- These $fullDays days on your screen?',
-      '- The prayers you didn\'t pray?',
-      '- The people you didn\'t serve?',
+      'warfare_reckoningQ1'.trParams({'days': '$fullDays'}),
+      'warfare_reckoningQ2'.tr,
+      'warfare_reckoningQ3'.tr,
     ];
 
     for (final question in questions) {
@@ -165,7 +165,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     });
 
     await AnimationUtils.typeText(
-      fullText: 'There is an enemy...\n\nAnd he wants you distracted.',
+      fullText: 'warfare_enemyRevealed'.tr,
       onUpdate: (text) => setState(() => _enemyText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showEnemyCursor = visible),
@@ -182,7 +182,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     });
 
     await AnimationUtils.typeText(
-      fullText: 'Every scroll steals from you:',
+      fullText: 'warfare_scrollSteals'.tr,
       onUpdate: (text) => setState(() => _lossIntroText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showLossIntroCursor = visible),
@@ -194,9 +194,9 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     setState(() => _showLossList = true);
 
     final losses = [
-      '• Your intimacy with God',
-      '• Your spiritual sensitivity',
-      '• Your purpose and calling',
+      'warfare_lossIntimacy'.tr,
+      'warfare_lossSensitivity'.tr,
+      'warfare_lossPurpose'.tr,
     ];
 
     for (final loss in losses) {
@@ -219,7 +219,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     await AnimationUtils.pause(durationMs: 1000);
 
     await AnimationUtils.typeText(
-      fullText: 'But there is hope...',
+      fullText: 'warfare_hope'.tr,
       onUpdate: (text) => setState(() => _solutionText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showSolutionCursor = visible),
@@ -235,7 +235,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
 
     await AnimationUtils.typeText(
       fullText:
-          'In just 2 weeks with this app,\nyou could save ${daysSaved.toStringAsFixed(1)} days of your life back.',
+          'warfare_daysSaved'.trParams({'days': daysSaved.toStringAsFixed(1)}),
       onUpdate: (text) => setState(() => _solutionText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showSolutionCursor = visible),
@@ -255,7 +255,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
     });
 
     await AnimationUtils.typeText(
-      fullText: '${controller.userName.value}, will you fight for your life?',
+      fullText: 'warfare_fightForLife'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _solutionText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showSolutionCursor = visible),
@@ -384,7 +384,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                     if (_solutionText.isNotEmpty)
                       RichText(
                         text: TextSpan(
-                          style: _solutionText.contains('hope')
+                          style: _solutionText.contains('hope') || _solutionText.contains('espoir')
                               ? OnboardingTheme.emphasisText.copyWith(
                                   color: OnboardingTheme.blueSpirit,
                                 )
@@ -449,7 +449,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Birth',
+                          'warfare_birth'.tr,
                           style: OnboardingTheme.referenceText,
                         ),
                       ],
@@ -469,7 +469,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'You',
+                          'warfare_you'.tr,
                           style: OnboardingTheme.referenceText.copyWith(
                             color: OnboardingTheme.goldColor,
                             fontWeight: FontWeight.bold,
@@ -495,7 +495,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Death',
+                          'warfare_death'.tr,
                           style: OnboardingTheme.referenceText.copyWith(
                             color: OnboardingTheme.redAlert,
                           ),
@@ -517,7 +517,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Eternity',
+                          'warfare_eternity'.tr,
                           style: OnboardingTheme.referenceText.copyWith(
                             color: OnboardingTheme.blueSpirit,
                           ),
@@ -561,7 +561,7 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
 
           // Title
           Text(
-            'Your Freedom Projection',
+            'warfare_freedomProjection'.tr,
             style: OnboardingTheme.bodyText.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -585,19 +585,19 @@ class _Step3EternalWarfareState extends State<Step3EternalWarfare>
 
           // Stats
           _buildStatRow(
-            'In 2 weeks',
-            '${daysSavedIn2Weeks.toStringAsFixed(1)} days saved',
+            'warfare_in2Weeks'.tr,
+            'warfare_daysSavedLabel'.trParams({'days': daysSavedIn2Weeks.toStringAsFixed(1)}),
           ),
           const SizedBox(height: 12),
           _buildStatRow(
-            'In 1 year',
-            '${daysSavedPerYear} days saved',
+            'warfare_in1Year'.tr,
+            'warfare_daysSavedLabel'.trParams({'days': '$daysSavedPerYear'}),
           ),
           const SizedBox(height: 20),
 
           // Footer
           Text(
-            'Based on 80% reduction in phone usage',
+            'warfare_basedOn'.tr,
             style: OnboardingTheme.referenceText.copyWith(
               fontSize: 11,
               color: OnboardingTheme.grayColor,

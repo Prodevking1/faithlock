@@ -10,8 +10,6 @@
 // - Supports both vertical and horizontal scrolling
 // - Optionally includes sticky headers
 
-import 'dart:io' show Platform;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,8 +41,6 @@ class FastSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isIOS = Platform.isIOS;
-
     Widget listWidget;
 
     if (separatorBuilder != null) {
