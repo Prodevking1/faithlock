@@ -3,6 +3,7 @@ import { getAllGlossaryTerms } from '@/lib/contentful'
 import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import CTAButton from '@/components/ui/CTAButton'
 import BibleVerse from '@/components/ui/BibleVerse'
+import { stripMarkdown } from '@/components/ui/RichText'
 
 export const metadata: Metadata = {
   title: 'Christian Digital Wellness Guide - Phone Addiction Resources',
@@ -189,7 +190,7 @@ export default async function LearnPage() {
                             {t.term as string}
                           </h3>
                           <p className="text-sm text-gray-500 line-clamp-2">
-                            {t.shortDefinition as string}
+                            {stripMarkdown(t.shortDefinition as string)}
                           </p>
                         </div>
                       </div>

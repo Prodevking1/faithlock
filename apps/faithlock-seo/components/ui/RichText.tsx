@@ -8,6 +8,31 @@ interface RichTextProps {
 }
 
 /**
+ * Strip markdown syntax from a string for plain-text display.
+ * Removes headers, bold, italic, links, images, lists, etc.
+ */
+export function stripMarkdown(text: string | unknown): string {
+  if (!text || typeof text !== 'string') return ''
+  return text
+    .replace(/^#{1,6}\s+/gm, '')       // headers
+    .replace(/\*\*(.*?)\*\*/g, '$1')    // bold
+    .replace(/\*(.*?)\*/g, '$1')        // italic
+    .replace(/__(.*?)__/g, '$1')        // bold alt
+    .replace(/_(.*?)_/g, '$1')          // italic alt
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1') // images
+    .replace(/^[-*+]\s+/gm, '')         // unordered lists
+    .replace(/^\d+\.\s+/gm, '')         // ordered lists
+    .replace(/^>\s+/gm, '')             // blockquotes
+    .replace(/`{1,3}[^`]*`{1,3}/g, '')  // code
+    .replace(/^\|.*\|$/gm, '')          // tables
+    .replace(/^[-|:\s]+$/gm, '')        // table separators
+    .replace(/^---+$/gm, '')            // horizontal rules
+    .replace(/\n{3,}/g, '\n\n')         // excess newlines
+    .trim()
+}
+
+/**
  * Extract all raw text from a Contentful Rich Text Document.
  * Used to detect if text nodes contain embedded HTML strings.
  */

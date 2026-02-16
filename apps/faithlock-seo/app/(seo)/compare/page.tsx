@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { getAllCompetitors } from '@/lib/contentful'
 import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import CTAButton from '@/components/ui/CTAButton'
+import { stripMarkdown } from '@/components/ui/RichText'
 
 export const metadata: Metadata = {
   title: 'FaithLock Comparisons - Christian Screen Time App Reviews',
@@ -65,7 +66,7 @@ export default async function ComparePage() {
               return (
                 <a
                   key={entry.sys.id}
-                  href={`/compare/faithlock-vs-${c.slug}`}
+                  href={`/compare/${(c.slug as string).startsWith('faithlock-vs-') ? c.slug : `faithlock-vs-${c.slug}`}`}
                   className="card-interactive p-6"
                 >
                   <div className="flex items-center gap-3 mb-4">
@@ -77,7 +78,7 @@ export default async function ComparePage() {
                     <span className="text-sm font-medium text-gray-400">vs</span>
                     <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
                       <span className="text-gray-500 text-sm font-bold">
-                        {(c.name as string)[0]}
+                        {(c.name as string)?.[0]}
                       </span>
                     </div>
                   </div>
@@ -86,17 +87,21 @@ export default async function ComparePage() {
                     FaithLock vs {c.name as string}
                   </h2>
                   <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                    {c.tagline as string}
+                    {stripMarkdown(c.tagline as string)}
                   </p>
 
                   <div className="flex items-center gap-3 text-xs text-gray-400">
-                    <span className="inline-flex items-center gap-1">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-warm-400">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                      {c.rating as number}
-                    </span>
-                    <span>{((c.downloads as number) || 0).toLocaleString()}+ downloads</span>
+                    {(c.rating as number) > 0 && (
+                      <span className="inline-flex items-center gap-1">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-warm-400">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        {c.rating as number}
+                      </span>
+                    )}
+                    {(c.downloads as number) > 0 && (
+                      <span>{(c.downloads as number).toLocaleString()}+ downloads</span>
+                    )}
                     <span>{c.price as string}</span>
                   </div>
                 </a>

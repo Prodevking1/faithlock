@@ -2,7 +2,7 @@ import { GlossaryTerm } from '@/lib/types'
 import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
-import RichText from '@/components/ui/RichText'
+import RichText, { stripMarkdown } from '@/components/ui/RichText'
 
 interface GlossaryTemplateProps {
   term: GlossaryTerm
@@ -33,7 +33,7 @@ export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
               Quick Definition
             </p>
             <p className="text-white/80 leading-relaxed">
-              {term.shortDefinition}
+              {stripMarkdown(term.shortDefinition)}
             </p>
           </div>
         </div>
