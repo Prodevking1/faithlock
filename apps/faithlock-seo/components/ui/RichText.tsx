@@ -33,8 +33,17 @@ export function stripMarkdown(text: string | unknown): string {
 }
 
 /**
+ * Block-level node types in Contentful Rich Text that need line breaks between them.
+ */
+const BLOCK_NODES = new Set([
+  'document', 'paragraph', 'heading-1', 'heading-2', 'heading-3',
+  'heading-4', 'heading-5', 'heading-6', 'unordered-list', 'ordered-list',
+  'list-item', 'blockquote', 'hr', 'table', 'table-row', 'table-cell',
+])
+
+/**
  * Extract all raw text from a Contentful Rich Text Document.
- * Used to detect if text nodes contain embedded HTML strings.
+ * Preserves line breaks between block-level nodes so markdown can be parsed.
  */
 function extractRawText(node: unknown): string {
   if (!node || typeof node !== 'object') return ''
@@ -43,7 +52,13 @@ function extractRawText(node: unknown): string {
   if (typeof n.value === 'string') text += n.value
   if (Array.isArray(n.content)) {
     for (const child of n.content) {
-      text += extractRawText(child)
+      const childNode = child as Record<string, unknown>
+      const childText = extractRawText(child)
+      if (BLOCK_NODES.has(childNode.nodeType as string)) {
+        text += '\n\n' + childText
+      } else {
+        text += childText
+      }
     }
   }
   return text
