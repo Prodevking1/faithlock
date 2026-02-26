@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:faithlock/features/faithlock/controllers/faithlock_settings_controller.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
 import 'package:faithlock/navigation/controllers/navigation_controller.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
@@ -16,6 +17,7 @@ import 'package:get/get.dart';
 class ScheduleController extends GetxController with WidgetsBindingObserver {
   final ScreenTimeService _screenTimeService = ScreenTimeService();
   final StorageService _storage = StorageService();
+  final PostHogService _analytics = PostHogService.instance;
 
   // Storage key for tracking if user has seen the app selection prompt
   static const String _keyHasSeenAppsPrompt = 'faithlock_has_seen_apps_prompt';
@@ -194,6 +196,12 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
     try {
       final granted = await _screenTimeService.requestAuthorization();
 
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('schedule_screen_time_permission', {
+          'granted': granted,
+        });
+      }
+
       if (granted) {
         FastToast.success('settings_screenTimeEnabled'.tr);
         // Refresh this controller
@@ -253,6 +261,12 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         final settingsController = Get.find<FaithLockSettingsController>();
         await settingsController.loadSelectedAppsCount();
       } catch (e) {}
+
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('schedule_apps_selected', {
+          'selected_apps_count': selectedAppsCount.value,
+        });
+      }
 
       if (selectedAppsCount.value > 0) {
         await loadSchedules();
@@ -414,6 +428,14 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
       await _saveAndResetupSchedules();
 
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('schedule_toggled', {
+          'schedule_name': updatedSchedule['name'],
+          'is_enabled': updatedSchedule['enabled'],
+          'is_currently_active': isScheduleActive(updatedSchedule),
+        });
+      }
+
       FastToast.success('schedule_updated'.tr);
     } catch (e) {
       FastToast.error(
@@ -483,6 +505,15 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
 
                       await _saveAndResetupSchedules();
 
+                      if (_analytics.isReady) {
+                        _analytics.events.trackCustom('schedule_time_edited', {
+                          'schedule_name': updatedSchedule['name'],
+                          'edited_field': isStart ? 'start_time' : 'end_time',
+                          'new_hour': selectedTime.hour,
+                          'new_minute': selectedTime.minute,
+                        });
+                      }
+
                       FastToast.success('schedule_timeUpdated'.tr);
                     },
                   ),
@@ -549,6 +580,12 @@ class ScheduleController extends GetxController with WidgetsBindingObserver {
         // At least one schedule is active, apply shields
         await _screenTimeService.applyShields();
         debugPrint('🔒 Shields applied - schedule(s) currently active');
+
+        if (_analytics.isReady) {
+          _analytics.events.trackCustom('schedule_shields_applied', {
+            'active_schedule_count': schedules.where((s) => isScheduleActive(s)).length,
+          });
+        }
       } else {
         // No schedules active, remove shields
         await _screenTimeService.removeShields();

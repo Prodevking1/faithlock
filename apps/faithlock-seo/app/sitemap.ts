@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   const comparisonPages: MetadataRoute.Sitemap = competitors.map((slug) => ({
-    url: `${SITE_URL}/compare/faithlock-vs-${slug}`,
+    url: `${SITE_URL}/compare/${slug.startsWith('faithlock-vs-') ? slug : `faithlock-vs-${slug}`}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.8,

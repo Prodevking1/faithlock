@@ -1,3 +1,4 @@
+import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
 import 'package:faithlock/navigation/screens/main_screen.dart';
@@ -25,6 +26,14 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
 
   Future<void> _determineInitialRoute() async {
     try {
+      // Dev bypass: skip onboarding & paywall entirely
+      if (AppConfig.bypassPaywall) {
+        debugPrint('⚡ [InitialRoute] bypassPaywall enabled - going straight to MainScreen');
+        Get.put(ScriptureOnboardingController(), permanent: true);
+        Get.off(() => const MainScreen());
+        return;
+      }
+
       // Check if user has completed onboarding
       final prefs = PreferencesService();
       final hasCompletedOnboarding =

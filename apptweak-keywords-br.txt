@@ -1,0 +1,539 @@
+## FaithLock - Brazil Market Keywords for AppTweak
+## Mix of Portuguese (primary) and English (secondary - Brazilians search both)
+
+# === CORE FUNCTION - Portuguese ===
+tempo de tela
+bloqueador de apps
+bloqueio de aplicativos
+bloquear apps
+bloquear aplicativos
+bloqueio de tela
+bloqueio celular
+trancar apps
+trancar aplicativos
+travar celular
+limite de tempo
+limite de tela
+limite de apps
+tempo de uso
+tempo no celular
+controle de tempo
+controle de tela
+temporizador de apps
+timer celular
+uso do celular
+rastreador de uso
+monitor de tela
+reduzir tempo de tela
+limitar celular
+desbloquear com biblia
+
+# === CORE FUNCTION - English ===
+screen time
+app blocker
+app lock
+phone lock
+block apps
+screen time limit
+app timer
+screen lock
+phone blocker
+app locker
+screen time control
+phone timer
+screen blocker
+app usage
+phone usage
+limit phone
+app limiter
+digital lock
+
+# === BIBLE / FAITH - Portuguese ===
+biblia
+biblia sagrada
+biblia app
+biblia offline
+biblia gratis
+biblia audio
+biblia em audio
+biblia nvi
+biblia acf
+biblia ara
+biblia ntlh
+biblia almeida
+biblia king james
+biblia católica
+biblia ave maria
+biblia cnbb
+biblia pastoral
+versiculo do dia
+versiculo diario
+versiculo biblico
+devocional
+devocional diario
+devocional diária
+leitura biblica
+leitura biblica diaria
+plano de leitura biblica
+estudo biblico
+estudo da biblia
+meditação biblica
+oração
+oração diaria
+oração da manhã
+app de oração
+livro de orações
+promessas de deus
+palavra de deus
+palavra do dia
+evangelho do dia
+evangelho
+salmo
+salmo do dia
+salmos
+proverbios
+sabedoria biblica
+
+# === BIBLE / FAITH - English (Brazilians search these too) ===
+bible
+bible app
+bible verse
+daily bible
+bible reading
+scripture
+daily devotional
+devotional
+bible study
+verse of the day
+holy bible
+bible free
+bible offline
+prayer
+prayer app
+daily prayer
+bible gateway
+gospel
+jesus
+christian
+god
+
+# === CATHOLIC (Brazil is largest Catholic country) ===
+terço
+santo terço
+terço app
+terço online
+rezar o terço
+rosario
+santo rosario
+novena
+novena app
+novena orações
+missa
+missa do dia
+liturgia diaria
+liturgia
+leitura do dia
+primeira leitura
+evangelho do dia catolico
+santo do dia
+santa missa
+confissão
+exame de consciencia
+quaresma
+via sacra
+via crucis
+ave maria
+pai nosso
+anjo da guarda
+oração do anjo
+magnificat
+angelus
+divina misericordia
+pocket terço
+
+# === EVANGELICAL / PROTESTANT (Fastest growing in Brazil) ===
+harpa cristã
+harpa crista
+hinos da harpa
+hinario
+hinos evangelicos
+hinos gospel
+louvor
+louvor e adoração
+musica gospel
+gospel
+cantor cristão
+worship
+pregação
+pregação do dia
+sermão
+culto
+culto online
+igreja
+igreja evangelica
+assembleia de deus
+batista
+presbiteriana
+metodista
+adventista
+ccb
+congregação cristã
+hinos ccb
+relatório ccb
+
+# === INTERSECTION (Bible + Screen Time/Blocking) - Portuguese ===
+biblia bloqueio
+bloqueio cristão
+bloqueio biblia
+biblia foco
+biblia tempo de tela
+biblia antes celular
+cristao foco
+tempo com deus
+tempo com deus app
+biblia timer
+biblia rotina
+rotina com deus
+devocional bloqueio
+app biblia bloqueio
+oração antes celular
+versiculo desbloqueio
+fe e foco
+disciplina crista
+disciplina espiritual
+jejum digital
+jejum de tela
+jejum celular
+detox cristão
+detox biblia
+deus primeiro
+jesus primeiro
+devocional matinal
+madrugada com deus
+quieto com deus
+momento com deus
+
+# === INTERSECTION - English ===
+bible lock
+faith lock
+scripture lock
+verse lock
+bible screen time
+christian screen time
+bible before phone
+prayer before phone
+bible blocker
+faith blocker
+bible timer
+faith timer
+god first phone
+bible first
+bible unlock
+prayer unlock
+bible break
+faith break
+bible challenge
+bible habit
+prayer habit
+christian focus
+
+# === PROBLEM KEYWORDS - Portuguese ===
+vicio em celular
+vicio no celular
+dependencia celular
+dependencia digital
+vicio em redes sociais
+vicio instagram
+vicio tiktok
+vicio youtube
+vicio em jogos
+muito tempo no celular
+tempo demais no celular
+parar de mexer no celular
+largar o celular
+desapegar do celular
+procrastinação celular
+procrastinação
+distraido pelo celular
+ansiedade celular
+nomofobia
+rolagem infinita
+scrolling infinito
+
+# === PROBLEM KEYWORDS - English ===
+phone addiction
+screen addiction
+social media addiction
+too much screen time
+digital addiction
+smartphone addiction
+doom scrolling
+phone detox
+digital detox
+phone overuse
+mindless scrolling
+
+# === SOLUTION KEYWORDS - Portuguese ===
+bem estar digital
+saude digital
+equilibrio digital
+uso consciente celular
+uso saudavel celular
+liberdade digital
+desintoxicação digital
+detox digital
+detox celular
+menos celular
+menos tela
+foco
+app de foco
+modo foco
+concentração
+produtividade
+autocontrole
+disciplina
+motivação
+habito saudavel
+parar vicio
+largar vicio
+
+# === SOLUTION KEYWORDS - English ===
+digital wellbeing
+digital wellness
+phone balance
+focus mode
+focus app
+stay focused
+digital minimalism
+self control app
+break bad habits
+screen time solution
+
+# === PRODUCTIVITY / FOCUS - Portuguese ===
+foco
+temporizador
+pomodoro
+produtividade
+app produtividade
+gerenciamento de tempo
+timer de estudo
+foco estudo
+concentração app
+trabalho focado
+bloquear distrações
+sem distrações
+timer
+cronometro
+planejador
+
+# === PRODUCTIVITY / FOCUS - English ===
+focus
+focus timer
+pomodoro
+pomodoro timer
+productivity
+study timer
+study app
+concentration
+deep work
+block distractions
+forest app
+
+# === COMPETITOR BRANDS ===
+opal
+one sec
+forest
+flora
+hallow
+glorify
+youversion
+biblia youversion
+abide
+screenzen
+clearspace
+brick
+unpluq
+flipd
+kidslox
+bark
+qustodio
+family link
+apple screen time
+emanu
+skeelo
+mactivepro
+hiwatchpro
+magiconnect
+
+# === PARENTAL CONTROL - Portuguese ===
+controle parental
+controle dos pais
+app controle parental
+tempo de tela criança
+tempo de tela filhos
+bloqueio infantil
+app para filhos
+monitorar celular filho
+bloquear apps criança
+familia digital
+controle familia
+proteção infantil
+segurança infantil
+
+# === PARENTAL CONTROL - English ===
+parental control
+parental control app
+kids screen time
+child screen time
+family screen time
+child phone monitor
+kids phone lock
+child app lock
+screen time kids
+parental lock
+child lock
+
+# === HABIT / ROUTINE - Portuguese ===
+rastreador de habitos
+app de habitos
+habito diario
+rotina matinal
+rotina diaria
+app de rotina
+bons habitos
+habitos saudaveis
+desafio 21 dias
+desafio 30 dias
+desafio diario
+desenvolvimento pessoal
+autocuidado
+mindfulness
+meditação
+gratidão
+diario
+diario pessoal
+reflexão
+
+# === HABIT / ROUTINE - English ===
+habit tracker
+habit app
+morning routine
+daily routine
+daily challenge
+self improvement
+mindfulness
+meditation
+gratitude app
+journal app
+
+# === CHRISTIAN LIFESTYLE - Portuguese ===
+vida crista
+estilo de vida cristão
+andar com deus
+crescer na fe
+crescimento espiritual
+disciplinas espirituais
+habito de leitura biblica
+vida de oração
+guerreiro de oração
+motivação crista
+inspiração crista
+jornada de fe
+comunidade crista
+igreja
+grupo de jovens
+jovem cristão
+adolescente cristão
+mulher crista
+homem cristão
+familia crista
+criação cristã
+devocional em familia
+biblia em familia
+oração em familia
+biblia infantil
+biblia para crianças
+escola dominical
+escola biblica
+
+# === FASTING (Big in Brazil - both religious and health) ===
+jejum
+jejum intermitente
+app de jejum
+jejum cristão
+jejum e oração
+jejum de daniel
+jejum 21 dias
+jejum religioso
+fasting
+fasting app
+intermittent fasting
+
+# === SEASONAL - Portuguese ===
+quaresma
+quaresma 2026
+devocional quaresma
+pascoa
+semana santa
+natal
+devocional natal
+advento
+calendario advento
+ano novo
+resolução ano novo
+metas 2026
+biblia em um ano
+plano leitura 2026
+carnaval
+corpus christi
+dia das maes
+dia dos pais
+dia dos namorados
+
+# === SEASONAL - English ===
+lent
+lent 2026
+easter
+advent
+christmas devotional
+new year resolution
+new year bible 2026
+
+# === LOCK SCREEN / WIDGET - Portuguese ===
+tela de bloqueio
+widget
+widget biblia
+widget versiculo
+papel de parede
+papel de parede cristão
+papel de parede biblia
+tela inicial
+widget tela inicial
+
+# === LOCK SCREEN / WIDGET - English ===
+lock screen
+lock screen widget
+bible lock screen
+bible wallpaper
+christian wallpaper
+bible widget
+verse widget
+ios widget
+home screen widget
+
+# === READING / BOOKS (Adjacent category) ===
+livros
+app de livros
+leitura
+app de leitura
+ler livros
+ebook
+livro cristão
+livros cristãos
+livros evangelicos
+livraria cristã
+audiobook
+audiobook cristão
+cabeceira
+livros gratis
+kindle

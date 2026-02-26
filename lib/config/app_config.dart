@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppConfig {
+  // Dev bypass - skip onboarding & paywall, go straight to home
+  static const bool bypassPaywall = true;
+
   // App information
   static const String appName = 'Fast App';
   static const String appVersion = '1.0.0';

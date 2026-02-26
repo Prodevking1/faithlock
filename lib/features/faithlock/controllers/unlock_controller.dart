@@ -1,5 +1,6 @@
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:get/get.dart';
 
 class UnlockController extends GetxController {
@@ -7,6 +8,7 @@ class UnlockController extends GetxController {
   final StatsService _statsService = StatsService();
   final LockService _lockService = LockService();
   final ScreenTimeService _screenTimeService = ScreenTimeService();
+  final PostHogService _analytics = PostHogService.instance;
 
   // Observable state
   final Rx<BibleVerse?> currentVerse = Rx<BibleVerse?>(null);
@@ -57,6 +59,14 @@ class UnlockController extends GetxController {
       currentVerse.value = verse;
       currentQuiz.value = VerseQuiz.fromVerse(verse);
       isLoading.value = false;
+
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('unlock_verse_loaded', {
+          'verse_id': verse.id,
+          'verse_reference': verse.reference,
+          'streak_based': stats.currentStreak > 0,
+        });
+      }
     } catch (e) {
       isLoading.value = false;
       showError.value = true;
@@ -81,6 +91,15 @@ class UnlockController extends GetxController {
     attemptCount.value++;
     final isCorrect = currentQuiz.value!.isCorrectAnswer(selectedAnswer.value);
 
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('unlock_answer_submitted', {
+        'verse_id': currentVerse.value!.id,
+        'verse_reference': currentVerse.value!.reference,
+        'is_correct': isCorrect,
+        'attempt_number': attemptCount.value,
+      });
+    }
+
     if (isCorrect) {
       await _handleSuccessfulUnlock();
     } else {
@@ -103,6 +122,15 @@ class UnlockController extends GetxController {
         timeToUnlockSeconds: timeToUnlock,
       );
 
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('unlock_successful', {
+          'verse_id': currentVerse.value!.id,
+          'verse_reference': currentVerse.value!.reference,
+          'attempt_count': attemptCount.value,
+          'time_to_unlock_seconds': timeToUnlock,
+        });
+      }
+
       // Stop Screen Time blocking
       await _screenTimeService.stopBlocking();
 
@@ -124,6 +152,14 @@ class UnlockController extends GetxController {
       errorMessage.value = 'Maximum attempts reached. The correct answer is shown in green.';
       showError.value = true;
 
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('unlock_max_attempts_reached', {
+          'verse_id': currentVerse.value!.id,
+          'verse_reference': currentVerse.value!.reference,
+          'attempt_count': attemptCount.value,
+        });
+      }
+
       // Record failed unlock
       await _statsService.recordUnlockAttempt(
         verseId: currentVerse.value!.id,
@@ -141,6 +177,13 @@ class UnlockController extends GetxController {
   Future<void> useEmergencyBypass() async {
     // Emergency bypass with penalty
     try {
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('unlock_emergency_bypass', {
+          'verse_id': currentVerse.value?.id ?? 'emergency',
+          'attempt_count': attemptCount.value,
+        });
+      }
+
       await _statsService.recordUnlockAttempt(
         verseId: currentVerse.value?.id ?? 'emergency',
         wasSuccessful: false,
@@ -156,6 +199,12 @@ class UnlockController extends GetxController {
   }
 
   Future<void> retryWithNewVerse() async {
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('unlock_retry_new_verse', {
+        'previous_verse_id': currentVerse.value?.id,
+      });
+    }
+
     selectedAnswer.value = -1;
     attemptCount.value = 0;
     isAnswerRevealed.value = false;

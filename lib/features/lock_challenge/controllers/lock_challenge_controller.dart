@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
 import 'package:faithlock/features/lock_challenge/models/verse_question.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 /// Controller for managing lock challenge quiz flow
 class LockChallengeController extends GetxController {
   final StorageService _storage = StorageService();
+  final PostHogService _analytics = PostHogService.instance;
 
   // Observable state
   final RxList<VerseQuestion> questions = <VerseQuestion>[].obs;
@@ -84,6 +86,14 @@ class LockChallengeController extends GetxController {
       );
 
       questions.value = loadedQuestions;
+
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('lock_challenge_started', {
+          'question_count': loadedQuestions.length,
+          'intensity': intensity,
+          'categories': categories.join(','),
+        });
+      }
     } catch (e) {
       // Fallback to default questions
       questions.value = VerseQuestionDatabase.getQuestionsForCategories(
@@ -117,6 +127,14 @@ class LockChallengeController extends GetxController {
       isAnswerCorrect.value = question.isCorrect(index);
       showResult.value = true;
 
+      if (_analytics.isReady) {
+        _analytics.events.trackCustom('lock_challenge_answer', {
+          'question_index': currentQuestionIndex.value,
+          'is_correct': isAnswerCorrect.value,
+          'total_questions': totalQuestions,
+        });
+      }
+
       if (isAnswerCorrect.value) {
         correctAnswersCount.value++;
       }
@@ -149,6 +167,16 @@ class LockChallengeController extends GetxController {
 
     // Save stats
     await _saveSuccessStats();
+
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('lock_challenge_completed', {
+        'correct_answers': correctAnswersCount.value,
+        'total_questions': totalQuestions,
+        'score_percent': totalQuestions > 0
+            ? ((correctAnswersCount.value / totalQuestions) * 100).round()
+            : 0,
+      });
+    }
 
     // Track TikTok challenge completion
     try {
@@ -190,6 +218,13 @@ class LockChallengeController extends GetxController {
 
   /// Break covenant and unlock (emergency bypass)
   Future<void> breakCovenant() async {
+    if (_analytics.isReady) {
+      _analytics.events.trackCustom('lock_challenge_covenant_broken', {
+        'correct_answers_before_break': correctAnswersCount.value,
+        'question_index': currentQuestionIndex.value,
+      });
+    }
+
     // Reset streak
     await _storage.writeString('current_streak', '0');
 
