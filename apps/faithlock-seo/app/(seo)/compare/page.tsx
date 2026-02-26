@@ -145,6 +145,7 @@ export default async function ComparePage() {
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="compare_index_cta"
           />
         </section>
       </div>

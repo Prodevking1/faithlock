@@ -3,6 +3,7 @@ import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import ComparisonTable from '@/components/ui/ComparisonTable'
 import CTAButton from '@/components/ui/CTAButton'
 import BibleVerse from '@/components/ui/BibleVerse'
+import TemplateTracker from '@/components/templates/TemplateTracker'
 
 interface ComparisonTemplateProps {
   competitor: Competitor
@@ -13,6 +14,7 @@ export default function ComparisonTemplate({
 }: ComparisonTemplateProps) {
   return (
     <article>
+      <TemplateTracker type="comparison" slug={competitor.slug} />
       {/* Hero */}
       <div className="bg-hero-pattern text-white">
         <div className="container-default py-16 md:py-20">
@@ -247,6 +249,7 @@ export default function ComparisonTemplate({
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="comparison_cta"
           />
         </section>
 

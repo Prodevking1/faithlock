@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackPhoneDemo } from '@/lib/analytics'
 
 export default function InteractivePhone() {
   const [unlocked, setUnlocked] = useState(false)
@@ -72,7 +73,10 @@ export default function InteractivePhone() {
 
             {/* Slider */}
             <button
-              onClick={() => setUnlocked(true)}
+              onClick={() => {
+                setUnlocked(true)
+                trackPhoneDemo('unlock')
+              }}
               className="mb-10 w-full h-14 bg-slate-900 rounded-full border border-slate-800 flex items-center px-1.5 relative overflow-hidden group cursor-pointer shadow-inner"
             >
               <div className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-slate-500 tracking-widest uppercase pl-4 group-hover:text-white transition-colors">
@@ -98,7 +102,10 @@ export default function InteractivePhone() {
             <h3 className="text-slate-900 text-xl font-bold tracking-tight">Unlocked!</h3>
             <p className="text-slate-500 text-xs mt-2 mb-8">You have 5 minutes of access.</p>
             <button
-              onClick={() => setUnlocked(false)}
+              onClick={() => {
+                setUnlocked(false)
+                trackPhoneDemo('lock')
+              }}
               className="px-6 py-2 bg-slate-900 text-white rounded-full text-xs font-medium hover:bg-slate-800 transition-colors"
             >
               Lock again

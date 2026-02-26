@@ -238,6 +238,7 @@ export default async function LearnPage() {
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="learn_index_cta"
           />
         </section>
       </div>

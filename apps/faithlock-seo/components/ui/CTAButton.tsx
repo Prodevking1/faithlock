@@ -1,9 +1,14 @@
+'use client'
+
+import { trackCTAClick } from '@/lib/analytics'
+
 interface CTAButtonProps {
   text: string
   href: string
   variant?: 'primary' | 'white' | 'outline' | 'dark'
   size?: 'small' | 'medium' | 'large'
   showAppleIcon?: boolean
+  trackingLocation?: string
 }
 
 export default function CTAButton({
@@ -12,6 +17,7 @@ export default function CTAButton({
   variant = 'primary',
   size = 'medium',
   showAppleIcon = false,
+  trackingLocation = 'unknown',
 }: CTAButtonProps) {
   const baseStyles =
     'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 text-center'
@@ -39,6 +45,7 @@ export default function CTAButton({
       className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]}`}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackCTAClick(trackingLocation, text)}
     >
       {showAppleIcon && (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="flex-shrink-0">

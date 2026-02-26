@@ -166,6 +166,7 @@ export default async function FeaturesPage() {
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="features_index_cta"
           />
         </section>
       </div>

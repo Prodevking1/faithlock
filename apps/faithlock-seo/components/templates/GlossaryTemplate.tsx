@@ -3,6 +3,7 @@ import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
 import RichText, { stripMarkdown } from '@/components/ui/RichText'
+import TemplateTracker from '@/components/templates/TemplateTracker'
 
 interface GlossaryTemplateProps {
   term: GlossaryTerm
@@ -11,6 +12,7 @@ interface GlossaryTemplateProps {
 export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
   return (
     <article>
+      <TemplateTracker type="glossary" slug={term.slug} />
       {/* Hero */}
       <div className="bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 text-white">
         <div className="container-default py-14 md:py-20">
@@ -172,6 +174,7 @@ export default function GlossaryTemplate({ term }: GlossaryTemplateProps) {
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="glossary_cta"
           />
         </section>
 

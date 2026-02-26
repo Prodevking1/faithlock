@@ -3,6 +3,7 @@ import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
 import RichText from '@/components/ui/RichText'
+import TemplateTracker from '@/components/templates/TemplateTracker'
 
 interface FeatureTemplateProps {
   feature: Feature
@@ -11,6 +12,7 @@ interface FeatureTemplateProps {
 export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
   return (
     <article>
+      <TemplateTracker type="feature" slug={feature.slug} />
       {/* Hero */}
       <div className="bg-hero-pattern text-white">
         <div className="container-default py-14 md:py-20">
@@ -172,6 +174,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
             variant="white"
             size="large"
             showAppleIcon
+            trackingLocation="feature_cta"
           />
         </section>
 
