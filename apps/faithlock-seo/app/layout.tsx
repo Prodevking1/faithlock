@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from '@/lib/constants'
+import { PostHogProvider } from './providers'
 import './globals.css'
 
 const inter = Inter({
@@ -37,7 +38,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <PostHogProvider>{children}</PostHogProvider>
+      </body>
     </html>
   )
 }
