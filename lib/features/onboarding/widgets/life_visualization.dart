@@ -1,15 +1,21 @@
+import 'dart:ui';
+
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/shared/widgets/typography/fast_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Life Visualization Widget - Powerful impact visualization
 /// Shows life as dots in a grid with wasted time overlay
+/// When [isPreview] is true, shows a blurred/grayed preview with a CTA overlay
 class LifeVisualization extends StatelessWidget {
   final int currentAge;
   final int lifeExpectancy;
   final int daysWasted;
   final bool showWasted;
+  final bool isPreview;
+  final VoidCallback? onPreviewTap;
 
   LifeVisualization({
     super.key,
@@ -17,6 +23,8 @@ class LifeVisualization extends StatelessWidget {
     required this.lifeExpectancy,
     required this.daysWasted,
     this.showWasted = false,
+    this.isPreview = false,
+    this.onPreviewTap,
   });
 
   @override
@@ -63,7 +71,7 @@ class LifeVisualization extends StatelessWidget {
     final containerInnerWidth = availableWidth - (24 * 2);
     final gridStartX = (containerInnerWidth - totalGridWidth) / 2 + 24;
 
-    return Column(
+    final content = Column(
       children: [
         // Main grid container
         Container(
@@ -195,6 +203,64 @@ class LifeVisualization extends StatelessWidget {
               ),
             ],
           ],
+        ),
+      ],
+    );
+
+    if (!isPreview) return content;
+
+    // Preview mode: reduced opacity + blur + CTA overlay
+    return Stack(
+      children: [
+        Opacity(
+          opacity: 0.35,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            child: content,
+          ),
+        ),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: onPreviewTap,
+            child: Container(
+              color: Colors.transparent,
+              alignment: Alignment.center,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: BoxDecoration(
+                  color: OnboardingTheme.cardBackground.withValues(alpha: 0.95),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: OnboardingTheme.goldColor.withValues(alpha: 0.4),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.person_crop_circle,
+                      color: OnboardingTheme.goldColor,
+                      size: 32,
+                    ),
+                    const SizedBox(height: 12),
+                    FastText.body(
+                      'lifeViz_previewCta'.tr,
+                      color: OnboardingTheme.labelPrimary,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    FastText.callout(
+                      'lifeViz_previewAction'.tr,
+                      color: OnboardingTheme.goldColor,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );

@@ -25,16 +25,18 @@ class TikTokService {
     if (_initialized) return;
 
     try {
+      // IDFA/advertiser ID collection disabled — app does not use ATT.
+      // TikTok attribution still works via SKAdNetwork and server-side events.
       final iosOptions = TikTokIosOptions(
-        disableTracking: false,
-        disableAutomaticTracking: false,
+        disableTracking: true,
+        disableAutomaticTracking: true,
         disableSKAdNetworkSupport: false,
       );
 
       final androidOptions = TikTokAndroidOptions(
         disableAutoStart: false,
         enableAutoIapTrack: true,
-        disableAdvertiserIDCollection: false,
+        disableAdvertiserIDCollection: true,
       );
 
       await TikTokEventsSdk.initSdk(

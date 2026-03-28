@@ -266,7 +266,7 @@ class _V2SelfConfrontationState extends State<V2SelfConfrontation> {
     await AnimationUtils.pause(durationMs: AnimationUtils.pauseMedium);
 
     await AnimationUtils.typeText(
-      fullText: 'selfConf_thisIsYourLife'.trParams({'name': controller.userName.value}),
+      fullText: 'selfConf_assumedAge'.trParams({'name': controller.userName.value}),
       onUpdate: (text) => setState(() => _revelationText = text),
       onCursorVisibility: (visible) =>
           setState(() => _showRevelationCursor = visible),
@@ -522,7 +522,7 @@ class _V2SelfConfrontationState extends State<V2SelfConfrontation> {
                     if (_showLifeVisualization) ...[
                       const SizedBox(height: 40),
                       LifeVisualization(
-                        currentAge: controller.userAge.value,
+                        currentAge: 30,
                         lifeExpectancy: 80,
                         daysWasted: controller
                             .calculateLifeStats()['daysWastedInFuture'],

@@ -47,6 +47,13 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   FastSpacing.h24,
 
+                  // Personal Section
+                  _buildSectionHeader('settings_personal'.tr, context),
+                  FastSpacing.h8,
+                  _buildPersonalCard(context, controller),
+
+                  FastSpacing.h32,
+
                   // Permissions Section
                   _buildSectionHeader('permissions'.tr, context),
                   FastSpacing.h8,
@@ -88,6 +95,35 @@ class SettingsScreen extends StatelessWidget {
           letterSpacing: 0.5,
         ),
       ),
+    );
+  }
+
+  Widget _buildPersonalCard(
+      BuildContext context, FaithLockSettingsController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: FastColors.surfaceVariant(context),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Obx(() => _buildNavigationTile(
+            context: context,
+            icon: CupertinoIcons.person,
+            title: 'settings_age'.tr,
+            subtitle: controller.ageSkipped.value || controller.userAge.value == 0
+                ? 'settings_ageNotSet'.tr
+                : 'settings_ageValue'.trParams({
+                    'age': controller.userAge.value.toString(),
+                  }),
+            trailing: const Icon(CupertinoIcons.chevron_right, size: 20),
+            onTap: () => controller.showAgePicker(),
+          )),
     );
   }
 

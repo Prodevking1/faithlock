@@ -247,6 +247,7 @@ const Map<String, String> fr_FR = {
   'selfConf_revelation':
       'Sur une année :\n@days jours entiers perdus devant ton écran.',
   'selfConf_thisIsYourLife': 'C\'est ta vie, @name.',
+  'selfConf_assumedAge': '@name, si tu avais 30 ans, voici à quoi ressemblerait ta vie...',
   'selfConf_redDots':
       'Les points rouges ?\n\nCe sont les années que tu vas perdre...',
 
@@ -943,6 +944,15 @@ const Map<String, String> fr_FR = {
   'lifeViz_lifeRemaining': 'Vie restante',
   'lifeViz_yearsSpentPhone':
       '@years ans passés à regarder\nton téléphone',
+  'lifeViz_previewCta':
+      'Personnalise avec ton âge pour voir ta vraie visualisation de vie',
+  'lifeViz_previewAction': 'Appuie pour renseigner ton âge',
+
+  // Settings - Personal
+  'settings_personal': 'Personnel',
+  'settings_age': 'Âge',
+  'settings_ageNotSet': 'Non renseigné — appuie pour ajouter',
+  'settings_ageValue': '@age ans',
 
   // Paywall Controller
   'paywall_purchaseFailed': 'Échec de l\'achat',

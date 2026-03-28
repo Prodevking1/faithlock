@@ -382,6 +382,7 @@ class PaywallController extends GetxController
     }
 
     // Trigger win-back sequence when user closes without subscribing
+    _didTriggerWinBack = true;
     WinBackNotificationService()
         .scheduleWinBackSequence(source: 'paywall_closed');
 
@@ -392,8 +393,19 @@ class PaywallController extends GetxController
     }
   }
 
+  // Track whether the user purchased successfully (to avoid winback on success)
+  bool _didPurchase = false;
+  // Track whether closePaywall() was already called (to avoid double trigger)
+  bool _didTriggerWinBack = false;
+
   @override
   void onClose() {
+    // If the controller is disposed without a purchase and closePaywall() was
+    // never called (e.g. swipe back, system pop), trigger win-back here.
+    if (!_didPurchase && !_didTriggerWinBack) {
+      WinBackNotificationService()
+          .scheduleWinBackSequence(source: 'paywall_closed');
+    }
     promoCodeController.dispose();
     switchAnimationController.dispose();
     cardAnimationController.dispose();
@@ -428,6 +440,7 @@ class PaywallController extends GetxController
       }
 
       if (result.success) {
+        _didPurchase = true;
         debugPrint('✅ [Paywall] Purchase successful!');
         debugPrint(
             '📦 [Paywall] Customer Info: ${result.customerInfo?.entitlements.active}');
@@ -526,6 +539,7 @@ class PaywallController extends GetxController
       final result = await _revenueCat.restorePurchases();
 
       if (result.success && result.hasActiveSubscriptions) {
+        _didPurchase = true;
         // Track restore as completed purchase
         if (_analytics.isReady && packages.isNotEmpty) {
           final currentPackage = packages[selectedPlanIndex.value];

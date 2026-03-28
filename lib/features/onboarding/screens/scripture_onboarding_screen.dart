@@ -17,6 +17,7 @@ import 'package:faithlock/features/onboarding/screens/onboarding_summary_screen.
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -111,7 +112,7 @@ class ScriptureOnboardingScreen extends StatelessWidget {
           // _buildDemoButton(controller),
 
           // Skip button for testing
-          if (isTesting) _buildSkipButton(controller),
+          if (kDebugMode && isTesting) _buildSkipButton(controller),
 
           // // Debug controls (only in debug mode)
           // if (kDebugMode) _buildDebugControls(controller),

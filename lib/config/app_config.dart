@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppConfig {
   // Dev bypass - skip onboarding & paywall, go straight to home
-  static const bool bypassPaywall = true;
+  static const bool bypassPaywall = false;
 
   // App information
   static const String appName = 'Fast App';
@@ -13,6 +13,9 @@ class AppConfig {
   static const List<Locale> supportedLocales = [
     Locale('en', 'US'),
     Locale('fr', 'FR'),
+    Locale('pt', 'BR'),
+    Locale('de', 'DE'),
+    Locale('ja', 'JP'),
   ];
 
   static final AppFeatures appFeatures = AppFeatures();

@@ -17,7 +17,7 @@ import 'package:get/get.dart';
 /// V2 Onboarding Screen - Optimized 11-step flow
 ///
 /// Flow:
-/// 1. Welcome (PASSIVE) - Judah intro + language picker
+/// 1. Welcome (PASSIVE) - Judah intro
 /// 2. Name/Age (ACTIVE) - reuse
 /// 3. Divine Revelation (PASSIVE) - reuse
 /// 4. Self-Confrontation V2 (ACTIVE) - lighter

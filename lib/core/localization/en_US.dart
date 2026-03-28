@@ -241,6 +241,7 @@ const Map<String, String> en_US = {
   'selfConf_revelation':
       'Over one year:\n@days full days lost to your screen.',
   'selfConf_thisIsYourLife': 'This is your life, @name.',
+  'selfConf_assumedAge': '@name, if you were 30 years old, here\'s what your life would look like...',
   'selfConf_redDots':
       "The red dots?\n\nThose are the years you'll lose...",
 
@@ -907,6 +908,15 @@ const Map<String, String> en_US = {
   'lifeViz_lifeRemaining': 'Life remaining',
   'lifeViz_yearsSpentPhone':
       '@years years spent looking down at\nyour phone',
+  'lifeViz_previewCta':
+      'Personalize with your age to see your real life visualization',
+  'lifeViz_previewAction': 'Tap to set your age',
+
+  // Settings - Personal
+  'settings_personal': 'Personal',
+  'settings_age': 'Age',
+  'settings_ageNotSet': 'Not set — tap to add',
+  'settings_ageValue': '@age years old',
 
   // Paywall Controller
   'paywall_purchaseFailed': 'Purchase Failed',

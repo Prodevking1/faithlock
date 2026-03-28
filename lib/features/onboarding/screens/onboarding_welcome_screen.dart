@@ -3,14 +3,13 @@ import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
 import 'package:faithlock/features/onboarding/widgets/feather_cursor.dart';
 import 'package:faithlock/features/onboarding/widgets/onboarding_wrapper.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
-import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
 import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Onboarding Welcome Screen - First onboarding step
-/// Introduces Judah mascot, app purpose, and language selection (EN/FR)
+/// Introduces Judah mascot and app purpose
+/// Language is auto-detected from device locale at app launch
 class OnBoardingWelcomeScreen extends StatefulWidget {
   final VoidCallback onComplete;
 
@@ -27,23 +26,13 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
   final PostHogService _analytics = PostHogService.instance;
 
   bool _showMascot = false;
-  bool _showButton = false;
-  bool _showLanguagePicker = false;
   bool _showCursor = false;
   int _currentCharIndex = 0;
   double _opacity = 1.0;
 
-  // Current language selection
-  String _selectedLang = 'en_US';
-
   @override
   void initState() {
     super.initState();
-    // Detect current locale
-    final locale = Get.locale;
-    if (locale != null && locale.languageCode == 'fr') {
-      _selectedLang = 'fr_FR';
-    }
     _startAnimation();
     _trackStepEntry();
   }
@@ -68,14 +57,9 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
     // Type the message character by character with colors
     await _typeStyledMessage();
 
-    await AnimationUtils.pause(durationMs: 200);
-
-    // Show language picker and button
-    setState(() {
-      _showLanguagePicker = true;
-      _showButton = true;
-    });
-    await AnimationUtils.mediumHaptic();
+    // Auto-advance after a short pause
+    await AnimationUtils.pause(durationMs: AnimationUtils.autoContinueMs);
+    await _onContinue();
   }
 
   /// Get the full message text from all parts
@@ -108,47 +92,6 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
     setState(() => _showCursor = false);
   }
 
-  Future<void> _onLanguageSelected(String langCode) async {
-    if (_selectedLang == langCode) return;
-
-    await AnimationUtils.lightHaptic();
-    setState(() => _selectedLang = langCode);
-
-    // Update locale
-    if (langCode == 'fr_FR') {
-      Get.updateLocale(const Locale('fr', 'FR'));
-    } else {
-      Get.updateLocale(const Locale('en', 'US'));
-    }
-
-    // Persist choice
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('app_language', langCode == 'fr_FR' ? 'fr' : 'en');
-
-    // Track language selection
-    if (_analytics.isReady) {
-      await _analytics.events.trackCustom(
-        'language_selected',
-        {
-          'language': langCode,
-          'step': 'welcome',
-        },
-      );
-    }
-
-    // Re-type message in new language
-    setState(() {
-      _currentCharIndex = 0;
-      _showButton = false;
-    });
-
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    await _typeStyledMessage();
-
-    setState(() => _showButton = true);
-  }
-
   Future<void> _onContinue() async {
     await AnimationUtils.heavyHaptic();
 
@@ -157,7 +100,7 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
       await _analytics.onboarding.trackStepExit(
         stepNumber: 1,
         stepName: 'Welcome',
-        metadata: {'language': _selectedLang},
+        metadata: {'language': Get.locale?.languageCode ?? 'en'},
       );
     }
 
@@ -202,51 +145,6 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
               if (_showMascot) _buildTypingStyledMessage(),
 
               const Spacer(flex: 2),
-
-              // Continue button
-              AnimatedOpacity(
-                opacity: _showButton ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 400),
-                child: FastButton(
-                  text: 'continue_btn'.tr,
-                  onTap: _showButton ? _onContinue : null,
-                  backgroundColor: OnboardingTheme.goldColor,
-                  textColor: OnboardingTheme.backgroundColor,
-                  style: FastButtonStyle.filled,
-                ),
-              ),
-
-              const SizedBox(height: OnboardingTheme.space32),
-
-              // Language picker
-              AnimatedOpacity(
-                opacity: _showLanguagePicker ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 400),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildLanguageOption(
-                      flag: '\u{1F1FA}\u{1F1F8}',
-                      label: 'English',
-                      langCode: 'en_US',
-                    ),
-                    const SizedBox(width: 24),
-                    Container(
-                      width: 1,
-                      height: 24,
-                      color: OnboardingTheme.labelTertiary,
-                    ),
-                    const SizedBox(width: 24),
-                    _buildLanguageOption(
-                      flag: '\u{1F1EB}\u{1F1F7}',
-                      label: 'Fran\u00e7ais',
-                      langCode: 'fr_FR',
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: OnboardingTheme.space16),
             ],
           ),
         ),
@@ -318,47 +216,4 @@ class _OnBoardingWelcomeScreenState extends State<OnBoardingWelcomeScreen> {
     );
   }
 
-  Widget _buildLanguageOption({
-    required String flag,
-    required String label,
-    required String langCode,
-  }) {
-    final isSelected = _selectedLang == langCode;
-
-    return GestureDetector(
-      onTap: () => _onLanguageSelected(langCode),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? OnboardingTheme.goldColor.withValues(alpha: 0.15)
-              : Colors.transparent,
-          border: Border.all(
-            color: isSelected
-                ? OnboardingTheme.goldColor
-                : OnboardingTheme.labelTertiary,
-            width: isSelected ? 1.5 : 0.5,
-          ),
-          borderRadius: BorderRadius.circular(OnboardingTheme.radiusMedium),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(flag, style: const TextStyle(fontSize: 20)),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: OnboardingTheme.subhead.copyWith(
-                color: isSelected
-                    ? OnboardingTheme.goldColor
-                    : OnboardingTheme.labelSecondary,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

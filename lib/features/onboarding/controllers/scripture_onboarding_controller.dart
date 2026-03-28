@@ -22,6 +22,7 @@ class ScriptureOnboardingController extends GetxController {
   static const String _keyHasAccessedFeatures = 'has_accessed_app_features';
   static const String _keyUserName = 'user_name';
   static const String _keyUserAge = 'user_age';
+  static const String _keyAgeSkipped = 'user_age_skipped';
   static const String _keyUserHoursPerDay = 'user_hours_per_day';
   static const String _keyPrayerFrequency = 'prayer_frequency_per_week';
   static const String _key30DayGoals = 'thirty_day_goals';
@@ -38,7 +39,8 @@ class ScriptureOnboardingController extends GetxController {
   // Observable state
   final RxInt currentStep = RxInt(1);
   final RxString userName = RxString('User');
-  final RxInt userAge = RxInt(25);
+  final RxInt userAge = RxInt(30);
+  final RxBool ageSkipped = RxBool(false);
   final RxDouble hoursPerDay = RxDouble(5.0);
   final RxInt prayerTimesPerWeek = RxInt(0);
   final RxList<String> thirtyDayGoals = <String>[].obs;
@@ -110,6 +112,14 @@ class ScriptureOnboardingController extends GetxController {
     if (savedHoursStr != null) {
       hoursPerDay.value = double.tryParse(savedHoursStr) ?? 0.0;
     }
+
+    // Load age data
+    final savedAgeStr = await _storage.readString(_keyUserAge);
+    if (savedAgeStr != null) {
+      userAge.value = int.tryParse(savedAgeStr) ?? 25;
+    }
+    final skipped = await _storage.readString(_keyAgeSkipped);
+    ageSkipped.value = skipped == 'true';
   }
 
   /// Check if onboarding has been completed
@@ -171,15 +181,19 @@ class ScriptureOnboardingController extends GetxController {
     }
   }
 
-  /// Save user age from Step 1.5
+  /// Save user age from Step 1.5 (stored locally only per Apple 5.1.1)
   Future<void> saveUserAge(int age) async {
     userAge.value = age;
+    ageSkipped.value = false;
     await _storage.writeString(_keyUserAge, age.toString());
+    await _storage.writeString(_keyAgeSkipped, 'false');
+  }
 
-    // Track user property
-    if (_analytics.isReady) {
-      await _analytics.onboarding.setUserProperties({'user_age': age});
-    }
+  /// Skip age input during onboarding (Apple Guideline 5.1.1 compliance)
+  Future<void> skipAge() async {
+    ageSkipped.value = true;
+    userAge.value = 30; // Default preview age
+    await _storage.writeString(_keyAgeSkipped, 'true');
   }
 
   /// Save hours per day from Step 2
@@ -423,6 +437,7 @@ class ScriptureOnboardingController extends GetxController {
     await _prefs.writeBool(_keyHasAccessedFeatures, false);
     currentStep.value = 1;
     hoursPerDay.value = 0.0;
+    ageSkipped.value = false;
     selectedCategories.clear();
     selectedApps.clear();
     intensityLevel.value = 'Balanced';
@@ -558,7 +573,7 @@ class ScriptureOnboardingController extends GetxController {
       case 2:
         return {
           if (userName.value.isNotEmpty) 'user_name_provided': true,
-          if (userAge.value > 0) 'user_age': userAge.value,
+          'age_skipped': ageSkipped.value,
         };
 
       case 3:

@@ -5,6 +5,7 @@ import 'package:faithlock/services/notifications/local_notification_service.dart
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +18,11 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
   final LockService _lockService = LockService();
   final LocalNotificationService _notificationService = LocalNotificationService();
 
+  final StorageService _storage = StorageService();
+
   // Observable state
+  final RxInt userAge = RxInt(0);
+  final RxBool ageSkipped = RxBool(false);
   final RxBool isScreenTimeAuthorized = RxBool(false);
   final RxString screenTimeStatus = RxString('Unknown');
   final RxBool isNotificationsAuthorized = RxBool(false);
@@ -60,6 +65,7 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
         loadPermissions(),
         loadSettings(),
         loadSelectedAppsCount(),
+        loadUserAge(),
       ]);
     } catch (e) {
       print('⚠️ Error during FaithLock initialization: $e');
@@ -401,8 +407,7 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
   Future<void> _setupSchedulesFromStorage() async {
     try {
       // Read schedules from storage
-      final StorageService storage = StorageService();
-      final schedulesJson = await storage.readString('onboarding_schedules');
+      final schedulesJson = await _storage.readString('onboarding_schedules');
  
       if (schedulesJson == null || schedulesJson.isEmpty) {
         print('⚠️ No schedules found in storage');
@@ -487,9 +492,110 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
     }
   }
 
+  /// Load user age from local storage
+  Future<void> loadUserAge() async {
+    try {
+      final ageStr = await _storage.readString('user_age');
+      if (ageStr != null) {
+        userAge.value = int.tryParse(ageStr) ?? 0;
+      }
+      final skipped = await _storage.readString('user_age_skipped');
+      ageSkipped.value = skipped == 'true';
+    } catch (e) {
+      debugPrint('⚠️ Error loading user age: $e');
+    }
+  }
+
+  /// Save user age from settings (stored locally only per Apple 5.1.1)
+  Future<void> saveUserAge(int age) async {
+    userAge.value = age;
+    ageSkipped.value = false;
+    await _storage.writeString('user_age', age.toString());
+    await _storage.writeString('user_age_skipped', 'false');
+  }
+
+  /// Show age picker dialog
+  void showAgePicker() {
+    final context = Get.context;
+    if (context == null) return;
+
+    int selectedAge = userAge.value > 0 ? userAge.value : 25;
+    const int minAge = 13;
+    const int maxAge = 110;
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => Container(
+        height: 280,
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: Column(
+          children: [
+            // Toolbar
+            Container(
+              height: 44,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: CupertinoColors.systemBackground.resolveFrom(context),
+                border: Border(
+                  bottom: BorderSide(
+                    color: CupertinoColors.separator.resolveFrom(context),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: Text('cancel'.tr),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: Text(
+                      'done'.tr,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    onPressed: () {
+                      saveUserAge(selectedAge);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            // Picker
+            Expanded(
+              child: CupertinoPicker(
+                scrollController: FixedExtentScrollController(
+                  initialItem: selectedAge - minAge,
+                ),
+                itemExtent: 36,
+                onSelectedItemChanged: (index) {
+                  selectedAge = minAge + index;
+                },
+                children: List.generate(
+                  maxAge - minAge + 1,
+                  (i) => Center(
+                    child: Text(
+                      '${minAge + i} ${'nameCapture_yearsOld'.tr}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Refresh all data
   Future<void> refresh() async {
     await loadPermissions();
     await loadSettings();
+    await loadUserAge();
   }
 }

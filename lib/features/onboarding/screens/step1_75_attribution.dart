@@ -35,6 +35,7 @@ class _Step175AttributionState extends State<Step175Attribution> {
         {'id': 'friends_family', 'label': 'attribution_friends'.tr, 'icon': '👥'},
         {'id': 'tiktok', 'label': 'TikTok', 'icon': '🎵'},
         {'id': 'instagram', 'label': 'Instagram', 'icon': '📸'},
+        {'id': 'ai', 'label': 'AI (ChatGPT, Gemini...)', 'icon': '🤖'},
         {'id': 'appstore', 'label': 'attribution_appstore'.tr, 'icon': '📱'},
         {'id': 'other', 'label': 'attribution_other'.tr, 'icon': '💬'},
       ];
@@ -228,8 +229,8 @@ class _Step175AttributionState extends State<Step175Attribution> {
         ),
         child: Row(
           children: [
-            Text(icon, style: const TextStyle(fontSize: 22)),
-            const SizedBox(width: 14),
+            // Text(icon, style: const TextStyle(fontSize: 22)),
+            // const SizedBox(width: 14),
             Expanded(
               child: Text(
                 label,

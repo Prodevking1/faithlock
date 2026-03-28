@@ -4,7 +4,7 @@ import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Win-back notification service — 4 strategy notifications then silence.
+/// Win-back notification service — 5 strategy notifications then silence.
 ///
 /// Notification IDs: 200-204
 ///
@@ -45,27 +45,28 @@ class WinBackNotificationService {
   // Payload prefix for tap handling
   static const String payloadPrefix = 'winback';
 
-  // The offer notification indices (index 0 = +1h, index 1 = +24h reminder)
+  // The offer notification indices (index 0 = +24h, index 1 = +48h reminder)
   static const int offerNotificationIndex = 0;
   static const int offerReminderNotificationIndex = 1;
 
-  /// The 5-notification win-back strategy sequence
-  static final List<_WinBackNotification> _sequence = [
+  /// Build the 5-notification win-back strategy sequence.
+  /// Resolves .tr at call time so translations are always current.
+  static List<_WinBackNotification> _buildSequence() => [
     // +24h — The Offer: free week
     _WinBackNotification(
       index: 0,
       delay: Duration(hours: 24),
-      title: 'winback_title2'.tr,
-      body: 'winback_body2'.tr,
+      titleKey: 'winback_title2',
+      bodyKey: 'winback_body2',
       strategy: 'offer',
     ),
 
-    // +48h — The Offer Reminder: second chance
+    // +48h — The Offer Reminder: verse + gentle nudge
     _WinBackNotification(
       index: 1,
       delay: Duration(hours: 48),
-      title: 'winback_title2'.tr,
-      body: 'winback_body2'.tr,
+      titleKey: 'winback_title1',
+      bodyKey: 'winback_body1',
       strategy: 'offer_reminder',
     ),
 
@@ -73,8 +74,8 @@ class WinBackNotificationService {
     _WinBackNotification(
       index: 2,
       delay: Duration(days: 3),
-      title: 'winback_title3'.tr,
-      body: 'winback_body3'.tr,
+      titleKey: 'winback_title3',
+      bodyKey: 'winback_body3',
       strategy: 'mirror',
     ),
 
@@ -82,8 +83,8 @@ class WinBackNotificationService {
     _WinBackNotification(
       index: 3,
       delay: Duration(days: 5),
-      title: 'winback_title4'.tr,
-      body: 'winback_body4'.tr,
+      titleKey: 'winback_title4',
+      bodyKey: 'winback_body4',
       strategy: 'story',
     ),
 
@@ -91,8 +92,8 @@ class WinBackNotificationService {
     _WinBackNotification(
       index: 4,
       delay: Duration(days: 7),
-      title: 'winback_title5'.tr,
-      body: 'winback_body5'.tr,
+      titleKey: 'winback_title5',
+      bodyKey: 'winback_body5',
       strategy: 'goodbye',
     ),
   ];
@@ -122,6 +123,18 @@ class WinBackNotificationService {
         return;
       }
 
+      // Check notification permissions — skip scheduling if denied
+      final hasPerms = await _notifications.requestPermissions();
+      if (!hasPerms) {
+        debugPrint(
+            '⚠️ [WinBack] Notification permissions denied — skipping sequence');
+        _trackEvent('winback_sequence_skipped', {
+          'source': source,
+          'reason': 'notification_permission_denied',
+        });
+        return;
+      }
+
       final now = DateTime.now();
 
       // Store state
@@ -129,8 +142,11 @@ class WinBackNotificationService {
       await _prefs.writeBool(_keyActive, true);
       await _prefs.writeString(_keySource, source);
 
-      // Schedule the 4 win-back strategy notifications
-      for (final notification in _sequence) {
+      // Build sequence at call time so .tr resolves with current locale
+      final sequence = _buildSequence();
+
+      // Schedule the 5 win-back strategy notifications
+      for (final notification in sequence) {
         final scheduledDate = now.add(notification.delay);
 
         // Skip if the scheduled date is already in the past
@@ -235,14 +251,14 @@ class WinBackNotificationService {
   /// Track when user taps a win-back notification.
   /// Called from LocalNotificationService payload handler.
   void trackNotificationTapped(int notificationIndex) {
-    if (notificationIndex < 0 || notificationIndex >= _sequence.length) return;
+    final sequence = _buildSequence();
+    if (notificationIndex < 0 || notificationIndex >= sequence.length) return;
 
-    final notification = _sequence[notificationIndex];
+    final notification = sequence[notificationIndex];
 
     _trackEvent('winback_notification_tapped', {
       'notification_index': notificationIndex,
       'notification_strategy': notification.strategy,
-      'notification_title': notification.title,
     });
 
     debugPrint(
@@ -333,15 +349,21 @@ class WinBackNotificationService {
 class _WinBackNotification {
   final int index;
   final Duration delay;
-  final String title;
-  final String body;
+  final String titleKey;
+  final String bodyKey;
   final String strategy;
 
   _WinBackNotification({
     required this.index,
     required this.delay,
-    required this.title,
-    required this.body,
+    required this.titleKey,
+    required this.bodyKey,
     required this.strategy,
   });
+
+  /// Resolve translated title at access time
+  String get title => titleKey.tr;
+
+  /// Resolve translated body at access time
+  String get body => bodyKey.tr;
 }

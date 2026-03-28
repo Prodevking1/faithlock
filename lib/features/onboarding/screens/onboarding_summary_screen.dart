@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/utils/animation_utils.dart';
-import 'package:faithlock/features/paywall/screens/paywall_screen_v2.dart';
 import 'package:faithlock/services/analytics/posthog/config/event_templates.dart';
 import 'package:faithlock/services/analytics/posthog/posthog_service.dart';
 import 'package:faithlock/shared/widgets/buttons/fast_button.dart';
@@ -125,7 +124,7 @@ class _OnboardingSummaryScreenState extends State<OnboardingSummaryScreen>
 
     await controller.completeSummary();
 
-    Get.to(() => const PaywallScreenV2());
+    controller.nextStep();
   }
 
   @override

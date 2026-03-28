@@ -94,7 +94,7 @@ class ScriptureOnboardingV2Controller extends ScriptureOnboardingController {
       case 2: // Name Capture
         return {
           if (userName.value.isNotEmpty) 'user_name_provided': true,
-          if (userAge.value > 0) 'user_age': userAge.value,
+          'age_skipped': ageSkipped.value,
         };
       case 4: // Self Confrontation V2
         return {
