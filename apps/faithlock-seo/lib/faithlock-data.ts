@@ -195,7 +195,7 @@ export const COPY = {
 // ─── COMPANY ────────────────────────────────────────────────
 export const COMPANY = {
   name: 'AppBiz Studio',
-  email: 'hello@appbiz-studio.com',
+  email: 'hey@appbiz.studio',
   privacyUrl: 'https://appbiz-studio.com/apps/faithlock/privacy',
   termsUrl: 'https://appbiz-studio.com/apps/faithlock/terms',
 } as const
