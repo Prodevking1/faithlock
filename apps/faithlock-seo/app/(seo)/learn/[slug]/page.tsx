@@ -23,28 +23,23 @@ export async function generateMetadata({
   }
 
   const fields = entry.fields as unknown as GlossaryTerm
+  const year = new Date().getFullYear()
+  const title = fields.seoTitle || `What is ${fields.term}? Christian Guide (${year})`
+  const description = fields.seoDescription
 
   return {
-    title: fields.seoTitle,
-    description: fields.seoDescription,
+    title,
+    description,
     openGraph: {
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
       type: 'article',
       url: `${SITE_URL}/learn/${fields.slug}`,
-      images: [
-        {
-          url: `/og/learn-${fields.slug}.png`,
-          width: 1200,
-          height: 630,
-          alt: `${fields.term} - Christian Perspective`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
     },
     alternates: {
       canonical: `/learn/${fields.slug}`,
@@ -102,7 +97,7 @@ export default async function LearnSlugPage({
   return (
     <>
       <SchemaMarkup data={schemas} />
-      <GlossaryTemplate term={fields} />
+      <GlossaryTemplate term={fields} updatedAt={entry.sys.updatedAt} />
     </>
   )
 }

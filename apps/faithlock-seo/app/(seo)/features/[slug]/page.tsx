@@ -23,28 +23,22 @@ export async function generateMetadata({
   }
 
   const fields = entry.fields as unknown as Feature
+  const title = fields.seoTitle
+  const description = fields.seoDescription
 
   return {
-    title: fields.seoTitle,
-    description: fields.seoDescription,
+    title,
+    description,
     openGraph: {
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
       type: 'article',
       url: `${SITE_URL}/features/${fields.slug}`,
-      images: [
-        {
-          url: `/og/feature-${fields.slug}.png`,
-          width: 1200,
-          height: 630,
-          alt: `${fields.name} - FaithLock Feature`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
     },
     alternates: {
       canonical: `/features/${fields.slug}`,
@@ -64,6 +58,15 @@ export default async function FeatureSlugPage({
   }
 
   const fields = entry.fields as unknown as Feature
+
+  // Fetch all features for dynamic related links
+  const allFeatures = await getAllFeatures()
+  const otherFeatures = allFeatures
+    .filter((f) => (f.fields.slug as string) !== params.slug)
+    .map((f) => ({
+      slug: f.fields.slug as string,
+      name: f.fields.name as string,
+    }))
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -101,7 +104,7 @@ export default async function FeatureSlugPage({
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'FaithLock',
-    applicationCategory: 'HealthApplication',
+    applicationCategory: 'LifestyleApplication',
     operatingSystem: 'iOS',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     featureList: fields.name,
@@ -114,7 +117,11 @@ export default async function FeatureSlugPage({
   return (
     <>
       <SchemaMarkup data={schemas} />
-      <FeatureTemplate feature={fields} />
+      <FeatureTemplate
+        feature={fields}
+        updatedAt={entry.sys.updatedAt}
+        otherFeatures={otherFeatures}
+      />
     </>
   )
 }

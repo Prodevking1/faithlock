@@ -240,6 +240,22 @@ export const FAITHLOCK_COMPARISON = {
   },
 } as const
 
+// ─── COMPARISON PROS/CONS (used in ComparisonTemplate) ──────
+export const FAITHLOCK_PROS = [
+  'Bible verse unlocking ensures genuine Scripture engagement',
+  '30-day spiritual covenant for building consistent habits',
+  'Streak tracking and insights dashboard',
+  'Scheduled lock times for daily routines',
+  'Prayer reminders throughout the day',
+  'Active development and community support',
+] as const
+
+export const FAITHLOCK_CONS = [
+  'iOS only (Android coming soon)',
+  'Newer app (less brand awareness)',
+  'Requires iOS 16+ for Family Controls',
+] as const
+
 // ─── BIBLE VERSES (used across the site for decoration) ─────
 export const FEATURED_VERSES = [
   {

@@ -29,28 +29,22 @@ export async function generateMetadata({
   }
 
   const fields = entry.fields as unknown as Competitor
+  const title = fields.seoTitle
+  const description = fields.seoDescription
 
   return {
-    title: fields.seoTitle,
-    description: fields.seoDescription,
+    title,
+    description,
     openGraph: {
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
       type: 'article',
       url: `${SITE_URL}/compare/${params.slug}`,
-      images: [
-        {
-          url: `/og/compare-${competitorSlug}.png`,
-          width: 1200,
-          height: 630,
-          alt: `FaithLock vs ${fields.name} Comparison`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: fields.seoTitle,
-      description: fields.seoDescription,
+      title,
+      description,
     },
     alternates: {
       canonical: `/compare/${params.slug}`,
@@ -71,6 +65,17 @@ export default async function ComparisonPage({
   }
 
   const fields = entry.fields as unknown as Competitor
+
+  // Fetch all competitors for dynamic related links
+  const allCompetitors = await getAllCompetitors()
+  const otherCompetitors = allCompetitors
+    .filter((c) => (c.fields.slug as string) !== competitorSlug)
+    .map((c) => ({
+      slug: (c.fields.slug as string).startsWith('faithlock-vs-')
+        ? (c.fields.slug as string)
+        : `faithlock-vs-${c.fields.slug as string}`,
+      name: c.fields.name as string,
+    }))
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -98,26 +103,27 @@ export default async function ComparisonPage({
       {
         '@type': 'SoftwareApplication',
         name: 'FaithLock',
-        applicationCategory: 'HealthApplication',
+        applicationCategory: 'LifestyleApplication',
         operatingSystem: 'iOS',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
       {
         '@type': 'SoftwareApplication',
         name: fields.name,
-        applicationCategory: 'HealthApplication',
+        applicationCategory: 'LifestyleApplication',
         operatingSystem: fields.platforms?.join(', ') || 'iOS',
         offers: {
           '@type': 'Offer',
           price: fields.price || '0',
           priceCurrency: 'USD',
         },
-        ...(fields.rating && fields.downloads
+        // Only include real rating data — never fabricate reviewCount
+        ...(fields.rating
           ? {
               aggregateRating: {
                 '@type': 'AggregateRating',
                 ratingValue: fields.rating.toString(),
-                reviewCount: Math.floor(fields.downloads / 10).toString(),
+                bestRating: '5',
               },
             }
           : {}),
@@ -128,7 +134,11 @@ export default async function ComparisonPage({
   return (
     <>
       <SchemaMarkup data={[articleSchema, comparisonSchema]} />
-      <ComparisonTemplate competitor={fields} />
+      <ComparisonTemplate
+        competitor={fields}
+        updatedAt={entry.sys.updatedAt}
+        otherCompetitors={otherCompetitors}
+      />
     </>
   )
 }

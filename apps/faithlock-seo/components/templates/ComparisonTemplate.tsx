@@ -1,20 +1,53 @@
 import { Competitor } from '@/lib/types'
-import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
+import { APP_STORE_URL } from '@/lib/constants'
+import { FAITHLOCK_PROS, FAITHLOCK_CONS, FAITHLOCK_COMPARISON } from '@/lib/faithlock-data'
 import ComparisonTable from '@/components/ui/ComparisonTable'
 import CTAButton from '@/components/ui/CTAButton'
 import BibleVerse from '@/components/ui/BibleVerse'
 import TemplateTracker from '@/components/templates/TemplateTracker'
+import TableOfContents from '@/components/seo/TableOfContents'
+import ReadingTime from '@/components/seo/ReadingTime'
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema'
 
 interface ComparisonTemplateProps {
   competitor: Competitor
+  updatedAt: string
+  otherCompetitors: { slug: string; name: string }[]
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
 export default function ComparisonTemplate({
   competitor,
+  updatedAt,
+  otherCompetitors,
 }: ComparisonTemplateProps) {
+  const tocItems = [
+    { id: 'comparison', text: 'Feature Comparison' },
+    { id: 'analysis', text: 'Detailed Analysis' },
+    { id: 'pricing', text: 'Pricing' },
+    { id: 'results', text: 'Effectiveness & Results' },
+    { id: 'biblical', text: 'Biblical Perspective' },
+    { id: 'related', text: 'Related Comparisons' },
+  ]
+
+  // Estimate word count for reading time
+  const wordCount = 1200 + (competitor.pros?.length || 0) * 15 + (competitor.cons?.length || 0) * 15
+
   return (
     <article>
       <TemplateTracker type="comparison" slug={competitor.slug} />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Compare', url: '/compare' },
+          { name: `vs ${competitor.name}`, url: `/compare/${competitor.slug}` },
+        ]}
+      />
+
       {/* Hero */}
       <div className="bg-hero-pattern text-white">
         <div className="container-default py-16 md:py-20">
@@ -26,6 +59,11 @@ export default function ComparisonTemplate({
             <span className="text-white/70">vs {competitor.name}</span>
           </nav>
 
+          <div className="flex items-center gap-3 mb-4">
+            <ReadingTime wordCount={wordCount} />
+            <span className="text-sm text-white/50">Updated {formatDate(updatedAt)}</span>
+          </div>
+
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight text-balance leading-tight">
             FaithLock vs {competitor.name}
           </h1>
@@ -34,24 +72,27 @@ export default function ComparisonTemplate({
             spiritual impact. Find the best faith-based app blocker.
           </p>
 
-          {/* Quick Answer */}
+          {/* Quick Summary — neutral, not pre-judging */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 max-w-2xl">
             <p className="text-sm font-semibold text-warm-300 mb-2 uppercase tracking-wide">
-              Quick Answer
+              Quick Summary
             </p>
             <p className="text-white/80 leading-relaxed">
-              While {competitor.name} {competitor.tagline.toLowerCase()},
-              FaithLock offers Bible verse unlocking with{' '}
-              Bible verse unlocking to build a consistent Scripture habit.
-              Best for Christians seeking spiritual growth, not just app blocking.
+              {competitor.name} {competitor.tagline.toLowerCase()}.
+              FaithLock focuses on Scripture-based app blocking with Bible verse
+              unlocking. The best choice depends on your priorities — we compare
+              both below.
             </p>
           </div>
         </div>
       </div>
 
       <div className="container-default py-12 md:py-16">
+        {/* Table of Contents */}
+        <TableOfContents items={tocItems} />
+
         {/* Comparison Table */}
-        <section className="mb-16 md:mb-20">
+        <section id="comparison" className="mb-16 md:mb-20">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
             Feature-by-Feature Comparison
           </h2>
@@ -67,11 +108,11 @@ export default function ComparisonTemplate({
                 '30DayCovenant': true,
                 progressAnalytics: 'Advanced',
                 customScheduling: true,
-                bibleVerseLibrary: `${FAITHLOCK_STATS.versesInLibrary} verses`,
+                bibleVerseLibrary: `Complete Bible`,
                 accountabilityPartner: true,
               },
-              price: `Freemium (${FAITHLOCK_STATS.price.weekly} Premium)`,
-              platforms: [...FAITHLOCK_STATS.platforms],
+              price: FAITHLOCK_COMPARISON.pricingModel,
+              platforms: [...FAITHLOCK_COMPARISON.platforms],
               rating: undefined as unknown as number,
               downloads: undefined as unknown as number,
             }}
@@ -80,7 +121,7 @@ export default function ComparisonTemplate({
         </section>
 
         {/* Pros & Cons */}
-        <section className="mb-16 md:mb-20">
+        <section id="analysis" className="mb-16 md:mb-20">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
             Detailed Analysis
           </h2>
@@ -98,14 +139,7 @@ export default function ComparisonTemplate({
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-sage-700 uppercase tracking-wide mb-3">Pros</h4>
                 <ul className="space-y-2">
-                  {[
-                    'Bible verse unlocking ensures genuine Scripture engagement',
-                    '30-day spiritual covenant for building consistent habits',
-                    'Streak tracking and insights dashboard',
-                    'Scheduled lock times for daily routines',
-                    'Prayer reminders throughout the day',
-                    'Active development and community support',
-                  ].map((pro, i) => (
+                  {FAITHLOCK_PROS.map((pro, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-sage-500 flex-shrink-0 mt-0.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
@@ -118,11 +152,7 @@ export default function ComparisonTemplate({
               <div>
                 <h4 className="text-sm font-semibold text-red-500 uppercase tracking-wide mb-3">Cons</h4>
                 <ul className="space-y-2">
-                  {[
-                    'iOS only (Android coming soon)',
-                    'Newer app (less brand awareness)',
-                    'Requires iOS 16+ for Family Controls',
-                  ].map((con, i) => (
+                  {FAITHLOCK_CONS.map((con, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-gray-500">
                       <span className="w-1.5 h-1.5 bg-gray-300 rounded-full flex-shrink-0 mt-2" />
                       {con}
@@ -169,7 +199,7 @@ export default function ComparisonTemplate({
         </section>
 
         {/* Pricing */}
-        <section className="mb-16 md:mb-20">
+        <section id="pricing" className="mb-16 md:mb-20">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
             Pricing
           </h2>
@@ -178,7 +208,7 @@ export default function ComparisonTemplate({
               <h3 className="font-bold text-brand-700 mb-3">FaithLock</h3>
               <p className="text-3xl font-bold text-gray-900 mb-1">Free</p>
               <p className="text-sm text-gray-500">
-                {FAITHLOCK_STATS.price.weekly} or {FAITHLOCK_STATS.price.annual}.
+                {FAITHLOCK_COMPARISON.pricingModel}
               </p>
             </div>
             <div className="card p-6">
@@ -189,13 +219,13 @@ export default function ComparisonTemplate({
         </section>
 
         {/* Results */}
-        <section className="mb-16 md:mb-20">
+        <section id="results" className="mb-16 md:mb-20">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
             Effectiveness &amp; Results
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { value: FAITHLOCK_STATS.versesInLibrary, label: 'Bible verses in library', color: 'brand' },
+              { value: 'Complete Bible', label: 'Scripture library', color: 'brand' },
               { value: '~30s', label: 'Unlock time per app', color: 'brand' },
               ...(competitor.rating ? [{ value: `${competitor.rating}\u2605`, label: `${competitor.name} rating`, color: 'gray' }] : []),
               ...(competitor.downloads ? [{ value: `${competitor.downloads.toLocaleString()}+`, label: `${competitor.name} downloads`, color: 'gray' }] : []),
@@ -211,7 +241,7 @@ export default function ComparisonTemplate({
         </section>
 
         {/* Biblical Perspective */}
-        <section className="mb-16 md:mb-20 bg-brand-950 text-white rounded-3xl p-8 md:p-12">
+        <section id="biblical" className="mb-16 md:mb-20 bg-brand-950 text-white rounded-3xl p-8 md:p-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             Biblical Perspective on Screen Time
           </h2>
@@ -228,20 +258,17 @@ export default function ComparisonTemplate({
           </div>
           <p className="text-white/60 mt-6">
             Both FaithLock and {competitor.name} help Christians reclaim time for
-            God. The question is: which approach transforms addiction into
-            spiritual growth most effectively?
+            God. The question is: which approach fits your spiritual journey best?
           </p>
         </section>
 
         {/* CTA */}
         <section className="bg-cta-gradient text-white p-10 md:p-16 rounded-3xl text-center mb-16">
           <h2 className="text-2xl md:text-4xl font-bold mb-4 text-balance">
-            Ready to transform phone addiction
-            <br className="hidden md:block" />
-            into spiritual growth?
+            Start building a daily Scripture habit
           </h2>
           <p className="text-lg mb-8 text-white/80">
-            Join Christians using FaithLock. Start free today.
+            Join Christians replacing scrolling with Scripture.
           </p>
           <CTAButton
             text="Try FaithLock Free"
@@ -253,20 +280,18 @@ export default function ComparisonTemplate({
           />
         </section>
 
-        {/* Related */}
-        <section>
+        {/* Related — dynamic, not hardcoded */}
+        <section id="related">
           <h2 className="text-xl font-bold mb-6 text-gray-900">
             Related Comparisons
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
-            <a href="/compare/faithlock-vs-bible-mode" className="card-interactive p-5">
-              <h3 className="font-semibold text-gray-900 text-sm">FaithLock vs Bible Mode</h3>
-              <p className="text-xs text-gray-500 mt-1">Verse unlock vs physical Bible scanning</p>
-            </a>
-            <a href="/compare/faithlock-vs-holy-focus" className="card-interactive p-5">
-              <h3 className="font-semibold text-gray-900 text-sm">FaithLock vs Holy Focus</h3>
-              <p className="text-xs text-gray-500 mt-1">Professional vs prayer-focused</p>
-            </a>
+            {otherCompetitors.slice(0, 2).map((comp) => (
+              <a key={comp.slug} href={`/compare/${comp.slug}`} className="card-interactive p-5">
+                <h3 className="font-semibold text-gray-900 text-sm">FaithLock vs {comp.name}</h3>
+                <p className="text-xs text-gray-500 mt-1">See how they compare</p>
+              </a>
+            ))}
             <a href="/compare" className="card-interactive p-5">
               <h3 className="font-semibold text-brand-600 text-sm">All Comparisons</h3>
               <p className="text-xs text-gray-500 mt-1">View the complete guide</p>

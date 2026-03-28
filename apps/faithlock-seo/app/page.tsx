@@ -3,6 +3,7 @@ import InteractivePhone from '@/components/landing/InteractivePhone'
 import TypewriterHeadline from '@/components/landing/TypewriterHeadline'
 import ScrollReveal from '@/components/landing/ScrollReveal'
 import LandingTracker from '@/components/landing/LandingTracker'
+import LandingFooter from '@/components/landing/LandingFooter'
 
 const APP_LINK = 'https://pim.ms/kTxgKF4'
 
@@ -371,43 +372,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Explore More ── */}
-      <section className="py-12 border-t border-white/5" data-track-section="explore_more">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="/compare" className="bento-card rounded-2xl p-6 hover:bg-white/5 transition-colors group">
-              <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider mb-2 block">Compare</span>
-              <h3 className="text-white font-medium mb-1">FaithLock vs Others</h3>
-              <p className="text-xs text-slate-500">See how we compare to other screen time apps</p>
-            </a>
-            <a href="/learn" className="bento-card rounded-2xl p-6 hover:bg-white/5 transition-colors group">
-              <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider mb-2 block">Learn</span>
-              <h3 className="text-white font-medium mb-1">Digital Wellness Guide</h3>
-              <p className="text-xs text-slate-500">Biblical perspectives on phone addiction</p>
-            </a>
-            <a href="/features" className="bento-card rounded-2xl p-6 hover:bg-white/5 transition-colors group">
-              <span className="text-[10px] uppercase font-bold text-violet-400 tracking-wider mb-2 block">Features</span>
-              <h3 className="text-white font-medium mb-1">Everything Inside</h3>
-              <p className="text-xs text-slate-500">Bible quiz, covenant tracking, scheduling & more</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* ── Footer ── */}
-      <footer className="pb-24 md:pb-12 pt-0">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 pt-8 text-center md:text-left">
-          <p className="text-slate-600 text-xs">Created by Appbiz Studio LLC</p>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-xs text-slate-500 items-center">
-            <a href={COMPANY.privacyUrl} target="_blank" rel="noopener noreferrer" className="hover:text-slate-300 transition-colors" data-track-outbound="Privacy">Privacy Policy</a>
-            <a href={COMPANY.termsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-slate-300 transition-colors" data-track-outbound="Terms">Terms</a>
-            <div className="flex gap-1">
-              <span>Need help?</span>
-              <a href={`mailto:${COMPANY.email}`} className="text-indigo-400 hover:text-indigo-300 transition-colors" data-track-outbound="Contact">{COMPANY.email}</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   )
 }

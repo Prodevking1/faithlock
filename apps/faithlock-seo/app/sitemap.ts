@@ -32,23 +32,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  const comparisonPages: MetadataRoute.Sitemap = competitors.map((slug) => ({
-    url: `${SITE_URL}/compare/${slug.startsWith('faithlock-vs-') ? slug : `faithlock-vs-${slug}`}`,
-    lastModified: new Date(),
+  const comparisonPages: MetadataRoute.Sitemap = competitors.map((entry) => ({
+    url: `${SITE_URL}/compare/${entry.slug.startsWith('faithlock-vs-') ? entry.slug : `faithlock-vs-${entry.slug}`}`,
+    lastModified: new Date(entry.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))
 
-  const glossaryPages: MetadataRoute.Sitemap = glossaryTerms.map((slug) => ({
-    url: `${SITE_URL}/learn/${slug}`,
-    lastModified: new Date(),
+  const glossaryPages: MetadataRoute.Sitemap = glossaryTerms.map((entry) => ({
+    url: `${SITE_URL}/learn/${entry.slug}`,
+    lastModified: new Date(entry.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))
 
-  const featurePages: MetadataRoute.Sitemap = features.map((slug) => ({
-    url: `${SITE_URL}/features/${slug}`,
-    lastModified: new Date(),
+  const featurePages: MetadataRoute.Sitemap = features.map((entry) => ({
+    url: `${SITE_URL}/features/${entry.slug}`,
+    lastModified: new Date(entry.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }))

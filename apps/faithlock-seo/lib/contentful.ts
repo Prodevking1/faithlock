@@ -105,8 +105,44 @@ export async function getAllSlugs() {
   ])
 
   return {
-    competitors: competitors.map((c) => c.fields.slug as string),
-    glossaryTerms: glossaryTerms.map((t) => t.fields.slug as string),
-    features: features.map((f) => f.fields.slug as string),
+    competitors: competitors.map((c) => ({
+      slug: c.fields.slug as string,
+      updatedAt: c.sys.updatedAt,
+    })),
+    glossaryTerms: glossaryTerms.map((t) => ({
+      slug: t.fields.slug as string,
+      updatedAt: t.sys.updatedAt,
+    })),
+    features: features.map((f) => ({
+      slug: f.fields.slug as string,
+      updatedAt: f.sys.updatedAt,
+    })),
+  }
+}
+
+// ─── Utility: Get all content for footer ───
+
+export async function getAllContentForFooter() {
+  const [competitors, glossaryTerms, features] = await Promise.all([
+    getAllCompetitors(),
+    getAllGlossaryTerms(),
+    getAllFeatures(),
+  ])
+
+  return {
+    competitors: competitors.map((c) => ({
+      slug: (c.fields.slug as string).startsWith('faithlock-vs-')
+        ? (c.fields.slug as string)
+        : `faithlock-vs-${c.fields.slug as string}`,
+      name: c.fields.name as string,
+    })),
+    glossaryTerms: glossaryTerms.map((t) => ({
+      slug: t.fields.slug as string,
+      term: t.fields.term as string,
+    })),
+    features: features.map((f) => ({
+      slug: f.fields.slug as string,
+      name: f.fields.name as string,
+    })),
   }
 }

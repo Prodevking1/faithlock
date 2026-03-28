@@ -1,18 +1,55 @@
 import { Feature } from '@/lib/types'
-import { FAITHLOCK_STATS, APP_STORE_URL } from '@/lib/constants'
+import { APP_STORE_URL } from '@/lib/constants'
 import BibleVerse from '@/components/ui/BibleVerse'
 import CTAButton from '@/components/ui/CTAButton'
 import RichText from '@/components/ui/RichText'
 import TemplateTracker from '@/components/templates/TemplateTracker'
+import TableOfContents from '@/components/seo/TableOfContents'
+import ReadingTime from '@/components/seo/ReadingTime'
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema'
 
 interface FeatureTemplateProps {
   feature: Feature
+  updatedAt: string
+  otherFeatures: { slug: string; name: string }[]
 }
 
-export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+}
+
+export default function FeatureTemplate({ feature, updatedAt, otherFeatures }: FeatureTemplateProps) {
+  const wordCount = 800 + (feature.benefits?.length || 0) * 10 + (feature.useCases?.length || 0) * 30
+
+  const tocItems = [
+    { id: 'how-it-works', text: 'How It Works' },
+    { id: 'benefits', text: 'Key Benefits' },
+    ...(feature.useCases && feature.useCases.length > 0
+      ? [{ id: 'stories', text: 'Real User Stories' }]
+      : []),
+    ...(feature.bibleVerses && feature.bibleVerses.length > 0
+      ? [{ id: 'scripture', text: 'Biblical Foundation' }]
+      : []),
+    ...(feature.faqs && feature.faqs.length > 0
+      ? [{ id: 'faqs', text: 'Frequently Asked Questions' }]
+      : []),
+    ...(otherFeatures.length > 0
+      ? [{ id: 'related', text: 'Other Features' }]
+      : []),
+  ]
+
   return (
     <article>
       <TemplateTracker type="feature" slug={feature.slug} />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Features', url: '/features' },
+          { name: feature.name, url: `/features/${feature.slug}` },
+        ]}
+      />
+
       {/* Hero */}
       <div className="bg-hero-pattern text-white">
         <div className="container-default py-14 md:py-20">
@@ -24,7 +61,12 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
             <span className="text-white/70">{feature.name}</span>
           </nav>
 
-          <span className="badge bg-warm-500/20 text-warm-300 mb-4">Feature</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="badge bg-warm-500/20 text-warm-300">Feature</span>
+            <ReadingTime wordCount={wordCount} />
+            <span className="text-sm text-white/50">Updated {formatDate(updatedAt)}</span>
+          </div>
+
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-tight">
             {feature.name}
           </h1>
@@ -39,8 +81,11 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
       </div>
 
       <div className="container-default py-12 md:py-16">
+        {/* Table of Contents */}
+        <TableOfContents items={tocItems} />
+
         {/* How It Works */}
-        <section className="mb-16 md:mb-20">
+        <section id="how-it-works" className="mb-16 md:mb-20">
           <div className="card p-8 md:p-10 bg-brand-50/50 border-brand-100">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-brand-900">How It Works</h2>
             <RichText
@@ -51,14 +96,11 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
         </section>
 
         {/* Benefits */}
-        <section className="mb-16 md:mb-20">
+        <section id="benefits" className="mb-16 md:mb-20">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">Key Benefits</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {(Array.isArray(feature.benefits) ? feature.benefits : []).map((benefit, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 p-4 card"
-              >
+              <div key={i} className="flex items-start gap-3 p-4 card">
                 <div className="w-8 h-8 bg-sage-100 rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-sage-600" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
@@ -72,7 +114,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
 
         {/* User Stories */}
         {feature.useCases && feature.useCases.length > 0 && (
-          <section className="mb-16 md:mb-20">
+          <section id="stories" className="mb-16 md:mb-20">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
               Real User Stories
             </h2>
@@ -103,7 +145,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
 
         {/* Biblical Foundation */}
         {feature.bibleVerses && feature.bibleVerses.length > 0 && (
-          <section className="mb-16 md:mb-20 bg-brand-950 text-white rounded-3xl p-8 md:p-12">
+          <section id="scripture" className="mb-16 md:mb-20 bg-brand-950 text-white rounded-3xl p-8 md:p-12">
             <span className="badge bg-warm-500/20 text-warm-300 mb-4">Scripture</span>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               Biblical Foundation
@@ -122,7 +164,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
 
         {/* FAQs */}
         {feature.faqs && feature.faqs.length > 0 && (
-          <section className="mb-16 md:mb-20">
+          <section id="faqs" className="mb-16 md:mb-20">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
               Frequently Asked Questions
             </h2>
@@ -146,7 +188,7 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">At a Glance</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { value: FAITHLOCK_STATS.versesInLibrary, label: 'Scripture library', color: 'brand' },
+              { value: 'Complete Bible', label: 'Scripture library', color: 'brand' },
               { value: '~30s', label: 'To unlock with Scripture', color: 'brand' },
               { value: 'BSB', label: 'Bible translation', color: 'warm' },
             ].map((stat) => (
@@ -178,24 +220,24 @@ export default function FeatureTemplate({ feature }: FeatureTemplateProps) {
           />
         </section>
 
-        {/* Related Features */}
-        <section>
-          <h2 className="text-xl font-bold mb-6 text-gray-900">Other Features</h2>
-          <div className="grid sm:grid-cols-3 gap-4">
-            <a href="/learn/bible-quiz-unlock-phone" className="card-interactive p-5">
-              <h3 className="font-semibold text-gray-900 text-sm">Bible Verse Unlock</h3>
-              <p className="text-xs text-gray-500 mt-1">Read Scripture to access your blocked apps</p>
-            </a>
-            <a href="/learn/30-day-covenant-tracking" className="card-interactive p-5">
-              <h3 className="font-semibold text-gray-900 text-sm">30-Day Covenant</h3>
-              <p className="text-xs text-gray-500 mt-1">Sacred commitment with accountability</p>
-            </a>
-            <a href="/features" className="card-interactive p-5">
-              <h3 className="font-semibold text-brand-600 text-sm">All Features</h3>
-              <p className="text-xs text-gray-500 mt-1">Explore everything FaithLock offers</p>
-            </a>
-          </div>
-        </section>
+        {/* Related Features — dynamic */}
+        {otherFeatures.length > 0 && (
+          <section id="related">
+            <h2 className="text-xl font-bold mb-6 text-gray-900">Other Features</h2>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {otherFeatures.slice(0, 2).map((feat) => (
+                <a key={feat.slug} href={`/features/${feat.slug}`} className="card-interactive p-5">
+                  <h3 className="font-semibold text-gray-900 text-sm">{feat.name}</h3>
+                  <p className="text-xs text-gray-500 mt-1">Learn more about this feature</p>
+                </a>
+              ))}
+              <a href="/features" className="card-interactive p-5">
+                <h3 className="font-semibold text-brand-600 text-sm">All Features</h3>
+                <p className="text-xs text-gray-500 mt-1">Explore everything FaithLock offers</p>
+              </a>
+            </div>
+          </section>
+        )}
       </div>
     </article>
   )
