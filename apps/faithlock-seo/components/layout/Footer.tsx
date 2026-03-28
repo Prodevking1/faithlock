@@ -1,8 +1,52 @@
 import { getAllContentForFooter } from '@/lib/contentful'
 import { APP_STORE_URL, COMPANY } from '@/lib/constants'
 
+// Top Bible Verse topics by search volume
+const TOP_BIBLE_VERSES = [
+  'bible-verses-about-love',
+  'bible-verses-about-strength',
+  'bible-verses-about-encouragement',
+  'bible-verses-about-anxiety',
+  'bible-verses-about-healing',
+  'bible-verses-about-peace',
+  'bible-verses-about-forgiveness',
+  'bible-verses-about-faith',
+  'bible-verses-about-hope',
+  'bible-verses-about-depression',
+  'bible-verses-about-patience',
+  'bible-verses-about-anger',
+]
+
+// Top Prayers by search volume
+const TOP_PRAYERS = [
+  'prayer-for-anxiety',
+  'prayer-for-strength',
+  'prayer-for-healing',
+  'prayer-for-peace',
+  'prayer-for-guidance',
+  'prayer-for-protection',
+  'prayer-for-forgiveness',
+  'prayer-for-courage',
+  'prayer-for-patience',
+  'prayer-for-wisdom',
+  'prayer-for-phone-addiction',
+  'prayer-for-stress',
+]
+
 export default async function Footer() {
   const content = await getAllContentForFooter()
+
+  // Filter glossary terms by priority slugs
+  const bibleVerses = TOP_BIBLE_VERSES
+    .map(slug => content.glossaryTerms.find(t => t.slug === slug))
+    .filter(Boolean) as { slug: string; term: string; category: string }[]
+
+  const prayers = TOP_PRAYERS
+    .map(slug => content.glossaryTerms.find(t => t.slug === slug))
+    .filter(Boolean) as { slug: string; term: string; category: string }[]
+
+  // Top comparisons (first 12)
+  const topComparisons = content.competitors.slice(0, 12)
 
   return (
     <footer className="bg-brand-950 text-gray-300">
@@ -34,7 +78,7 @@ export default async function Footer() {
               Download on App Store
             </a>
             <p className="mt-2 text-xs text-gray-500">Free &middot; iOS 16+</p>
-            <p className="mt-6 text-xs text-gray-600">
+            <p className="mt-5 text-xs text-gray-600">
               &copy; {new Date().getFullYear()} {COMPANY.name}
             </p>
           </div>
@@ -43,26 +87,10 @@ export default async function Footer() {
           <div>
             <h4 className="font-semibold text-white text-sm mb-4">Product</h4>
             <ul className="space-y-2.5 text-sm">
-              <li>
-                <a href="/learn" className="text-gray-400 hover:text-white transition-colors">
-                  Resources
-                </a>
-              </li>
-              <li>
-                <a href="/compare" className="text-gray-400 hover:text-white transition-colors">
-                  Comparisons
-                </a>
-              </li>
-              <li>
-                <a href="/features" className="text-gray-400 hover:text-white transition-colors">
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">
-                  Contact
-                </a>
-              </li>
+              <li><a href="/resources" className="text-gray-400 hover:text-white transition-colors">Resources</a></li>
+              <li><a href="/compare" className="text-gray-400 hover:text-white transition-colors">Comparisons</a></li>
+              <li><a href="/features" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
 
@@ -70,21 +98,9 @@ export default async function Footer() {
           <div>
             <h4 className="font-semibold text-white text-sm mb-4">Company</h4>
             <ul className="space-y-2.5 text-sm">
-              <li>
-                <a href={COMPANY.privacyUrl} className="text-gray-400 hover:text-white transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href={COMPANY.termsUrl} className="text-gray-400 hover:text-white transition-colors">
-                  Terms of Use
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">
-                  Support
-                </a>
-              </li>
+              <li><a href={COMPANY.privacyUrl} className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href={COMPANY.termsUrl} className="text-gray-400 hover:text-white transition-colors">Terms of Use</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">Support</a></li>
             </ul>
           </div>
 
@@ -102,24 +118,51 @@ export default async function Footer() {
         </div>
       </div>
 
-      {/* ─── Bottom section: All content links ─── */}
+      {/* ─── Bottom section: Top content by category ─── */}
       <div className="border-t border-gray-800/60">
         <div className="container-wide py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-            {/* Guides */}
+            {/* Bible Verses */}
             <div>
-              <h4 className="font-semibold text-white text-sm mb-4">Guides</h4>
+              <h4 className="font-semibold text-white text-sm mb-4">Bible Verses</h4>
               <ul className="space-y-2 text-sm">
-                {content.glossaryTerms.map((term) => (
-                  <li key={term.slug}>
+                {bibleVerses.map((item) => (
+                  <li key={item.slug}>
                     <a
-                      href={`/learn/${term.slug}`}
+                      href={`/resources/${item.slug}`}
                       className="text-gray-400 hover:text-white transition-colors leading-snug block"
                     >
-                      {term.term}
+                      {item.term}
                     </a>
                   </li>
                 ))}
+                <li>
+                  <a href="/resources" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                    All Bible Verses &rarr;
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Prayers */}
+            <div>
+              <h4 className="font-semibold text-white text-sm mb-4">Prayers</h4>
+              <ul className="space-y-2 text-sm">
+                {prayers.map((item) => (
+                  <li key={item.slug}>
+                    <a
+                      href={`/resources/${item.slug}`}
+                      className="text-gray-400 hover:text-white transition-colors leading-snug block"
+                    >
+                      {item.term}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <a href="/resources" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                    All Prayers &rarr;
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -127,7 +170,7 @@ export default async function Footer() {
             <div>
               <h4 className="font-semibold text-white text-sm mb-4">Comparisons</h4>
               <ul className="space-y-2 text-sm">
-                {content.competitors.map((comp) => (
+                {topComparisons.map((comp) => (
                   <li key={comp.slug}>
                     <a
                       href={`/compare/${comp.slug}`}
@@ -137,23 +180,11 @@ export default async function Footer() {
                     </a>
                   </li>
                 ))}
-              </ul>
-            </div>
-
-            {/* Features */}
-            <div>
-              <h4 className="font-semibold text-white text-sm mb-4">Features</h4>
-              <ul className="space-y-2 text-sm">
-                {content.features.map((feat) => (
-                  <li key={feat.slug}>
-                    <a
-                      href={`/features/${feat.slug}`}
-                      className="text-gray-400 hover:text-white transition-colors leading-snug block"
-                    >
-                      {feat.name}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="/compare" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                    All Comparisons &rarr;
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

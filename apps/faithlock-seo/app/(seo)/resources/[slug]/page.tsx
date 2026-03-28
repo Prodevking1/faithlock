@@ -34,7 +34,7 @@ export async function generateMetadata({
       title,
       description,
       type: 'article',
-      url: `${SITE_URL}/learn/${fields.slug}`,
+      url: `${SITE_URL}/resources/${fields.slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -42,7 +42,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `/learn/${fields.slug}`,
+      canonical: `/resources/${fields.slug}`,
     },
   }
 }
@@ -75,7 +75,7 @@ export default async function LearnSlugPage({
     dateModified: entry.sys.updatedAt,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${SITE_URL}/learn/${fields.slug}`,
+      '@id': `${SITE_URL}/resources/${fields.slug}`,
     },
   }
 

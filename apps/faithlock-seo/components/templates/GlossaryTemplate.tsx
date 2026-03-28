@@ -71,8 +71,8 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
       <BreadcrumbSchema
         items={[
           { name: 'Home', url: '/' },
-          { name: 'Learn', url: '/learn' },
-          { name: term.term, url: `/learn/${term.slug}` },
+          { name: 'Resources', url: '/resources' },
+          { name: term.term, url: `/resources/${term.slug}` },
         ]}
       />
 
@@ -82,7 +82,7 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
           <nav className="breadcrumb mb-8 text-white/50">
             <a href="/" className="hover:text-white/80">Home</a>
             <span className="breadcrumb-separator text-white/30">/</span>
-            <a href="/learn" className="hover:text-white/80">Learn</a>
+            <a href="/resources" className="hover:text-white/80">Resources</a>
             <span className="breadcrumb-separator text-white/30">/</span>
             <span className="text-white/70">{term.term}</span>
           </nav>
@@ -223,7 +223,7 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
                   .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
                   .join(' ')
                 return (
-                  <a key={i} href={`/learn/${slug}`} className="card-interactive p-5">
+                  <a key={i} href={`/resources/${slug}`} className="card-interactive p-5">
                     <h3 className="font-semibold text-gray-900 text-sm">{displayName}</h3>
                     <p className="text-xs text-gray-500 mt-1">
                       Learn about {displayName.toLowerCase()}

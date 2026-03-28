@@ -65,6 +65,11 @@ const CATEGORIES = {
   'bible-verses': { dir: 'bible-verses', label: 'Bible Verses About [Topic]' },
   'addiction-guides': { dir: 'addiction-guides', label: 'Addiction Guides' },
   prayers: { dir: 'prayers', label: 'Prayers' },
+  comparisons: { dir: 'comparisons', label: 'App Comparisons' },
+  'audience-guides': { dir: 'audience-guides', label: 'Audience Guides' },
+  'platform-guides': { dir: 'platform-guides', label: 'Platform Guides' },
+  'stats-pages': { dir: 'stats-pages', label: 'Statistics Pages' },
+  devotionals: { dir: 'devotionals', label: 'Devotionals' },
 }
 
 // ─── Status Management ───

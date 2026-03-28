@@ -139,6 +139,7 @@ export async function getAllContentForFooter() {
     glossaryTerms: glossaryTerms.map((t) => ({
       slug: t.fields.slug as string,
       term: t.fields.term as string,
+      category: (t.fields.category as string) || 'General',
     })),
     features: features.map((f) => ({
       slug: f.fields.slug as string,

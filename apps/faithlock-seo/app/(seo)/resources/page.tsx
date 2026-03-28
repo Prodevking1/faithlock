@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description:
     'Learn about phone addiction, digital detox, and spiritual disciplines from a Christian perspective. Biblical insights and practical solutions for screen time management.',
   alternates: {
-    canonical: '/learn',
+    canonical: '/resources',
   },
 }
 
@@ -97,7 +97,7 @@ export default async function LearnPage() {
           <nav className="breadcrumb mb-8 text-white/50">
             <a href="/" className="hover:text-white/80">Home</a>
             <span className="breadcrumb-separator text-white/30">/</span>
-            <span className="text-white/70">Learn</span>
+            <span className="text-white/70">Resources</span>
           </nav>
 
           <span className="badge bg-warm-500/20 text-warm-300 mb-4">Glossary</span>
@@ -175,7 +175,7 @@ export default async function LearnPage() {
                   return (
                     <a
                       key={entry.sys.id}
-                      href={`/learn/${t.slug}`}
+                      href={`/resources/${t.slug}`}
                       className="card-interactive p-5 md:p-6"
                     >
                       <div className="flex items-start gap-3">

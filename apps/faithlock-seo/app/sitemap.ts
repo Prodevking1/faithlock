@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/learn`,
+      url: `${SITE_URL}/resources`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   const glossaryPages: MetadataRoute.Sitemap = glossaryTerms.map((entry) => ({
-    url: `${SITE_URL}/learn/${entry.slug}`,
+    url: `${SITE_URL}/resources/${entry.slug}`,
     lastModified: new Date(entry.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.8,

@@ -90,9 +90,8 @@ export const TARGET_AUDIENCE = [
 ] as const
 
 export const NAV_LINKS = [
+  { label: 'Resources', href: '/resources' },
   { label: 'Compare', href: '/compare' },
-  { label: 'Learn', href: '/learn' },
-  { label: 'Features', href: '/features' },
 ] as const
 
 export { COMPANY, PRICING, INDUSTRY_STATS, COPY, displayMetric }

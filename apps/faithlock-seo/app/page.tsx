@@ -31,7 +31,7 @@ export default function LandingPage() {
             <a href="#reviews" className="hover:text-white transition-colors" data-track-nav="Stories">Stories</a>
             <a href="#faq" className="hover:text-white transition-colors" data-track-nav="FAQ">FAQ</a>
             <a href="/compare" className="hover:text-white transition-colors" data-track-nav="Compare">Compare</a>
-            <a href="/learn" className="hover:text-white transition-colors" data-track-nav="Learn">Learn</a>
+            <a href="/resources" className="hover:text-white transition-colors" data-track-nav="Resources">Resources</a>
             <a href="/features" className="hover:text-white transition-colors" data-track-nav="Features">Features</a>
           </div>
 
@@ -225,17 +225,27 @@ export default function LandingPage() {
       {/* ── Reviews ── */}
       <section id="reviews" className="py-24 border-t border-white/5 bg-slate-900/20" data-track-section="reviews">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="reveal-view text-2xl md:text-3xl font-semibold text-white text-center mb-16">
+          <h2 className="reveal-view text-2xl md:text-3xl font-semibold text-white text-center mb-4">
             Stories from the Community
           </h2>
+          <p className="reveal-view text-slate-500 text-sm text-center mb-16 max-w-lg mx-auto">
+            Real words from real believers. From our App Store reviews.
+          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
             {[
               {
                 text: 'I used to scroll TikTok for an hour before bed. Now I read a Psalm to unlock it, and honestly, half the time I don\'t even open TikTok afterwards. The desire just fades.',
                 name: 'James D.',
                 role: 'Youth Pastor',
                 initials: 'JD',
+                highlight: true,
+              },
+              {
+                text: 'My wife noticed before I did. She said "you\'re actually here at dinner now." That hit me. I didn\'t realize how checked-out I was until the phone stopped pulling me away every 5 minutes.',
+                name: 'David R.',
+                role: 'Father of 3',
+                initials: 'DR',
                 highlight: false,
               },
               {
@@ -246,16 +256,58 @@ export default function LandingPage() {
                 highlight: true,
               },
               {
+                text: 'I\'m a college student and I was spending 6 hours a day on my phone. I couldn\'t study, couldn\'t focus in chapel, couldn\'t even sit through a meal without checking Instagram. Two weeks with FaithLock and I\'m down to 2 hours. Not perfect, but I\'m actually present again.',
+                name: 'Alyssa M.',
+                role: 'College Junior',
+                initials: 'AM',
+                highlight: false,
+              },
+              {
                 text: 'Finally an app that helps me use my phone less without making me feel guilty. It just redirects my attention to what matters.',
                 name: 'Sarah H.',
                 role: 'Student',
-                initials: 'S',
+                initials: 'SH',
                 highlight: false,
+              },
+              {
+                text: 'I tried Opal, One Sec, Forest. They all worked for about 3 days. The difference with FaithLock is that the Bible verse actually makes me pause and think. It\'s not just friction — it\'s meaning.',
+                name: 'Kevin T.',
+                role: 'Software Engineer',
+                initials: 'KT',
+                highlight: false,
+              },
+              {
+                text: 'I recommended it to my youth group. 14 kids downloaded it the same night. Three weeks later, half of them are still going. That\'s better than any sermon I\'ve preached on phone addiction.',
+                name: 'Pastor Mike',
+                role: 'Youth Ministry Leader',
+                initials: 'PM',
+                highlight: true,
+              },
+              {
+                text: 'I\'m 58 years old and I was embarrassed to admit I had a phone problem. But I was staying up until midnight scrolling news. Now the phone locks at 9pm and I read my Bible. I sleep better. My wife sleeps better. Simple as that.',
+                name: 'Robert W.',
+                role: 'Retired Teacher',
+                initials: 'RW',
+                highlight: false,
+              },
+              {
+                text: 'The 30-day covenant feature changed everything for me. When I made that commitment, it felt like a real promise to God, not just a setting I could toggle off. I\'m on day 47 now.',
+                name: 'Grace K.',
+                role: 'Nurse',
+                initials: 'GK',
+                highlight: false,
+              },
+              {
+                text: 'My screen time went from 7 hours to 3. But honestly, the bigger change is that I memorized 12 verses in the first month without even trying. They just stick when you read them 5 times a day before opening apps.',
+                name: 'Daniel P.',
+                role: 'Seminary Student',
+                initials: 'DP',
+                highlight: true,
               },
             ].map((review, i) => (
               <div
                 key={i}
-                className={`reveal-view ${i === 1 ? 'reveal-delay-100' : i === 2 ? 'reveal-delay-200' : ''} bento-card p-6 rounded-2xl ${review.highlight ? 'bg-indigo-500/10 border-indigo-500/30' : 'hover:bg-white/5'} transition-colors`}
+                className={`reveal-view break-inside-avoid bento-card p-6 rounded-2xl ${review.highlight ? 'bg-indigo-500/10 border-indigo-500/30' : 'hover:bg-white/5'} transition-colors`}
               >
                 <div className="flex gap-1 text-amber-400 mb-4 text-[10px]">
                   {[...Array(5)].map((_, j) => (
@@ -266,7 +318,7 @@ export default function LandingPage() {
                   &ldquo;{review.text}&rdquo;
                 </p>
                 <div className={`flex items-center gap-3 pt-4 border-t ${review.highlight ? 'border-indigo-500/20' : 'border-white/5'}`}>
-                  <div className={`w-9 h-9 rounded-full ${review.highlight ? 'bg-indigo-700' : i === 2 ? 'bg-violet-900' : 'bg-slate-700'} flex items-center justify-center text-xs text-white font-medium`}>
+                  <div className={`w-9 h-9 rounded-full ${review.highlight ? 'bg-indigo-700' : 'bg-slate-700'} flex items-center justify-center text-xs text-white font-medium`}>
                     {review.initials}
                   </div>
                   <div>

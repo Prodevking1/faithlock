@@ -3,12 +3,44 @@ import { COMPANY } from '@/lib/constants'
 
 const APP_LINK = 'https://pim.ms/kTxgKF4'
 
+const TOP_BIBLE_VERSES = [
+  'bible-verses-about-love',
+  'bible-verses-about-strength',
+  'bible-verses-about-encouragement',
+  'bible-verses-about-anxiety',
+  'bible-verses-about-healing',
+  'bible-verses-about-peace',
+  'bible-verses-about-forgiveness',
+  'bible-verses-about-faith',
+]
+
+const TOP_PRAYERS = [
+  'prayer-for-anxiety',
+  'prayer-for-strength',
+  'prayer-for-healing',
+  'prayer-for-peace',
+  'prayer-for-guidance',
+  'prayer-for-protection',
+  'prayer-for-forgiveness',
+  'prayer-for-courage',
+]
+
 export default async function LandingFooter() {
   const content = await getAllContentForFooter()
 
+  const bibleVerses = TOP_BIBLE_VERSES
+    .map(slug => content.glossaryTerms.find(t => t.slug === slug))
+    .filter(Boolean) as { slug: string; term: string; category: string }[]
+
+  const prayers = TOP_PRAYERS
+    .map(slug => content.glossaryTerms.find(t => t.slug === slug))
+    .filter(Boolean) as { slug: string; term: string; category: string }[]
+
+  const topComparisons = content.competitors.slice(0, 8)
+
   return (
     <footer className="border-t border-white/5">
-      {/* ── Top: Brand + Meta ── */}
+      {/* ─── Top: Brand + Meta ─── */}
       <div className="max-w-6xl mx-auto px-6 py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
           {/* Brand */}
@@ -46,7 +78,7 @@ export default async function LandingFooter() {
           <div>
             <h4 className="text-white text-xs font-semibold mb-4">Product</h4>
             <ul className="space-y-2.5 text-xs">
-              <li><a href="/learn" className="text-slate-500 hover:text-white transition-colors">Resources</a></li>
+              <li><a href="/resources" className="text-slate-500 hover:text-white transition-colors">Resources</a></li>
               <li><a href="/compare" className="text-slate-500 hover:text-white transition-colors">Comparisons</a></li>
               <li><a href="/features" className="text-slate-500 hover:text-white transition-colors">Features</a></li>
               <li><a href={`mailto:${COMPANY.email}`} className="text-slate-500 hover:text-white transition-colors">Contact</a></li>
@@ -77,24 +109,45 @@ export default async function LandingFooter() {
         </div>
       </div>
 
-      {/* ── Bottom: All content links ── */}
+      {/* ─── Bottom: Top content by category ─── */}
       <div className="border-t border-white/5">
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-            {/* Guides */}
+            {/* Bible Verses */}
             <div>
-              <h4 className="text-white text-xs font-semibold mb-4">Guides</h4>
+              <h4 className="text-white text-xs font-semibold mb-4">Bible Verses</h4>
               <ul className="space-y-2 text-xs">
-                {content.glossaryTerms.map((term) => (
-                  <li key={term.slug}>
-                    <a
-                      href={`/learn/${term.slug}`}
-                      className="text-slate-500 hover:text-white transition-colors leading-snug block"
-                    >
-                      {term.term}
+                {bibleVerses.map((item) => (
+                  <li key={item.slug}>
+                    <a href={`/resources/${item.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
+                      {item.term}
                     </a>
                   </li>
                 ))}
+                <li>
+                  <a href="/resources" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                    View more &rarr;
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Prayers */}
+            <div>
+              <h4 className="text-white text-xs font-semibold mb-4">Prayers</h4>
+              <ul className="space-y-2 text-xs">
+                {prayers.map((item) => (
+                  <li key={item.slug}>
+                    <a href={`/resources/${item.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
+                      {item.term}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <a href="/resources" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                    View more &rarr;
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -102,33 +155,18 @@ export default async function LandingFooter() {
             <div>
               <h4 className="text-white text-xs font-semibold mb-4">Comparisons</h4>
               <ul className="space-y-2 text-xs">
-                {content.competitors.map((comp) => (
+                {topComparisons.map((comp) => (
                   <li key={comp.slug}>
-                    <a
-                      href={`/compare/${comp.slug}`}
-                      className="text-slate-500 hover:text-white transition-colors leading-snug block"
-                    >
+                    <a href={`/compare/${comp.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
                       FaithLock vs {comp.name}
                     </a>
                   </li>
                 ))}
-              </ul>
-            </div>
-
-            {/* Features */}
-            <div>
-              <h4 className="text-white text-xs font-semibold mb-4">Features</h4>
-              <ul className="space-y-2 text-xs">
-                {content.features.map((feat) => (
-                  <li key={feat.slug}>
-                    <a
-                      href={`/features/${feat.slug}`}
-                      className="text-slate-500 hover:text-white transition-colors leading-snug block"
-                    >
-                      {feat.name}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="/compare" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                    View more &rarr;
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
