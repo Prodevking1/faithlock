@@ -45,8 +45,14 @@ export default async function Footer() {
     .map(slug => content.glossaryTerms.find(t => t.slug === slug))
     .filter(Boolean) as { slug: string; term: string; category: string }[]
 
-  // Top comparisons (first 12)
-  const topComparisons = content.competitors.slice(0, 12)
+  // Top comparisons (first 12) — clean up display names
+  const topComparisons = content.competitors.slice(0, 12).map(comp => ({
+    ...comp,
+    displayName: comp.name
+      .replace(/^faithlock-vs-/i, '')
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase()),
+  }))
 
   return (
     <footer className="bg-brand-950 text-gray-300">
@@ -176,7 +182,7 @@ export default async function Footer() {
                       href={`/compare/${comp.slug}`}
                       className="text-gray-400 hover:text-white transition-colors leading-snug block"
                     >
-                      FaithLock vs {comp.name}
+                      FaithLock vs {comp.displayName}
                     </a>
                   </li>
                 ))}

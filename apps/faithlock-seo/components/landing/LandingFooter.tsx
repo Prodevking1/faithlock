@@ -36,7 +36,13 @@ export default async function LandingFooter() {
     .map(slug => content.glossaryTerms.find(t => t.slug === slug))
     .filter(Boolean) as { slug: string; term: string; category: string }[]
 
-  const topComparisons = content.competitors.slice(0, 8)
+  const topComparisons = content.competitors.slice(0, 8).map(comp => ({
+    ...comp,
+    displayName: comp.name
+      .replace(/^faithlock-vs-/i, '')
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase()),
+  }))
 
   return (
     <footer className="border-t border-white/5">
@@ -158,7 +164,7 @@ export default async function LandingFooter() {
                 {topComparisons.map((comp) => (
                   <li key={comp.slug}>
                     <a href={`/compare/${comp.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
-                      FaithLock vs {comp.name}
+                      FaithLock vs {comp.displayName}
                     </a>
                   </li>
                 ))}

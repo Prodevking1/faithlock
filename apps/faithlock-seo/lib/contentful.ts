@@ -54,10 +54,22 @@ export async function getCompetitorBySlug(slug: string) {
 // ─── Glossary Terms (Learn Pages) ───
 
 export async function getAllGlossaryTerms() {
-  return safeGetEntries({
-    content_type: 'glossaryTerm',
-    order: ['fields.term'],
-  })
+  // Contentful defaults to 100 items. We have 330+ entries, so fetch all.
+  const allItems = []
+  let skip = 0
+  const limit = 100
+  while (true) {
+    const items = await safeGetEntries({
+      content_type: 'glossaryTerm',
+      order: ['fields.term'],
+      limit,
+      skip,
+    })
+    allItems.push(...items)
+    if (items.length < limit) break
+    skip += limit
+  }
+  return allItems
 }
 
 export async function getGlossaryTermBySlug(slug: string) {

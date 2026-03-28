@@ -17,12 +17,13 @@ export default function LandingPage() {
       <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl transition-all duration-500">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-gradient-to-tr from-indigo-50 to-indigo-100 text-indigo-950 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <polyline points="9 12 11 14 15 10" />
-              </svg>
-            </div>
+            <img
+              src="/app-icon.png"
+              alt="FaithLock"
+              width={32}
+              height={32}
+              className="w-8 h-8 rounded-lg shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300"
+            />
             <span className="text-white font-medium tracking-tight text-sm">FaithLock</span>
           </a>
 
