@@ -4,6 +4,9 @@ class AppConfig {
   // Dev bypass - skip onboarding & paywall, go straight to home
   static const bool bypassPaywall = false;
 
+  // V3 onboarding flag - flip to false to fall back to V2 instantly
+  static const bool enableOnboardingV3 = true;
+
   // App information
   static const String appName = 'Fast App';
   static const String appVersion = '1.0.0';

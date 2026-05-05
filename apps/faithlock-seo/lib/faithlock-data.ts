@@ -196,8 +196,9 @@ export const COPY = {
 export const COMPANY = {
   name: 'AppBiz Studio',
   email: 'hey@appbiz.studio',
-  privacyUrl: 'https://appbiz-studio.com/apps/faithlock/privacy',
-  termsUrl: 'https://appbiz-studio.com/apps/faithlock/terms',
+  privacyUrl: '/privacy',
+  termsUrl: '/terms',
+  dataDeletionUrl: '/request-data-delete',
 } as const
 
 // ─── SEO SITE CONFIG ────────────────────────────────────────

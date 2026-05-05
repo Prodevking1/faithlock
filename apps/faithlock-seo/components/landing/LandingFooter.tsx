@@ -97,6 +97,7 @@ export default async function LandingFooter() {
             <ul className="space-y-2.5 text-xs">
               <li><a href={COMPANY.privacyUrl} className="text-slate-500 hover:text-white transition-colors">Privacy Policy</a></li>
               <li><a href={COMPANY.termsUrl} className="text-slate-500 hover:text-white transition-colors">Terms of Use</a></li>
+              <li><a href={COMPANY.dataDeletionUrl} className="text-slate-500 hover:text-white transition-colors">Request Data Deletion</a></li>
               <li><a href={`mailto:${COMPANY.email}`} className="text-slate-500 hover:text-white transition-colors">Support</a></li>
             </ul>
           </div>

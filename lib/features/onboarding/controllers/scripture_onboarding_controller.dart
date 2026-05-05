@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:faithlock/features/faithlock/services/screen_time_service.dart';
+import 'package:faithlock/services/analytics/meta/export.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
@@ -395,6 +396,16 @@ class ScriptureOnboardingController extends GetxController {
   Future<void> completeOnboarding() async {
     await _prefs.writeBool(_keyOnboardingComplete, true);
 
+    // Request iOS App Tracking Transparency *before* firing conversion events,
+    // so Meta receives them with the correct authorization status. The prompt
+    // is shown only on iOS 14.5+ and only the first time. On Android / older
+    // iOS this is a no-op.
+    try {
+      await MetaService.instance.requestTracking();
+    } catch (e) {
+      debugPrint('ATT request failed: $e');
+    }
+
     // Track onboarding completion
     if (_analytics.isReady) {
       await _analytics.onboarding.trackOnboardingComplete();
@@ -405,6 +416,13 @@ class ScriptureOnboardingController extends GetxController {
       TikTokService.instance.trackCompleteRegistration();
     } catch (e) {
       debugPrint('TikTok trackCompleteRegistration failed: $e');
+    }
+
+    // Track Meta CompleteRegistration event
+    try {
+      await MetaService.instance.trackCompleteRegistration(method: 'onboarding');
+    } catch (e) {
+      debugPrint('Meta trackCompleteRegistration failed: $e');
     }
   }
 

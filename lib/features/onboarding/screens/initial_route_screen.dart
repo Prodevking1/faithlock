@@ -1,6 +1,7 @@
 import 'package:faithlock/config/app_config.dart';
 import 'package:faithlock/features/onboarding/controllers/scripture_onboarding_controller.dart';
 import 'package:faithlock/features/onboarding/screens/scripture_onboarding_screen.dart';
+import 'package:faithlock/features/onboarding/screens/scripture_onboarding_v3_screen.dart';
 import 'package:faithlock/navigation/screens/main_screen.dart';
 import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/subscription/paywall_guard_service.dart';
@@ -48,10 +49,15 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
       debugPrint('📋 [InitialRoute] Features accessed: $hasAccessedFeatures');
 
       if (!hasCompletedOnboarding) {
-        // User hasn't completed onboarding - show V2 onboarding flow
-        // V2 screen creates its own controllers (registered as both base + V2 types)
-        debugPrint('🎯 [InitialRoute] Navigating to V2 onboarding');
-        Get.off(() => const ScriptureOnboardingScreen());
+        // Route to V3 if enabled, otherwise fall back to V2.
+        // V3 controller extends V2/V1 so all downstream code keeps working.
+        if (AppConfig.enableOnboardingV3) {
+          debugPrint('🎯 [InitialRoute] Navigating to V3 onboarding');
+          Get.off(() => const ScriptureOnboardingV3Screen());
+        } else {
+          debugPrint('🎯 [InitialRoute] Navigating to V2 onboarding (fallback)');
+          Get.off(() => const ScriptureOnboardingScreen());
+        }
         return;
       }
 
@@ -93,8 +99,11 @@ class _InitialRouteScreenState extends State<InitialRouteScreen> {
       }
     } catch (e) {
       debugPrint('❌ [InitialRoute] Error determining route: $e');
-      // Fallback to V2 onboarding on error
-      Get.off(() => const ScriptureOnboardingScreen());
+      if (AppConfig.enableOnboardingV3) {
+        Get.off(() => const ScriptureOnboardingV3Screen());
+      } else {
+        Get.off(() => const ScriptureOnboardingScreen());
+      }
     }
   }
 

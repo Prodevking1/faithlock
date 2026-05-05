@@ -1,4 +1,5 @@
 import 'package:faithlock/app_routes.dart';
+import 'package:faithlock/services/analytics/meta/export.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/notifications/winback_notification_service.dart';
@@ -484,6 +485,33 @@ class PaywallController extends GetxController
           );
         } catch (e) {
           debugPrint('TikTok purchase tracking failed: $e');
+        }
+
+        // Track Meta purchase/trial events. We pass the RevenueCat
+        // transaction id (or a stable fallback) as eventId so the same event
+        // can be deduplicated against the server-side Conversions API.
+        try {
+          final String orderId =
+              result.customerInfo?.originalPurchaseDate.toString() ??
+                  '${selectedPackage.identifier}_${DateTime.now().millisecondsSinceEpoch}';
+          if (product.introductoryPrice != null) {
+            await MetaService.instance.trackStartTrial(
+              orderId: orderId,
+              price: product.price,
+              currency: product.currencyCode,
+            );
+          }
+          await MetaService.instance.trackPurchase(
+            amount: product.price,
+            currency: product.currencyCode,
+            eventId: orderId,
+            parameters: {
+              'plan_id': selectedPackage.identifier,
+              'is_trial': product.introductoryPrice != null,
+            },
+          );
+        } catch (e) {
+          debugPrint('Meta purchase tracking failed: $e');
         }
 
         // Schedule trial reminder if enabled

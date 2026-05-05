@@ -1,0 +1,23 @@
+name = "meta-capi-worker"
+main = "src/index.ts"
+compatibility_date = "2025-05-01"
+
+# Public vars (non-secret). Override per env via [env.production.vars].
+[vars]
+APP_BUNDLE_ID = "com.faithlock.app"
+APP_BUILD_VERSION = "1.0.5"
+
+# Secrets — set with:
+#   wrangler secret put META_PIXEL_ID
+#   wrangler secret put META_ACCESS_TOKEN
+#   wrangler secret put REVENUECAT_WEBHOOK_SECRET
+#   wrangler secret put META_TEST_EVENT_CODE   # optional, only during testing
+#
+# Do NOT commit these to wrangler.toml.
+
+[observability]
+enabled = true
+
+# ─── Optional: production env override ────────────────────────────────────
+# [env.production]
+# vars = { APP_BUILD_VERSION = "1.0.5" }

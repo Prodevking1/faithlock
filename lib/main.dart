@@ -6,6 +6,7 @@ import 'package:faithlock/core/theme/export.dart';
 import 'package:faithlock/features/faithlock/services/faithlock_database_service.dart';
 import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/features/onboarding/screens/initial_route_screen.dart';
+import 'package:faithlock/services/analytics/meta/export.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/analytics/tiktok/export.dart';
 import 'package:faithlock/services/app_launch_service.dart';
@@ -125,6 +126,16 @@ void _initializeNonCriticalServices() {
       debugPrint('✅ TikTok Events SDK initialized');
     } catch (e) {
       debugPrint('⚠️ TikTok Events SDK initialization failed: $e');
+    }
+
+    try {
+      // Meta App Events. App ID + client token are read from Info.plist
+      // (iOS) and AndroidManifest (Android). Advertiser tracking stays
+      // disabled until ATT is granted via MetaService.requestTracking().
+      await MetaService.instance.init(enableDebug: kDebugMode);
+      debugPrint('✅ Meta App Events SDK initialized');
+    } catch (e) {
+      debugPrint('⚠️ Meta App Events SDK initialization failed: $e');
     }
 
     try {

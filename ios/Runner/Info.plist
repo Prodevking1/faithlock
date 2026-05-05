@@ -57,6 +57,29 @@
 					<string>faithlock</string>
 				</array>
 			</dict>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb4412190759070297</string>
+				</array>
+			</dict>
+		</array>
+		<key>FacebookAppID</key>
+		<string>4412190759070297</string>
+		<key>FacebookClientToken</key>
+		<string>59ac9376784bf7135869175ae7b27e56</string>
+		<key>FacebookDisplayName</key>
+		<string>Faithlock</string>
+		<key>FacebookAutoLogAppEventsEnabled</key>
+		<true/>
+		<key>FacebookAdvertiserIDCollectionEnabled</key>
+		<false/>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>This identifier will be used to deliver personalized ads to you and improve our service.</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
 		</array>
 		<key>com.posthog.posthog.API_KEY</key>
 		<string>phc_i6ae7VeKEpmGBFwKHCTvCRFiuodtadp8m6mnYkbw7RX</string>

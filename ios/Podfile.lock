@@ -1,6 +1,15 @@
 PODS:
   - device_info_plus (0.0.1):
     - Flutter
+  - facebook_flutter_sdk (0.24.0):
+    - FBSDKCoreKit (~> 18.0)
+    - Flutter
+  - FBAEMKit (18.0.3):
+    - FBSDKCoreKit_Basics (= 18.0.3)
+  - FBSDKCoreKit (18.0.3):
+    - FBAEMKit (= 18.0.3)
+    - FBSDKCoreKit_Basics (= 18.0.3)
+  - FBSDKCoreKit_Basics (18.0.3)
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
@@ -63,6 +72,7 @@ PODS:
 
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - facebook_flutter_sdk (from `.symlinks/plugins/facebook_flutter_sdk/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
@@ -85,6 +95,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
     - PhoneNumberKit
     - PostHog
     - PurchasesHybridCommon
@@ -95,6 +108,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
+  facebook_flutter_sdk:
+    :path: ".symlinks/plugins/facebook_flutter_sdk/ios"
   Flutter:
     :path: Flutter
   flutter_local_notifications:
@@ -136,6 +151,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  facebook_flutter_sdk: 01c78952132a5caeabdf930317990240336ceceb
+  FBAEMKit: 2a6b529993713c185b02bc36f8c91129bf78dfb0
+  FBSDKCoreKit: 65d7f7a7d6fcc3aa6eb6e093ec737a4184fc6049
+  FBSDKCoreKit_Basics: 7bc9d8fde8f70985fba2ed7c1d07e319f969a991
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_local_notifications: ad39620c743ea4c15127860f4b5641649a988100
   flutter_localization: 72299fb6cb4e51cae587bd953ed0b958040b71e6
