@@ -55,11 +55,14 @@ export default function RequestDataDeleteForm() {
   }
 
   return (
-    <div className="card p-6 sm:p-8">
-      <p className="text-gray-700 mb-6 leading-relaxed">
+    <div className="cozy-card p-6 sm:p-8">
+      <p className="text-cozy-ink/85 mb-6 leading-relaxed">
         Submitting this form will email our privacy team. We may contact the email address
         below to verify your identity before processing the request, in line with our{' '}
-        <a href="/privacy" className="text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-800">
+        <a
+          href="/privacy"
+          className="text-cozy-primary underline decoration-cozy-primary/40 underline-offset-2 hover:text-cozy-primary-dark"
+        >
           Privacy Policy
         </a>
         .
@@ -67,7 +70,7 @@ export default function RequestDataDeleteForm() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-bold text-cozy-ink mb-1.5">
             Email used in the app <span className="text-red-500">*</span>
           </label>
           <input
@@ -76,46 +79,48 @@ export default function RequestDataDeleteForm() {
             type="email"
             required
             autoComplete="email"
-            className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            className="w-full bg-cozy-surface border-[2px] border-cozy-ink rounded-cozy-sm text-cozy-ink placeholder:text-cozy-ink-muted px-3.5 py-2.5 text-sm focus:border-cozy-primary focus:outline-none transition-colors"
             placeholder="you@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="userId" className="block text-sm font-medium text-gray-900 mb-1.5">
-            In-app user ID <span className="text-gray-400 font-normal">(optional)</span>
+          <label htmlFor="userId" className="block text-sm font-bold text-cozy-ink mb-1.5">
+            In-app user ID{' '}
+            <span className="text-cozy-ink-muted font-normal">(optional)</span>
           </label>
           <input
             id="userId"
             name="userId"
             type="text"
-            className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            className="w-full bg-cozy-surface border-[2px] border-cozy-ink rounded-cozy-sm text-cozy-ink placeholder:text-cozy-ink-muted px-3.5 py-2.5 text-sm focus:border-cozy-primary focus:outline-none transition-colors"
             placeholder="If you know your FaithLock user ID, paste it here"
           />
-          <p className="mt-1.5 text-xs text-gray-500">
+          <p className="mt-1.5 text-xs text-cozy-ink-muted">
             You can find this in the app under Profile → Settings → About.
           </p>
         </div>
 
         <div>
-          <label htmlFor="reason" className="block text-sm font-medium text-gray-900 mb-1.5">
-            Reason <span className="text-gray-400 font-normal">(optional)</span>
+          <label htmlFor="reason" className="block text-sm font-bold text-cozy-ink mb-1.5">
+            Reason{' '}
+            <span className="text-cozy-ink-muted font-normal">(optional)</span>
           </label>
           <textarea
             id="reason"
             name="reason"
             rows={4}
-            className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+            className="w-full bg-cozy-surface border-[2px] border-cozy-ink rounded-cozy-sm text-cozy-ink placeholder:text-cozy-ink-muted px-3.5 py-2.5 text-sm focus:border-cozy-primary focus:outline-none transition-colors"
             placeholder="Help us improve — tell us why you're leaving (optional)"
           />
         </div>
 
-        <label className="flex items-start gap-3 text-sm text-gray-700">
+        <label className="flex items-start gap-3 text-sm text-cozy-ink/85">
           <input
             type="checkbox"
             name="confirm"
             required
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+            className="mt-1 h-4 w-4 rounded border-cozy-ink text-cozy-primary focus:ring-cozy-primary/30"
           />
           <span>
             I confirm I am the owner of this account and I understand that deletion is
@@ -124,16 +129,16 @@ export default function RequestDataDeleteForm() {
         </label>
 
         {errorMsg && (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="rounded-cozy-sm border-[2px] border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
             {errorMsg}
           </div>
         )}
 
         {status === 'success' && (
-          <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          <div className="rounded-cozy-sm border-[2px] border-cozy-ink bg-cozy-sage px-4 py-3 text-sm text-cozy-ink">
             Your email client should have opened with a pre-filled message. Send it and we
             will respond within 30 days. If nothing happened, email us directly at{' '}
-            <a href={`mailto:${COMPANY.email}`} className="underline">
+            <a href={`mailto:${COMPANY.email}`} className="underline font-medium">
               {COMPANY.email}
             </a>
             .
@@ -143,19 +148,19 @@ export default function RequestDataDeleteForm() {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-full bg-cozy-primary text-white border-[2.5px] border-cozy-ink px-5 py-2.5 text-sm font-bold shadow-cozy-hard transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-cozy-hard-lg focus:outline-none focus:ring-2 focus:ring-cozy-primary/40 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === 'submitting' ? 'Submitting…' : 'Submit deletion request'}
         </button>
       </form>
 
-      <div className="mt-8 border-t border-gray-100 pt-6 text-sm text-gray-600">
-        <p className="mb-2 font-medium text-gray-900">Prefer email?</p>
+      <div className="mt-8 border-t-[2px] border-cozy-divider pt-6 text-sm text-cozy-ink/85">
+        <p className="mb-2 font-bold text-cozy-ink">Prefer email?</p>
         <p>
           Email{' '}
           <a
             href={`mailto:${COMPANY.email}?subject=Data%20deletion%20request%20%E2%80%94%20FaithLock`}
-            className="text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-800"
+            className="text-cozy-primary underline decoration-cozy-primary/40 underline-offset-2 hover:text-cozy-primary-dark"
           >
             {COMPANY.email}
           </a>{' '}

@@ -55,26 +55,26 @@ export default async function Footer() {
   }))
 
   return (
-    <footer className="bg-brand-950 text-gray-300">
+    <footer className="bg-cozy-cream text-cozy-ink border-t-[2.5px] border-cozy-ink">
       {/* ─── Top section: Brand + Meta Links ─── */}
       <div className="container-wide pt-16 pb-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="w-8 h-8 bg-cozy-peach border-[1.5px] border-cozy-ink rounded-lg flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3D2B1F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               </div>
-              <span className="text-lg font-bold text-white">FaithLock</span>
+              <span className="text-lg font-bold text-cozy-ink">FaithLock</span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed mb-5">
+            <p className="text-sm text-cozy-ink-muted leading-relaxed mb-5">
               Stop scrolling. Start Scripture. Turn phone addiction into daily devotion.
             </p>
             <a
               href={APP_STORE_URL}
-              className="inline-flex items-center gap-2 bg-white text-brand-950 px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-all"
+              className="inline-flex items-center gap-2 bg-cozy-primary text-white border-[2.5px] border-cozy-ink shadow-cozy-hard px-4 py-2.5 rounded-full font-bold text-sm transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-cozy-hard-lg"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -83,40 +83,40 @@ export default async function Footer() {
               </svg>
               Download on App Store
             </a>
-            <p className="mt-2 text-xs text-gray-500">Free &middot; iOS 16+</p>
-            <p className="mt-5 text-xs text-gray-600">
+            <p className="mt-2 text-xs text-cozy-ink-muted">Free &middot; iOS 16+</p>
+            <p className="mt-5 text-xs text-cozy-ink-muted">
               &copy; {new Date().getFullYear()} {COMPANY.name}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="font-semibold text-white text-sm mb-4">Product</h4>
+            <h4 className="font-bold text-cozy-ink text-sm mb-4">Product</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><a href="/resources" className="text-gray-400 hover:text-white transition-colors">Resources</a></li>
-              <li><a href="/compare" className="text-gray-400 hover:text-white transition-colors">Comparisons</a></li>
-              <li><a href="/features" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
-              <li><a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="/resources" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Resources</a></li>
+              <li><a href="/compare" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Comparisons</a></li>
+              <li><a href="/features" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Features</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Contact</a></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold text-white text-sm mb-4">Company</h4>
+            <h4 className="font-bold text-cozy-ink text-sm mb-4">Company</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><a href={COMPANY.privacyUrl} className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href={COMPANY.termsUrl} className="text-gray-400 hover:text-white transition-colors">Terms of Use</a></li>
-              <li><a href={COMPANY.dataDeletionUrl} className="text-gray-400 hover:text-white transition-colors">Request Data Deletion</a></li>
-              <li><a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">Support</a></li>
+              <li><a href={COMPANY.privacyUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Privacy Policy</a></li>
+              <li><a href={COMPANY.termsUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Terms of Use</a></li>
+              <li><a href={COMPANY.dataDeletionUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Request Data Deletion</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Support</a></li>
             </ul>
           </div>
 
           {/* Connect */}
           <div>
-            <h4 className="font-semibold text-white text-sm mb-4">Connect</h4>
+            <h4 className="font-bold text-cozy-ink text-sm mb-4">Connect</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <a href={`mailto:${COMPANY.email}`} className="text-gray-400 hover:text-white transition-colors">
+                <a href={`mailto:${COMPANY.email}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">
                   {COMPANY.email}
                 </a>
               </li>
@@ -126,25 +126,25 @@ export default async function Footer() {
       </div>
 
       {/* ─── Bottom section: Top content by category ─── */}
-      <div className="border-t border-gray-800/60">
+      <div className="border-t border-cozy-border">
         <div className="container-wide py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
             {/* Bible Verses */}
             <div>
-              <h4 className="font-semibold text-white text-sm mb-4">Bible Verses</h4>
+              <h4 className="font-bold text-cozy-ink text-sm mb-4">Bible Verses</h4>
               <ul className="space-y-2 text-sm">
                 {bibleVerses.map((item) => (
                   <li key={item.slug}>
                     <a
                       href={`/resources/${item.slug}`}
-                      className="text-gray-400 hover:text-white transition-colors leading-snug block"
+                      className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block"
                     >
                       {item.term}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/resources" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                  <a href="/resources" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-bold">
                     All Bible Verses &rarr;
                   </a>
                 </li>
@@ -153,20 +153,20 @@ export default async function Footer() {
 
             {/* Prayers */}
             <div>
-              <h4 className="font-semibold text-white text-sm mb-4">Prayers</h4>
+              <h4 className="font-bold text-cozy-ink text-sm mb-4">Prayers</h4>
               <ul className="space-y-2 text-sm">
                 {prayers.map((item) => (
                   <li key={item.slug}>
                     <a
                       href={`/resources/${item.slug}`}
-                      className="text-gray-400 hover:text-white transition-colors leading-snug block"
+                      className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block"
                     >
                       {item.term}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/resources" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                  <a href="/resources" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-bold">
                     All Prayers &rarr;
                   </a>
                 </li>
@@ -175,20 +175,20 @@ export default async function Footer() {
 
             {/* Comparisons */}
             <div>
-              <h4 className="font-semibold text-white text-sm mb-4">Comparisons</h4>
+              <h4 className="font-bold text-cozy-ink text-sm mb-4">Comparisons</h4>
               <ul className="space-y-2 text-sm">
                 {topComparisons.map((comp) => (
                   <li key={comp.slug}>
                     <a
                       href={`/compare/${comp.slug}`}
-                      className="text-gray-400 hover:text-white transition-colors leading-snug block"
+                      className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block"
                     >
                       FaithLock vs {comp.displayName}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/compare" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                  <a href="/compare" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-bold">
                     All Comparisons &rarr;
                   </a>
                 </li>

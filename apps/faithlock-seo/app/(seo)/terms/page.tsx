@@ -12,23 +12,23 @@ const LAST_UPDATED = 'May 5, 2026'
 
 export default function TermsPage() {
   return (
-    <div>
-      <div className="bg-hero-pattern text-white">
+    <div className="cozy-page">
+      <div className="cozy-hero">
         <div className="container-narrow py-14 md:py-20">
-          <nav className="breadcrumb mb-8 text-white/50">
-            <a href="/" className="hover:text-white/80">Home</a>
-            <span className="breadcrumb-separator text-white/30">/</span>
-            <span className="text-white/70">Terms of Use</span>
+          <nav className="cozy-breadcrumb mb-8">
+            <a href="/">Home</a>
+            <span className="cozy-breadcrumb-separator">/</span>
+            <span>Terms of Use</span>
           </nav>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight text-cozy-ink">
             Terms of Use
           </h1>
-          <p className="text-white/70">Last updated: {LAST_UPDATED}</p>
+          <p className="text-cozy-ink-muted">Last updated: {LAST_UPDATED}</p>
         </div>
       </div>
 
       <div className="container-narrow py-12 md:py-16">
-        <article className="prose">
+        <article className="prose-cozy">
           <p>
             These Terms of Use (&ldquo;Terms&rdquo;) form a binding agreement between you and{' '}
             {COMPANY.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) and govern your use of the FaithLock
