@@ -253,6 +253,44 @@
   .prose-cozy a {
     @apply text-cozy-primary-dark font-semibold underline decoration-cozy-primary/40 underline-offset-2
            hover:text-cozy-primary hover:decoration-cozy-primary transition-colors;
+    word-break: break-word; /* long URLs/links don't overflow on mobile */
+  }
+
+  /* ── Mobile-friendly article body ── */
+  /* Comfortable reading measure + never let content overflow the viewport */
+  .prose-cozy {
+    max-width: 42rem; /* ~70ch reading measure */
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  /* Slightly smaller body text on phones, full size from sm up */
+  .prose-cozy p,
+  .prose-cozy li {
+    @apply text-[15px] sm:text-base;
+  }
+  .prose-cozy h2 {
+    @apply text-xl sm:text-2xl;
+  }
+  .prose-cozy h3 {
+    @apply text-lg sm:text-xl;
+  }
+  /* Wide blocks become horizontally scrollable instead of stretching the page */
+  .prose-cozy pre {
+    @apply overflow-x-auto rounded-cozy-sm;
+  }
+  .prose-cozy img {
+    @apply max-w-full h-auto rounded-cozy-sm;
+  }
+  /* Tables: scroll on small screens, chunky cozy styling */
+  .prose-cozy table {
+    @apply block w-full overflow-x-auto border-collapse text-sm;
+  }
+  .prose-cozy th,
+  .prose-cozy td {
+    @apply border border-cozy-border px-3 py-2 text-left align-top;
+  }
+  .prose-cozy th {
+    @apply bg-cozy-surface-muted font-bold text-cozy-ink;
   }
 
   /* Cozy FAQ marker (scoped to .cozy-faq so landing details are untouched) */

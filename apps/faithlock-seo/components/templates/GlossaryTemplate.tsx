@@ -112,7 +112,7 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
         </div>
       </div>
 
-      <div className="container-default py-12 md:py-16">
+      <div className="container-narrow py-12 md:py-16">
         {/* Table of Contents */}
         <TableOfContents items={tocItems} />
 
@@ -125,7 +125,7 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
           )}
           <RichText
             content={term.detailedExplanation}
-            className="prose-cozy max-w-none"
+            className="prose-cozy"
           />
         </section>
 
@@ -138,7 +138,7 @@ export default function GlossaryTemplate({ term, updatedAt }: GlossaryTemplatePr
             </h2>
             <RichText
               content={term.christianPerspective}
-              className="prose-cozy max-w-none"
+              className="prose-cozy"
             />
             {hasBibleVerses && (
               <div className="space-y-4 mt-8">
