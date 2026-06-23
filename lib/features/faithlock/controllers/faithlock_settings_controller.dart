@@ -6,8 +6,8 @@ import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:faithlock/shared/widgets/dialogs/fast_alert_dialog.dart';
 import 'package:faithlock/shared/widgets/notifications/fast_toast.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -451,18 +451,18 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
-        Get.snackbar(
-          'settings_comingSoon'.tr,
-          'settings_privacyComingSoon'.tr,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        if (Get.context != null) {
+          CozyToast.show(Get.context!, 'settings_privacyComingSoon'.tr);
+        }
       }
     } catch (e) {
-      Get.snackbar(
-        'settings_error'.tr,
-        'settings_couldNotOpenPrivacy'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      if (Get.context != null) {
+        CozyToast.show(
+          Get.context!,
+          'settings_couldNotOpenPrivacy'.tr,
+          variant: CozyToastVariant.error,
+        );
+      }
     }
   }
 
@@ -475,20 +475,22 @@ class FaithLockSettingsController extends GetxController with WidgetsBindingObse
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
-        Get.snackbar(
-          'settings_emailSupport'.tr,
-          'settings_contactEmail'.tr,
-          snackPosition: SnackPosition.BOTTOM,
+        if (Get.context != null) {
+          CozyToast.show(
+            Get.context!,
+            'settings_contactEmail'.tr,
+            duration: const Duration(seconds: 5),
+          );
+        }
+      }
+    } catch (e) {
+      if (Get.context != null) {
+        CozyToast.show(
+          Get.context!,
+          'settings_email'.tr,
           duration: const Duration(seconds: 5),
         );
       }
-    } catch (e) {
-      Get.snackbar(
-        'settings_contactUs'.tr,
-        'settings_email'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-      );
     }
   }
 

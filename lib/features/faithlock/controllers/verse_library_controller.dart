@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 import 'package:faithlock/features/faithlock/models/export.dart';
 import 'package:faithlock/features/faithlock/services/export.dart';
 
@@ -162,11 +163,13 @@ class VerseLibraryController extends GetxController {
       _applyFilters();
     } catch (e) {
       // Show error message
-      Get.snackbar(
-        'Error',
-        'Failed to update favorite: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      if (Get.context != null) {
+        CozyToast.show(
+          Get.context!,
+          'Failed to update favorite: $e',
+          variant: CozyToastVariant.error,
+        );
+      }
     }
   }
 

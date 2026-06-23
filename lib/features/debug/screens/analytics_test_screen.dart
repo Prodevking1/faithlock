@@ -1,6 +1,7 @@
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 
 /// Debug screen for testing PostHog analytics implementation
 class AnalyticsTestScreen extends StatelessWidget {
@@ -158,25 +159,22 @@ class AnalyticsTestScreen extends StatelessWidget {
       onPressed: () async {
         try {
           await onPressed();
-          Get.snackbar(
-            'Success',
-            '$label completed',
-            backgroundColor: Colors.green.withValues(alpha: 0.1),
-            colorText: Colors.green[800],
-            icon: const Icon(Icons.check_circle, color: Colors.green),
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2),
-          );
+          if (Get.context != null) {
+            CozyToast.show(
+              Get.context!,
+              '$label completed',
+              variant: CozyToastVariant.success,
+            );
+          }
         } catch (e) {
-          Get.snackbar(
-            'Error',
-            e.toString(),
-            backgroundColor: Colors.red.withValues(alpha: 0.1),
-            colorText: Colors.red[800],
-            icon: const Icon(Icons.error, color: Colors.red),
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-          );
+          if (Get.context != null) {
+            CozyToast.show(
+              Get.context!,
+              e.toString(),
+              variant: CozyToastVariant.error,
+              duration: const Duration(seconds: 3),
+            );
+          }
         }
       },
       icon: Icon(icon),
@@ -197,25 +195,23 @@ class AnalyticsTestScreen extends StatelessWidget {
       onPressed: () async {
         try {
           await _testAllAnalytics();
-          Get.snackbar(
-            'Complete! 🎉',
-            'All analytics tests completed successfully',
-            backgroundColor: Colors.green.withValues(alpha: 0.1),
-            colorText: Colors.green[800],
-            icon: const Icon(Icons.check_circle, color: Colors.green),
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-          );
+          if (Get.context != null) {
+            CozyToast.show(
+              Get.context!,
+              'All analytics tests completed successfully',
+              variant: CozyToastVariant.success,
+              duration: const Duration(seconds: 3),
+            );
+          }
         } catch (e) {
-          Get.snackbar(
-            'Error',
-            e.toString(),
-            backgroundColor: Colors.red.withValues(alpha: 0.1),
-            colorText: Colors.red[800],
-            icon: const Icon(Icons.error, color: Colors.red),
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-          );
+          if (Get.context != null) {
+            CozyToast.show(
+              Get.context!,
+              e.toString(),
+              variant: CozyToastVariant.error,
+              duration: const Duration(seconds: 3),
+            );
+          }
         }
       },
       style: ElevatedButton.styleFrom(

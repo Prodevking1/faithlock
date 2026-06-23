@@ -5,6 +5,7 @@ import 'package:faithlock/services/sentry/sentry_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ErrorHandler {
@@ -83,15 +84,11 @@ class ErrorHandler {
     if (_isNetworkError(error)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (Get.context != null) {
-          Get.showSnackbar(
-            GetSnackBar(
-              title: 'error_connectionTitle'.tr,
-              message: 'error_connectionMessage'.tr,
-              icon: const Icon(Icons.wifi_off, color: Colors.white),
-              duration: const Duration(seconds: 3),
-              backgroundColor: Colors.orange,
-              snackPosition: SnackPosition.TOP,
-            ),
+          CozyToast.show(
+            Get.context!,
+            'error_connectionMessage'.tr,
+            variant: CozyToastVariant.error,
+            duration: const Duration(seconds: 3),
           );
         }
       });
