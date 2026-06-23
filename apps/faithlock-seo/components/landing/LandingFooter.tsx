@@ -45,27 +45,27 @@ export default async function LandingFooter() {
   }))
 
   return (
-    <footer className="border-t border-white/5">
+    <footer className="bg-cozy-cream border-t-[2.5px] border-cozy-ink">
       {/* ─── Top: Brand + Meta ─── */}
       <div className="max-w-6xl mx-auto px-6 py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 bg-gradient-to-tr from-indigo-50 to-indigo-100 text-indigo-950 rounded-lg flex items-center justify-center">
+              <div className="w-7 h-7 bg-cozy-peach text-cozy-ink border-[1.5px] border-cozy-ink rounded-lg flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   <polyline points="9 12 11 14 15 10" />
                 </svg>
               </div>
-              <span className="text-white font-medium text-sm">FaithLock</span>
+              <span className="text-cozy-ink font-bold text-sm">FaithLock</span>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed mb-5">
+            <p className="text-xs text-cozy-ink-muted leading-relaxed mb-5">
               Stop scrolling. Start Scripture. Turn phone addiction into daily devotion.
             </p>
             <a
               href={APP_LINK}
-              className="inline-flex items-center gap-2 bg-white text-slate-950 px-4 py-2 rounded-full font-semibold text-xs hover:bg-indigo-50 transition-all"
+              className="inline-flex items-center gap-2 bg-cozy-primary text-white border-[2px] border-cozy-ink shadow-cozy-hard-sm px-4 py-2 rounded-full font-bold text-xs transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-cozy-hard"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -74,40 +74,40 @@ export default async function LandingFooter() {
               </svg>
               Download on App Store
             </a>
-            <p className="mt-2 text-[10px] text-slate-600">Free &middot; iOS 16+</p>
-            <p className="mt-5 text-[10px] text-slate-700">
+            <p className="mt-2 text-[10px] text-cozy-ink-muted">Free &middot; iOS 16+</p>
+            <p className="mt-5 text-[10px] text-cozy-ink-muted">
               &copy; {new Date().getFullYear()} {COMPANY.name}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="text-white text-xs font-semibold mb-4">Product</h4>
+            <h4 className="text-cozy-ink text-xs font-bold mb-4">Product</h4>
             <ul className="space-y-2.5 text-xs">
-              <li><a href="/resources" className="text-slate-500 hover:text-white transition-colors">Resources</a></li>
-              <li><a href="/compare" className="text-slate-500 hover:text-white transition-colors">Comparisons</a></li>
-              <li><a href="/features" className="text-slate-500 hover:text-white transition-colors">Features</a></li>
-              <li><a href={`mailto:${COMPANY.email}`} className="text-slate-500 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="/resources" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Resources</a></li>
+              <li><a href="/compare" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Comparisons</a></li>
+              <li><a href="/features" className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Features</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Contact</a></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="text-white text-xs font-semibold mb-4">Company</h4>
+            <h4 className="text-cozy-ink text-xs font-bold mb-4">Company</h4>
             <ul className="space-y-2.5 text-xs">
-              <li><a href={COMPANY.privacyUrl} className="text-slate-500 hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href={COMPANY.termsUrl} className="text-slate-500 hover:text-white transition-colors">Terms of Use</a></li>
-              <li><a href={COMPANY.dataDeletionUrl} className="text-slate-500 hover:text-white transition-colors">Request Data Deletion</a></li>
-              <li><a href={`mailto:${COMPANY.email}`} className="text-slate-500 hover:text-white transition-colors">Support</a></li>
+              <li><a href={COMPANY.privacyUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Privacy Policy</a></li>
+              <li><a href={COMPANY.termsUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Terms of Use</a></li>
+              <li><a href={COMPANY.dataDeletionUrl} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Request Data Deletion</a></li>
+              <li><a href={`mailto:${COMPANY.email}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors">Support</a></li>
             </ul>
           </div>
 
           {/* Connect */}
           <div>
-            <h4 className="text-white text-xs font-semibold mb-4">Connect</h4>
+            <h4 className="text-cozy-ink text-xs font-bold mb-4">Connect</h4>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <a href={`mailto:${COMPANY.email}`} className="text-indigo-400 hover:text-indigo-300 transition-colors">
+                <a href={`mailto:${COMPANY.email}`} className="text-cozy-primary-dark hover:text-cozy-primary transition-colors">
                   {COMPANY.email}
                 </a>
               </li>
@@ -117,22 +117,22 @@ export default async function LandingFooter() {
       </div>
 
       {/* ─── Bottom: Top content by category ─── */}
-      <div className="border-t border-white/5">
+      <div className="border-t border-cozy-border">
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
             {/* Bible Verses */}
             <div>
-              <h4 className="text-white text-xs font-semibold mb-4">Bible Verses</h4>
+              <h4 className="text-cozy-ink text-xs font-bold mb-4">Bible Verses</h4>
               <ul className="space-y-2 text-xs">
                 {bibleVerses.map((item) => (
                   <li key={item.slug}>
-                    <a href={`/resources/${item.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
+                    <a href={`/resources/${item.slug}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block">
                       {item.term}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/resources" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                  <a href="/resources" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-medium">
                     View more &rarr;
                   </a>
                 </li>
@@ -141,17 +141,17 @@ export default async function LandingFooter() {
 
             {/* Prayers */}
             <div>
-              <h4 className="text-white text-xs font-semibold mb-4">Prayers</h4>
+              <h4 className="text-cozy-ink text-xs font-bold mb-4">Prayers</h4>
               <ul className="space-y-2 text-xs">
                 {prayers.map((item) => (
                   <li key={item.slug}>
-                    <a href={`/resources/${item.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
+                    <a href={`/resources/${item.slug}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block">
                       {item.term}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/resources" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                  <a href="/resources" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-medium">
                     View more &rarr;
                   </a>
                 </li>
@@ -160,17 +160,17 @@ export default async function LandingFooter() {
 
             {/* Comparisons */}
             <div>
-              <h4 className="text-white text-xs font-semibold mb-4">Comparisons</h4>
+              <h4 className="text-cozy-ink text-xs font-bold mb-4">Comparisons</h4>
               <ul className="space-y-2 text-xs">
                 {topComparisons.map((comp) => (
                   <li key={comp.slug}>
-                    <a href={`/compare/${comp.slug}`} className="text-slate-500 hover:text-white transition-colors leading-snug block">
+                    <a href={`/compare/${comp.slug}`} className="text-cozy-ink-muted hover:text-cozy-primary transition-colors leading-snug block">
                       FaithLock vs {comp.displayName}
                     </a>
                   </li>
                 ))}
                 <li>
-                  <a href="/compare" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+                  <a href="/compare" className="text-cozy-primary-dark hover:text-cozy-primary transition-colors font-medium">
                     View more &rarr;
                   </a>
                 </li>

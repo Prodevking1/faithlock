@@ -152,6 +152,128 @@
   }
 }
 
+@layer components {
+  /* ──────────────────────────────────────────────
+     Cozy design system (blog / resources surface)
+     Warm/chunky: cream canvas, terracotta accents,
+     brown ink outlines, solid offset "sticker" shadow.
+     Mirrors the Flutter CozyColors / CozyTokens.
+     ────────────────────────────────────────────── */
+
+  /* Page canvas — apply to the root of a cozy page/article */
+  .cozy-page {
+    @apply bg-cozy-cream text-cozy-ink;
+  }
+
+  /* Card — signature chunky outline + lifted sticker shadow */
+  .cozy-card {
+    @apply bg-cozy-surface border-[2.5px] border-cozy-ink rounded-cozy shadow-cozy-hard;
+  }
+
+  .cozy-card-soft {
+    @apply bg-cozy-surface border border-cozy-border rounded-cozy shadow-cozy-soft;
+  }
+
+  .cozy-card-interactive {
+    @apply cozy-card transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-cozy-hard-lg cursor-pointer;
+  }
+
+  /* Badges / chips — pill, chunky outline */
+  .cozy-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide
+           bg-cozy-primary text-white border-[1.5px] border-cozy-ink;
+  }
+
+  .cozy-badge-peach {
+    @apply cozy-badge bg-cozy-peach text-cozy-ink;
+  }
+
+  .cozy-badge-sage {
+    @apply cozy-badge bg-cozy-sage text-cozy-ink;
+  }
+
+  .cozy-badge-muted {
+    @apply cozy-badge bg-cozy-surface-muted text-cozy-ink;
+  }
+
+  /* Primary button — terracotta fill, ink outline, hard shadow */
+  .cozy-btn {
+    @apply inline-flex items-center justify-center gap-2 font-bold rounded-full
+           border-[2.5px] border-cozy-ink shadow-cozy-hard transition-all duration-150
+           hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-cozy-hard-lg
+           active:translate-x-0 active:translate-y-0 active:shadow-cozy-hard-sm;
+  }
+
+  .cozy-btn-primary {
+    @apply cozy-btn bg-cozy-primary text-white;
+  }
+
+  .cozy-btn-cream {
+    @apply cozy-btn bg-cozy-surface text-cozy-ink;
+  }
+
+  /* Warm hero band — replaces dark indigo gradient on cozy pages */
+  .cozy-hero {
+    @apply bg-cozy-surface-muted text-cozy-ink border-b-[2.5px] border-cozy-ink;
+  }
+
+  /* Cozy breadcrumb */
+  .cozy-breadcrumb {
+    @apply flex items-center gap-2 text-sm text-cozy-ink-muted;
+  }
+  .cozy-breadcrumb a {
+    @apply hover:text-cozy-primary transition-colors;
+  }
+  .cozy-breadcrumb-separator {
+    @apply text-cozy-border;
+  }
+
+  /* Cozy article typography — warm ink, terracotta links */
+  .prose-cozy h2 {
+    @apply text-2xl font-bold mt-8 mb-4 text-cozy-ink;
+  }
+  .prose-cozy h3 {
+    @apply text-xl font-bold mt-6 mb-3 text-cozy-ink;
+  }
+  .prose-cozy p {
+    @apply mb-4 leading-relaxed text-cozy-ink/85;
+  }
+  .prose-cozy ul {
+    @apply list-disc pl-6 mb-4 space-y-2;
+  }
+  .prose-cozy ol {
+    @apply list-decimal pl-6 mb-4 space-y-2;
+  }
+  .prose-cozy li {
+    @apply leading-relaxed text-cozy-ink/85;
+  }
+  .prose-cozy strong {
+    @apply font-bold text-cozy-ink;
+  }
+  .prose-cozy a {
+    @apply text-cozy-primary-dark font-semibold underline decoration-cozy-primary/40 underline-offset-2
+           hover:text-cozy-primary hover:decoration-cozy-primary transition-colors;
+  }
+
+  /* Cozy FAQ marker (scoped to .cozy-faq so landing details are untouched) */
+  .cozy-faq summary {
+    list-style: none;
+    @apply flex items-center justify-between;
+  }
+  .cozy-faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .cozy-faq summary::after {
+    content: '+';
+    @apply inline-flex items-center justify-center w-7 h-7 ml-auto text-cozy-ink font-bold text-lg
+           rounded-full bg-cozy-peach border-[1.5px] border-cozy-ink flex-shrink-0 transition-transform duration-200;
+  }
+  .cozy-faq[open] summary::after {
+    content: '\2212';
+    @apply bg-cozy-primary text-white;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -179,19 +301,17 @@
 .reveal-delay-200 { transition-delay: 200ms; }
 .reveal-delay-300 { transition-delay: 300ms; }
 
-/* Bento cards */
+/* Bento cards — cozy: cream surface, chunky ink outline, lifted-sticker shadow */
 .bento-card {
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease;
+  background: #FFFDF8; /* cozy-surface */
+  border: 2.5px solid #3D2B1F; /* cozy-ink */
+  box-shadow: 3px 5px 0 0 #3D2B1F; /* cozy-hard */
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .bento-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
-  transform: translateY(-4px);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 7px 0 0 #3D2B1F; /* cozy-hard-lg */
 }
 
 /* iPhone mockup */
@@ -202,12 +322,12 @@
     0 20px 50px -10px rgba(0, 0, 0, 0.8);
 }
 
-/* Sticky mobile bar */
+/* Sticky mobile bar — cozy cream with chunky ink top border */
 .sticky-blur {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(2, 6, 23, 0.85);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(251, 243, 226, 0.92); /* cozy-cream */
+  border-top: 2.5px solid #3D2B1F; /* cozy-ink */
 }
 
 /* Phone lock states */

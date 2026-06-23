@@ -20,7 +20,7 @@ export default function CTAButton({
   trackingLocation = 'unknown',
 }: CTAButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 text-center'
+    'inline-flex items-center justify-center gap-2 font-bold rounded-full border-[2.5px] border-cozy-ink transition-all duration-150 text-center hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0 active:translate-y-0'
 
   const sizeStyles = {
     small: 'px-4 py-2 text-sm',
@@ -30,13 +30,13 @@ export default function CTAButton({
 
   const variantStyles = {
     primary:
-      'bg-brand-600 text-white hover:bg-brand-700 shadow-sm hover:shadow-glow',
+      'bg-cozy-primary text-white shadow-cozy-hard hover:shadow-cozy-hard-lg active:shadow-cozy-hard-sm',
     white:
-      'bg-white text-brand-700 hover:bg-gray-50 shadow-sm hover:shadow-md',
+      'bg-cozy-surface text-cozy-ink shadow-cozy-hard hover:shadow-cozy-hard-lg active:shadow-cozy-hard-sm',
     outline:
-      'border-2 border-brand-200 text-brand-700 hover:bg-brand-50 hover:border-brand-300',
+      'bg-transparent text-cozy-ink hover:bg-cozy-surface-muted shadow-cozy-hard hover:shadow-cozy-hard-lg active:shadow-cozy-hard-sm',
     dark:
-      'bg-brand-950 text-white hover:bg-brand-900 shadow-sm',
+      'bg-cozy-ink text-cozy-cream shadow-cozy-hard hover:shadow-cozy-hard-lg active:shadow-cozy-hard-sm',
   }
 
   return (

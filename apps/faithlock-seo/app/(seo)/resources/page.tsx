@@ -66,20 +66,20 @@ export default async function ResourcesPage() {
   const categories = categoryOrder.filter(c => categoryCounts[c])
 
   return (
-    <div>
+    <div className="cozy-page">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 text-white">
+      <div className="cozy-hero">
         <div className="container-default py-14 md:py-20">
-          <nav className="breadcrumb mb-8 text-white/50">
-            <a href="/" className="hover:text-white/80">Home</a>
-            <span className="breadcrumb-separator text-white/30">/</span>
-            <span className="text-white/70">Resources</span>
+          <nav className="cozy-breadcrumb mb-8">
+            <a href="/" className="hover:text-cozy-primary">Home</a>
+            <span className="cozy-breadcrumb-separator">/</span>
+            <span className="text-cozy-ink/70">Resources</span>
           </nav>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-tight text-cozy-ink">
             Resources
           </h1>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl">
+          <p className="text-lg md:text-xl text-cozy-ink-muted max-w-2xl">
             Bible verses, prayers, guides, and tools for Christian digital wellness.
           </p>
         </div>

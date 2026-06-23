@@ -53,6 +53,24 @@ const config: Config = {
         slate: {
           850: '#151e2e',
         },
+        // ── Cozy design system (blog/resources) ──
+        // Mirrors the Flutter CozyColors palette: warm/chunky, terracotta-led.
+        cozy: {
+          primary: '#D68A4E', // terracotta — CTAs, active states
+          'primary-dark': '#C0763C',
+          'primary-light': '#E8B488',
+          gold: '#C9A962', // warm gold accent
+          peach: '#F3D9BE', // pastel chip fill
+          sage: '#CFDDC3', // pastel chip fill
+          cream: '#FBF3E2', // page canvas
+          surface: '#FFFDF8', // card / elevated surface
+          'surface-muted': '#F3E7CE', // subtle beige surface
+          beige: '#E8DCC4',
+          ink: '#3D2B1F', // warm brown text + signature outline
+          'ink-muted': '#9C8773',
+          border: '#EAD9BC',
+          divider: '#EFE3CC',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -105,10 +123,19 @@ const config: Config = {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'glow': '0 0 20px rgba(99, 102, 241, 0.15)',
         'card': '0 1px 3px rgba(0,0,0,0.05), 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02)',
+        // Cozy "lifted sticker" — solid offset shadow, no blur (Flutter shadowHard)
+        'cozy-hard': '3px 5px 0 0 #3D2B1F',
+        'cozy-hard-sm': '2px 3px 0 0 #3D2B1F',
+        'cozy-hard-lg': '5px 7px 0 0 #3D2B1F',
+        'cozy-soft': '0 6px 16px rgba(61, 43, 31, 0.06)',
       },
       borderRadius: {
         '2xl': '1rem',
         '3xl': '1.5rem',
+        // Cozy generous squircle-ish radii (Flutter CozyTokens)
+        'cozy-sm': '16px',
+        'cozy': '22px',
+        'cozy-lg': '32px',
       },
     },
   },

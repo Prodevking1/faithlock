@@ -45,10 +45,10 @@ export default function ResourcesFilter({
       <div className="flex flex-wrap gap-2 mb-8">
         <button
           onClick={() => setActiveCategory(null)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+          className={`px-4 py-2 rounded-cozy-sm text-sm font-bold border-2 border-cozy-ink transition-colors ${
             !activeCategory
-              ? 'bg-brand-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-cozy-primary text-cozy-ink shadow-cozy-hard-sm'
+              : 'bg-cozy-surface text-cozy-ink/85 hover:bg-cozy-surface-muted'
           }`}
         >
           All <span className="ml-1 opacity-70">{totalCount}</span>
@@ -57,10 +57,10 @@ export default function ResourcesFilter({
           <button
             key={cat}
             onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-cozy-sm text-sm font-bold border-2 border-cozy-ink transition-colors ${
               activeCategory === cat
-                ? 'bg-brand-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-cozy-primary text-cozy-ink shadow-cozy-hard-sm'
+                : 'bg-cozy-surface text-cozy-ink/85 hover:bg-cozy-surface-muted'
             }`}
           >
             {cat} <span className="ml-1 opacity-70">{categoryCounts[cat]}</span>
@@ -74,40 +74,40 @@ export default function ResourcesFilter({
           <a
             key={resource.slug}
             href={`/resources/${resource.slug}`}
-            className="card-interactive p-5 md:p-6 group"
+            className="cozy-card-interactive p-5 md:p-6 group"
           >
             <div className="flex items-center gap-2 mb-3">
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-cozy-sm border-2 border-cozy-ink ${
                 resource.category === 'Bible Verses'
-                  ? 'bg-brand-100 text-brand-700'
+                  ? 'bg-cozy-peach text-cozy-ink'
                   : resource.category === 'Prayers'
-                    ? 'bg-warm-100 text-warm-700'
+                    ? 'bg-cozy-primary-light text-cozy-ink'
                     : resource.category === 'Guides'
-                      ? 'bg-sage-100 text-sage-700'
+                      ? 'bg-cozy-sage text-cozy-ink'
                       : resource.category === 'Devotionals'
-                        ? 'bg-purple-100 text-purple-700'
+                        ? 'bg-cozy-gold text-cozy-ink'
                         : resource.category === 'Reviews'
-                          ? 'bg-amber-100 text-amber-700'
+                          ? 'bg-cozy-beige text-cozy-ink'
                           : resource.category === 'Articles'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-gray-100 text-gray-700'
+                            ? 'bg-cozy-surface-muted text-cozy-ink'
+                            : 'bg-cozy-surface-muted text-cozy-ink'
               }`}>
                 {resource.category}
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-cozy-ink-muted">
                 {estimateReadTime(resource.shortDefinition)} min read
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-cozy-ink-muted">
                 &middot; {formatDate(resource.updatedAt)}
               </span>
             </div>
-            <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-brand-600 transition-colors">
+            <h3 className="text-base font-bold text-cozy-ink mb-2 group-hover:text-cozy-primary transition-colors">
               {resource.term}
             </h3>
-            <p className="text-sm text-gray-500 line-clamp-2 mb-3">
+            <p className="text-sm text-cozy-ink/85 line-clamp-2 mb-3">
               {resource.shortDefinition}
             </p>
-            <span className="text-sm font-medium text-brand-600">
+            <span className="text-sm font-bold text-cozy-primary">
               Read more &rarr;
             </span>
           </a>
@@ -117,7 +117,7 @@ export default function ResourcesFilter({
       {/* Empty state */}
       {filtered.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No resources found in this category.</p>
+          <p className="text-cozy-ink-muted">No resources found in this category.</p>
         </div>
       )}
     </>
