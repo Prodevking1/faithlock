@@ -94,25 +94,10 @@ class GamificationDialogService {
     required BuildContext context,
     required Badge badge,
   }) async {
-    final mascotState = badge.category == BadgeCategory.streak ||
-            badge.category == BadgeCategory.verses
-        ? JudahState.proud
-        : JudahState.happy;
-
     await showCupertinoDialog<void>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: Column(
-          children: [
-            JudahMascot(
-              state: mascotState,
-              size: JudahSize.l,
-              showMessage: false,
-            ),
-            const SizedBox(height: 8),
-            Text('${badge.emoji} ${badge.translatedName}'),
-          ],
-        ),
+        title: Text('${badge.emoji} ${badge.translatedName}'),
         content: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Text(

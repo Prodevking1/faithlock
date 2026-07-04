@@ -5,8 +5,11 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:faithlock/features/bible/controllers/bible_engagement_controller.dart';
+import 'package:faithlock/features/bible/models/bible_engagement_models.dart';
+import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 import 'cozy_reflection_note_screen.dart';
+import 'cozy_reflections_screen.dart';
 
 // ── Screen ──────────────────────────────────────────────────────────────────
 
@@ -33,6 +36,37 @@ class CozyReadingScreen extends StatefulWidget {
 }
 
 class _CozyReadingScreenState extends State<CozyReadingScreen> {
+  final ScrollController _scroll = ScrollController();
+  bool _readingCompletedTracked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scroll.removeListener(_onScroll);
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  /// Fires `bible_reading_completed` once when the reader is scrolled to (near)
+  /// the end of the chapter content.
+  void _onScroll() {
+    if (_readingCompletedTracked || !_scroll.hasClients) return;
+    final pos = _scroll.position;
+    if (pos.maxScrollExtent <= 0) return; // chapter fits on screen — skip
+    if (pos.pixels >= pos.maxScrollExtent - 24) {
+      _readingCompletedTracked = true;
+      _track('bible_reading_completed', {
+        'book': _bookAbbr,
+        'chapter': _chapterNumber,
+      });
+    }
+  }
+
   // Lazily find-or-create the engagement controller.
   BibleEngagementController get _engagement {
     if (!Get.isRegistered<BibleEngagementController>()) {
@@ -46,6 +80,35 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
   int get _chapterNumber {
     final parts = widget.reference.trim().split(' ');
     return int.tryParse(parts.last) ?? 1;
+  }
+
+  // ── Analytics ───────────────────────────────────────────────────────────────
+
+  final PostHogService _analytics = PostHogService.instance;
+
+  void _track(String event, Map<String, dynamic> props) {
+    if (_analytics.isReady) _analytics.events.trackCustom(event, props);
+  }
+
+  /// Emits the grouped verse-toolbar event. [selection] is the highlighted /
+  /// selected substring (null = whole verse). `is_full_verse` is true when no
+  /// partial selection was made, and `selection_length` is the length of the
+  /// acted-on text (selection when present, else the full verse text).
+  void _trackVerseAction(
+    String action,
+    int verseIndex,
+    String? selection,
+  ) {
+    final verse = widget.verses[verseIndex];
+    final verseRef = '${widget.reference}:${verse.number}';
+    final hasSelection = selection != null && selection.trim().isNotEmpty;
+    final length = hasSelection ? selection.trim().length : verse.text.length;
+    _track('bible_verse_action', {
+      'action': action,
+      'verse_ref': verseRef,
+      'is_full_verse': !hasSelection,
+      'selection_length': length,
+    });
   }
 
   // ── Per-verse actions ──────────────────────────────────────────────────────
@@ -98,22 +161,6 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
     );
   }
 
-  Future<void> _toggleVerseBookmark(int verseIndex) async {
-    final verse = widget.verses[verseIndex];
-    final ref = '${widget.reference}:${verse.number}';
-    final nowBookmarked = await _engagement.toggleBookmark(ref);
-    if (mounted) setState(() {});
-    _showSnackbar(
-      nowBookmarked
-          ? 'bible_verseBookmarked'.tr
-          : 'bible_bookmarkRemoved'.tr,
-      undo: () async {
-        await _engagement.toggleBookmark(ref);
-        if (mounted) setState(() {});
-      },
-    );
-  }
-
   void _reflect(int verseIndex, String? selection) {
     final verse = widget.verses[verseIndex];
     final passageReference = '${widget.reference}:${verse.number}';
@@ -123,12 +170,15 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
   // ── Chapter-level actions (top bar) ────────────────────────────────────────
 
   Future<void> _toggleChapterBookmark() async {
+    _track('bible_chapter_action', {
+      'action': 'bookmark',
+      'chapter_ref': widget.reference,
+    });
     final nowBookmarked = await _engagement.toggleBookmark(widget.reference);
     if (mounted) setState(() {});
     _showSnackbar(
       nowBookmarked
-          ? 'bible_chapterBookmarked'
-              .trParams({'reference': widget.reference})
+          ? 'bible_chapterBookmarked'.trParams({'reference': widget.reference})
           : 'bible_bookmarkRemoved'.tr,
       undo: () async {
         await _engagement.toggleBookmark(widget.reference);
@@ -138,6 +188,10 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
   }
 
   Future<void> _shareChapter(BuildContext anchorContext) async {
+    _track('bible_chapter_action', {
+      'action': 'share',
+      'chapter_ref': widget.reference,
+    });
     final box = anchorContext.findRenderObject() as RenderBox?;
     final origin = (box != null && box.hasSize)
         ? box.localToGlobal(Offset.zero) & box.size
@@ -215,8 +269,9 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
               _buildTopBar(),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24, vertical: 16),
+                  controller: _scroll,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -282,44 +337,111 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 32,
-            child: Obx(() {
-              final highlighted = _engagement.isHighlighted(
-                _bookAbbr,
-                _chapterNumber,
-                verse.number,
-              );
-              return Text(
-                '${verse.number}',
-                style: CozyText.heading.copyWith(
-                  color: highlighted
-                      ? CozyColors.primary
-                      : CozyColors.inkMuted.withValues(alpha: 0.5),
-                  fontSize: 18,
-                ),
-              );
-            }),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 32,
+                child: Obx(() {
+                  final highlighted = _engagement.isHighlighted(
+                    _bookAbbr,
+                    _chapterNumber,
+                    verse.number,
+                  );
+                  return Text(
+                    '${verse.number}',
+                    style: CozyText.heading.copyWith(
+                      color: highlighted
+                          ? CozyColors.primary
+                          : CozyColors.inkMuted.withValues(alpha: 0.5),
+                      fontSize: 18,
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Obx(() {
+                  final highlighted = _engagement.isHighlighted(
+                    _bookAbbr,
+                    _chapterNumber,
+                    verse.number,
+                  );
+                  return _buildVerseText(
+                    verse.text,
+                    index: index,
+                    isHighlighted: highlighted,
+                  );
+                }),
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Obx(() {
-              final highlighted = _engagement.isHighlighted(
-                _bookAbbr,
-                _chapterNumber,
-                verse.number,
-              );
-              return _buildVerseText(
-                verse.text,
-                index: index,
-                isHighlighted: highlighted,
-              );
-            }),
-          ),
+          // Any reflections the user saved on this verse, shown inline.
+          Obx(() {
+            final notes =
+                _engagement.reflectionsFor('${widget.reference}:${verse.number}');
+            if (notes.isEmpty) return const SizedBox.shrink();
+            return _buildVerseReflections(notes);
+          }),
         ],
+      ),
+    );
+  }
+
+  /// Compact inline block listing the reflections saved on a verse. Tapping it
+  /// opens the full "My Reflections" list.
+  Widget _buildVerseReflections(List<BibleReflection> notes) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 36, top: 12),
+      child: CozyTappable(
+        onTap: () => Get.to(() => const CozyReflectionsScreen()),
+        pressedScale: 0.99,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: ShapeDecoration(
+            color: CozyColors.surfaceMuted,
+            shape: CozyTokens.smooth(
+              CozyTokens.radiusMd,
+              side: const BorderSide(
+                color: CozyColors.outline,
+                width: CozyTokens.borderWidthThin,
+              ),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const HugeIcon(
+                    icon: HugeIcons.strokeRoundedNote01,
+                    color: CozyColors.primary,
+                    size: 15,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'bibleui_yourReflections'.tr,
+                    style: CozyText.label.copyWith(color: CozyColors.primary),
+                  ),
+                ],
+              ),
+              for (final n in notes) ...[
+                const SizedBox(height: 6),
+                Text(
+                  n.note.trim().isNotEmpty ? n.note : n.title,
+                  style: CozyText.body.copyWith(
+                    color: CozyColors.inkMuted,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -364,6 +486,7 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
               onTap: () {
                 editableTextState.hideToolbar();
                 final sel = _selectionOf(editableTextState);
+                _trackVerseAction('copy', index, sel);
                 _copy(index, sel);
               },
             ),
@@ -372,15 +495,9 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
               label: 'bible_toolbarHighlight'.tr,
               onTap: () {
                 editableTextState.hideToolbar();
+                final sel = _selectionOf(editableTextState);
+                _trackVerseAction('highlight', index, sel);
                 _toggleHighlight(index);
-              },
-            ),
-            _ToolbarAction(
-              icon: HugeIcons.strokeRoundedBookmark01,
-              label: 'bible_toolbarBookmark'.tr,
-              onTap: () {
-                editableTextState.hideToolbar();
-                _toggleVerseBookmark(index);
               },
             ),
             _ToolbarAction(
@@ -390,6 +507,7 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
                 editableTextState.hideToolbar();
                 final sel = _selectionOf(editableTextState);
                 final origin = _anchorRect(editableTextState);
+                _trackVerseAction('share', index, sel);
                 _share(index, sel, origin);
               },
             ),
@@ -399,6 +517,7 @@ class _CozyReadingScreenState extends State<CozyReadingScreen> {
               onTap: () {
                 editableTextState.hideToolbar();
                 final sel = _selectionOf(editableTextState);
+                _trackVerseAction('reflect', index, sel);
                 _reflect(index, sel);
               },
             ),
@@ -459,8 +578,7 @@ class _CozyTextSelectionToolbar extends StatelessWidget {
     // toolbar never overlaps the selected text.
     return TextSelectionToolbar(
       anchorAbove: anchors.primaryAnchor,
-      anchorBelow:
-          anchors.secondaryAnchor ?? anchors.primaryAnchor,
+      anchorBelow: anchors.secondaryAnchor ?? anchors.primaryAnchor,
       toolbarBuilder: (context, child) => _ToolbarShell(child: child),
       children: actions.map((a) => _ToolbarButton(action: a)).toList(),
     );
@@ -504,8 +622,7 @@ class _ToolbarButton extends StatelessWidget {
       child: Tooltip(
         message: action.label,
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: HugeIcon(
             icon: action.icon,
             size: 22,

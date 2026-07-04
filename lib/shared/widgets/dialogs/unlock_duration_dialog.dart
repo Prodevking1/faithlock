@@ -1,19 +1,23 @@
-import 'package:faithlock/core/constants/core/fast_colors.dart';
-import 'package:faithlock/features/onboarding/constants/onboarding_theme.dart';
-import 'package:faithlock/shared/widgets/mascot/judah_mascot.dart';
-import 'package:faithlock/shared/widgets/typography/fast_text.dart';
+import 'package:faithlock/shared/widgets/cozy/cozy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 
-/// Dialog to select unlock duration after prayer
+/// Cozy bottom sheet to select how long the apps stay unlocked after a prayer /
+/// quiz. Chunky, warm styling to match the rest of the FaithLock cozy UI.
 class UnlockDurationDialog {
   static Future<Duration?> show({
     required BuildContext context,
   }) async {
-    return await showCupertinoModalPopup<Duration>(
+    return await showModalBottomSheet<Duration>(
       context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.5),
+      backgroundColor: CozyColors.background,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(CozyTokens.radiusLg)),
+      ),
       builder: (BuildContext context) => const _UnlockDurationSheet(),
     );
   }
@@ -24,244 +28,152 @@ class _UnlockDurationSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      decoration: BoxDecoration(
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Scaffold(
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: [
-              // Header with Judah proud
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: FastColors.separator(context),
-                      width: 0.5,
+    return SafeArea(
+      top: false,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('unlock_unlockApps'.tr, style: CozyText.title),
+                      const SizedBox(height: 4),
+                      Text('unlock_forHowLong'.tr, style: CozyText.subtitle),
+                    ],
+                  ),
+                ),
+                CozyTappable(
+                  onTap: () => Navigator.pop(context),
+                  pressedScale: 0.96,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, top: 2),
+                    child: Text(
+                      'cancel'.tr,
+                      style: CozyText.body.copyWith(color: CozyColors.inkMuted),
                     ),
                   ),
                 ),
-                child: Row(
-                  children: [
-                    const JudahMascot(
-                      state: JudahState.proud,
-                      size: JudahSize.m,
-                      showMessage: false,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FastText.title1(
-                            'unlock_unlockApps'.tr,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'unlock_forHowLong'.tr,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: FastColors.secondaryText(context),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      child: Text(
-                        'cancel'.tr,
-                        style: TextStyle(
-                          color: FastColors.secondaryText(context),
-                        ),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              ),
+              ],
+            ),
+            const SizedBox(height: 18),
 
-              // Duration options
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  children: [
-                    _buildDurationTile(
-                      context: context,
-                      icon: '⚡',
-                      title: 'unlock_1min'.tr,
-                      subtitle: 'unlock_quickTask'.tr,
-                      duration: const Duration(minutes: 1),
-                    ),
-                    _buildDurationTile(
-                      context: context,
-                      icon: '⏱️',
-                      title: 'unlock_5min'.tr,
-                      subtitle: 'unlock_shortBreak'.tr,
-                      duration: const Duration(minutes: 5),
-                    ),
-                    _buildDurationTile(
-                      context: context,
-                      icon: '⏲️',
-                      title: 'unlock_10min'.tr,
-                      subtitle: 'unlock_focusedWork'.tr,
-                      duration: const Duration(minutes: 10),
-                    ),
-                    _buildDurationTile(
-                      context: context,
-                      icon: '⏰',
-                      title: 'unlock_30min'.tr,
-                      subtitle: 'unlock_focusSession'.tr,
-                      duration: const Duration(minutes: 30),
-                    ),
-                    _buildDurationTile(
-                      context: context,
-                      icon: '🌙',
-                      title: 'unlock_restOfDay'.tr,
-                      subtitle: 'unlock_untilMidnight'.tr,
-                      duration: _getDurationUntilMidnight(),
-                    ),
-                    _buildCustomDurationTile(context),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedFlash,
+              iconBg: CozyColors.gold.withValues(alpha: 0.3),
+              title: 'unlock_1min'.tr,
+              subtitle: 'unlock_quickTask'.tr,
+              duration: const Duration(minutes: 1),
+            ),
+            const SizedBox(height: 12),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedCoffee01,
+              iconBg: CozyColors.peach,
+              title: 'unlock_5min'.tr,
+              subtitle: 'unlock_shortBreak'.tr,
+              duration: const Duration(minutes: 5),
+            ),
+            const SizedBox(height: 12),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedClock01,
+              iconBg: CozyColors.sage,
+              title: 'unlock_10min'.tr,
+              subtitle: 'unlock_focusedWork'.tr,
+              duration: const Duration(minutes: 10),
+            ),
+            const SizedBox(height: 12),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedAlarmClock,
+              iconBg: CozyColors.surfaceMuted,
+              title: 'unlock_30min'.tr,
+              subtitle: 'unlock_focusSession'.tr,
+              duration: const Duration(minutes: 30),
+            ),
+            const SizedBox(height: 12),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedMoon02,
+              iconBg: CozyColors.primaryLight,
+              title: 'unlock_restOfDay'.tr,
+              subtitle: 'unlock_untilMidnight'.tr,
+              duration: _getDurationUntilMidnight(),
+            ),
+            const SizedBox(height: 12),
+            _durationCard(
+              context: context,
+              icon: HugeIcons.strokeRoundedTime04,
+              iconBg: CozyColors.primary.withValues(alpha: 0.16),
+              title: 'unlock_customDuration'.tr,
+              subtitle: 'unlock_chooseSpecific'.tr,
+              accent: true,
+              onTap: () => _showCustomDurationPicker(context),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildDurationTile({
+  /// A single chunky duration row. Provide either [duration] (pops the sheet
+  /// with it) or a custom [onTap].
+  Widget _durationCard({
     required BuildContext context,
-    required String icon,
+    required List<List<dynamic>> icon,
+    required Color iconBg,
     required String title,
     required String subtitle,
-    required Duration duration,
+    Duration? duration,
+    VoidCallback? onTap,
+    bool accent = false,
   }) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      onPressed: () => Navigator.pop(context, duration),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: FastColors.separator(context),
-              width: 0.5,
+    return CozyCard(
+      onTap: onTap ?? () => Navigator.pop(context, duration),
+      padding: const EdgeInsets.all(14),
+      child: Row(
+        children: [
+          CozyIconChip(
+            icon: icon,
+            iconColor: CozyColors.ink,
+            background: iconBg,
+            bordered: false,
+            size: 44,
+            iconSize: 22,
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: CozyText.heading.copyWith(
+                    fontSize: 17,
+                    color: accent ? CozyColors.primary : CozyColors.ink,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(subtitle, style: CozyText.subtitle),
+              ],
             ),
           ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: OnboardingTheme.goldColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  icon,
-                  style: const TextStyle(fontSize: 24),
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: FastColors.primaryText(context),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: FastColors.secondaryText(context),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              CupertinoIcons.chevron_right,
-              size: 20,
-              color: FastColors.tertiaryText(context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCustomDurationTile(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      onPressed: () => _showCustomDurationPicker(context),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: FastColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Icon(
-                  CupertinoIcons.time,
-                  size: 24,
-                  color: FastColors.primary,
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'unlock_customDuration'.tr,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: FastColors.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'unlock_chooseSpecific'.tr,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: FastColors.secondaryText(context),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              CupertinoIcons.chevron_right,
-              size: 20,
-              color: FastColors.tertiaryText(context),
-            ),
-          ],
-        ),
+          const SizedBox(width: 8),
+          const HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowRight01,
+            color: CozyColors.inkMuted,
+            size: 22,
+          ),
+        ],
       ),
     );
   }
@@ -269,48 +181,64 @@ class _UnlockDurationSheet extends StatelessWidget {
   void _showCustomDurationPicker(BuildContext context) {
     int selectedMinutes = 15;
 
-    showCupertinoModalPopup(
+    showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => Container(
-        height: 280,
-        padding: const EdgeInsets.only(top: 6.0),
-        decoration: BoxDecoration(
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: SafeArea(
-          top: false,
+      backgroundColor: CozyColors.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(CozyTokens.radiusLg)),
+      ),
+      builder: (BuildContext context) => SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 300,
           child: Column(
             children: [
               // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CupertinoButton(
-                    child: Text('cancel'.tr),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Text(
-                    'unlock_customTitle'.tr,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CozyTappable(
+                      onTap: () => Navigator.pop(context),
+                      pressedScale: 0.96,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          'cancel'.tr,
+                          style: CozyText.body
+                              .copyWith(color: CozyColors.inkMuted),
+                        ),
+                      ),
                     ),
-                  ),
-                  CupertinoButton(
-                    child: Text('ok'.tr),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(
-                          context, Duration(minutes: selectedMinutes));
-                    },
-                  ),
-                ],
+                    Text('unlock_customTitle'.tr, style: CozyText.heading),
+                    CozyTappable(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(
+                            context, Duration(minutes: selectedMinutes));
+                      },
+                      pressedScale: 0.96,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          'ok'.tr,
+                          style: CozyText.body.copyWith(
+                            color: CozyColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // Picker
               Expanded(
                 child: CupertinoPicker(
                   itemExtent: 40,
+                  scrollController:
+                      FixedExtentScrollController(initialItem: 14),
                   onSelectedItemChanged: (int index) {
                     selectedMinutes = index + 1;
                   },
@@ -318,8 +246,8 @@ class _UnlockDurationSheet extends StatelessWidget {
                     1440,
                     (index) => Center(
                       child: Text(
-                        '${index + 1} minute${index + 1 > 1 ? 's' : ''}',
-                        style: const TextStyle(fontSize: 20),
+                        '${index + 1} minute${(index + 1) > 1 ? 's' : ''}',
+                        style: CozyText.body,
                       ),
                     ),
                   ),

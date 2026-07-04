@@ -12,6 +12,13 @@
 .swiftpm/
 migrate_working_dir/
 
+# Garden tree generation: source PNGs + chained-edit cache (not bundled, not committed)
+assets/garden/tree/_src/
+assets/garden/tree/_chain/
+
+# App screenshots — working files, not bundled/committed
+assets/screenshots/
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -76,3 +83,6 @@ fastlane/test_output
 
 .env
 .env.*
+
+# Bible prompt eval — generated outputs (key is in .env.local, already ignored)
+tooling/bible-prompt-eval/results.json

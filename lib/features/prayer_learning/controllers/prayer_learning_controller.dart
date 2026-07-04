@@ -8,20 +8,22 @@ import 'package:faithlock/features/faithlock/services/stats_service.dart';
 import 'package:faithlock/features/faithlock/services/streak_freeze_service.dart';
 import 'package:faithlock/features/faithlock/services/unlock_timer_service.dart';
 import 'package:faithlock/features/faithlock/services/verse_selection_strategy.dart';
+import 'package:faithlock/features/bible/data/bible_repository.dart';
 import 'package:faithlock/features/lock_challenge/models/verse_question.dart';
 import 'package:faithlock/services/ai/meditation_validator_service.dart';
 import 'package:faithlock/services/analytics/posthog/export.dart';
 import 'package:faithlock/services/rate_app_service.dart';
+import 'package:faithlock/services/storage/preferences_service.dart';
 import 'package:faithlock/services/storage/secure_storage_service.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:get/get.dart';
 
 /// Validation states for meditation response
 enum ValidationState {
-  idle,       // Not yet validated
+  idle, // Not yet validated
   validating, // AI validation in progress
-  valid,      // Validation passed
-  invalid,    // Validation failed
+  valid, // Validation passed
+  invalid, // Validation failed
 }
 
 /// Controller for guided prayer learning (Balanced mode)
@@ -47,18 +49,25 @@ class PrayerLearningController extends GetxController {
   final Rxn<VerseQuestion> selectedVerse = Rxn<VerseQuestion>();
   final RxInt unlockDurationMinutes = RxInt(0);
 
+  // Confetti on the completion step is held back until any gamification dialogs
+  // (badge earned, etc.) have been dismissed — otherwise the dialog covers the
+  // 3s burst and it's only visible on later sessions with no new badge.
+  final RxBool showConfetti = false.obs;
+
   // Meditation validation state
-  final Rx<ValidationState> meditationValidationState = ValidationState.idle.obs;
+  final Rx<ValidationState> meditationValidationState =
+      ValidationState.idle.obs;
   final RxString validationFeedback = RxString('');
-  final RxDouble meditationQualityScore = RxDouble(0.0); // AI validation score (0.0-1.0)
+  final RxDouble meditationQualityScore =
+      RxDouble(0.0); // AI validation score (0.0-1.0)
 
   // Steps in Balanced mode
   List<String> get stepTitles => [
-    'prayer_readAbsorb'.tr,
-    'prayer_meditate'.tr,
-    'prayer_remember'.tr,
-    'prayer_complete'.tr,
-  ];
+        'prayer_readAbsorb'.tr,
+        'prayer_meditate'.tr,
+        'prayer_remember'.tr,
+        'prayer_complete'.tr,
+      ];
 
   // Timer
   Timer? _timer;
@@ -140,14 +149,54 @@ class PrayerLearningController extends GetxController {
         return;
       }
 
+      // Show the verse text in the Bible version the user picked in Profile
+      // (curriculum selection stays BSB; only the displayed text swaps).
+      final displayVerse = await _localizeVerseText(verse);
+
       // Generate question from selected verse
-      final question = QuestionGenerator.generateQuestion(verse);
+      final question = QuestionGenerator.generateQuestion(displayVerse);
       selectedVerse.value = question;
 
-      debugPrint('✅ Loaded verse: ${verse.reference}');
+      debugPrint(
+          '✅ Loaded verse: ${displayVerse.reference} (${displayVerse.translation})');
     } catch (e) {
       debugPrint('❌ Error loading verse: $e');
       _loadFallbackVerse();
+    }
+  }
+
+  /// Swap the verse text to the Bible version selected in Profile
+  /// (`bible_selected_version`). The curriculum picks verses from the BSB
+  /// dataset; here we look up the SAME reference in the chosen version's DB and
+  /// use its text when present, falling back to BSB on any miss/error. The
+  /// fill-in-the-blank keyword is kept — [QuestionGenerator] already regenerates
+  /// from the shown text when that keyword isn't found (e.g. a French verse).
+  Future<BibleVerse> _localizeVerseText(BibleVerse verse) async {
+    try {
+      final abbr =
+          await PreferencesService().readString('bible_selected_version') ??
+              'BSB';
+      if (abbr == 'BSB') return verse;
+
+      final records = await BibleRepository().versesFor(
+        bookName: verse.book,
+        chapter: verse.chapter,
+        versionAbbr: abbr,
+      );
+
+      String? swapped;
+      for (final r in records) {
+        if (r.number == verse.verse) {
+          swapped = r.text;
+          break;
+        }
+      }
+
+      if (swapped == null || swapped.isEmpty) return verse;
+      return verse.copyWith(text: swapped, translation: abbr);
+    } catch (e) {
+      debugPrint('⚠️ Verse text-swap failed, keeping BSB: $e');
+      return verse;
     }
   }
 
@@ -194,7 +243,8 @@ class PrayerLearningController extends GetxController {
     // Allow skip if meditation is invalid but user wants to proceed
     final allowSkip = canSkipMeditation;
 
-    if ((canProceed || allowSkip) && currentStep.value < stepTitles.length - 1) {
+    if ((canProceed || allowSkip) &&
+        currentStep.value < stepTitles.length - 1) {
       // Track step completed
       if (_analytics.isReady) {
         _analytics.events.trackCustom('prayer_step_completed', {
@@ -296,8 +346,9 @@ class PrayerLearningController extends GetxController {
   Future<void> validateMeditationResponse() async {
     final response = meditationInput.value.trim();
 
-    // Basic validation first - allow very short inputs
-    if (response.length < 3) {
+    // Only block truly empty input up front — the AI is the judge of the
+    // minimum (it rejects generic filler like "help me thanks").
+    if (response.isEmpty) {
       meditationValidationState.value = ValidationState.invalid;
       validationFeedback.value = 'prayer_minThought'.tr;
       return;
@@ -334,18 +385,32 @@ class PrayerLearningController extends GetxController {
       validationFeedback.value = result.feedback;
       meditationQualityScore.value = result.score; // Store AI score (0.0-1.0)
 
-      debugPrint('✅ Meditation validated: ${result.isValid} (score: ${result.score})');
+      debugPrint(
+          '✅ Meditation validated: ${result.isValid} (score: ${result.score})');
     } catch (e) {
       debugPrint('❌ Validation error: $e');
-      // Fallback to basic validation on error
-      meditationValidationState.value = response.length >= 3
-          ? ValidationState.valid
-          : ValidationState.invalid;
-      validationFeedback.value = response.length >= 3
+      // Fallback when the validator itself throws: keep the same minimum-effort
+      // floor as the pre-check instead of accepting anything 3+ chars.
+      final ok = !_isTooShortToReflect(response);
+      meditationValidationState.value =
+          ok ? ValidationState.valid : ValidationState.invalid;
+      validationFeedback.value = ok
           ? '${'prayer_thankYouReflection'.tr} 🙏'
           : 'prayer_shareBriefThought'.tr;
-      meditationQualityScore.value = response.length >= 3 ? 0.75 : 0.3; // Fallback score
+      meditationQualityScore.value = ok ? 0.7 : 0.3; // Fallback score
     }
+  }
+
+  /// Minimum effort for a meditation reflection: a short real sentence (enough
+  /// characters and at least a few words), not one or two words. Meaning-level
+  /// filtering (e.g. rejecting generic "help me thanks") is done by the AI.
+  bool _isTooShortToReflect(String response) {
+    final t = response.trim();
+    if (t.length < 12) return true;
+    final words = t
+        .split(RegExp(r'\s+'))
+        .where((w) => RegExp(r'[a-zA-Zà-ÿ]').hasMatch(w));
+    return words.length < 3;
   }
 
   /// Reset meditation validation state
@@ -368,18 +433,23 @@ class PrayerLearningController extends GetxController {
         if (meditationValidationState.value == ValidationState.valid) {
           // AI validated - always give 25-30% (generous!)
           // AI score maps to 85-100% of meditation points
-          final qualityMultiplier = 0.85 + (meditationQualityScore.value * 0.15);
+          final qualityMultiplier =
+              0.85 + (meditationQualityScore.value * 0.15);
           completionScore.value += meditationScore * qualityMultiplier;
-          debugPrint('📊 Meditation score: ${(meditationScore * qualityMultiplier * 100).toInt()}% (validated ✓)');
+          debugPrint(
+              '📊 Meditation score: ${(meditationScore * qualityMultiplier * 100).toInt()}% (validated ✓)');
         } else if (meditationValidationState.value == ValidationState.invalid) {
           // Invalid but user skipped - still give decent credit for effort
-          completionScore.value += meditationScore * 0.7; // 70% of meditation points
+          completionScore.value +=
+              meditationScore * 0.7; // 70% of meditation points
           debugPrint('📊 Meditation score: 21% (skipped)');
         } else {
           // Not validated - give credit for having any text (even short)
           final hasMinimalInput = meditationInput.value.trim().length >= 3;
-          completionScore.value += hasMinimalInput ? (meditationScore * 0.6) : 0;
-          debugPrint('📊 Meditation score: ${hasMinimalInput ? "18%" : "0%"} (not validated)');
+          completionScore.value +=
+              hasMinimalInput ? (meditationScore * 0.6) : 0;
+          debugPrint(
+              '📊 Meditation score: ${hasMinimalInput ? "18%" : "0%"} (not validated)');
         }
         break;
 
@@ -407,7 +477,8 @@ class PrayerLearningController extends GetxController {
         break;
     }
 
-    debugPrint('📊 Total completion score: ${(completionScore.value * 100).toInt()}%');
+    debugPrint(
+        '📊 Total completion score: ${(completionScore.value * 100).toInt()}%');
   }
 
   /// Calculate recitation accuracy (0.0-1.0)
@@ -436,6 +507,8 @@ class PrayerLearningController extends GetxController {
 
   /// Complete the learning session
   Future<void> _completeSession() async {
+    // Hold confetti until dialogs (if any) are dismissed — see [showConfetti].
+    showConfetti.value = false;
     final sessionDuration = _sessionStartTime != null
         ? DateTime.now().difference(_sessionStartTime!).inSeconds
         : 60;
@@ -450,6 +523,7 @@ class PrayerLearningController extends GetxController {
           unlockDurationMinutes: unlockDurationMinutes.value > 0
               ? unlockDurationMinutes.value
               : null, // Pass actual unlock duration
+          method: UnlockMethod.prayerLearning,
         );
       } catch (e) {
         debugPrint('⚠️ Failed to record prayer stats: $e');
@@ -558,9 +632,14 @@ class PrayerLearningController extends GetxController {
           debugPrint('⚠️ Failed to show badge dialog: $e');
         }
       }
+
+      // Dialogs (if any) are dismissed now — let the confetti fly on the
+      // revealed completion screen.
+      showConfetti.value = true;
     });
 
-    await RateAppService().showFirstPrayerPrompt();
+    // Rating prompt logic: show after 3 prayers or schedule for next launch
+    await RateAppService().tryShowRatingPrompt();
   }
 
   /// Start unlock timer with user-selected duration
@@ -571,6 +650,21 @@ class PrayerLearningController extends GetxController {
 
       final durationMinutes = duration.inMinutes;
       unlockDurationMinutes.value = durationMinutes;
+
+      // Unified unlock-funnel event: the quiz grant converges here, mirroring
+      // the prayer paths' UnlockFlowService.finishUnlock.
+      if (_analytics.isReady) {
+        final seconds = _sessionStartTime != null
+            ? DateTime.now().difference(_sessionStartTime!).inSeconds
+            : null;
+        _analytics.events.trackCustom('unlock_completed', {
+          'method': 'quiz',
+          'mode': null,
+          'prayer_id': selectedVerse.value?.reference,
+          'duration_minutes': durationMinutes > 0 ? durationMinutes : null,
+          'time_to_unlock_seconds': seconds,
+        });
+      }
 
       debugPrint('✅ Started unlock timer for $durationMinutes minutes');
     } catch (e) {
@@ -616,6 +710,7 @@ class PrayerLearningController extends GetxController {
     showHint.value = false;
     completionScore.value = 0.0;
     unlockDurationMinutes.value = 0;
+    showConfetti.value = false;
     meditationValidationState.value = ValidationState.idle;
     validationFeedback.value = '';
     meditationQualityScore.value = 0.0;

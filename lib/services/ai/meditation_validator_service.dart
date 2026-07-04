@@ -180,48 +180,44 @@ class MeditationValidatorService {
 
   /// System prompt for AI validator
   String _getSystemPrompt() {
-    return ''' You are a kind and encouraging spiritual mentor validating meditation reflections.
+    return ''' You are a warm, encouraging spiritual mentor evaluating a user's meditation on a Bible verse.
 
-Your task: Decide whether the user's message shows ANY sincere engagement with the verse, spirituality, faith, meaning, inner reflection, or personal growth.
+Goal: accept ANY sincere reflection — even short, simple, or imperfect — but do NOT accept low-effort, generic, or meaningless input. There must be a real, personal engagement with THIS verse: a genuine thought, a feeling, or a spiritual idea. Be generous with sincere effort, strict with emptiness.
 
-Be VERY GENEROUS, but do NOT accept completely unrelated content.
+✅ ACCEPT as VALID when the message shows AT LEAST ONE of:
+- A genuine personal feeling or emotion about the verse (peace, hope, conviction, gratitude, struggle, fear, love, etc.)
+- A spiritual or faith thought (God, prayer, trust, forgiveness, obedience, guidance, etc.)
+- A real attempt to apply the verse or reflect on its meaning (even briefly or vaguely)
+- A sincere intention clearly rooted in the verse ("I want to trust God more", "this reminds me to be patient")
 
-✅ ALWAYS ACCEPT as VALID if the message includes AT LEAST ONE of the following:
-- A personal feeling or emotion (peace, hope, struggle, gratitude, fear, love, etc.)
-- A spiritual or faith-related idea (God, prayer, trust, patience, forgiveness, guidance, etc.)
-- An attempt at self-reflection or personal growth (even vague)
-- A short reaction showing meaning ("this speaks to me", "amen", "needed this", "beautiful")
-- A simple intention ("I want to improve", "help me pray", "trust more")
+❌ REJECT as INVALID when the message is:
+- Generic filler or politeness with NO reflection: "thanks", "thank you", "help me", "help me thanks", "ok", "good", "nice", "please", "cool"
+- A bare greeting, a plain request for help, or a comment that could be pasted under ANY verse without engaging it
+- Random words, gibberish, spam, numbers, or test text ("aaaa", "asdf", "123", "test", "lol")
+- Off-topic, profanity, or trolling
+- Effectively empty of any thought or feeling, even if it uses real words
 
-❌ REJECT as INVALID ONLY if the message is:
-- Completely unrelated to spirituality, reflection, meaning, or faith
-- Random words, spam, numbers, or test text
-- Clearly unserious or meaningless ("aaaa", "lol", "test", "123")
-- Profanity or trolling
-
-IMPORTANT:
-- Short responses ARE OKAY
-- Weak or vague reflections are STILL VALID if sincere
-- Require at least minimal relevance (emotion, meaning, faith, or reflection)
+Key test: could this exact message be written WITHOUT having read the verse? If yes (generic thanks/greeting/help request), REJECT. A short honest sentence about the verse is enough; a polite non-answer is not.
 
 Response format (JSON only):
 {
   "valid": true/false,
-  "score": 0.7-1.0,
-  "feedback": "One short, warm, encouraging sentence"
+  "score": 0.0-1.0,
+  "feedback": "One short, warm sentence"
 }
 
 Scoring rules:
-- 0.7–0.8 → very short or simple but sincere
+- 0.0–0.4 → rejected: generic, empty, or unrelated
+- 0.6–0.7 → short but sincere and connected to the verse
 - 0.8–0.9 → clear personal connection
 - 1.0 → deep or thoughtful reflection
 
 If VALID:
-- Always encourage (e.g. "Beautiful reflection.", "Amen.", "Well said.")
+- Always encourage warmly (e.g. "Beautiful reflection.", "Amen — well said.", "That's a heartfelt thought.")
 
 If INVALID:
 - Respond only with:
-"Please share a brief thought or feeling related to the verse."
+"Take a moment to share a real thought or feeling about this verse."
 
 ''';
   }
@@ -250,18 +246,49 @@ If INVALID:
     }
   }
 
-  /// Fallback validation (basic length check)
+  /// Fallback validation when no AI is available.
+  ///
+  /// Can't judge meaning, so it enforces a deterministic MINIMUM: a real short
+  /// sentence (length + word count) that isn't made up entirely of generic
+  /// filler like "help me thanks". Stays lenient toward sincere reflections.
   ValidationResult _fallbackValidation(String userResponse) {
-    final trimmed = userResponse.trim();
-    final isValid = trimmed.length >= 3; // Very lenient - just needs something
+    final isValid = !_isLowEffortResponse(userResponse);
 
     return ValidationResult(
       isValid: isValid,
       feedback: isValid
           ? '${'meditation_thankYouReflection'.tr} 🙏'
           : 'meditation_shareBriefThought'.tr,
-      score: isValid ? 0.75 : 0.0, // Generous score for fallback
+      score: isValid ? 0.7 : 0.0,
       source: 'fallback',
     );
+  }
+
+  /// Deterministic low-effort detector for the offline path. Rejects empty /
+  /// tiny / gibberish input and messages composed only of generic filler words
+  /// (greetings, thanks, plain help requests), while accepting short sincere
+  /// sentences. Meaning-level checks are left to the AI prompt.
+  static bool _isLowEffortResponse(String response) {
+    final t = response.trim().toLowerCase();
+    if (t.length < 12) return true;
+
+    final words = t
+        .split(RegExp(r'\s+'))
+        .map((w) => w.replaceAll(RegExp(r'[^a-zà-ÿ]'), ''))
+        .where((w) => w.isNotEmpty)
+        .toList();
+    if (words.length < 3) return true;
+
+    // Words that carry no reflection on their own. If NOTHING is left after
+    // removing them, the message is empty politeness ("help me thanks").
+    const filler = {
+      'help', 'me', 'my', 'thanks', 'thank', 'you', 'ok', 'okay', 'good',
+      'nice', 'cool', 'please', 'pls', 'test', 'idk', 'nothing', 'lol', 'yes',
+      'no', 'amen', 'hi', 'hello', 'hey', 'thx', 'ty', 'a', 'the', 'and', 'to',
+      'is', 'it', 'i', 'so', 'of', 'for', 'this', 'that', 'ok.', 'merci',
+      'aide', 'moi', 'oui', 'non', 'stp', 'svp',
+    };
+    final content = words.where((w) => !filler.contains(w));
+    return content.isEmpty;
   }
 }
