@@ -104,3 +104,10 @@ Avant tout batch de masse : rédiger **10 pages étalon** couvrant chaque format
 ## 6. Garde-fous claims FaithLock (bloquant)
 
 Ne JAMAIS affirmer sur une page une feature FaithLock absente de `FAITHLOCK_FACTS.md` avec statut `✅ LIVRÉ`. En attendant que ce fichier soit rempli et validé par le fondateur, les seuls claims autorisés sont ceux déjà présents sur les pages publiées du site. Dans le doute : décrire le problème et la catégorie, pas la feature.
+
+### 6.1 Pièges déjà attrapés par le fact-check (à relire avant chaque vague)
+
+1. **Ne JAMAIS dire que FaithLock est gratuit, « at no cost », « without a subscription » ou « without paying »**, même en sous-entendu dans une comparaison de prix. Le modèle gratuit/premium est ❓ À CONFIRMER (bypass paywall non expliqué). Comparer les mécaniques (Bible quiz vs strict mode payant), jamais les prix côté FaithLock.
+2. **Covenant Eyes sur iOS** : le VPN de filtrage agit sur TOUT l'appareil (niveau réseau) ; c'est la capture d'écran d'accountability qui est limitée à Safari. Ne jamais écrire « Safari-only VPN ».
+3. **Ne pas combler les champs `unknown` de COMPETITOR_FACTS.md** dans les cellules de tableau : écrire « Not confirmed » plutôt qu'inventer un « Available ».
+4. **Maillage interne : lier en `/resources/<slug>` directement**, jamais `/learn/` (redirection 308 = budget crawl gaspillé).
