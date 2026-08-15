@@ -10,7 +10,7 @@ meta_description: "The Serenity Prayer in short and long versions, who actually 
 Your circumstances won't change tonight, and maybe not for a long time. You're tired of fighting that. What you need is serenity, the settled kind that doesn't depend on the outcome going your way. This prayer for serenity is for the moment you stop wrestling with what you can't control and start asking God for the wisdom to tell the difference.
 
 ## The Serenity Prayer (Short Version)
-The version most people know by heart is the one Alcoholics Anonymous made famous, though it began as part of a longer prayer written by American theologian Reinhold Niebuhr.
+The version most people know by heart is the one Alcoholics Anonymous made famous. Its core petition comes from American theologian Reinhold Niebuhr, who used it in sermons from the early 1930s.
 
 > God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.
 
