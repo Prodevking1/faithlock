@@ -2,8 +2,8 @@
 slug: best-bible-verse-lock-screen-apps
 title: Best Bible Verse Lock Screen Apps 2026
 category: Guides
-meta_title: "7 Best Bible Verse Lock Screen Apps (2026)"
-meta_description: "Apps that put Bible verses on your iPhone lock screen. We tested 7 options — here's which ones actually work and look good."
+meta_title: "7 Best Free Bible Verse Lock Screen Apps (2026)"
+meta_description: "The best free apps for a daily Bible verse on your lock screen — iPhone and Android. We tested 7 options and ranked them by cost, design, and ease of use."
 ---
 
 ## Key Takeaways
@@ -195,6 +195,33 @@ Bible Mode primarily works as a faith-based app blocker (scan your physical Bibl
 
 ---
 
+## Free vs Paid: What Costs Nothing on iPhone and Android
+
+Not all "free" apps are equally free. Some show ads or hold the best designs behind a subscription. Here's what's genuinely free versus what eventually asks for money — broken out by platform.
+
+### Free (No Payment Required)
+
+| App | Platform | What You Get Free |
+|-----|----------|-------------------|
+| YouVersion | iOS + Android | Full Verse of the Day widget, no premium tier needed |
+| BitBible | iOS | Daily verse widget; premium adds extras but isn't required |
+| Bible Mode | iOS | Daily verse widget included; IAP unlocks additional blocking features, not the verse widget itself |
+| FaithLock | iOS | Verse engagement is free; premium ($24.99/year) adds scheduling and analytics |
+
+### Paid or Freemium (Best Features Behind a Paywall)
+
+| App | Platform | Free Tier Limits | Premium Price |
+|-----|----------|-------------------|----------------|
+| Heavenly | iOS | Limited design options | ~$6.99/month |
+| Glorify | iOS + Android | Manual refresh, fewer designs | $11.99/month or $59.99/year |
+| Lockscreen Bible Verse Widget | iOS | Fewer fonts, colors, and translations | ~$2.99/month |
+
+### On Android
+
+If you're on Android, the genuinely good options narrow fast: **YouVersion** (fully free, widely available) and **Glorify** (free with a paid tier). Most of the polished, design-forward apps on this list — Heavenly, BitBible, Lockscreen Bible Verse Widget, FaithLock, Bible Mode — are iOS-only. For an Android-native alternative with more design control, a widget builder like KWGT paired with your own verse graphics fills the gap, though it takes more setup than a dedicated app.
+
+---
+
 ## How to Choose the Right One
 
 **If you want zero effort**: BitBible or YouVersion. Set up once, forget about it.
@@ -206,6 +233,32 @@ Bible Mode primarily works as a faith-based app blocker (scan your physical Bibl
 **If you want active engagement**: FaithLock. Interact with verses, not just see them.
 
 **If you're on Android**: YouVersion or Glorify. Most others are iOS-only.
+
+---
+
+## How to Set a Bible Verse as Your Lock Screen
+
+### On iPhone (iOS 16 and later)
+
+1. **Long-press your current lock screen** until "Customize" appears
+2. Tap **+** to create a new lock screen, or tap **Customize** to edit your current one
+3. Tap the **widget area** below (or above) the clock
+4. Search for the app you downloaded — YouVersion, Heavenly, BitBible, or another from this list
+5. **Add its widget** to the lock screen
+6. Tap **Done**, then set the new lock screen as your active one
+
+Widgets refresh automatically on the schedule the app sets — usually once a day. For apps that don't offer a native lock screen widget (like FaithLock), the verse appears when you try to open a blocked app instead of sitting on the lock screen itself — a different mechanism, not a setup problem.
+
+### On Android
+
+Android's process depends on your phone and launcher, but the general steps are similar:
+
+1. **Install the app** — YouVersion or Glorify are the most reliable Android options
+2. **Long-press an empty area** of your home screen
+3. Tap **Widgets**
+4. Find the app's widget in the list and **drag it to your home screen**
+5. For lock screen placement specifically, check **Settings > Display > Lock Screen** — support varies by manufacturer, since stock Android doesn't offer iOS-style lock screen widgets on every device
+6. If your phone doesn't support native lock screen widgets, a launcher like **KWGT** or **Nova Launcher** can place a Bible verse widget directly on your lock screen
 
 ---
 
@@ -228,6 +281,15 @@ Yes. Lock screen widgets persist across all Focus modes. You can even set up dif
 
 **Will the verse still show if I don't have internet?**
 Most apps cache verses locally, so they display even without a connection. YouVersion, BitBible, and Lockscreen Bible Verse Widget all work offline after initial setup. Heavenly and Glorify may show a cached verse if the refresh fails, but they prefer an internet connection for new content.
+
+**Is there a truly free Bible verse app for my lock screen?**
+Yes. YouVersion is completely free with no premium tier required — you get the full Verse of the Day widget on both iPhone and Android. BitBible and Bible Mode also offer their core lock screen verse feature for free, though both have optional premium upgrades for extra design options.
+
+**Which app gives me a new Bible verse every day automatically?**
+Heavenly, BitBible, and YouVersion all auto-refresh with a new verse daily — no need to open the app or manually change anything. Glorify requires you to manually select a new wallpaper unless you're on premium.
+
+**Can I put a Bible verse on my Android lock screen?**
+Yes, though the options are narrower than on iPhone. YouVersion and Glorify both work on Android with home screen widgets. True lock-screen widget support (versus home screen) varies by phone manufacturer — check Settings > Display > Lock Screen to see what your device supports, or use a widget builder like KWGT for more control over placement and design.
 
 ---
 

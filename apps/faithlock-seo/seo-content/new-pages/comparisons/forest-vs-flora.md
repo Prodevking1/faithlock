@@ -2,8 +2,8 @@
 slug: forest-vs-flora
 title: "Forest vs Flora: Which Is Better?"
 category: Comparisons
-meta_title: "Forest vs Flora (2026): Honest Side-by-Side Comparison"
-meta_description: "Forest and Flora both grow virtual trees when you stay focused. Here's how these two focus timer apps actually differ in features, pricing, and design."
+meta_title: "Forest vs Flora (2026): Pricing, Free Tiers & Verdict"
+meta_description: "Forest is $3.99 once on iOS, free with ads on Android. Flora is freemium with a paid tier for group sessions. Full comparison of price, features, and which is actually free."
 ---
 
 ## Quick Verdict
@@ -23,15 +23,18 @@ Flora takes the tree-growing concept and adds multiplayer accountability. You ca
 | Feature | Forest | Flora |
 |---------|--------|-------|
 | Core concept | Grow trees during focus sessions | Grow trees during focus sessions |
+| What happens if you leave the app | Your tree withers and dies immediately | Your tree dies — and in a group session, everyone's tree dies with it |
 | Multiplayer accountability | Limited — friend planting | Core feature — shared tree death |
 | Habit tracking | No | Yes — built-in |
 | To-do integration | No | Yes |
 | Tree variety | 60+ species | Growing collection |
+| Free mode | Full app free on Android (with ads); iOS requires the one-time purchase | Core focus sessions and solo tree-growing free on iOS and Android |
+| What's behind the paywall | Nothing extra on Android beyond the initial unlock; iOS purchase unlocks everything | Extended group sessions, deeper habit tracking, and the full tree/garden collection |
 | Real tree planting | Yes — Trees for the Future | Yes — partnership programs |
 | Chrome extension | Yes | No |
 | Platforms | iOS, Android, Chrome | iOS, Android |
-| iOS pricing | ~$3.99 one-time | Freemium |
-| Android pricing | Free with ads | Freemium |
+| iOS pricing | ~$3.99 one-time | Free to download, freemium subscription for full features |
+| Android pricing | Free with ads | Free to download, freemium subscription for full features |
 | User base | 50M+ | Growing |
 
 ## Key Differences
@@ -52,12 +55,27 @@ Forest has a Chrome extension for blocking distracting websites during focus ses
 
 | | Forest | Flora |
 |--|--------|-------|
-| iOS | ~$3.99 one-time | Freemium |
-| Android | Free with ads | Freemium |
+| iOS | ~$3.99 one-time | Free download, freemium subscription |
+| Android | Free with ads | Free download, freemium subscription |
 | Chrome | Extension available | N/A |
 | Real trees | Included (coin purchase) | Partnership programs |
 
-## Which Should You Choose?
+## Flora vs Forest: Which Is Actually Free?
+
+Short answer: **Forest on Android** is the closest thing to fully free — you can grow trees, run unlimited focus sessions, and use the core app without ever paying, though you'll see ads and some tree species require earned or purchased coins.
+
+**Forest on iOS** works differently. There's no free tier at all — you pay the $3.99 one-time fee up front, and that unlocks the entire app. No ads afterward, no ongoing subscription, no features held back. If you're an iPhone user who wants to try before buying, that's not an option here.
+
+**Flora** takes the opposite approach on both platforms: free to download and use for solo focus sessions and basic tree-growing, with a subscription required to unlock the full range of group sessions, deeper habit tracking, and the complete tree and garden collection. You can test the core "does this work for me" question — including a taste of the group-accountability mechanic — before paying anything.
+
+So the honest verdict depends on what "free" means to you:
+- **Free forever, ad-supported**: Forest on Android.
+- **Free to try, pay to unlock the full experience**: Flora on either platform.
+- **Pay once, own it completely, no ads or subscriptions ever**: Forest on iOS.
+
+If your priority is spending zero dollars long-term, Forest on Android wins outright. If your priority is trying before you commit to anything, Flora's freemium model gives you more room to test the waters first.
+
+## Verdict by User Profile
 
 **You want the most proven, polished focus timer**: Forest. 50 million downloads and years of refinement.
 
@@ -67,9 +85,15 @@ Forest has a Chrome extension for blocking distracting websites during focus ses
 
 **You want habit tracking alongside focus sessions**: Flora. Built-in habit tracking saves you from needing a separate app.
 
-**You want a one-time purchase**: Forest on iOS at $3.99. Flora's freemium model involves ongoing costs for premium features.
+**You want a one-time purchase with zero ongoing cost**: Forest on iOS at $3.99. Flora's freemium model involves ongoing costs for full features.
 
-**You study in groups**: Flora. The multiplayer focus sessions are purpose-built for this.
+**You're on Android and don't want to spend anything**: Forest. It's genuinely free, ads aside — no paywall blocks core functionality.
+
+**You study or work in groups and want built-in accountability**: Flora. The multiplayer focus sessions are purpose-built for this.
+
+**You're a student juggling assignments and focus sessions**: Flora. The to-do list integration means you're not switching between a focus app and a task manager.
+
+**You just want a clean, single-purpose focus timer with no extra features to manage**: Forest. It does one thing and doesn't try to be more.
 
 ## Frequently Asked Questions
 

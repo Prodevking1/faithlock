@@ -29,6 +29,19 @@ If you want a faith-based blocker that feels like a quiet conversation with God 
 
 ---
 
+## Prayer Lock Pricing: Is It Free?
+
+**No — Prayer Lock is not free.** You can download the app at no cost, but the free version is little more than a preview; the mood-matched prayers and app blocking that make Prayer Lock worth using require an active subscription, typically in the $3.99–$6.99/month range depending on region.
+
+- **Free to download**: Yes.
+- **Free tier**: Extremely limited — essentially a preview of the interface, not the actual experience.
+- **Full features**: Require a paid subscription (monthly or annual).
+- **Free trial**: Availability varies by region and changes over time — check the current App Store listing before committing.
+
+If you want a faith-based app blocker with a genuinely usable free tier, see the alternatives at the end of this review — Bible Mode and Pray Screen Time both offer functional blocking without a subscription.
+
+---
+
 ## How It Works
 
 1. **Download** Prayer Lock from the App Store
@@ -151,6 +164,18 @@ If there were a 7-day free trial (and there may be — check the App Store listi
 ---
 
 ## Frequently Asked Questions
+
+**Is Prayer Lock free?**
+No. You can download it for free, but the free version is essentially a preview — the mood-matched prayers and app blocking that make Prayer Lock worth using require an active subscription.
+
+**Does Prayer Lock cost money?**
+Yes. After the initial download, you need a subscription to use the app's core features. Pricing typically falls in the $3.99–$6.99/month range depending on region.
+
+**Do you have to pay for Prayer Lock?**
+Yes, to use it meaningfully. There's no substantial free tier — a subscription is required almost immediately after setup.
+
+**What is Prayer Lock's pricing?**
+Prayer Lock uses a subscription model (monthly or annual) with no meaningful free tier. Exact pricing varies by region — check the current App Store listing for the current rate and whether a free trial is being offered.
 
 **How many moods can I choose from?**
 Prayer Lock offers a solid range of emotional states: anxiety, boredom, loneliness, gratitude, overwhelm, anger, sadness, restlessness, and more. The exact number varies as the developers add new categories. It covers the most common emotions that drive phone pickup behavior, though some niche emotions (like grief or envy) may not have dedicated categories yet.
