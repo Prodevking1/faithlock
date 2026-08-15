@@ -151,7 +151,7 @@ Not a parental control — a self-accountability app. Your teen installs it them
 | Platforms | iOS |
 | Key feature | Self-chosen Bible verse app blocking for teens |
 
-[Download on the App Store](https://apps.apple.com/app/faithlock)
+[Download on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209)
 
 ---
 

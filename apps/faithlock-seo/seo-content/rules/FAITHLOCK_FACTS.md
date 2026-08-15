@@ -41,7 +41,7 @@ Ces formulations exactes ont été trouvées dans `best-christian-app-blocker.md
 - Prix : "Free (Premium: $4.99/week or $24.99/year)" — repris identiquement sur 3 pages différentes
 - "Strong (Family Controls API)" pour la solidité du blocage
 - "For apps that don't offer a native lock screen widget (like FaithLock), the verse appears when you try to open a blocked app instead of sitting on the lock screen itself" — le site confirme déjà correctement l'absence de widget lock screen, cohérent avec le code
-- Lien App Store utilisé sur le site : `https://apps.apple.com/app/faithlock` (URL non vérifiée par cette recherche — à confirmer que c'est le bon identifiant App Store avant réutilisation massive)
+- Lien App Store utilisé sur le site : `https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209` (URL non vérifiée par cette recherche — à confirmer que c'est le bon identifiant App Store avant réutilisation massive)
 
 ## Claims interdits
 

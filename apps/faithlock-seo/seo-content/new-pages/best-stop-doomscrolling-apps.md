@@ -71,7 +71,7 @@ FaithLock blocks distracting apps and requires Bible verse engagement (quiz-base
 | Platforms | iOS |
 | Method | Bible verse engagement before app unlocks |
 
-[Download on the App Store](https://apps.apple.com/app/faithlock)
+[Download on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209)
 
 ---
 

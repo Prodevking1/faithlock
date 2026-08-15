@@ -135,7 +135,7 @@ FaithLock takes a different approach: it uses Bible verses as the key to unlock 
 | Platforms | iOS |
 | Lock screen method | App-blocking with verse engagement |
 
-[Download on the App Store](https://apps.apple.com/app/faithlock)
+[Download on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209)
 
 ---
 

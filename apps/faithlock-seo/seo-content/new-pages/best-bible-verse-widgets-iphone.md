@@ -137,7 +137,7 @@ FaithLock uses Bible verses as the unlock mechanism for distracting apps. Try to
 | Widget type | App-blocking verse engagement |
 | Refresh | Per app open (from 31K+ verse library) |
 
-[Download on the App Store](https://apps.apple.com/app/faithlock)
+[Download on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209)
 
 ---
 
