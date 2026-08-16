@@ -64,7 +64,7 @@ Paul's principle applies to children too. Playing Roblox isn't wrong. Being mast
 
 ### Step 1: Set Clear, Non-Negotiable Time Limits
 
-Decide on a daily Roblox limit — 1 hour on school days, 2 hours on weekends is a reasonable starting point. Use device-level parental controls or a [Christian app blocker](/learn/best-christian-app-blocker) to enforce limits automatically. FaithLock can lock Roblox when time expires and display a verse, turning the "time's up" moment into a gentle redirect rather than a power struggle.
+Decide on a daily Roblox limit — 1 hour on school days, 2 hours on weekends is a reasonable starting point. Use device-level parental controls or a [Christian app blocker](/resources/best-christian-app-blocker) to enforce limits automatically. FaithLock can lock Roblox when time expires and display a verse, turning the "time's up" moment into a gentle redirect rather than a power struggle.
 
 ### Step 2: Eliminate Robux as a Regular Purchase
 

@@ -81,7 +81,7 @@ This feels excruciating at first. That discomfort is proof of how deep the rewir
 
 ### Step 4: If You Reinstall, Use an App Blocker with Teeth
 
-TikTok's own time reminders are a joke — they're designed to be dismissed. Use a [Christian app blocker](/learn/best-christian-app-blocker) like FaithLock that puts a Bible verse between you and TikTok. Set hard daily limits (30 minutes max). When you hit the limit and see Scripture staring back at you, it reframes the moment from "I want more" to "is this how I want to spend my time?"
+TikTok's own time reminders are a joke — they're designed to be dismissed. Use a [Christian app blocker](/resources/best-christian-app-blocker) like FaithLock that puts a Bible verse between you and TikTok. Set hard daily limits (30 minutes max). When you hit the limit and see Scripture staring back at you, it reframes the moment from "I want more" to "is this how I want to spend my time?"
 
 ### Step 5: Fill the Void with Something Worth Your Attention
 

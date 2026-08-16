@@ -250,7 +250,7 @@ The biggest failure mode. Opal's Deep Focus makes deletion harder. Covenant Eyes
 One Sec (free for one app) + Apple Screen Time (for everything else). Forest is $3.99 one-time. ScreenZen's free tier covers basics.
 
 **My kid doomscrolls. Best for teens?**
-Parental controls (Bark, Qustodio) are more appropriate than self-accountability tools. See our [parental control guide](/learn/best-christian-parental-control-apps). For older teens, Forest and FaithLock both resonate.
+Parental controls (Bark, Qustodio) are more appropriate than self-accountability tools. See our [parental control guide](/resources/best-christian-parental-control-apps). For older teens, Forest and FaithLock both resonate.
 
 ---
 

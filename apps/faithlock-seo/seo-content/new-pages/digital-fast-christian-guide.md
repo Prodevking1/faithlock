@@ -173,7 +173,7 @@ Give one trusted person a way to reach you (landline, spouse's phone, neighbor).
 Maybe. But when they see you present, peaceful, and actually listening during dinner, they'll understand. Some families do digital fasts together. It transforms dinner conversations.
 
 **"I've never fasted before, this feels extreme."**
-Start with a digital Sabbath: one day per week, not a multi-day fast. See our [Digital Sabbath guide](/learn/digital-sabbath). Build up gradually.
+Start with a digital Sabbath: one day per week, not a multi-day fast. See our [Digital Sabbath guide](/resources/digital-sabbath). Build up gradually.
 
 ---
 

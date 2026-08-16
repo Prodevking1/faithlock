@@ -53,10 +53,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  // Deux entrées Contentful peuvent viser la même URL ("opal" et "faithlock-vs-opal"
+  // se préfixent tous deux en /compare/faithlock-vs-opal), ce qui a produit 5 doublons
+  // dans le sitemap servi en production. On garde la première occurrence de chaque URL.
+  const seen = new Set<string>()
   return [
     ...staticPages,
     ...comparisonPages,
     ...glossaryPages,
     ...featurePages,
-  ]
+  ].filter((entry) => {
+    if (seen.has(entry.url)) return false
+    seen.add(entry.url)
+    return true
+  })
 }

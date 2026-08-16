@@ -63,14 +63,14 @@ The 30-day spiritual covenant feature turns it into more of a commitment device.
 
 **What stands out**: The streak tracking and scheduled lock times (morning devotion, work hours, bedtime) make it feel like a daily spiritual discipline rather than a productivity hack. Prayer reminders throughout the day add another layer.
 
-**Where it falls short**: iOS only — no Android yet. It's a newer app, so the community is still growing. The premium tier ($4.99/week or $24.99/year) is pricier than some alternatives.
+**Where it falls short**: iOS only — no Android yet. It's a newer app, so the community is still growing. The premium tier is pricier than some alternatives.
 
 *Disclosure: This article is published on the FaithLock blog. We've aimed to be honest about every app's strengths and weaknesses, including our own.*
 
 | Detail | Info |
 |--------|------|
-| Rating | New (building reviews) |
-| Price | Free to download, 3-day free trial (Premium: $4.99/week or $24.99/year) |
+| Rating | 4.2 stars (App Store, 16 ratings) |
+| Price | Free to download, 3-day free trial (Premium Membership $6.99 and $39.99, App Store, checked 2026-08-16) |
 | Platforms | iOS |
 | Unlock method | Bible verse reading + engagement |
 
@@ -254,7 +254,7 @@ Depends on the app. Bible Pause lets you skip (it's a suggestion, not a wall). F
 All of them block social media. FaithLock and Bible Mode have the strongest blocking (hard to bypass). Bible Pause has the weakest (you can choose to continue). For serious Instagram/TikTok addiction, choose something with hard blocking.
 
 **Can I use these apps during a digital fast?**
-Yes — several have scheduling features. FaithLock has Scheduled Lock Times (lock everything during prayer time or Sabbath). Sanctum has a Sacred Pause mode. For a full digital fast guide, see our article on [Christian digital fasting](/learn/christian-fasting-digital).
+Yes — several have scheduling features. FaithLock has Scheduled Lock Times (lock everything during prayer time or Sabbath). Sanctum has a Sacred Pause mode. For a full digital fast guide, see our article on [Christian digital fasting](/resources/christian-fasting-digital).
 
 **Are these apps judgmental or guilt-based?**
 This was a real concern for us during testing. Bible Pause explicitly avoids shame ("no punishment, just awareness"). FaithLock and Holy Focus frame blocking as spiritual practice, not restriction. Prayer Lock uses compassionate language. Sanctum asks about your emotions. None of them use the surveillance/accountability approach of apps like Covenant Eyes.
