@@ -95,7 +95,7 @@ Proverbs holds this alongside dozens of sayings that assume your choices matter 
 
 The image involves friction. Sharpening is not comfortable, does not happen at a distance, and produces sparks. The verse is quoted constantly in the context of friendship, usually with the abrasion edited out.
 
-Its placement matters too. Chapter 27 is full of sayings about honest relationships, including the observation two verses earlier that open rebuke is better than hidden love, and that the wounds of a friend can be trusted. The sharpening in view involves being told things you do not want to hear by someone who has earned the right.
+Its placement matters too. Chapter 27 is full of sayings about honest relationships, including the observation earlier in the chapter, at 27:5-6, that open rebuke is better than hidden love, and that the wounds of a friend can be trusted. The sharpening in view involves being told things you do not want to hear by someone who has earned the right.
 
 ### Proverbs 31:30, on the end of the book
 
@@ -150,7 +150,7 @@ The classic alternative plan, if a month of thematic study sounds like too much 
 
 Proverbs is the easiest book in the Bible to read in fragments and the hardest to read well that way. A chapter takes three or four minutes. Actually working a theme through chapters 10 to 22, writing down every saying about speech or money, takes a sustained half hour and produces something you keep.
 
-The half hour is the harder ask, and for most people it is not missing from the calendar so much as leaking. If a phone is where it goes, [FaithLock](/) is built for exactly that on iPhone: it blocks distracting apps through Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before the app opens. Proverbs 4:23 has a fairly direct opinion about guarding what goes in. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if that is the practical obstacle.
+The half hour is the harder ask, and for many people it is not missing from the calendar so much as leaking. If a phone is where it goes, [FaithLock](/) is built for exactly that on iPhone: it blocks distracting apps through Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before the app opens. Proverbs 4:23 has a fairly direct opinion about guarding what goes in. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if that is the practical obstacle.
 
 ## Frequently Asked Questions
 

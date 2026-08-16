@@ -6,7 +6,7 @@ meta_title: "Bible Study on John: Structure, Key Passages, 4-Week Plan"
 meta_description: "A study guide to the Gospel of John covering its background, the seven signs, eight key passages in the NIV, a four-week reading plan, and group discussion questions."
 ---
 
-John is the gospel most people start with and the one they most often misread. It reads simply. The vocabulary is small, the sentences are short, and a beginner can follow it without a commentary. But underneath that plain surface sits the most theologically dense of the four gospels, built on a structure the author designed deliberately and told you about in writing.
+John is the gospel many people start with and the one they most often misread. It reads simply. The vocabulary is small, the sentences are short, and a beginner can follow it without a commentary. But underneath that plain surface sits the most theologically dense of the four gospels, built on a structure the author designed deliberately and told you about in writing.
 
 This guide covers what the book is, how it is organized, the passages that carry its argument, and how to work through it over four weeks without skimming.
 
@@ -78,7 +78,7 @@ Jesus is speaking to a Samaritan woman at a well, in the heat of the day, across
 
 "A spring of water welling up" moves the source inside the person. The difference between a well and a spring is that one requires a return trip and the other does not.
 
-### John 8:12, on the first of the "I am" statements
+### John 8:12, on the second of the "I am" statements
 
 > "I am the light of the world. Whoever follows me will never walk in darkness, but will have the light of life." (John 8:12, NIV)
 
@@ -94,7 +94,7 @@ Two agendas, stated plainly. The thief subtracts. Jesus adds. "Life to the full"
 
 ### John 11:25-26, on the claim made in front of a grave
 
-> "I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die." (John 11:25-26, NIV)
+> "I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die. Do you believe this?" (John 11:25-26, NIV)
 
 Jesus says this to Martha, four days after her brother's burial, before doing anything about it. That order is the point. He does not raise Lazarus and then explain; he makes the claim while the tomb is still sealed and asks Martha whether she believes it.
 
@@ -141,14 +141,14 @@ A practical note on translation. Read the same version all four weeks. Switching
 
 ## Finding the Hours
 
-The practical obstacle to a four-week study of John is not comprehension. It is finding forty uninterrupted minutes, which is roughly what chapters 13 through 17 need in one sitting. Most people have those minutes. They are just already spent, in pieces, on a screen.
+The practical obstacle to a four-week study of John is not comprehension. It is finding forty uninterrupted minutes, which is roughly what chapters 13 through 17 need in one sitting. Many people have those minutes. They are just already spent, in pieces, on a screen.
 
 If the problem is the phone rather than the schedule, [FaithLock](/) is built for that specific gap on iPhone. It blocks distracting apps using Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before letting the app open. The friction is the point: it converts a reflex into a decision. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if reclaiming study time is the thing standing in your way.
 
 ## Frequently Asked Questions
 
 ### How long does it take to read the Gospel of John?
-John runs 21 chapters and takes most readers between two and two and a half hours to read straight through at a normal pace. Reading it in one sitting once, before starting a detailed study, is worth doing. It shows you the shape of the argument before you slow down inside it.
+John runs 21 chapters and takes many readers between two and two and a half hours to read straight through at a normal pace. Reading it in one sitting once, before starting a detailed study, is worth doing. It shows you the shape of the argument before you slow down inside it.
 
 ### Should a new Christian start with John?
 John is the most common recommendation for a first gospel, and the reason is his stated purpose in 20:30-31: he wrote it to produce belief in readers who did not already have it. Mark is shorter and faster if pace matters more. Luke gives more historical framing. But John is the one written for the question a new reader is actually asking.

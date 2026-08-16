@@ -28,7 +28,7 @@ That makes Romans the most demanding of Paul's letters and the most rewarding to
 
 Paul states his thesis in the first section and then spends fifteen chapters unpacking it:
 
-> "For I am not ashamed of the gospel, because it is the power of God that brings salvation to everyone who believes: first to the Jew, then to the Gentile. For in the gospel the righteousness of God is revealed—a righteousness that is by faith from first to last." (Romans 1:16-17, NIV)
+> "For I am not ashamed of the gospel, because it is the power of God that brings salvation to everyone who believes: first to the Jew, then to the Gentile. For in the gospel the righteousness of God is revealed—a righteousness that is by faith from first to last, just as it is written: \"The righteous will live by faith.\"" (Romans 1:16-17, NIV)
 
 Everything after this is elaboration. "Everyone who believes" is the inclusive claim. "First to the Jew, then to the Gentile" is the order that will occupy chapters 9 through 11. "Righteousness by faith from first to last" is the mechanism that chapters 3 through 5 will explain and chapter 6 will defend against the obvious objection.
 
@@ -145,7 +145,7 @@ A practical note. Romans rewards reading in large blocks. The argument has conne
 
 Romans is not a letter you can study in five-minute increments. The argument runs across chapters, and picking it up cold each day means re-reading the setup instead of following the thread. It needs a real block, three or four times a week, at a time when you are awake enough to track a long sentence.
 
-For most people the block exists and gets spent elsewhere. If your evening reading time keeps dissolving into a screen, [FaithLock](/) addresses that directly on iPhone: it blocks distracting apps through Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before the app opens. It turns an automatic reach into a decision you have to make on purpose. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if the obstacle to your study is attention rather than time.
+For many people the block exists and gets spent elsewhere. If your evening reading time keeps dissolving into a screen, [FaithLock](/) addresses that directly on iPhone: it blocks distracting apps through Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before the app opens. It turns an automatic reach into a decision you have to make on purpose. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if the obstacle to your study is attention rather than time.
 
 ## Frequently Asked Questions
 

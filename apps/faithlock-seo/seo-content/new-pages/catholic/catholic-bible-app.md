@@ -187,7 +187,7 @@ We should be straight about this, because the honest answer is useful to you.
 
 [FaithLock](/) is an iOS app that blocks distracting apps using Apple's Family Controls and shows a Bible verse with a short comprehension question when you try to open one. Its built in library is the complete Berean Standard Bible, 31,000+ verses. The BSB is a Protestant translation of the 66 book canon. It does not contain Tobit, Judith, Wisdom, Sirach, Baruch, 1 or 2 Maccabees, or the Greek portions of Esther and Daniel, and there is no Catholic edition of the app.
 
-That makes it a poor choice as your catholic bible app and a reasonable one as the thing that stops Instagram from eating the twenty minutes you meant to spend in Ascension or Laudate. Those are different jobs. If you want Scripture on your lock screen and a Catholic canon in your reading app, run both.
+That makes it a poor choice as your catholic bible app and a reasonable one as the thing that stops Instagram from eating the twenty minutes you meant to spend in Ascension or Laudate. Those are different jobs. If you want a verse in front of you when you reach for the wrong app, and a Catholic canon in your reading app, run both.
 
 <p><a href="https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209">Get FaithLock on the App Store</a></p>
 

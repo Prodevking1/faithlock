@@ -130,7 +130,7 @@ Each set contains five events from the life of Christ and his mother. You pray o
 4. The Transfiguration
 5. The Institution of the Eucharist
 
-The Luminous Mysteries are newer than the other three sets. John Paul II proposed them in the 2002 apostolic letter *Rosarium Virginis Mariae*, listing them at paragraph 21 as the Baptism in the Jordan, the self-manifestation at Cana, the proclamation of the Kingdom, the Transfiguration and the institution of the Eucharist. At paragraph 38 he set out the weekly distribution above, and added that the arrangement "is not intended to limit a rightful freedom in personal and community prayer." Some Catholics pray the traditional three sets only. Neither choice is wrong.
+The Luminous Mysteries are newer than the other three sets. John Paul II proposed them in the 2002 apostolic letter *Rosarium Virginis Mariae*, listing them at paragraph 21 as the Baptism in the Jordan, the self-manifestation at Cana, the proclamation of the Kingdom, the Transfiguration and the institution of the Eucharist. At paragraph 38 he set out the weekday distribution above; the Advent and Lent exceptions for Sunday follow the USCCB's guide, and added that the arrangement "is not intended to limit a rightful freedom in personal and community prayer." Some Catholics pray the traditional three sets only. Neither choice is wrong.
 
 ---
 
@@ -170,7 +170,7 @@ If twenty minutes is not available, pray one decade. A single decade with attent
 
 ## Praying the Rosary Without Getting Pulled Away
 
-The practical obstacle for most people is not the prayers. It is that the twenty minutes never arrives, or arrives and gets eaten. Two things help.
+The practical obstacle for many people is not the prayers. It is that the twenty minutes never arrives, or arrives and gets eaten. Two things help.
 
 First, attach the Rosary to something that already happens daily: the commute, the walk, the last twenty minutes before bed. A habit anchored to an existing habit survives; a habit that needs its own slot usually does not.
 
@@ -192,7 +192,7 @@ Monday and Saturday are Joyful, Tuesday and Friday are Sorrowful, Wednesday and 
 A standard five decade rosary has 59 beads: one for the Our Father at the start, three Hail Marys, then five decades of one Our Father bead and ten Hail Mary beads each. The crucifix and centerpiece are not counted as beads.
 
 **Is the Fatima Prayer required?**
-No. It is a widespread custom rather than part of the structure. The USCCB lists the steps without it and Catholic Answers lists it as step 10. Include it or leave it out.
+No. It is a widespread custom rather than part of the structure. The USCCB gives it as an option rather than a numbered step ("some say the following prayer"), and Catholic Answers lists it as step 10. Include it or leave it out.
 
 **Can non-Catholics pray the Rosary?**
 Nothing prevents it. The Our Father is from Matthew 6, the first half of the Hail Mary is Luke 1:28 and 1:42, and the mysteries are Gospel scenes. The intercessory second half of the Hail Mary is where Catholic and Protestant practice genuinely diverge, and it is worth knowing that rather than glossing over it.

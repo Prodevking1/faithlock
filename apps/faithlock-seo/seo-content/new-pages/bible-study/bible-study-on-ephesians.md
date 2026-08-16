@@ -106,7 +106,7 @@ The armor passage is usually read individually, as personal equipment. The verbs
 
 ## The Questions Ephesians Puts to a Reader Today
 
-**Are you living as though the plan started with you?** The first chapter places the reader inside something that predates creation. That is a demotion in importance and a promotion in security, and most people would prefer the reverse.
+**Are you living as though the plan started with you?** The first chapter places the reader inside something that predates creation. That is a demotion in importance and a promotion in security, and many people would prefer the reverse.
 
 **Which wall are you keeping standing?** Ephesians 2 makes the collapse of an ethnic and religious barrier the proof that the gospel works. The equivalent barrier in your own congregation is probably not one anyone would defend out loud.
 
@@ -139,7 +139,7 @@ The household code in 5:21-6:9 is the section modern readers find hardest, and i
 
 Ephesians is built out of long sentences, and long sentences do not survive interruption. The single Greek sentence behind 1:3-14 is the clearest case: read it in fragments across three days and you will get the words and lose the effect entirely.
 
-A study like this needs twenty-five uninterrupted minutes a few times a week, which is a smaller ask than most people think and a harder one to actually get. If your phone is the thing that keeps splitting the block, [FaithLock](/) is designed for that on iPhone. It blocks distracting apps using Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before letting the app open, so the reach becomes a choice. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if protecting a reading block is the practical problem.
+A study like this needs twenty-five uninterrupted minutes a few times a week, which is a smaller ask than many people think and a harder one to actually get. If your phone is the thing that keeps splitting the block, [FaithLock](/) is designed for that on iPhone. It blocks distracting apps using Apple's Screen Time technology, and when you reach for one it shows a verse from the complete BSB library of 31,000+ verses and asks a short question about it before letting the app open, so the reach becomes a choice. [Download FaithLock on the App Store](https://apps.apple.com/us/app/faith-lock-bible-prayer-focus/id6754208209) if protecting a reading block is the practical problem.
 
 ## Frequently Asked Questions
 

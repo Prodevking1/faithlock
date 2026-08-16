@@ -6,9 +6,9 @@ meta_title: "Bible Study on Psalms: Structure, Types, Key Passages, 4-Week Plan"
 meta_description: "A study guide to the Psalms covering the five-book structure, the main psalm types, eight key passages in the NIV, a four-week plan, and group discussion questions."
 ---
 
-Most people study the Psalms wrong, and the mistake is understandable: they treat it as a devotional grab bag, opening at random for whatever comfort surfaces. That works, in a limited way. But the Psalter is an edited collection with a deliberate shape, and reading it as one changes what you find in it.
+Many people study the Psalms wrong, and the mistake is understandable: they treat it as a devotional grab bag, opening at random for whatever comfort surfaces. That works, in a limited way. But the Psalter is an edited collection with a deliberate shape, and reading it as one changes what you find in it.
 
-The largest single category of psalms is lament. Not praise. That fact alone rearranges most people's expectations of the book. This guide covers the structure, the types, eight key psalms, and a four-week plan that treats the collection as the designed thing it is.
+The largest single category of psalms is lament. Not praise. That fact alone rearranges many people's expectations of the book. This guide covers the structure, the types, eight key psalms, and a four-week plan that treats the collection as the designed thing it is.
 
 ## Background: What We Know and What Is Debated
 
@@ -138,7 +138,7 @@ You cannot cover 150 psalms in a month, and trying to produces skimming. This pl
 
 **Week 1: Learn the types.** Read Psalm 1 (wisdom), Psalm 8 (hymn), Psalm 13 (individual lament), Psalm 30 (thanksgiving), Psalm 44 (communal lament), and Psalm 2 (royal). One a day. For each, write down the type and the move the psalm makes. By the end of the week you will be able to name the form of most psalms on sight, which is the single skill that makes the rest of the book accessible.
 
-**Week 2: Live in the laments.** Psalms 13, 22, 42, 43, 69, 77, and 88. This is the largest category in the book and the least familiar to most readers. Note how many end in trust and note that Psalm 88 does not. Pay attention to the hinge, the point where a lament turns, and where the turn is missing.
+**Week 2: Live in the laments.** Psalms 13, 22, 42, 43, 69, 77, and 88. This is the largest category in the book and the least familiar to many readers. Note how many end in trust and note that Psalm 88 does not. Pay attention to the hinge, the point where a lament turns, and where the turn is missing.
 
 **Week 3: The long ones.** Psalm 119 across the week, several stanzas a day, and Psalm 139 twice. Psalm 119 is exhausting read quickly and rewarding read at about 25 verses a day. Track the synonyms for God's word and notice how the psalmist's situation surfaces between them.
 

@@ -12,7 +12,7 @@ In Catholic usage the phrase means two different things, and mixing them up caus
 
 **Morning Prayer** with capitals is Lauds, one of the Hours of the Liturgy of the Hours, the Church's official daily prayer. The General Instruction on the Liturgy of the Hours quotes the Second Vatican Council: "Lauds as morning prayer and Vespers as evening prayer are the two hinges on which the daily Office turns" (GILH 37). Clergy are obliged to it. Lay Catholics are warmly encouraged and not bound.
 
-**Catholic morning prayer** in ordinary speech means the short traditional prayers many Catholics say on waking: the Morning Offering, the Guardian Angel prayer, the Angelus at six. These take two minutes, require no book, and are what most people are searching for.
+**Catholic morning prayer** in ordinary speech means the short traditional prayers many Catholics say on waking: the Morning Offering, the Guardian Angel prayer, the Angelus at six. These take two minutes, require no book, and are what many people are searching for.
 
 Both are below, prayers first.
 
@@ -127,7 +127,7 @@ All quotations from the New American Bible, Revised Edition (NABRE), the transla
 
 - **Psalm 5:4** "in the morning you will hear my voice; in the morning I will plead before you and wait."
 - **Psalm 143:8** "In the morning let me hear of your mercy, for in you I trust. Show me the path I should walk, for I entrust my life to you."
-- **Lamentations 3:22-23** "The Lord's acts of mercy are not exhausted, his compassion is not spent; They are renewed each morning."
+- **Lamentations 3:22-23** "The LORD's acts of mercy are not exhausted, his compassion is not spent; They are renewed each morning—great is your faithfulness!"
 - **Mark 1:35** "Rising very early before dawn, he left and went off to a deserted place, where he prayed."
 
 That last one is the argument for the whole practice. Whatever Jesus was doing before dawn, he was doing it before anything else.
@@ -169,7 +169,7 @@ Yes, and it is better than not praying it. The prayer offers the day; a day offe
 
 ## The Verdict
 
-Learn the Morning Offering by heart and say it before you touch the phone. That single habit does more than any app, any plan and any resolution about the Liturgy of the Hours you are not going to keep. Once it is automatic, and only then, look at Lauds. Starting with the full Office is how most people end up praying nothing at all by March.
+Learn the Morning Offering by heart and say it before you touch the phone. That single habit does more than any app, any plan and any resolution about the Liturgy of the Hours you are not going to keep. Once it is automatic, and only then, look at Lauds. Starting with the full Office is how many people end up praying nothing at all by March.
 
 ---
 

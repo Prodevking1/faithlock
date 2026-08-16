@@ -154,7 +154,7 @@ Review the day briefly: what you received, where you failed, what you will do di
 
 Stop treating screen time as a productivity problem with a spiritual garnish. It is a question of temperance, which the Church has taught for a very long time and has practical machinery for: a nightly examen to see the pattern, and Friday penance to do something about it every week rather than once a year in February.
 
-Start with the examen for one week before changing anything. Most people discover that their problem is not the hours, it is the three specific moments, and you cannot see those on a usage chart.
+Start with the examen for one week before changing anything. Many people discover that their problem is not the hours, it is the three specific moments, and you cannot see those on a usage chart.
 
 ---
 

@@ -56,7 +56,7 @@ James resists outlining, and different commentators draw the lines differently. 
 
 ### James 1:2-4, on what trials are for
 
-> "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance." (James 1:2-4, NIV)
+> "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance." (James 1:2-3, NIV)
 
 "Consider" is the operative verb. James is not asking anyone to feel joy about a trial; he is asking for an act of judgment about what the trial is doing. The distinction matters, because the instruction is achievable in a way that manufactured feelings are not.
 
@@ -80,7 +80,7 @@ The image is precise. A mirror is not for admiration; it is for correction. You 
 
 ### James 2:14-17, on the section Luther hated
 
-> "What good is it, my brothers and sisters, if someone claims to have faith but has no deeds? Can such faith save them? In the same way, faith by itself, if it is not accompanied by action, is dead." (James 2:14-17, NIV)
+> "What good is it, my brothers and sisters, if someone claims to have faith but has no deeds? Can such faith save them? In the same way, faith by itself, if it is not accompanied by action, is dead." (James 2:14, 17, NIV)
 
 Read the opening clause carefully: "if someone **claims** to have faith." James is not testing genuine faith against works. He is testing a claim. The question on the table is how you would tell the difference between someone who has faith and someone who says they do, and his answer is that there is no other way to tell.
 
@@ -104,7 +104,7 @@ Notice what James does not condemn. He does not say business is wrong, planning 
 
 "A mist that appears for a little while" is the same instinct as Ecclesiastes, which uses a word for vapor or breath to describe everything under the sun. James is not being morbid. He is correcting a category error about who controls the calendar.
 
-### James 5:16, on the practice most churches skip
+### James 5:16, on the practice many churches skip
 
 > "Therefore confess your sins to each other and pray for each other so that you may be healed. The prayer of a righteous person is powerful and effective." (James 5:16, NIV)
 
@@ -134,7 +134,7 @@ If the traditional authorship is right, that is exactly what you would expect fr
 
 **Week 2: Chapter 2.** Favoritism and the faith-and-works section. Read 2:14-26 alongside Romans 3:28 and Romans 4, and try to state both positions fairly before deciding how you reconcile them. If you can only state one of them well, you have not finished the exercise.
 
-**Week 3: Chapter 3 and 4:1-12.** The tongue, then the two wisdoms, then the source of conflict. James 4:1 asks where fights come from and answers his own question in a way most people would rather not hear. Track your own speech for one full day during this week and read 3:1-12 again at the end of it.
+**Week 3: Chapter 3 and 4:1-12.** The tongue, then the two wisdoms, then the source of conflict. James 4:1 asks where fights come from and answers his own question in a way many people would rather not hear. Track your own speech for one full day during this week and read 3:1-12 again at the end of it.
 
 **Week 4: 4:13 through 5:20.** Presumption, wealth, patience, and prayer. The address to the rich in 5:1-6 is the harshest passage in the letter and should not be softened. Finish with the closing instructions on confession and prayer, and note that the letter simply stops, with no farewell.
 

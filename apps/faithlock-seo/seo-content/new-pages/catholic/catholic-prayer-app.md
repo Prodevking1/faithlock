@@ -207,7 +207,7 @@ Yes. It describes itself as "The #1 Prayer App & #1 Catholic App" and its conten
 Universalis, Divine Office, iBreviary and Laudate all carry it. Universalis and iBreviary give you the full text offline. Divine Office adds recorded audio. Laudate includes it alongside a great deal of other material.
 
 **Do I need to pay for a Catholic prayer app?**
-No. Laudate, Divine Office, iBreviary and Intercede were all free to download as of 2026-08-16. Universalis costs $9.99 once and never asks again, which several people find preferable to a subscription. Hallow and Amen are free to download with paid tiers for the full library.
+No. Laudate, Divine Office, iBreviary and Intercede were all free to download as of 2026-08-16. Universalis costs $9.99 once and never asks again, which is preferable to a subscription for some buyers. Hallow and Amen are free to download with paid tiers for the full library.
 
 **Which app is best for praying the Rosary?**
 Amen for the scriptural format, Hallow for guided audio, Laudate for the interactive version plus other chaplets. We go deeper on this in our [rosary app](/resources/rosary-app) comparison.

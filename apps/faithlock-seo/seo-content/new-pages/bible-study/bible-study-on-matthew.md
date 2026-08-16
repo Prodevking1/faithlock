@@ -116,7 +116,7 @@ Twenty-eight chapters, seven a week, one a day. The structure makes this managea
 
 **Week 1: Chapters 1-7.** Birth narrative, John the Baptist, temptation, and then the Sermon on the Mount as three chapters read together. Do not break the sermon across a week; read 5-7 in one sitting at least once. Track the fulfillment formula quotations in chapters 1-4 and note which Scriptures Matthew reaches for.
 
-**Week 2: Chapters 8-13.** Miracle sequences, the mission discourse in chapter 10, mounting opposition, and the parables of chapter 13. Chapter 10 is much harsher than most readers expect from a sending-out speech; read it without softening it. In chapter 13, note that Jesus explains why he teaches in parables and that the explanation is uncomfortable.
+**Week 2: Chapters 8-13.** Miracle sequences, the mission discourse in chapter 10, mounting opposition, and the parables of chapter 13. Chapter 10 is much harsher than many readers expect from a sending-out speech; read it without softening it. In chapter 13, note that Jesus explains why he teaches in parables and that the explanation is uncomfortable.
 
 **Week 3: Chapters 14-20.** Feeding miracles, Peter's confession in chapter 16, the transfiguration, and the community discourse in chapter 18. The section from 16:21 onward is dominated by Jesus predicting his death and the disciples failing to absorb it, three times. Watch the pattern: prediction, misunderstanding, teaching on servanthood.
 

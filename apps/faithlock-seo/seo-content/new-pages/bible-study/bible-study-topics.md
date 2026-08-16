@@ -6,7 +6,7 @@ meta_title: "Bible Study Topics: A Complete Index by Book and Theme"
 meta_description: "An organized index of Bible study topics, by book and by theme, with what each one actually contains, how long it takes, and which to pick first."
 ---
 
-Most people looking for Bible study topics are not short of options. They are stuck between two bad ones: open at Genesis and lose momentum somewhere in Leviticus, or pick a topic at random and end up with a folder of verses that never connected to anything.
+Many people looking for Bible study topics are not short of options. They are stuck between two bad ones: open at Genesis and lose momentum somewhere in Leviticus, or pick a topic at random and end up with a folder of verses that never connected to anything.
 
 There are two honest ways to organize a study, and they answer different questions. **Book studies** ask what one author said to one audience, and they protect you from the most common error in topical work, which is collecting verses that agree with you. **Topical studies** ask what the whole Bible says about one thing, and they are how Scripture actually meets a Tuesday.
 
@@ -64,7 +64,7 @@ These are shorter, usually one sitting each, built around a single question and 
 
 - **[Proverbs on self-control](/resources/proverbs-on-self-control)** collects the wisdom sayings on appetite and restraint, including the city with broken walls.
 - **[James on self-control](/resources/james-on-self-control)** works through the tongue passages: the bit, the rudder, the spark in the forest.
-- **[Romans on temptation](/resources/romans-on-temptation)** deals with Paul's account in chapter 7 of doing the thing he does not want to do, which is the passage most people need and few have read in context.
+- **[Romans on temptation](/resources/romans-on-temptation)** deals with Paul's account in chapter 7 of doing the thing he does not want to do, which is the passage many people need and few have read in context.
 - **[Daniel on discipline](/resources/daniel-on-discipline)** looks at a young man's decision about food and a much older man's decision about a window, and what they have in common.
 - **[Bible verses about discipline](/resources/bible-verses-about-discipline)** and **[bible verses about self-control](/resources/bible-verses-about-self-control)** are the verse collections behind these.
 
@@ -175,7 +175,7 @@ If the phone is what keeps taking it, [FaithLock](/) is an iOS app built for tha
 Start with a short book rather than a topic. Philippians, James or Mark are the usual three, because each is finishable in about four weeks and none requires background reading. If you want a topical entry point instead, [jesus on worry](/resources/jesus-on-worry) or [proverbs on self-control](/resources/proverbs-on-self-control) are self-contained single sittings.
 
 ### What is the difference between a topical and a book study?
-A book study follows one author's argument to one audience from start to finish, so it raises subjects you would not have chosen. A topical study gathers what the whole Bible says about one theme, which is more immediately useful and more prone to selection bias. Most people benefit from alternating: a book, then a topic, then another book.
+A book study follows one author's argument to one audience from start to finish, so it raises subjects you would not have chosen. A topical study gathers what the whole Bible says about one theme, which is more immediately useful and more prone to selection bias. Many people benefit from alternating: a book, then a topic, then another book.
 
 ### What are good Bible study topics for a small group?
 Books work better than topics in groups, because everyone arrives at the same passage and nobody needs to have prepared. James, Philippians and Ephesians are reliable for mixed groups. Avoid Romans and Revelation for a group's first study, since both require sustained commitment before they pay off.

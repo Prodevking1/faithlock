@@ -3,7 +3,7 @@ slug: catholic-novena-app
 title: "Best Catholic Novena App 2026"
 category: Guides
 meta_title: "Best Catholic Novena App (2026): 5 Options Compared"
-meta_description: "A novena is nine consecutive days of prayer, and day five is where most people stop. We compared five Catholic novena apps on reminders, library size and price."
+meta_description: "A novena is nine consecutive days of prayer, and day five is where many people stop. We compared five Catholic novena apps on reminders, library size and price."
 ---
 
 ## Key Takeaways

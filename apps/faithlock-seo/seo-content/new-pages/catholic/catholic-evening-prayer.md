@@ -111,7 +111,7 @@ The Gospel canticle at Compline is the Nunc Dimittis, Luke 2:29-32 (NABRE):
 
 Simeon says this holding the infant Christ, ready to die. Praying it at the end of an ordinary Tuesday is a small, deliberate rehearsal.
 
-**A note on psalm numbers.** The General Instruction uses the older Greek and Latin numbering, so its "Ps 90" is Psalm 91 in most modern English Bibles including the NABRE ("You who dwell in the shelter of the Most High"), and its "Ps 133" is Psalm 134 ("O come, bless the Lord, all you servants of the Lord You who stand in the house of the Lord throughout the nights"). Psalm 4 is Psalm 4 in both. If you follow a printed breviary and a modern Bible side by side, this offset is what is confusing you.
+**A note on psalm numbers.** The General Instruction uses the older Greek and Latin numbering, so its "Ps 90" is Psalm 91 in most modern English Bibles including the NABRE ("You who dwell in the shelter of the Most High"), and its "Ps 133" is Psalm 134 ("O come, bless the LORD, all you servants of the LORD, you who stand in the house of the LORD through the long hours of night"). Psalm 4 is Psalm 4 in both. If you follow a printed breviary and a modern Bible side by side, this offset is what is confusing you.
 
 The responsory *Into your hands* is Psalm 31:6. The NABRE footnote on that verse notes it directly: "The verse is used as an antiphon in the Divine Office at Compline, the last prayer of the day." Christ says the same words from the cross in Luke 23:46.
 

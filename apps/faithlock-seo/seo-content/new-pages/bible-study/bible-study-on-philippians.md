@@ -68,7 +68,7 @@ Many scholars think Paul is quoting here rather than composing, and that 2:6-11 
 
 The theology is a descent in stages: equality with God, not exploited; self-emptying; the form of a servant; human likeness; obedience; death; and then, specifically, crucifixion, the death Rome reserved for slaves and rebels and never applied to its own citizens. In a colony full of Roman veterans, that last clause was the hardest line in the letter.
 
-The frame is what most readers skip. Paul introduces the hymn with "in your relationships with one another." He is not opening a doctrinal parenthesis. He quotes the highest Christology in the letter in order to settle a dispute between church members about who gets deferred to.
+The frame is what many readers skip. Paul introduces the hymn with "in your relationships with one another." He is not opening a doctrinal parenthesis. He quotes the highest Christology in the letter in order to settle a dispute between church members about who gets deferred to.
 
 ### Philippians 3:7-8, on the audit
 
@@ -108,7 +108,7 @@ Verse 13 is the most misapplied sentence in the letter, printed on athletic gear
 
 **What are you counting as gain?** Paul's list in chapter 3 was made of genuinely good things. The audit he performs is not between good and evil. It is between good and better, and it is harsher for that.
 
-**What is your "one thing"?** Most people, asked to describe their life in a singular, would need several. That is worth noticing rather than defending.
+**What is your "one thing"?** Many people, asked to describe their life in a singular, would need several. That is worth noticing rather than defending.
 
 **Does joy in your vocabulary mean anything other than circumstances going well?** The letter's whole claim is that these are separable. If they are not separable in practice, the letter has not landed yet.
 

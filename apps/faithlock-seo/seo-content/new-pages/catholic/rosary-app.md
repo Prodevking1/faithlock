@@ -76,7 +76,7 @@ Ascension's listing offers recordings of the Joyful, Luminous, Sorrowful and Glo
 
 Amen, from the Augustine Institute, offers the Rosary in standard, meditative and scriptural formats, with optional background music. In the scriptural form a line of Scripture accompanies each Hail Mary, which keeps the mystery in front of your mind through all ten beads instead of only at the announcement.
 
-**What stands out**: it is the cleanest fix for the single most common complaint about the Rosary, which is that attention drifts somewhere around the fourth Hail Mary.
+**What stands out**: it is the cleanest fix for the most familiar complaint about the Rosary, which is that attention drifts somewhere around the fourth Hail Mary.
 
 **Where it falls short**: fewer voices and fewer visual options than Ascension or iRosary, and no Latin per its listing.
 
@@ -166,7 +166,7 @@ Laudate's listing includes an interactive Rosary and Chaplet of Divine Mercy, a 
 | Ascension | 4.92 (89,480) | Not confirmed | Yes, multiple guides | Yes | 2026-08-13 | Free, IAP |
 | Amen | 4.92 (45,316) | Not confirmed | Yes, 3 formats | Not confirmed | 2026-08-11 | Free, IAP |
 | Rosary + Divine Mercy | 4.54 (89) | Yes | Not confirmed | Not confirmed | 2025-12-20 | Free |
-| Rosary.Today | 4.83 (12,136) | Not confirmed | Not confirmed | Not confirmed | 2025-02-12 | Free |
+| Daily Holy Rosary (Rosary.Today) | 4.83 (12,136) | Not confirmed | Not confirmed | Not confirmed | 2025-02-12 | Free |
 | Laudate | 3.96 (3,721) | Not confirmed | Podcasts | Yes | 2026-08-14 | Free |
 
 App Store listing API, checked 2026-08-16. "Not confirmed" means the app's own listing does not state it.

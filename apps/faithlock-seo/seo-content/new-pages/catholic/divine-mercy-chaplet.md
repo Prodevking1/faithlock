@@ -128,7 +128,7 @@ Checked against the Apple App Store listing API on 2026-08-16.
 | Hallow | Hallow, Inc. | Guided audio Divine Mercy Chaplet among daily prayer methods | 4.89 (373,205) |
 | Laudate | Aycka Soft | Interactive Chaplet of Divine Mercy, plus a Latin version | 3.96 (3,721) |
 | Rosary + Divine Mercy Chaplet | Marcello Pietrelli | Rosary and Chaplet, mysteries auto selected by day | 4.54 (89) |
-| Rosary.Today | Tomasz Powalka | Daily Mass, Rosary and Chaplet of Divine Mercy | 4.83 (12,136) |
+| Daily Holy Rosary Prayer App (Rosary.Today) | Tomasz Powalka | Daily Mass, Rosary and Chaplet of Divine Mercy | 4.83 (12,136) |
 | Amen | Augustine Institute | Daily Catholic prayers and recordings | 4.92 (45,316) |
 
 All five were free to download as of 2026-08-16. Hallow and Amen have paid tiers for their full libraries.
