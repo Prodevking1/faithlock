@@ -35,11 +35,11 @@ Two things follow from that definition, and both are counterintuitive.
 
 *Digital Minimalism: Choosing a Focused Life in a Noisy World*, by Cal Newport, published February 5, 2019 by Portfolio, an imprint of Penguin. It was a New York Times bestseller, and it followed his 2016 book *Deep Work: Rules for Focused Success in a Distracted World* (Grand Central Publishing), extending that book's argument from work into personal life.
 
-The publisher's description states the core proposal plainly: "a minimalist approach to technology use in which you radically reduce the time you spend online, focusing on a small set of carefully-selected activities while happily ignoring the rest."
+Newport states the core proposal plainly on his own site: digital minimalism asks you to "radically reduce the time you spend staring at screens" and to focus on a small number of carefully chosen activities that genuinely support what you value.
 
 One detail worth knowing, because it is the reason the book has a method rather than only an argument. Newport ran a digital declutter experiment in January 2018 that, in his words, "ended up growing to over 1,600 participants and receiving coverage in the *New York Times*." The practical guidance in the book came out of watching what happened to those people, including what went wrong for them.
 
-A note on sourcing. Various summaries online attribute a tidy list of "three principles" to the book. We have not been able to verify that wording against a primary source, so it does not appear here. What Newport has published under his own name is the nine-principle list below.
+The book itself rests on three principles: clutter is costly, optimization is important, and intentionality is satisfying. The practical layer, the one Newport has published under his own name, is the nine-principle list below.
 
 ---
 
@@ -79,9 +79,9 @@ That third stage is where the whole thing lives or dies. A 30-day break with no 
 
 There is decent evidence for the underlying mechanism, and it is not about discipline.
 
-In a field experiment on a tool that inserted a pause before an app opened, users abandoned 36% of their app-opening attempts, and target app openings dropped 57% over six weeks. The controlled follow-up isolated what did the work: the delay and the dismiss option carried the effect, while a motivational message alone produced nothing measurable ([Grüning, Riedel and Lorenz-Spreen, PNAS, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)).
+In a field experiment on a tool that inserted a pause before an app opened, users abandoned 36% of their app-opening attempts, and target app openings dropped 57% over six weeks. The controlled follow-up isolated what did the work: the option to dismiss the app was the most effective intervention, friction worked but added nothing on top of it, and a motivational message alone produced nothing measurable ([Grüning, Riedel and Lorenz-Spreen, PNAS, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)).
 
-Read that last clause again, because it is the most practically useful finding in this entire field. Being reminded of your goals did nothing. Adding two seconds of friction did a great deal. Digital minimalism works to the extent that it changes what is easy, and fails to the extent that it relies on you wanting it enough.
+Read that last clause again, because it is the most practically useful finding in this entire field. Being reminded of your goals did nothing. Being handed an easy way out, at the exact moment of the reach, did a great deal. Digital minimalism works to the extent that it changes what is easy, and fails to the extent that it relies on you wanting it enough.
 
 ---
 

@@ -55,7 +55,7 @@ Boredom is not a malfunction. It is the exercise.
 
 Forty-eight hours is where something different happens, because you pass through the worst of it on Saturday and wake up Sunday on the other side. Most people who describe a detox as having "worked" are describing this experience.
 
-The full protocol, including the six things that predictably break and how to prepare for each, is in [phone-free weekend](/resources/phone-free-weekend).
+The full protocol, including the nine things that predictably break and how to prepare for each, is in [phone-free weekend](/resources/phone-free-weekend).
 
 ---
 
@@ -89,7 +89,7 @@ Write the rules down. This sounds excessive and it is the difference between a r
 
 ## What Predictably Goes Wrong
 
-**Day two is the worst day.** Across all three tiers, the low point is between 24 and 72 hours. It is not a signal to stop.
+**Day two is usually the worst day.** Across all three tiers, people tend to describe the low point somewhere in the first few days. It is not a signal to stop.
 
 **You will discover the phone was doing a job.** Anxiety, boredom, loneliness or avoidance, whichever it was, arrives undiluted once the phone is gone. That is not the detox failing, that is the detox working, and it is information you needed. If what surfaces is more than discomfort, that is worth taking seriously. [Help for phone addiction](/resources/help-for-phone-addiction) covers where to look.
 

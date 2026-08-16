@@ -63,11 +63,11 @@ If you are doing the tool-only version, set the blocks now and start them at a s
 
 **Friday night** is easy. It usually feels good, a bit like the start of a holiday.
 
-**Saturday morning** is the first real test, and it arrives within twenty minutes of waking. The reach is automatic and you will make it several times before you are fully awake. Nothing is wrong.
+**Saturday morning** is the first real test, and for most people it arrives before they are properly awake. The reach is automatic and you will make it several times before you are fully awake. Nothing is wrong.
 
-**Saturday, roughly 2pm to 5pm,** is the low point. This is where most attempts end. The feeling is not usually a craving for a specific app, it is a flat, restless boredom with nowhere to put itself. Time moves oddly. This is the actual exercise, and it passes.
+**Saturday afternoon** tends to be the low point, and it is where a lot of attempts end. The feeling is not usually a craving for a specific app, it is a flat, restless boredom with nowhere to put itself. Time moves oddly. This is the actual exercise, and it passes.
 
-**Saturday evening** starts to change. Most people report the first stretch of genuine absorption in something here.
+**Saturday evening** often starts to change. This is where people frequently describe their first real stretch of absorption in something.
 
 **Sunday** is the payoff, and it is the reason 48 hours beats 24. The day is longer than you remember days being. This is the experience people are describing when they say a detox worked.
 
@@ -105,7 +105,7 @@ Do this instead.
 
 **Turn it on at a set time, with something scheduled immediately after.** Twenty minutes to catch up, then dinner, a walk, or bed. An open-ended reintroduction is not a reintroduction.
 
-**Write down two things before you check anything.** What was hardest, and what you actually missed. The second list is almost always much shorter than you predicted on Friday, and it is the most useful output of the whole weekend. Most people find they missed two or three specific things and did not miss any of the apps they use most.
+**Write down two things before you check anything.** What was hardest, and what you actually missed. The second list tends to be much shorter than you predicted on Friday, and it is the most useful output of the whole weekend. What people usually describe is missing a couple of specific things and not missing the apps they open most.
 
 **Change one thing on the phone before you put it down.** Delete one app, kill one category of notifications, or set one recurring blocked window. A weekend that produces no change to the device produces no change at all.
 

@@ -72,7 +72,7 @@ Note that the benefits came with a cost. People were happier and less informed. 
 
 ### The result that should make you cautious
 
-A 14-day social media abstinence study randomized participants into abstinence and control groups with daily assessments. The abstinence group did reduce screen time and body image dissatisfaction. But depression, anxiety, problematic smartphone use, fear of missing out and loneliness all decreased across both groups, "without significant between-group differences" ([de Hesselle and Montag, *BMC Psychology*, 2024](https://pubmed.ncbi.nlm.nih.gov/38481298/)).
+A 14-day social media abstinence study randomized participants into abstinence and control groups with daily assessments. The abstinence group did reduce screen time and body image dissatisfaction. But depression, anxiety, problematic smartphone use, fear of missing out and loneliness all decreased across both groups, with no difference observed between the groups ([de Hesselle and Montag, *BMC Psychology*, 2024](https://pubmed.ncbi.nlm.nih.gov/38481298/)).
 
 The control group got better too.
 
@@ -106,7 +106,7 @@ None of that means the practice is worthless. It means the mechanism is behavior
 
 Based on the pattern across these studies and the friction research below, four things separate the attempts that stick from the ones that do not.
 
-1. **You changed the environment, not just your intention.** In a field experiment on a pause-before-open tool, users abandoned 36% of app-opening attempts and target app openings fell 57% over six weeks. The controlled follow-up found the delay and the dismiss option carried the effect, while a motivational message alone did nothing measurable ([Grüning, Riedel and Lorenz-Spreen, *PNAS*, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)). Resolve is not an intervention.
+1. **You changed the environment, not just your intention.** In a field experiment on a pause-before-open tool, users abandoned 36% of app-opening attempts and target app openings fell 57% over six weeks. The controlled follow-up found that the option to dismiss the app carried the effect, with friction working but adding nothing on top of it, while a motivational message alone did nothing measurable ([Grüning, Riedel and Lorenz-Spreen, *PNAS*, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)). Resolve is not an intervention.
 2. **You planned the reintroduction before you started.** A break with no day-31 protocol reliably ends in full relapse to baseline.
 3. **You replaced rather than only removed.** Emptied time refills with the same behavior unless something else is waiting.
 4. **Your starting point was bad enough for there to be room.** The scoping review is explicit that higher baseline severity predicts higher benefit.

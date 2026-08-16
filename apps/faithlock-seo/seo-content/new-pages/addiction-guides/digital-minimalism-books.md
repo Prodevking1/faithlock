@@ -21,7 +21,7 @@ meta_description: "A curated list of digital minimalism and attention books, gro
 
 **Cal Newport, 2019, Portfolio (Penguin)**
 
-The book that put the phrase into circulation, published February 5, 2019. Newport's proposal, in the publisher's words, is "a minimalist approach to technology use in which you radically reduce the time you spend online, focusing on a small set of carefully-selected activities while happily ignoring the rest."
+The book that put the phrase into circulation, published February 5, 2019. Newport's proposal, in his own words, is to "radically reduce the time you spend staring at screens" and concentrate on a small number of carefully chosen activities that support what you actually value.
 
 Its practical core came out of a digital declutter experiment Newport ran in January 2018 that, per his own account, "ended up growing to over 1,600 participants and receiving coverage in the *New York Times*." That is why the method section reads like something observed rather than something theorized.
 
@@ -165,7 +165,7 @@ Best for: you want to try one thing this week. Pair with [phone-free weekend](/r
 
 ## One More, With a Caveat
 
-**Hyperfocus, Chris Bailey, first published 2018.** A useful book on attention management, listed separately because its publisher and subtitle vary by market in a way we could not resolve to a single verified US edition. Attested editions include Pan Macmillan (UK, 2018), Random House Canada (2018) and Penguin Books (2019), with three different subtitles across them. If you buy it, check which edition you are getting.
+**Hyperfocus: How to Manage Your Attention in a World of Distraction, Chris Bailey, Penguin Life, 2018.** Bailey's case is that attention has two modes worth training rather than one: hyperfocus, the deliberate single-tasking most productivity advice stops at, and scatterfocus, the deliberately unfocused state where connections form. Useful if your problem is not that you cannot concentrate but that you never stop. Note that the subtitle varies by market, with different wording on the UK and Canadian editions.
 
 ---
 

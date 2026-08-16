@@ -9,7 +9,7 @@ meta_description: "No app detoxes dopamine. Here is what dopamine detox apps rea
 ## Key Takeaways
 
 - No app changes your dopamine. What these apps do is add friction between an impulse and the reward, which is a different mechanism and a legitimately effective one.
-- The mechanic that carries the effect is a delay you cannot skip. Research found a pause plus a dismiss option cut target app openings by 57%, while a motivational message alone did nothing measurable.
+- The mechanic that carries the effect is a one-tap way out, offered at the moment you reach. Research found that giving users the option to dismiss the app was the most effective intervention, cutting target app openings by 57%, while a motivational message alone did nothing measurable.
 - On iOS, every third-party blocker is built on the same Apple framework, so they differ in what happens at the moment of blocking, not in blocking power.
 - The single best predictor of whether a tool works is whether disabling it is inconvenient. Anything you can turn off in two taps will be turned off in two taps.
 
@@ -25,15 +25,15 @@ What they actually do is change your environment so that opening a specific app 
 
 ---
 
-## The Only Mechanic That Reliably Works
+## The Mechanic That Actually Carries the Effect
 
 Before comparing tools, know what you are comparing them on, because most feature lists are noise.
 
-In a field experiment on a tool that inserted a pause before an app opened, users abandoned 36% of their app-opening attempts, and target app openings dropped 57% over six weeks. The controlled follow-up isolated the active ingredient precisely: the delay and the dismiss option carried the effect, while a motivational message alone produced nothing measurable ([Grüning, Riedel and Lorenz-Spreen, *PNAS*, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)).
+In a field experiment on a tool that inserted a pause before an app opened, users abandoned 36% of their app-opening attempts, and target app openings dropped 57% over six weeks. The controlled follow-up isolated the active ingredient precisely, and the result is not what most people assume: the option to dismiss the app was the most effective intervention. Friction worked too, but it added nothing on top of that option, and a motivational message alone produced nothing measurable ([Grüning, Riedel and Lorenz-Spreen, *PNAS*, 2023](https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/)). Worth knowing when reading it: the study tested a single app, and one of its co-authors is that app's developer.
 
 Two conclusions follow, and they should govern every choice below.
 
-**A forced pause works.** Even a few seconds. The reach is automatic, the pause makes it conscious, and a meaningful share of attempts simply stop there.
+**An easy exit works.** The reach is automatic, and what a pause really buys you is a moment where backing out costs nothing. Given that moment, a meaningful share of attempts simply stop there.
 
 **Encouragement does not.** Quotes, streak celebrations and motivational nudges did nothing measurable on their own. If a tool's main feature is inspiration, it is selling you the ingredient that failed the test.
 
