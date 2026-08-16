@@ -74,7 +74,7 @@ For a genuine 24 or 48 hour reset, physical distance beats any software. [Phone-
 Six questions, in the order that predicts outcomes.
 
 1. **How hard is it to disable?** This is the whole ballgame. A tool you can switch off instantly protects you from absent-mindedness, not from wanting. Look for a strike system, a delay before settings changes take effect, or a passcode held by another person.
-2. **Is there a forced pause?** Per the research above, this is the mechanic that carries the effect.
+2. **Does the interruption offer a clean way out?** Per the research above, a pause that hands you a one-tap exit is what carries the effect. A pause you can only wait through is weaker.
 3. **Does it schedule, or only limit?** A daily quota gets consumed by 10am. A schedule that shields specific hours protects specific things, like the first hour after waking and the hour before sleep.
 4. **What does the block screen do?** A dead end just makes you wait. A screen that gives you something to do redirects the impulse rather than parking it.
 5. **Can someone else hold the keys?** Accountability outperforms configuration. Compulsive behavior shrinks under observation.
@@ -98,7 +98,7 @@ Six questions, in the order that predicts outcomes.
 
 Most tools in this category answer question 4 above with a wall. A Scripture-based one answers it with a task, which is a different design choice with a different effect on the moment.
 
-[FaithLock](/) is an iOS app that shields the apps you choose using Apple's Family Controls API. To reopen one you read a Bible verse and answer a fill-in-the-blank question about it, drawn from the complete Berean Standard Bible library of 31,000 or more verses. That is the forced pause from the research, with the pause spent on something rather than on waiting. It supports scheduled lock times for morning devotion, work hours and bedtime, tracks Scripture and prayer streaks with badges, and includes guided audio prayers, written prayer journaling and verse memorization. There is a 3-day free trial.
+[FaithLock](/) is an iOS app that shields the apps you choose using Apple's Family Controls API. To reopen one you read a Bible verse and answer a fill-in-the-blank question about it, drawn from the complete Berean Standard Bible library of 31,000 or more verses. That gives the interruption content rather than making it a wait, though it is a different design from the one-tap exit tested in the study above. It supports scheduled lock times for morning devotion, work hours and bedtime, tracks Scripture and prayer streaks with badges, and includes guided audio prayers, written prayer journaling and verse memorization. There is a 3-day free trial.
 
 Two limits worth stating: it is iOS only, and like every third-party blocker on that platform it can be disabled by the person who installed it, which is why it works as chosen friction rather than as a lock.
 
@@ -114,10 +114,10 @@ For other faith-based options, see [best Christian app blocker](/resources/best-
 There are many apps marketed that way, but none of them affect dopamine. What they do is block or delay access to specific apps, which is stimulus control. That mechanism works, so the tools can be useful as long as you understand what you are buying.
 
 **What is the best app for a dopamine detox?**
-The one you find hardest to switch off. Blocking power is nearly identical across iOS tools because they all use Apple's Family Controls framework, so the differentiator is how much friction stands between you and disabling it, plus whether it forces a pause rather than just showing a message.
+The one you find hardest to switch off. Blocking power is nearly identical across iOS tools because they all use Apple's Family Controls framework, so the differentiator is how much friction stands between you and disabling it, plus whether the interruption gives you an easy way to back out rather than just showing a message.
 
 **Do app blockers actually reduce screen time?**
-Yes, with real evidence behind the delay mechanic specifically. A field experiment found a pause before opening led users to abandon 36% of attempts, with target app openings down 57% over six weeks. The same research found motivational messaging alone had no measurable effect.
+Yes, with real evidence behind the interruption mechanic specifically. A field experiment found a pause before opening led users to abandon 36% of attempts, with target app openings down 57% over six weeks. The follow-up found the active ingredient was the option to dismiss the app rather than the delay itself, and that motivational messaging alone had no measurable effect.
 
 **Can I just use iPhone Screen Time instead of paying for an app?**
 For a mild habit, yes, and you should try that first since it costs nothing. Its limitation is that you can lift your own restrictions instantly from the same device, which is exactly what happens on the evenings that matter most.

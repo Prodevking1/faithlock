@@ -29,7 +29,7 @@ The name is wrong, and the practice underneath it is partly right. Both halves o
 
 Dopamine is not a toxin, and there is nothing to detoxify. It is a neurotransmitter involved in motivation, movement and learning, and your brain produces and uses it constantly. You cannot fast from it any more than you can fast from serotonin or from your own body temperature.
 
-More specifically, avoiding stimulating activities does not lower your dopamine levels. Peter Grinspoon, MD, a primary care physician at Massachusetts General Hospital and instructor at Harvard Medical School, states it directly: "[dopamine] doesn't actually decrease when you avoid overstimulating activities, so a dopamine 'fast' doesn't actually lower your dopamine levels" ([Grinspoon, Harvard Health Publishing, February 26, 2020](https://www.health.harvard.edu/blog/dopamine-fasting-misunderstanding-science-spawns-a-maladaptive-fad-2020022618917)).
+More specifically, avoiding stimulating activities does not lower your dopamine levels. Peter Grinspoon, MD, a primary care physician at Massachusetts General Hospital and instructor at Harvard Medical School, states it directly: "While dopamine does rise in response to rewards or pleasurable activities, it doesn't actually decrease when you avoid overstimulating activities, so a dopamine 'fast' doesn't actually lower your dopamine levels" ([Grinspoon, Harvard Health Publishing, February 26, 2020](https://www.health.harvard.edu/blog/dopamine-fasting-misunderstanding-science-spawns-a-maladaptive-fad-2020022618917)).
 
 This is not a technicality. The false model produces false practices. If you believe dopamine is a fuel tank that empties with use and refills with abstinence, then more deprivation looks like more benefit, and you end up sitting in a dark room avoiding eye contact. That is where the internet version of this went, and it went there because the metaphor pointed that way.
 
@@ -39,9 +39,9 @@ This is not a technicality. The false model produces false practices. If you bel
 
 The label was popularized by Cameron Sepah, a clinical psychologist working in San Francisco, who framed it as a cognitive behavioral technique. Grinspoon describes Sepah's intent as a method, grounded in cognitive behavioral therapy, for becoming less dominated by the unhealthy stimuli of constant technological reward.
 
-He has been candid about the naming. In his own words, quoted by Harvard Health: "Dopamine is just a mechanism that explains how addictions can become reinforced, and makes for a catchy title."
+He has been candid about the naming. As he told the *New York Times*, quoted by Harvard Health: "Dopamine is just a mechanism that explains how addictions can become reinforced, and makes for a catchy title. The title's not to be taken literally."
 
-That is an unusually honest thing for the originator of a wellness trend to say, and it should be taken at face value. The underlying aim, stepping back from compulsive stimulation in favor of simpler activities and real contact with other people, is reasonable. The branding is what went feral.
+That is an unusually honest thing for the originator of a wellness trend to say, and the second sentence deserves more attention than it gets. The underlying aim, stepping back from compulsive stimulation in favor of simpler activities and real contact with other people, is reasonable. The branding is what went feral.
 
 ---
 

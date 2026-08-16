@@ -39,7 +39,7 @@ Newport states the core proposal plainly on his own site: digital minimalism ask
 
 One detail worth knowing, because it is the reason the book has a method rather than only an argument. Newport ran a digital declutter experiment in January 2018 that, in his words, "ended up growing to over 1,600 participants and receiving coverage in the *New York Times*." The practical guidance in the book came out of watching what happened to those people, including what went wrong for them.
 
-The book itself rests on three principles: clutter is costly, optimization is important, and intentionality is satisfying. The practical layer, the one Newport has published under his own name, is the nine-principle list below.
+The practical layer, the one Newport has published in full under his own name, is the nine-principle list below.
 
 ---
 

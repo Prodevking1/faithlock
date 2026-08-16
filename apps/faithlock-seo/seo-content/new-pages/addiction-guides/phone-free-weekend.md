@@ -63,7 +63,7 @@ If you are doing the tool-only version, set the blocks now and start them at a s
 
 **Friday night** is easy. It usually feels good, a bit like the start of a holiday.
 
-**Saturday morning** is the first real test, and for most people it arrives before they are properly awake. The reach is automatic and you will make it several times before you are fully awake. Nothing is wrong.
+**Saturday morning** is the first real test, and it tends to arrive before you are properly awake. The reach is automatic, and you will make it several times without deciding to. Nothing is wrong.
 
 **Saturday afternoon** tends to be the low point, and it is where a lot of attempts end. The feeling is not usually a craving for a specific app, it is a flat, restless boredom with nowhere to put itself. Time moves oddly. This is the actual exercise, and it passes.
 
