@@ -12,7 +12,7 @@ meta_description: "FaithLock uses Bible verse quizzes to block apps. One Sec use
 
 ## FaithLock in 30 Seconds
 
-FaithLock blocks distracting apps and requires you to read and engage with a Bible verse before unlocking. The quiz-based interaction uses the complete BSB library of 31,000+ verses — you can't just tap through. A 30-day spiritual covenant feature adds commitment depth. Scheduled lock times and prayer reminders structure your day around spiritual practice. iOS-only, free tier available, premium at $4.99/week or $24.99/year.
+FaithLock blocks distracting apps and requires you to read and engage with a Bible verse before unlocking. The quiz-based interaction uses the complete BSB library of 31,000+ verses — you can't just tap through. A 30-day spiritual covenant feature adds commitment depth. Scheduled lock times and prayer reminders structure your day around spiritual practice. iOS-only, free to download with a 3-day free trial, premium at $4.99/week or $24.99/year.
 
 ## One Sec in 30 Seconds
 

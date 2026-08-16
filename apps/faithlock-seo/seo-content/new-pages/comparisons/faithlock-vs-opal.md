@@ -12,7 +12,7 @@ meta_description: "FaithLock uses Bible verse quizzes to unlock blocked apps. Op
 
 ## FaithLock in 30 Seconds
 
-FaithLock blocks distracting apps and requires Bible verse engagement to unlock them. It's not passive — you read a verse and interact with it through a quiz before your apps become accessible. The complete BSB (Berean Standard Bible) library of 31,000+ verses powers the content. A 30-day spiritual covenant feature turns the blocking into a commitment device rooted in biblical covenant theology. Scheduled lock times (morning devotion, work hours, bedtime) and prayer reminders add structure. iOS-only, free tier available, premium at $4.99/week or $24.99/year.
+FaithLock blocks distracting apps and requires Bible verse engagement to unlock them. It's not passive — you read a verse and interact with it through a quiz before your apps become accessible. The complete BSB (Berean Standard Bible) library of 31,000+ verses powers the content. A 30-day spiritual covenant feature turns the blocking into a commitment device rooted in biblical covenant theology. Scheduled lock times (morning devotion, work hours, bedtime) and prayer reminders add structure. iOS-only, free to download with a 3-day free trial, premium at $4.99/week or $24.99/year.
 
 ## Opal in 30 Seconds
 

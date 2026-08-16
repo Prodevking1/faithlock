@@ -70,7 +70,7 @@ The 30-day spiritual covenant feature turns it into more of a commitment device.
 | Detail | Info |
 |--------|------|
 | Rating | New (building reviews) |
-| Price | Free (Premium: $4.99/week or $24.99/year) |
+| Price | Free to download, 3-day free trial (Premium: $4.99/week or $24.99/year) |
 | Platforms | iOS |
 | Unlock method | Bible verse reading + engagement |
 
