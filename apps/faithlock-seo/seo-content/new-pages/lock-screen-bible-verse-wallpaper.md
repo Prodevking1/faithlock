@@ -120,4 +120,4 @@ If you want something more active than a glance, pairing your wallpaper setup wi
 
 ---
 
-*Sources: [Apple Wallpaper Support](https://support.apple.com/en-us/105117), [BibleGateway](https://www.biblegateway.com/)*
+*Sources: [Apple Wallpaper Support](https://support.apple.com/guide/iphone/change-the-wallpaper-iph3d267104/ios), [BibleGateway](https://www.biblegateway.com/)*

@@ -28,34 +28,34 @@ A Bible verse desktop wallpaper does better with themes around diligence, wisdom
 Desktop space allows for slightly longer verses than a phone lock screen would comfortably fit.
 
 **Colossians 3:23 (NIV)**
-> Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.
+> Whatever you do, work at it with all your heart, as working for the Lord, not for human masters…
 
 **Proverbs 16:3 (NIV)**
-> Commit to the Lord whatever you do, and he will establish your plans.
+> Commit to the LORD whatever you do, and he will establish your plans.
 
 **Ecclesiastes 9:10 (NIV)**
-> Whatever your hand finds to do, do it with all your might.
+> Whatever your hand finds to do, do it with all your might…
 
 **Proverbs 3:5-6 (NIV)**
-> Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.
+> Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.
 
 **Philippians 4:13 (NIV)**
 > I can do all this through him who gives me strength.
 
 **Joshua 1:9 (NIV)**
-> Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.
+> Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go.
 
 **1 Corinthians 10:31 (NIV)**
 > So whether you eat or drink or whatever you do, do it all for the glory of God.
 
 **Proverbs 16:9 (NIV)**
-> In their hearts humans plan their course, but the Lord establishes their steps.
+> In their hearts humans plan their course, but the LORD establishes their steps.
 
 **Psalm 90:17 (NIV)**
 > May the favor of the Lord our God rest on us; establish the work of our hands for us, yes, establish the work of our hands.
 
 **Isaiah 40:31 (NIV)**
-> But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
+> But those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
 
 **Galatians 6:9 (NIV)**
 > Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.
@@ -91,7 +91,7 @@ Retina and other high-density displays vary by exact model, so check your real r
 
 Alternatively, right-click any empty area of your desktop, choose **Change Desktop Background**, and pick your image from there.
 
-**To rotate through several verses automatically:** macOS lets you select an entire folder as your wallpaper source and set it to change on a schedule (every 30 minutes, hourly, or daily) or when your Mac wakes from sleep. Select a folder instead of a single image in the same Wallpaper settings panel, then set your preferred rotation interval.
+**To rotate through several verses automatically:** macOS lets you select an entire folder as your wallpaper source and rotate through it at the interval you choose in System Settings, or when your Mac wakes from sleep. Select a folder instead of a single image in the same Wallpaper settings panel, then set your preferred rotation interval.
 
 ---
 

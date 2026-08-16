@@ -25,7 +25,7 @@ There's a real difference between a verse wallpaper that looks intentional and o
 
 **Restraint in color.** Two to three colors, max. A muted background with one accent color for the text reads as considered. Five colors reads as an accident.
 
-**Negative space is a feature, not empty space to fill.** Most aesthetic Bible verse wallpaper you'll find on Pinterest uses maybe 30 to 40% of the screen for actual content. The rest is breathing room.
+**Negative space is a feature, not empty space to fill.** A lot of the verse wallpapers you'll scroll past on Pinterest crowd every corner of the screen with text and decoration. The ones that read as designed leave most of the screen as breathing room.
 
 ---
 
@@ -59,7 +59,7 @@ Pick a palette that matches the mood of the verse itself. A verse about rest in 
 Short line length was the main filter here. Every verse below reads cleanly in one or two lines of text.
 
 **Psalm 46:10 (NIV)**
-> Be still, and know that I am God.
+> Be still, and know that I am God…
 
 **1 John 4:19 (NIV)**
 > We love because he first loved us.
@@ -74,22 +74,22 @@ Short line length was the main filter here. Every verse below reads cleanly in o
 > God is our refuge and strength, an ever-present help in trouble.
 
 **Nehemiah 8:10 (NIV)**
-> The joy of the Lord is your strength.
+> Do not grieve, for the joy of the LORD is your strength.
 
 **Proverbs 3:5 (NIV)**
-> Trust in the Lord with all your heart.
+> Trust in the LORD with all your heart…
 
 **1 Corinthians 13:4 (NIV)**
-> Love is patient, love is kind.
+> Love is patient, love is kind…
 
 **Psalm 118:24 (ESV)**
-> This is the day that the Lord has made; let us rejoice and be glad in it.
+> This is the day that the LORD has made; let us rejoice and be glad in it.
 
 **Isaiah 41:10 (NIV)**
-> Do not fear, for I am with you.
+> So do not fear, for I am with you…
 
 **Philippians 4:4 (NIV)**
-> Rejoice in the Lord always.
+> Rejoice in the Lord always…
 
 **2 Corinthians 5:7 (NIV)**
 > For we live by faith, not by sight.
@@ -124,7 +124,7 @@ If you want the verse to actually mean something beyond decoration, pair the wal
 A light serif (Playfair Display, Cormorant) for the verse text paired with a thin, letter-spaced sans-serif for the reference is the most common aesthetic pairing. For shorter, punchier verses, an all-caps geometric sans on its own also works well.
 
 **What size should an aesthetic Bible verse wallpaper be?**
-For most current iPhones, 1290 x 2796 pixels. Older iPhone models use 1170 x 2532 pixels. Android varies by device, so check your phone's exact screen resolution in Settings first. Canva's phone wallpaper templates are pre-sized correctly, so you generally don't need to think about this manually.
+Check your own model rather than assuming one size covers the range. Screen resolution changes from model to model even within a single iPhone generation: as of 2026, an iPhone 16 is 1179 x 2556 pixels, while the larger iPhone 16 Plus is 1290 x 2796. Look your model up on Apple's tech specs page, and on Android check the screen resolution in Settings, since it varies by device. Canva's phone wallpaper templates are sized per model, so picking the right template handles this for you.
 
 **Where can I get a free aesthetic Bible verse wallpaper?**
 Canva's free tier includes thousands of phone wallpaper templates you can search and customize at no cost. YouVersion's free Verse of the Day image feature is another no-cost option, though with less design control. See our [Bible verse wallpaper apps guide](/resources/best-bible-verse-wallpaper-apps) for more free options.

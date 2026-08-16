@@ -111,7 +111,7 @@ Yes. iOS treats them as separate wallpaper slots. Set each one individually thro
 Not on its own with a single static image. Photo Shuffle (iOS 16+) can rotate through a folder of saved verse images on a schedule you set, but it doesn't pull new verses from the internet. For a true daily-refreshing verse, use an app like YouVersion or Heavenly with a Home Screen or Lock Screen widget instead of a wallpaper image.
 
 **Why does my Bible verse wallpaper look cut off or blurry?**
-Most likely the image resolution doesn't match your iPhone's screen size. For iPhone 15 and 16 series, use 1290 x 2796 pixels; older models use 1170 x 2532 pixels. Design tools like Canva have pre-sized templates that avoid this problem entirely.
+Most likely the image resolution doesn't match your iPhone's screen size, and that size changes from model to model rather than being one number for the whole lineup. Look your model up on Apple's tech specs page before you design anything: as of 2026, an iPhone 16 is 1179 x 2556 pixels, while the larger 6.7-inch iPhone 16 Plus is 1290 x 2796. Design tools like Canva let you pick a template by iPhone model, which avoids the problem entirely.
 
 **Can I use Siri Shortcuts to automatically change my Bible verse wallpaper?**
 Not reliably. The "Set Wallpaper Photo" action still exists in Shortcuts, but users report it failing intermittently on recent iOS versions. Photo Shuffle is currently the dependable native way to rotate through multiple wallpapers automatically.
@@ -126,4 +126,4 @@ If you want the verse to change automatically, Photo Shuffle handles a folder of
 
 ---
 
-*Sources: [Apple Wallpaper Support](https://support.apple.com/en-us/105117)*
+*Sources: [Apple Wallpaper Support](https://support.apple.com/guide/iphone/change-the-wallpaper-iph3d267104/ios)*

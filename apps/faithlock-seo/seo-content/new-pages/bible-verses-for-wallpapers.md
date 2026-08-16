@@ -10,7 +10,7 @@ meta_description: "The best short Bible verses for wallpapers, grouped by theme 
 
 - Short verses (one sentence, under 15 words) make the best wallpaper text. Long passages get cut off or shrunk to unreadable size.
 - These 30 verses are grouped by theme: peace, strength, love, hope, faith, and joy, so you can pick one that matches what you're actually facing.
-- Every reference includes the exact book, chapter, verse, and translation. No paraphrases presented as quotes.
+- Every reference includes the exact book, chapter, verse, and translation. Short quotes are marked when trimmed.
 - Setting a verse as your wallpaper takes under two minutes on iPhone or Android once you have the image saved.
 
 ---
@@ -38,7 +38,7 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *Reads well split across two lines: the promise up top, the instruction below.*
 
 **Psalm 46:10 (NIV)**
-> Be still, and know that I am God.
+> Be still, and know that I am God…
 *Seven words. About as compact as Scripture gets, and it still lands.*
 
 **Isaiah 26:3 (NIV)**
@@ -52,7 +52,7 @@ The verses below are picked specifically for wallpaper use: short enough to read
 ### Verses About Strength and Courage
 
 **Joshua 1:9 (NIV)**
-> Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.
+> Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go.
 *One of the most requested wallpaper verses for a reason: it's a command and a promise in the same breath.*
 
 **Philippians 4:13 (NIV)**
@@ -68,7 +68,7 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *Twelve words, no wasted space. Works on almost any background.*
 
 **Deuteronomy 31:6 (NIV)**
-> Be strong and courageous. Do not be afraid or terrified because of them, for the Lord your God goes with you; he will never leave you nor forsake you.
+> Be strong and courageous. Do not be afraid or terrified because of them, for the LORD your God goes with you; he will never leave you nor forsake you.
 *A favorite for anyone heading into a hard season: a move, a diagnosis, a job change.*
 
 ### Verses About Love
@@ -82,21 +82,21 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *The most recognized verse in the Bible; putting it on a wallpaper is a quiet, constant reminder of the whole point.*
 
 **1 Corinthians 13:4 (NIV)**
-> Love is patient, love is kind.
+> Love is patient, love is kind…
 *The opening line of the "love chapter," and it stands fine on its own for a wallpaper.*
 
 **Zephaniah 3:17 (NIV)**
-> The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing.
+> The LORD your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing.
 *One of the more overlooked verses on this list, and one of the most comforting once you actually read it slowly.*
 
 **Romans 8:38-39 (NIV)**
-> Neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.
+> For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.
 *Long, but the rhythm of the list ("neither... nor...") makes it read almost like a poem on a desktop wallpaper.*
 
 ### Verses About Hope
 
 **Jeremiah 29:11 (NIV)**
-> "For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, plans to give you hope and a future."
+> "For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
 *Written to people who had lost almost everything; that context is worth remembering when you read it on your lock screen.*
 
 **Romans 15:13 (NIV)**
@@ -104,7 +104,7 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *A verse that's also a prayer; reads naturally as something you're saying over your own day.*
 
 **Lamentations 3:22-23 (NIV)**
-> Because of the Lord's great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.
+> Because of the LORD's great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.
 *A strong pick if you're the type who changes wallpapers every morning: the verse literally talks about "new every morning."*
 
 **Romans 8:28 (NIV)**
@@ -112,13 +112,13 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *Dense theology in one sentence. Good for anyone who wants their wallpaper to prompt an actual thought, not just a feeling.*
 
 **Psalm 27:14 (NIV)**
-> Wait for the Lord; be strong and take heart and wait for the Lord.
+> Wait for the LORD; be strong and take heart and wait for the LORD.
 *The repetition of "wait for the Lord" makes it easy to remember after a few days of seeing it.*
 
 ### Verses About Faith and Trust
 
 **Proverbs 3:5-6 (NIV)**
-> Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.
+> Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.
 *Probably the single most requested verse for wallpapers among people making a big decision.*
 
 **Hebrews 11:1 (NIV)**
@@ -130,17 +130,17 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *Nine words, and one of the easiest verses on this list to actually memorize just by seeing it daily.*
 
 **Isaiah 40:31 (NIV)**
-> But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
+> But those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
 *The eagle imagery makes this one pair especially well with a nature or sky photo background.*
 
 **Proverbs 16:3 (NIV)**
-> Commit to the Lord whatever you do, and he will establish your plans.
+> Commit to the LORD whatever you do, and he will establish your plans.
 *A common pick for a work desktop wallpaper specifically; short, direct, and relevant every time you open your laptop.*
 
 ### Verses About Joy and Gratitude
 
 **Psalm 118:24 (ESV)**
-> This is the day that the Lord has made; let us rejoice and be glad in it.
+> This is the day that the LORD has made; let us rejoice and be glad in it.
 *One of the most quoted verses in the English language, and still true every single morning you read it.*
 
 **1 Thessalonians 5:16-18 (NIV)**
@@ -148,7 +148,7 @@ The verses below are picked specifically for wallpaper use: short enough to read
 *Three commands in one verse; some people split this across three separate wallpapers, one for each Focus mode on their phone.*
 
 **Nehemiah 8:10 (NIV)**
-> Do not grieve, for the joy of the Lord is your strength.
+> Do not grieve, for the joy of the LORD is your strength.
 *A quiet, often-missed verse that hits differently depending on what kind of week you're having.*
 
 **Philippians 4:4 (NIV)**
@@ -226,4 +226,4 @@ If you want to go deeper on setup, our guides cover [aesthetic composition and d
 
 ---
 
-*Sources: [BibleGateway](https://www.biblegateway.com/), [Apple Wallpaper Support](https://support.apple.com/en-us/105117)*
+*Sources: [BibleGateway](https://www.biblegateway.com/), [Apple Wallpaper Support](https://support.apple.com/guide/iphone/change-the-wallpaper-iph3d267104/ios)*
