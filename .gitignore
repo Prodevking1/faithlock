@@ -86,3 +86,24 @@ fastlane/test_output
 
 # Bible prompt eval — generated outputs (key is in .env.local, already ignored)
 tooling/bible-prompt-eval/results.json
+
+# Native build artifacts — any depth (root-only /build/ above missed ios/build/)
+build/
+ios/Pods/
+ios/.symlinks/
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Node — web apps under apps/
+node_modules/
+**/dist/
+*.tsbuildinfo
+.next/
+
+# Prayer pipeline — generated audio/text, regenerable, uploaded to storage
+scripts/prayer_pipeline/output/
+
+# Editor/session local scratch
+.zcode/
+failed_users.txt
